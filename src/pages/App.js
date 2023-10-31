@@ -5,7 +5,7 @@ function App() {
   return (
     <PageLayout>
       <div>
-        <AfroshopLogo/>
+        <img src={AfroshopLogo} alt="logo"/>
         home page
       </div>
     </PageLayout>
