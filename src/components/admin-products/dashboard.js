@@ -15,14 +15,13 @@ const ProductsDashboard = () => {
 
 
     const totalPages = Math.ceil(PRODUCT_DATA.length / itemsPerPage); // sets total 
-    const yellowDivWidth = `${(page / totalPages) * 100}%`; //sets width of yellow line
 
 
     const handleItemsPerPage = (e) => setItemsPerPage(e.target.value); // set items per page when selected
     const handleActiveTab = (activeTab) => setActiveTab(activeTab); // controls styles for all, active, pending and draft filters
     const handlePage = (activePage) => setPage(activePage); // sets page when pagination button is clicked
     const prevPage = () => page > 1 ? setPage(page - 1) : null; // goes to previous page
-    const nextPage = () => page < 20 ? setPage(page + 1) : null; // goes to next page
+    const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
 
 
 
@@ -107,12 +106,11 @@ const ProductsDashboard = () => {
                 </p>
             </div>
 
-            <div className="bg-[#ffffff] rounded-2xl mt-1">
-                <div
-                    className={`h-[4px] bg-[#FCAE17] rounded-2xl`}
-                    style={{ width: yellowDivWidth }}
-                >
-                </div>
+            <div className="bg-[#ffffff] rounded-2xl mt-1 flex">
+                <div className={`h-[4px] w-[47px] mr-[2px] rounded-2xl ${activeTab === "all" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
+                <div className={`h-[4px] w-[70px] mr-[2px] rounded-2xl ${activeTab === "active" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
+                <div className={`h-[4px] w-[82px] mr-[2px] rounded-2xl ${activeTab === "pending" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
+                <div className={`h-[4px] w-[70px] mr-[2px] rounded-2xl ${activeTab === "drafts" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
             </div>
 
             {/******************************************************* * table section  **************************************************************/}
