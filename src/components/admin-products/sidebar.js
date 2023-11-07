@@ -3,11 +3,12 @@ import { AfroshopLogo, CardIcon, OrdersIcon, OrdersIconWhite, OverviewIcon, Over
 import SidebarTab from "./sidebar-tab";
 
 
-const AdminSidebar = () => {
+const AdminSidebar = ({handleTabs}) => {
     const [isSelected, setIsSelected] = useState('overview');
 
     const handleSelection = (tab) => {
-        setIsSelected(tab)
+        setIsSelected(tab);
+        handleTabs(tab);
     }
     return (
         <aside className="pt-6 px-6 flex flex-col w-[266px] border-r border-1 border-[#E6E6E6] justify-between bg-[#ffffff] mb-6">

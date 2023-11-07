@@ -14,7 +14,7 @@ const AdminNavbar = () => {
                 <NotificationIcon className="w-[20px] h-[20px]"/>
                 <SettingsIcon className="w-[20px] h-[20px]"/>
                 <ProfilePic className="w-[24px] h-[24px]"/>
-                <p className="font-semibold text-[13px] leading-[23px] text-[#186F3D]">Rebecca James</p>
+                <p className="font-semibold text-[13px] leading-[23px] text-[#186F3D]">Ini James</p>
             </div>
         </nav>
     )

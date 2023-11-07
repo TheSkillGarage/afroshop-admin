@@ -10,6 +10,8 @@ import { ReactComponent as FilterIcon } from "./icon-filter.svg";
 import { ReactComponent as DetailsIcon } from "./icon-others.svg";
 import { ReactComponent as NextIcon } from "./icon-next-arrow.svg";
 import { ReactComponent as PrevIcon } from "./prev-arrow.svg";
+import { ReactComponent as EditIcon } from "./icon-edit.svg";
+import { ReactComponent as DeleteIcon } from "./icon-delete.svg";
 
 
 
@@ -55,4 +57,7 @@ export {
     DetailsIcon,
     PrevIcon,
     NextIcon,
+    EditIcon,
+    DeleteIcon,
+
 };

@@ -1,51 +1,85 @@
 import React, { useEffect, useState } from "react";
-import { DetailsIcon, FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../images";
+import { FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../images";
 import PRODUCT_DATA from "../../data/products";
+import Detail from "./details";
 
-const OrdersDashboard = () => {
+const ProductsDashboard = () => {
 
     const [activeTab, setActiveTab] = useState('all');
     const [page, setPage] = useState(1);
-
     const [startCount, setStartCount] = useState(0);
     const [stopCount, setStopCount] = useState(0);
     const [currentData, setCurrentData] = useState([]);
-
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [pageButtons, setPageButtons] = useState([]);
 
-    const handleItemsPerPage = (e) => setItemsPerPage(e.target.value);
 
-    useEffect(() => {
+    const totalPages = Math.ceil(PRODUCT_DATA.length / itemsPerPage); // sets total 
+    const yellowDivWidth = `${(page / totalPages) * 100}%`; //sets width of yellow line
+
+
+    const handleItemsPerPage = (e) => setItemsPerPage(e.target.value); // set items per page when selected
+    const handleActiveTab = (activeTab) => setActiveTab(activeTab); // controls styles for all, active, pending and draft filters
+    const handlePage = (activePage) => setPage(activePage); // sets page when pagination button is clicked
+    const prevPage = () => page > 1 ? setPage(page - 1) : null; // goes to previous page
+    const nextPage = () => page < 20 ? setPage(page + 1) : null; // goes to next page
+
+
+
+    // handles number of items displayed in a table depending on Items per page
+    const handleProductsDisplayed = () => {
         const start = (page - 1) * itemsPerPage;
         const end = parseInt(start) + parseInt(itemsPerPage);
         setCurrentData(PRODUCT_DATA.slice(start, end));
 
         setStartCount(start);
 
-        if (end <= PRODUCT_DATA.length){
-            
+        if (end <= PRODUCT_DATA.length) {
             setStopCount(end);
-        }else{
+        } else {
             setStopCount(PRODUCT_DATA.length)
         }
+    }
+
+
+    // handles pagination buttons displayed
+    const handlePageButtons = () => {
+        let a = []
+
+        for (let i = 1; i <= totalPages; i++) {
+            a.push(i);
+        }
+
+        let b = [...a.slice(page - 1, a.length)]
+
+        if (a.length <= 5) {
+            setPageButtons(a)
+        } else if (b.length <= 5) {
+            b = [...a.slice(a.length - 6, a.length)]
+            setPageButtons(b);
+        } else if (page !== 1) {
+            setPageButtons([...b.slice(0, 4), "...", b[b.length - 1]])
+        } else {
+            setPageButtons([...b.slice(0, 4), "...", b[b.length - 1]])
+        }
+
+    }
+
+
+    // calls functions when page or item per page updates
+    useEffect(() => {
+        handleProductsDisplayed();
+        handlePageButtons();
     }, [page, itemsPerPage]);
-
-
-    const totalPages = Math.ceil(PRODUCT_DATA.length / itemsPerPage);
-
-    const handleActiveTab = (activeTab) => setActiveTab(activeTab);
-
-    const handlePage = (activePage) => {
-        setPage(activePage)
-    };
-
-
-    const prevPage = () => page > 1 ? setPage(page - 1) : null;
-    const nextPage = () => page < 20 ? setPage(page + 1) : null;
 
 
     return (
         <div className="bg-[#F2F2F2] w-full py-6 px-4">
+
+            <div className="flex items-center gap-8 mb-8 mt-2">
+                <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">...</p>
+                <p className="text-[13px] leading-[23px] text-[#186F3D]">Products</p>
+            </div>
             <div className="bg-[#ffffff] w-[277px] h-[32px] flex items-center rounded">
                 <p
                     className={`${activeTab === "all" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[49px] flex items-center justify-center cursor-pointer`}
@@ -74,7 +108,11 @@ const OrdersDashboard = () => {
             </div>
 
             <div className="bg-[#ffffff] rounded-2xl mt-1">
-                <div className="w-[47px] h-[4px] bg-[#FCAE17] rounded-2xl"></div>
+                <div
+                    className={`h-[4px] bg-[#FCAE17] rounded-2xl`}
+                    style={{ width: yellowDivWidth }}
+                >
+                </div>
             </div>
 
             {/******************************************************* * table section  **************************************************************/}
@@ -105,16 +143,16 @@ const OrdersDashboard = () => {
                     <table className="w-full border-collapse">
                         <thead className="h-[56px] uppercase text-left text-[13px] leading-[23px] text-[#186F3D] font-semibold bg-[#F2F2F2]">
                             <tr>
-                            <th className="w-[6.5%] text-center">
-                                <input type="checkbox" name="order" id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D] " />
-                            </th>
-                            <th className="w-[14.5%]">product name</th>
-                            <th className=" w-[14.5%] pl-8">SKU</th>
-                            <th className="w-[14.5%]">date added</th>
-                            <th className="w-[14.5%]">sales price ($)</th>
-                            <th className="w-[14.5%]">availability</th>
-                            <th className="w-[14.5%]">status</th>
-                            <th className="w-[6.5%]"></th>
+                                <th className="w-[6.5%] text-center">
+                                    <input type="checkbox" name="order" id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D] " />
+                                </th>
+                                <th className="w-[14.5%]">product name</th>
+                                <th className=" w-[14.5%] pl-8">SKU</th>
+                                <th className="w-[14.5%]">date added</th>
+                                <th className="w-[14.5%]">sales price ($)</th>
+                                <th className="w-[14.5%]">availability</th>
+                                <th className="w-[14.5%]">status</th>
+                                <th className="w-[6.5%]"></th>
                             </tr>
 
                         </thead>
@@ -129,8 +167,13 @@ const OrdersDashboard = () => {
                                         <td className="py-4">{dateAdded}</td>
                                         <td className="py-4">{salesPrice}</td>
                                         <td className="py-4">{availabilty}</td>
-                                        <td className="capitalize py-4">{status}</td>
-                                        <td className="py-4"><DetailsIcon className="cursor-pointer" /></td>
+                                        <td className="capitalize py-4">
+                                            <p
+                                                className={`w-fit py-1 px-6 rounded-[30px] ${status === "pending" ? "text-[#FF9500] bg-[rgba(255,149,0,0.1)]" : status === "draft" ? "text-[#007AFF] bg-[rgba(0,122,255,0.1)]" : "text-[#34C759] bg-[rgba(52,199,89,0.1)]"} `}>{status}</p>
+                                        </td>
+                                        <td className="py-4">
+                                            <Detail />
+                                        </td>
                                     </tr>
                                 )
                             })}
@@ -158,33 +201,33 @@ const OrdersDashboard = () => {
                     </div>
 
                     <div className="flex gap-1 text-[#333333]">
-                        <p className="h-[31px] w-[31px] rounded cursor-pointer flex justify-center items-center" onClick={prevPage}><PrevIcon /></p>
-
-
-                        {
-                            (totalPages) < 6
-                                ?
-                                <div className="flex gap-1">
-                                    {
-                                        Array.from({ length: (totalPages) }, (_, index) => (
-                                            <p key={index} className={`${page === (index + 1) ? "bg-[#FFE0B2]" : null} flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer`} onClick={() => handlePage(index + 1)}>{index + 1}</p>
-                                        ))
-                                    }
-                                </div>
+                        <p className="h-[31px] w-[31px] rounded cursor-pointer flex justify-center items-center" onClick={prevPage}>
+                            {page === 1 ? <PrevIcon />
                                 :
-                                <div className="flex gap-1">
-                                    {
-                                        Array.from({ length: (Math.round(PRODUCT_DATA.length / itemsPerPage) - 2) }, (_, index) => (
-                                            <p key={index} className={`${page === (index + 1) ? "bg-[#FFE0B2]" : null} flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer`} onClick={() => handlePage(index + 1)}>{index + 1}</p>
-                                        ))
-                                    }
-                                    <p className={`flex justify-center items-center h-[31px] w-[31px] text-[#CCCCCC]`}>...</p>
-                                    <p className={`${page === (totalPages) ? "bg-[#FFE0B2]" : null} flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer`} onClick={() => handlePage((totalPages))}>{(totalPages)}</p>
-                                </div>
-                        }
+                                <NextIcon className="rotate-180" />
+                            }
+                        </p>
 
 
-                        <p className="h-[31px] w-[31px] rounded cursor-pointer flex justify-center items-center" onClick={nextPage}><NextIcon /></p>
+
+                        <div className="flex gap-1">
+                            {
+                                pageButtons.map((number, key) => {
+                                    return (
+                                        <p key={key} className={`${page === number ? "bg-[#FFE0B2]" : null} ${pageButtons === "..." ? "text-[#CCCCCC]" : "text-[#333333]"} text-[13px] leading-[23px] mr-1 flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer transition-all duration-200 ease-in`} onClick={() => number !== "..." ? handlePage(number) : null}>{number}</p>
+                                    )
+                                })
+
+                            }
+                        </div>
+
+
+                        <p className="h-[31px] w-[31px] rounded cursor-pointer flex justify-center items-center" onClick={nextPage}>
+                            {page !== totalPages ? <NextIcon />
+                                :
+                                <PrevIcon className="rotate-180" />
+                            }
+                        </p>
                     </div>
                 </div>
             </div>
@@ -195,4 +238,4 @@ const OrdersDashboard = () => {
 }
 
 
-export default OrdersDashboard;
+export default ProductsDashboard;
