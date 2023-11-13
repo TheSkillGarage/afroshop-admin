@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../images";
-import PRODUCT_DATA from "../../data/products";
+import { FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../../images";
+import PRODUCT_DATA from "../../../data/products";
 import Detail from "./details";
 
 const ProductsDashboard = () => {

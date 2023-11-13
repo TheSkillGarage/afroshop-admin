@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DeleteIcon, DetailsIcon, EditIcon } from "../../images";
+import { DeleteIcon, DetailsIcon, EditIcon } from "../../../images";
 
 
 const Detail = () => {

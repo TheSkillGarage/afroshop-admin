@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import AdminNavbar from "./navbar";
 import AdminSidebar from "./sidebar";
-import ProductsDashboard from "./dashboard";
+import ProductsDashboard from "./products/products-dashboard";
+import OrdersDashboard from "./orders/orders-dasboard";
 
 const AdminDashboard = () => {
     const [tabs, setTabs] = useState("overview");
@@ -16,6 +17,7 @@ const AdminDashboard = () => {
             <div className="flex">
                 <AdminSidebar handleTabs={handleTabs}/>
                     {tabs === "products" && <ProductsDashboard />}
+                    {tabs === "orders" && <OrdersDashboard />}
             </div>
         </div>
     );
