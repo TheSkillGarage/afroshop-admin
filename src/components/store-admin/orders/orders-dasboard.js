@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { EyeIcon, FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../../images";
-// import PRODUCT_DATA from "../../../data/products";
-import Detail from "../products/details";
 import ORDERS_DATA from "../../../data/orders";
 import StatusPills from "../status-pills";
-// import Detail from ".products/details";
 
 const OrdersDashboard = () => {
 

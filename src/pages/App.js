@@ -1,15 +1,13 @@
 import { PageLayout } from "../components";
-import { AfroshopLogo } from "../images";
+import AdminDashboard from "../components/store-admin";
 
-function App() {
+
+function StoreAdmin() {
   return (
     <PageLayout>
-      <div>
-        <img src={AfroshopLogo} alt="logo"/>
-        home page
-      </div>
+      <AdminDashboard />
     </PageLayout>
   );
 }
 
-export default App;
+export default StoreAdmin;

@@ -1,16 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { App} from "./pages";
-import AdminDashboard from "./components/store-admin";
-
-
+import { StoreAdmin } from "./pages";
 
 
 const MyRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<App />} />
-        <Route exact path="/store-admin" element={<AdminDashboard />} />
+        <Route exact path="/" element={<StoreAdmin />} />
       </Routes>
     </BrowserRouter>
   );
