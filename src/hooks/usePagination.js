@@ -11,34 +11,35 @@ export const usePagination = (page, itemsPerPage, DATA) => {
     useEffect(() => {
         // handles number of items displayed in a table depending on Items per page
         const start = (page - 1) * itemsPerPage;
-        const end = parseInt(start) + parseInt(itemsPerPage);
+        const end = start + itemsPerPage;
         setCurrentData(DATA.slice(start, end));
-
-
-        if (end <= DATA.length) {
-            setCount({...count, start: start, stop: end});
-        } else {
-            setCount({...count, start: start, stop: DATA.length})
-        }
-
-
+    
         // handles pagination buttons displayed
         let a = []
-
+    
         for (let i = 1; i <= totalPages; i++) {
             a.push(i);
         }
-
+    
         let b = [...a.slice(page - 1, a.length)]
-
+    
         if (a.length <= 6) {
-            setPageButtons(a)
+            setPageButtons(a);
         } else if (b.length <= 6) {
             setPageButtons([...a.slice(a.length - 6, a.length)]);
-        }else {
-            setPageButtons([...b.slice(0, 4), "...", b[b.length - 1]])
+        } else {
+            setPageButtons([...b.slice(0, 4), "...", b[b.length - 1]]);
         }
-    }, [page, itemsPerPage, DATA, count, totalPages]);
+    
+        // Updates count using the function form of setState
+        setCount(prevCount => ({
+            ...prevCount,
+            start: start,
+            stop: end <= DATA.length ? end : DATA.length,
+        }));
+    
+    }, [page, itemsPerPage, DATA, totalPages]);
+    
 
     return {
         count,
