@@ -176,7 +176,7 @@ const OrdersDashboard = () => {
                                         </td>
                                         <td className="py-4 pl-8">{items}</td>
                                         <td className="capitalize py-4">
-                                            <StatusPills status={status}/>
+                                            <StatusPills status={status} name="orders"/>
                                         </td>
                                         <td className="py-4">
                                             <EyeIcon className="cursor-pointer"/>

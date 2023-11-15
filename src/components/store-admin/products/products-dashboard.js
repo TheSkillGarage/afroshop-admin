@@ -3,6 +3,7 @@ import { FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../../images";
 import PRODUCT_DATA from "../../../data/products";
 import Detail from "./details";
 import usePagination from "../../../hooks/usePagination";
+import StatusPills from "../status-pills";
 
 const ProductsDashboard = () => {
 
@@ -118,8 +119,7 @@ const ProductsDashboard = () => {
                                         <td className="py-4">{salesPrice}</td>
                                         <td className="py-4">{availabilty}</td>
                                         <td className="capitalize py-4">
-                                            <p
-                                                className={`w-fit py-1 px-6 rounded-[30px] ${status === "pending" ? "text-[#FF9500] bg-[rgba(255,149,0,0.1)]" : status === "draft" ? "text-[#007AFF] bg-[rgba(0,122,255,0.1)]" : "text-[#34C759] bg-[rgba(52,199,89,0.1)]"} `}>{status}</p>
+                                        <StatusPills status={status} name="products"/>
                                         </td>
                                         <td className="py-4">
                                             <Detail />
