@@ -7,10 +7,6 @@ const StatusPills = ({ name, status }) => {
     const [isSelected, setIsSelected] = useState(false);
     const dropdownRef = useRef(null);
 
-    const handleStatus = (e) => {
-        console.log("status", e.target.value);
-        setIsStatus(e.target.value)
-    }
 
     const colorOfPills = (status) => {
         switch (status) {
@@ -24,8 +20,10 @@ const StatusPills = ({ name, status }) => {
                 return "text-[#34C759] bg-[rgba(52,199,89,0.1)]"
             case "active":
                 return "text-[#34C759] bg-[rgba(52,199,89,0.1)]"
-            default:
+            case "cancelled":
                 return "text-[#FF3B30] bg-[rgba(255,59,48,0.1)]"
+            default:
+                return null
         }
     }
 
@@ -34,6 +32,11 @@ const StatusPills = ({ name, status }) => {
         event.stopPropagation();
         setIsSelected(true)
     };
+
+    const handleStatus = (text) => {
+        setIsStatus(text);
+        setIsSelected(false)
+    }
 
     const handleClick = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -52,14 +55,22 @@ const StatusPills = ({ name, status }) => {
 
     return (
         <div className="relative">
-            <p className={`w-fit py-1 px-6 rounded-[30px] ${colorOfPills(status)} cursor-pointer`} onClick={handleIsSelected}>{isStatus}</p>
+            <p className={`w-fit py-1 px-6 rounded-[30px] ${colorOfPills(isStatus)} cursor-pointer`} onClick={handleIsSelected}>{isStatus}</p>
             {(name === "orders" && isSelected) &&
                 <div className="fixed top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.1)] z-[9] flex justify-center items-center">
                     <div className="w-[327px] bg-[#ffffff] max-h-[192px] rounded absolute top-[40%] right-[120px] z-[10] shadow-md status-dropdown" ref={dropdownRef}>
-                        <p className="w-full h-[48px] text-[16px] leading-[24px] text-[#333333] bg-[#ffffff] hover:bg-[#F2F2F2] hover:text-[#186F3D] px-4 flex items-center rounded" onClick={handleStatus}>Pending</p>
-                        <p className="w-full h-[48px] text-[16px] leading-[24px] text-[#333333] bg-[#ffffff] hover:bg-[#F2F2F2] hover:text-[#186F3D] px-4 flex items-center rounded">Shipped</p>
-                        <p className="w-full h-[48px] text-[16px] leading-[24px] text-[#333333] bg-[#ffffff] hover:bg-[#F2F2F2] hover:text-[#186F3D] px-4 flex items-center rounded">Delivered</p>
-                        <p className="w-full h-[48px] text-[16px] leading-[24px] text-[#333333] bg-[#ffffff] hover:bg-[#F2F2F2] hover:text-[#186F3D] px-4 flex items-center rounded">Cancelled</p>
+                        {
+                            ["Pending", "Shipped", "Delivered", "Cancelled"].map((item, key) => {
+                                return (
+                                    <p
+                                        key={key}
+                                        className="w-full h-[48px] text-[16px] leading-[24px] text-[#333333] bg-[#ffffff] hover:bg-[#F2F2F2] hover:text-[#186F3D] px-4 flex items-center rounded"
+                                        onClick={() => handleStatus(item.toLowerCase())}>
+                                        {item}
+                                    </p>
+                                )
+                            })
+                        }
                     </div>
                 </div>
             }
