@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { EyeIcon, FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../../images";
-// import PRODUCT_DATA from "../../../data/products";
-import Detail from "../products/details";
 import ORDERS_DATA from "../../../data/orders";
 import StatusPills from "../status-pills";
-// import Detail from ".products/details";
 
 const OrdersDashboard = () => {
 
@@ -179,7 +176,7 @@ const OrdersDashboard = () => {
                                         </td>
                                         <td className="py-4 pl-8">{items}</td>
                                         <td className="capitalize py-4">
-                                            <StatusPills status={status}/>
+                                            <StatusPills status={status} name="orders"/>
                                         </td>
                                         <td className="py-4">
                                             <EyeIcon className="cursor-pointer"/>
