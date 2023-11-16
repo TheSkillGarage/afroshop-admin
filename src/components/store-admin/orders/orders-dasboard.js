@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { EyeIcon, FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../../images";
 import ORDERS_DATA from "../../../data/orders";
 import StatusPills from "../status-pills";
+import usePagination from "../../../hooks/usePagination";
+import { useNavigate } from "react-router";
 
 const OrdersDashboard = () => {
 
     const [activeTab, setActiveTab] = useState('all');
     const [page, setPage] = useState(1);
-    const [startCount, setStartCount] = useState(0);
-    const [stopCount, setStopCount] = useState(0);
-    const [currentData, setCurrentData] = useState([]);
     const [itemsPerPage, setItemsPerPage] = useState(10);
-    const [pageButtons, setPageButtons] = useState([]);
 
-
-    const totalPages = Math.ceil(ORDERS_DATA.length / itemsPerPage); // sets total 
+    const pagination = usePagination(page, itemsPerPage, ORDERS_DATA);
+    const totalPages = pagination.totalPages; // sets total 
 
 
     const handleItemsPerPage = (e) => setItemsPerPage(e.target.value); // set items per page when selected
@@ -24,53 +22,11 @@ const OrdersDashboard = () => {
     const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
 
 
+    const navigate = useNavigate()
 
-    // handles number of items displayed in a table depending on Items per page
-    const handleProductsDisplayed = () => {
-        const start = (page - 1) * itemsPerPage;
-        const end = parseInt(start) + parseInt(itemsPerPage);
-        setCurrentData(ORDERS_DATA.slice(start, end));
-
-        setStartCount(start);
-
-        if (end <= ORDERS_DATA.length) {
-            setStopCount(end);
-        } else {
-            setStopCount(ORDERS_DATA.length)
-        }
+    const handleViewOrder = () => {
+        navigate("/view-order");
     }
-
-
-    // handles pagination buttons displayed
-    const handlePageButtons = () => {
-        let a = []
-
-        for (let i = 1; i <= totalPages; i++) {
-            a.push(i);
-        }
-
-        let b = [...a.slice(page - 1, a.length)]
-
-        if (a.length <= 5) {
-            setPageButtons(a)
-        } else if (b.length <= 5) {
-            b = [...a.slice(a.length - 6, a.length)]
-            setPageButtons(b);
-        } else if (page !== 1) {
-            setPageButtons([...b.slice(0, 4), "...", b[b.length - 1]])
-        } else {
-            setPageButtons([...b.slice(0, 4), "...", b[b.length - 1]])
-        }
-
-    }
-
-
-    // calls functions when page or item per page updates
-    useEffect(() => {
-        handleProductsDisplayed();
-        handlePageButtons();
-    }, [page, itemsPerPage]);
-
 
     return (
         <div className="bg-[#F2F2F2] w-full py-6 px-4">
@@ -163,7 +119,7 @@ const OrdersDashboard = () => {
                         </thead>
 
                         <tbody className="bg-[#ffffff]">
-                            {currentData.map(({ orderID, orderDate, customer, price, items, status }, key) => {
+                            {pagination.currentData.map(({ orderID, orderDate, customer, price, items, status }, key) => {
                                 return (
                                     <tr key={key} className="text-[13px] leading-[23px] text-[#333333] border border-1 border-[#E6E6E6]">
                                         <td className="text-center"><input type="checkbox" name={orderID} id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" /></td>
@@ -179,7 +135,7 @@ const OrdersDashboard = () => {
                                             <StatusPills status={status} name="orders"/>
                                         </td>
                                         <td className="py-4">
-                                            <EyeIcon className="cursor-pointer"/>
+                                            <EyeIcon className="cursor-pointer" onClick={handleViewOrder}/>
                                         </td>
                                     </tr>
                                 )
@@ -204,7 +160,7 @@ const OrdersDashboard = () => {
                             <span>Lines</span>
                         </p>
 
-                        <p>Showing {startCount} to {stopCount} of {ORDERS_DATA.length} orders</p>
+                        <p>Showing {pagination.count.start} to {pagination.count.stop} of {ORDERS_DATA.length} orders</p>
                     </div>
 
                     <div className="flex gap-1 text-[#333333]">
@@ -219,9 +175,9 @@ const OrdersDashboard = () => {
 
                         <div className="flex gap-1">
                             {
-                                pageButtons.map((number, key) => {
+                                pagination.pageButtons.map((number, key) => {
                                     return (
-                                        <p key={key} className={`${page === number ? "bg-[#FFE0B2]" : null} ${pageButtons === "..." ? "text-[#CCCCCC]" : "text-[#333333]"} text-[13px] leading-[23px] mr-1 flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer transition-all duration-200 ease-in`} onClick={() => number !== "..." ? handlePage(number) : null}>{number}</p>
+                                        <p key={key} className={`${page === number ? "bg-[#FFE0B2]" : null} ${number === "..." ? "text-[#CCCCCC]" : "text-[#333333]"} text-[13px] leading-[23px] mr-1 flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer transition-all duration-200 ease-in`} onClick={() => number !== "..." ? handlePage(number) : null}>{number}</p>
                                     )
                                 })
 
