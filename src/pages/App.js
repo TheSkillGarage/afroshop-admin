@@ -1,5 +1,6 @@
 import { PageLayout } from "../components";
 import { AfroshopLogo } from "../images";
+import  ProductImage from '../components/ProductImage'
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
         <AfroshopLogo/>
         home page
       </div>
+       
     </PageLayout>
   );
 }
