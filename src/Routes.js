@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { App} from "./pages";
-import AdminDashboard from "./components/store-admin";
+import ViewOrders from "./components/store-admin/orders/view-orders";
 
 
 
@@ -10,7 +10,7 @@ const MyRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<App />} />
-        <Route exact path="/store-admin" element={<AdminDashboard />} />
+        <Route exact path="/view-orders" element={<ViewOrders />} />
       </Routes>
     </BrowserRouter>
   );

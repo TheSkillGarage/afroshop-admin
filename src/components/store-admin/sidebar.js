@@ -23,7 +23,7 @@ const AdminSidebar = ({handleTabs}) => {
                 <SidebarTab name="support" image={SupportIcon} selectedImage={SupportIconWhite} isSelected={isSelected} handleSelection={handleSelection}/>
             </div>
 
-            <img src={AfroshopLogo} className="w-[124px] h-[33px] mx-auto mb-4" />
+            <img src={AfroshopLogo} className="w-[124px] h-[33px] mx-auto mb-4" alt="afroshop-logo"/>
         </aside>
     )
 }
