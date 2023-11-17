@@ -5,7 +5,27 @@ const ORDERS_DATA = [
         customer: "Justin James A.",
         price: {price: "$15", paymentMethod: "Paypal"},
         items: 3,
-        status: "pending"
+        status: "pending",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
         orderID: "XXXXXX",

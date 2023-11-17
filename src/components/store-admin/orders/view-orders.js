@@ -91,32 +91,32 @@ const ViewOrders = () => {
                             </thead>
 
                             <tbody>
-                                <tr className="border-b border-1 border-[#E6E6E6]">
+                                <tr className="border-b border-1 border-[#E6E6E6] text-[13px] leading-[23px] text-[#333333]">
                                     <td className="py-4 pr-8"></td>
                                     <td className="py-4 pr-8" >Peak Milk Full Cream Powder Pouch</td>
                                     <td className="py-4 pr-8">XC234</td>
                                     <td className="py-4 pr-8">5.60</td>
-                                    <td className="py-4 pr-8">
+                                    <td className="py-4 pr-8 capitalize">
                                         <StatusPills status="pending" />
                                     </td>
                                     <td className="py-4 pr-8"></td>
                                 </tr>
-                                <tr className="border-b border-1 border-[#E6E6E6]">
+                                <tr className="border-b border-1 border-[#E6E6E6] text-[13px] leading-[23px] text-[#333333]">
                                     <td className="py-4 pr-8"></td>
                                     <td className="py-4 pr-8" >Peak Milk Full Cream Powder Pouch</td>
                                     <td className="py-4 pr-8">XC234</td>
                                     <td className="py-4 pr-8">5.60</td>
-                                    <td className="py-4 pr-8">
+                                    <td className="py-4 pr-8 capitalize">
                                         <StatusPills status="pending" />
                                     </td>
                                     <td className="py-4 pr-8"></td>
                                 </tr>
-                                <tr className="border-b border-1 border-[#E6E6E6]">
+                                <tr className="border-b border-1 border-[#E6E6E6] text-[13px] leading-[23px] text-[#333333]">
                                     <td className="py-4 pr-8"></td>
                                     <td className="py-4 pr-8" >Peak Milk Full Cream Powder Pouch</td>
                                     <td className="py-4 pr-8">XC234</td>
                                     <td className="py-4 pr-8">5.60</td>
-                                    <td className="py-4 pr-8">
+                                    <td className="py-4 pr-8 capitalize">
                                         <StatusPills status="pending" />
                                     </td>
                                     <td className="py-4 pr-8"></td>
