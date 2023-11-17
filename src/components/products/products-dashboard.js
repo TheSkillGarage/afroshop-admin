@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../../images";
-import PRODUCT_DATA from "../../../data/products";
+import { FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../images";
+import PRODUCT_DATA from "../../data/products";
 import Detail from "./details";
-import usePagination from "../../../hooks/usePagination";
-import StatusPills from "../status-pills";
+import usePagination from "../../hooks/usePagination";
+import StatusPills from "../store-admin/status-pills";
 
 const ProductsDashboard = () => {
 
@@ -28,7 +28,7 @@ const ProductsDashboard = () => {
     return (
         <div className="bg-[#F2F2F2] w-full py-6 px-4">
 
-            <div className="flex items-center gap-8 mb-8 mt-2">
+            <div className="flex items-center gap-8 mb-6">
                 <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">...</p>
                 <p className="text-[13px] leading-[23px] text-[#186F3D]">Products</p>
             </div>
@@ -68,16 +68,18 @@ const ProductsDashboard = () => {
 
             {/******************************************************* * table section  **************************************************************/}
 
-            <div className="bg-[#ffffff] pt-6 mt-8">
-                <div className="w-full flex justify-end px-4 pb-8">
+            <div className="pt-4 mt-4">
+
+                <div className="bg-[#FFFFFF]">
+                <div className="pl-4 border-b border-1 border-[#F2F2F2]">
+                    <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold py-4">Products</p>
+                </div>
+
+                <div className="w-full flex justify-end px-4 py-4">
                     <button className="bg-[#186F3D] text-[#ffffff] w-[216px] py-2 rounded">Add New Product</button>
                 </div>
 
-                <div className="pl-4">
-                    <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold pb-2">Products</p>
-                </div>
-
-                <div className="border-t border-1 border-[##F2F2F2] flex justify-between items-center px-4 py-8">
+                <div className="flex justify-between items-center px-4 py-6">
                     <div className="w-[514px] relative">
                         <SearchIcon className="absolute top-[10px] left-[18px] " />
                         <input type="text" placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12" />
@@ -87,6 +89,7 @@ const ProductsDashboard = () => {
                         <p className="text-[16px] leading-[24px] text-[#333333]">Filter</p>
                         <FilterIcon />
                     </div>
+                </div>
                 </div>
 
 
@@ -113,11 +116,11 @@ const ProductsDashboard = () => {
                                 return (
                                     <tr key={key} className="text-[13px] leading-[23px] text-[#333333] border border-1 border-[#E6E6E6]">
                                         <td className="text-center"><input type="checkbox" name={productName} id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" /></td>
-                                        <td className="py-4">{productName}</td>
-                                        <td className="pl-8 py-4">{SKU}</td>
-                                        <td className="py-4">{dateAdded}</td>
-                                        <td className="py-4">{salesPrice}</td>
-                                        <td className="py-4">{availabilty}</td>
+                                        <td className="py-2">{productName}</td>
+                                        <td className="pl-8 py-2">{SKU}</td>
+                                        <td className="py-2">{dateAdded}</td>
+                                        <td className="py-2">{salesPrice}</td>
+                                        <td className="py-2">{availabilty}</td>
                                         <td className="capitalize py-4">
                                         <StatusPills status={status} name="products"/>
                                         </td>
@@ -131,7 +134,7 @@ const ProductsDashboard = () => {
                     </table>
                 </div>
 
-                <div className="flex justify-between px-4 mt-4 pb-4 text-[13px] leading-[23px] items-center">
+                <div className="flex justify-between px-4 py-4 text-[13px] leading-[23px] items-center bg-[#FFFFFF]">
                     <div className="flex gap-8 text-[#CCCCCC] items-center">
                         <p className="flex gap-4 items-center">
                             <span>Show</span>

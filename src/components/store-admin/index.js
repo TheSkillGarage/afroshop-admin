@@ -1,16 +1,13 @@
 import React from "react";
-import ProductsDashboard from "./products/products-dashboard";
-import OrdersDashboard from "./orders/orders-dasboard";
 
 
-const AdminDashboard = ({tabs}) => {
+const Overview = () => {
 
     return (
          <div >
-            {tabs === "products" && <ProductsDashboard />}
-            {tabs === "orders" && <OrdersDashboard />}
+           <p>Overview</p>
         </div>
     );
 };
 
-export default AdminDashboard;
+export default Overview;

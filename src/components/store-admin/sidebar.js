@@ -1,22 +1,18 @@
 import React, { useState } from "react";
 import { AfroshopLogo } from "../../images";
 import SidebarTab from "./sidebar-tab";
+import SIDEBAR_TABS from "../../data/sidebar-tabs";
 
 
-const AdminSidebar = ({ handleTabs }) => {
-    const [isSelected, setIsSelected] = useState('overview');
+const AdminSidebar = () => {
 
-    const handleSelection = (tab) => {
-        setIsSelected(tab);
-        handleTabs(tab);
-    }
     return (
-        <aside className="pt-6 px-6 flex flex-col w-[266px] border-r border-1 border-[#E6E6E6] justify-between bg-[#ffffff] mb-6">
-            <div className="mt-8">
+        <aside className="px-6 flex flex-col w-[266px] h-[1024px] border-r border-1 border-[#E6E6E6] justify-between bg-[#ffffff] mb-6">
+            <div className="mt-8 flex flex-col gap-2">
                 {
-                    ["overview", "orders", "products", "payments", "profile", "roles & permissions", "support"].map((item, index) => {
+                    SIDEBAR_TABS.map(({name, path}, index) => {
                         return (
-                            <SidebarTab key={index} name={item} isSelected={isSelected} handleSelection={handleSelection} />
+                            <SidebarTab key={index} name={name} path={path}  />
                         )
                     })
                 }
