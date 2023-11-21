@@ -3,7 +3,7 @@ import { FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../images";
 import PRODUCT_DATA from "../../data/products";
 import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
-import StatusPills from "../store-admin/status-pills";
+import StatusPills from "../status-pills";
 
 const ProductsDashboard = () => {
 
@@ -12,7 +12,7 @@ const ProductsDashboard = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
     // from usePagination hook
-    
+
     const pagination = usePagination(page, itemsPerPage, PRODUCT_DATA);
 
     const totalPages = pagination.totalPages; // sets total pages
@@ -71,25 +71,25 @@ const ProductsDashboard = () => {
             <div className="pt-4 mt-4">
 
                 <div className="bg-[#FFFFFF]">
-                <div className="pl-4 border-b border-1 border-[#F2F2F2]">
-                    <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold py-4">Products</p>
-                </div>
-
-                <div className="w-full flex justify-end px-4 py-4">
-                    <button className="bg-[#186F3D] text-[#ffffff] w-[216px] py-2 rounded">Add New Product</button>
-                </div>
-
-                <div className="flex justify-between items-center px-4 py-6">
-                    <div className="w-[514px] relative">
-                        <SearchIcon className="absolute top-[10px] left-[18px] " />
-                        <input type="text" placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12" />
+                    <div className="pl-4 border-b border-1 border-[#F2F2F2]">
+                        <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold py-4">Products</p>
                     </div>
 
-                    <div className="w-[108px] h-[44px] rounded border border-[0.5px] flex items-center justify-center gap-2">
-                        <p className="text-[16px] leading-[24px] text-[#333333]">Filter</p>
-                        <FilterIcon />
+                    <div className="w-full flex justify-end px-4 py-4">
+                        <button className="bg-[#186F3D] text-[#ffffff] w-[216px] py-2 rounded">Add New Product</button>
                     </div>
-                </div>
+
+                    <div className="flex justify-between items-center px-4 py-6">
+                        <div className="w-[514px] relative">
+                            <SearchIcon className="absolute top-[10px] left-[18px] " />
+                            <input type="text" placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12" />
+                        </div>
+
+                        <div className="w-[108px] h-[44px] rounded border border-[0.5px] flex items-center justify-center gap-2">
+                            <p className="text-[16px] leading-[24px] text-[#333333]">Filter</p>
+                            <FilterIcon />
+                        </div>
+                    </div>
                 </div>
 
 
@@ -115,14 +115,16 @@ const ProductsDashboard = () => {
                             {pagination.currentData.map(({ productName, SKU, dateAdded, salesPrice, availabilty, status }, key) => {
                                 return (
                                     <tr key={key} className="text-[13px] leading-[23px] text-[#333333] border border-1 border-[#E6E6E6]">
-                                        <td className="text-center"><input type="checkbox" name={productName} id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" /></td>
+                                        <td className="text-center">
+                                            <input type="checkbox" name={productName} id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" />
+                                        </td>
                                         <td className="py-2">{productName}</td>
                                         <td className="pl-8 py-2">{SKU}</td>
                                         <td className="py-2">{dateAdded}</td>
                                         <td className="py-2">{salesPrice}</td>
                                         <td className="py-2">{availabilty}</td>
                                         <td className="capitalize py-4">
-                                        <StatusPills status={status} name="products"/>
+                                            <StatusPills status={status} name="products" />
                                         </td>
                                         <td className="py-4">
                                             <Detail />
@@ -141,11 +143,11 @@ const ProductsDashboard = () => {
                             <select name="lines" id=""
                                 className="w-[56px] h-[33px] border border-1 border-[#CCCCCC] rounded focus:outline-none font-medium text-[#333333] text-[14px] leading-[16.8px]"
                                 onChange={(e) => handleItemsPerPage(e)}>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="25">25</option>
-                                <option value="30">30</option>
+                                {
+                                    ["10", "15", "20", "25", "30"].map((num, key) => {
+                                        return <option value={num} key={key}>{num}</option>
+                                    })
+                                }
                             </select>
                             <span>Lines</span>
                         </p>

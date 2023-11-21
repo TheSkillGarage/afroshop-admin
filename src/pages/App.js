@@ -1,5 +1,5 @@
 import { PageLayout } from "../components";
-import Overview from "../components/store-admin";
+import Overview from "../components/overview";
 
 
 function OverviewPage() {

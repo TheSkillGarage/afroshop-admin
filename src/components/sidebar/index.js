@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { AfroshopLogo } from "../../images";
 import SidebarTab from "./sidebar-tab";
 import SIDEBAR_TABS from "../../data/sidebar-tabs";

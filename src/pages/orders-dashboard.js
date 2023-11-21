@@ -1,5 +1,5 @@
 import { PageLayout } from "../components";
-import OrdersDashboard from "../components/orders/orders-dasboard";
+import OrdersDashboard from "../components/orders";
 
 
 function Orders() {

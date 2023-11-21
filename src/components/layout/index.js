@@ -1,6 +1,6 @@
 import React from "react";
-import AdminNavbar from "../store-admin/navbar";
-import AdminSidebar from "../store-admin/sidebar";
+import AdminNavbar from "../navbar";
+import AdminSidebar from "../sidebar";
 
 
 const PageLayout = ({ children }) => {
