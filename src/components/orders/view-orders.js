@@ -2,16 +2,22 @@ import React from "react";
 import AdminNavbar from "../navbar";
 import { FilterIcon, GreenRightArrow, SearchIcon } from "../../images";
 import StatusPills from "../status-pills";
-
+import { useParams } from "react-router-dom";
+import ORDERS_DATA from "../../data/orders";
 
 const ViewOrders = () => {
+
+    const { orderID } = useParams()
+
+    const order = ORDERS_DATA.find((order) => order.orderID === orderID);
+
     return (
         <div>
-            <AdminNavbar />
+            <AdminNavbar name={"viewOrders"}/>
 
             <div className="bg-[#F2F2F2] w-full py-6 px-4">
 
-                <div className="flex items-center gap-8 mb-8 mt-2">
+                <div className="flex items-center gap-8 mb-6">
                     <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">...</p>
                     <p className="text-[13px] leading-[23px] text-[#999999]">Orders</p>
                     <GreenRightArrow alt="" />
@@ -33,10 +39,10 @@ const ViewOrders = () => {
                                 </div>
 
                                 <div className="text-[13px] leading-[23px] text-[#7F7F7F] w-[70%]">
-                                    <p>AD123A</p>
-                                    <p>24/04/23</p>
-                                    <p>3</p>
-                                    <p>67.30</p>
+                                    <p>{order.orderID}</p>
+                                    <p>{order.orderDate}</p>
+                                    <p>{order.items}</p>
+                                    <p>{order.price.price}</p>
                                 </div>
                             </div>
                         </div>
@@ -91,36 +97,22 @@ const ViewOrders = () => {
                             </thead>
 
                             <tbody>
-                                <tr className="border-b border-1 border-[#E6E6E6] text-[13px] leading-[23px] text-[#333333]">
-                                    <td className="py-4 pr-8"></td>
-                                    <td className="py-4 pr-8" >Peak Milk Full Cream Powder Pouch</td>
-                                    <td className="py-4 pr-8">XC234</td>
-                                    <td className="py-4 pr-8">5.60</td>
-                                    <td className="py-4 pr-8 capitalize">
-                                        <StatusPills status="pending" />
-                                    </td>
-                                    <td className="py-4 pr-8"></td>
-                                </tr>
-                                <tr className="border-b border-1 border-[#E6E6E6] text-[13px] leading-[23px] text-[#333333]">
-                                    <td className="py-4 pr-8"></td>
-                                    <td className="py-4 pr-8" >Peak Milk Full Cream Powder Pouch</td>
-                                    <td className="py-4 pr-8">XC234</td>
-                                    <td className="py-4 pr-8">5.60</td>
-                                    <td className="py-4 pr-8 capitalize">
-                                        <StatusPills status="pending" />
-                                    </td>
-                                    <td className="py-4 pr-8"></td>
-                                </tr>
-                                <tr className="border-b border-1 border-[#E6E6E6] text-[13px] leading-[23px] text-[#333333]">
-                                    <td className="py-4 pr-8"></td>
-                                    <td className="py-4 pr-8" >Peak Milk Full Cream Powder Pouch</td>
-                                    <td className="py-4 pr-8">XC234</td>
-                                    <td className="py-4 pr-8">5.60</td>
-                                    <td className="py-4 pr-8 capitalize">
-                                        <StatusPills status="pending" />
-                                    </td>
-                                    <td className="py-4 pr-8"></td>
-                                </tr>
+                                {
+                                    order.order.map(({name, productID, price, status}, key) => {
+                                        return (
+                                            <tr key={key} className="border-b border-1 border-[#E6E6E6] text-[13px] leading-[23px] text-[#333333]">
+                                                <td className="py-2 pr-8"></td>
+                                                <td className="py-2 pr-8" >{name}</td>
+                                                <td className="py-2 pr-8">{productID}</td>
+                                                <td className="py-2 pr-8">{price}</td>
+                                                <td className="py-4 pr-8 capitalize">
+                                                    <StatusPills status={status} />
+                                                </td>
+                                                <td className="py-2 pr-8"></td>
+                                            </tr>
+                                        )
+                                    })
+                                }
                             </tbody>
                         </table>
                     </div>

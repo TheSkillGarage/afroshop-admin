@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Orders, OverviewPage, Products } from "./pages";
-import ViewOrders from "./components/orders/view-orders";
+import { Orders, OverviewPage, Products, ViewOrdersPage,  } from "./pages";
 
 
 const MyRoutes = () => {
@@ -8,9 +7,9 @@ const MyRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<OverviewPage />} />
-        <Route exact path="/view-order" element={<ViewOrders />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/orders" element={<Orders />} />
+        <Route exact path="/view-order/:orderID" element={<ViewOrdersPage />} />
       </Routes>
     </BrowserRouter>
   );

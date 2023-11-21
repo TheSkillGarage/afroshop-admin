@@ -22,62 +22,61 @@ const OrdersDashboard = () => {
     const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
 
 
+    const filters = ["all", "pending", "shipped", "delivered", "cancelled"];
+
+    const filterWidth = (filter) => {
+        switch (filter) {
+            case "all":
+                return "w-[49px]"
+            case "shipped":
+                return "w-[84px]"
+            case "pending":
+                return "w-[84px]"
+            case "delivered":
+                return "w-[92px]"
+            case "cancelled":
+                return "w-[94px]"
+            default:
+                return null
+        }
+    }
+
+
     const navigate = useNavigate()
 
-    const handleViewOrder = () => {
-        navigate("/view-order");
+    const handleViewOrder = (orderID) => {
+        navigate(`/view-order/${orderID}`);
     }
 
     return (
         <div className="bg-[#F2F2F2] w-full py-6 px-4">
 
-            <div className="flex items-center gap-8 mb-6 mt-2">
+            <div className="flex items-center gap-8 mb-6">
                 <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">...</p>
                 <p className="text-[13px] leading-[23px] text-[#186F3D]">Orders</p>
             </div>
             <div className="bg-[#ffffff] w-[403px] h-[32px] flex items-center rounded">
-                <p
-                    className={`${activeTab === "all" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[49px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("all")}
-                >
-                    All
-                </p>
-                <p
-                    className={`${activeTab === "pending" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[84px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("pending")}
-                >
-                    Pending
-                </p>
-                <p
-                    className={`${activeTab === "shipped" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[84px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("shipped")}
-                >
-                    Shipped
-                </p>
-                <p
-                    className={`${activeTab === "delivered" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[92px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("delivered")}
-                >
-                    Delivered
-                </p>
-                <p
-                    className={`${activeTab === "cancelled" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[94px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("cancelled")}
-                >
-                    Cancelled
-                </p>
+                {filters.map((filter, key) => {
+                    return (
+                        <p key={key}
+                            className={`${activeTab === filter ? "text-[#333333] font-semibold" : "text-[#999999]"} capitalize text-[13px] leading-[23px] h-full ${filterWidth(filter)} capitalize flex items-center justify-center cursor-pointer`}
+                            onClick={() => handleActiveTab(filter)}
+                        >
+                            {filter}
+                        </p>
+                    )
+                })}
             </div>
 
             <div className="bg-[#ffffff] rounded-2xl mt-1 flex">
-                <div className={`h-[4px] w-[47px] mr-[2px] rounded-2xl ${activeTab === "all" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-                <div className={`h-[4px] w-[82px] mr-[2px] rounded-2xl ${activeTab === "pending" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-                <div className={`h-[4px] w-[82px] mr-[2px] rounded-2xl ${activeTab === "shipped" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-                <div className={`h-[4px] w-[92px] mr-[2px] rounded-2xl ${activeTab === "delivered" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-
-                <div className={`h-[4px] w-[92px] mr-[2px] rounded-2xl ${activeTab === "cancelled" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
+                {
+                    filters.map((filter, key) => {
+                        return <div key={key} className={`h-[4px] ${filterWidth(filter)} rounded-2xl ${activeTab === filter ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
+                    })
+                }
             </div>
 
-            {/******************************************************* * table section  **************************************************************/}
+            {/******************************************************* * Filter section  **************************************************************/}
 
             <div className="pt-4 mt-8 w-full">
 
@@ -99,6 +98,7 @@ const OrdersDashboard = () => {
                     </div>
                 </div>
 
+                {/**************************************************************  table section *****************************************************/}
 
                 <div className="w-full">
                     <table className="w-full border-collapse">
@@ -127,15 +127,15 @@ const OrdersDashboard = () => {
                                         <td className="py-2">{orderDate}</td>
                                         <td className="py-2">{customer}</td>
                                         <td className="py-2 pl-8">
-                                            <p>{price.price}</p>
+                                            <p>${price.price}</p>
                                             <p className="text-[#186F3D] text-[10px] leading-[15px]">{price.paymentMethod}</p>
                                         </td>
                                         <td className="py-4 pl-8">{items}</td>
-                                        <td className="capitalize py-2">
-                                            <StatusPills status={status} name="orders"/>
+                                        <td className="capitalize py-4">
+                                            <StatusPills status={status} name="orders" />
                                         </td>
-                                        <td className="py-2">
-                                            <EyeIcon className="cursor-pointer" onClick={handleViewOrder}/>
+                                        <td className="py-4">
+                                            <EyeIcon className="cursor-pointer" onClick={() => handleViewOrder(orderID)} />
                                         </td>
                                     </tr>
                                 )
@@ -151,11 +151,11 @@ const OrdersDashboard = () => {
                             <select name="lines" id=""
                                 className="w-[56px] h-[33px] border border-1 border-[#CCCCCC] rounded focus:outline-none font-medium text-[#333333] text-[14px] leading-[16.8px]"
                                 onChange={(e) => handleItemsPerPage(e)}>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="25">25</option>
-                                <option value="30">30</option>
+                                {
+                                    ["10", "15", "20", "25", "30"].map((num, key) => {
+                                        return <option value={num} key={key}>{num}</option>
+                                    })
+                                }
                             </select>
                             <span>Lines</span>
                         </p>
