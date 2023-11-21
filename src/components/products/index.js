@@ -24,6 +24,23 @@ const ProductsDashboard = () => {
     const prevPage = () => page > 1 ? setPage(page - 1) : null; // goes to previous page
     const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
 
+    const filters = ["all", "active", "pending", "drafts"];
+
+    const filterWidth = (filter) => {
+        switch (filter) {
+            case "all":
+                return "w-[49px]"
+            case "active":
+                return "w-[72px]"
+            case "pending":
+                return "w-[84px]"
+            case "drafts":
+                return "w-[72px]"
+            default:
+                return null
+        }
+    }
+
 
     return (
         <div className="bg-[#F2F2F2] w-full py-6 px-4">
@@ -33,37 +50,25 @@ const ProductsDashboard = () => {
                 <p className="text-[13px] leading-[23px] text-[#186F3D]">Products</p>
             </div>
             <div className="bg-[#ffffff] w-[277px] h-[32px] flex items-center rounded">
-                <p
-                    className={`${activeTab === "all" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[49px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("all")}
-                >
-                    All
-                </p>
-                <p
-                    className={`${activeTab === "active" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[72px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("active")}
-                >
-                    Active
-                </p>
-                <p
-                    className={`${activeTab === "pending" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[84px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("pending")}
-                >
-                    Pending
-                </p>
-                <p
-                    className={`${activeTab === "drafts" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[72px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("drafts")}
-                >
-                    Drafts
-                </p>
+
+                {filters.map((filter, key) => {
+                    return (
+                        <p key={key}
+                            className={`${activeTab === filter ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full ${filterWidth(filter)} capitalize flex items-center justify-center cursor-pointer`}
+                            onClick={() => handleActiveTab(filter)}
+                        >
+                            {filter}
+                        </p>
+                    )
+                })}
             </div>
 
             <div className="bg-[#ffffff] rounded-2xl mt-1 flex">
-                <div className={`h-[4px] w-[47px] mr-[2px] rounded-2xl ${activeTab === "all" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-                <div className={`h-[4px] w-[70px] mr-[2px] rounded-2xl ${activeTab === "active" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-                <div className={`h-[4px] w-[82px] mr-[2px] rounded-2xl ${activeTab === "pending" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-                <div className={`h-[4px] w-[70px] mr-[2px] rounded-2xl ${activeTab === "drafts" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
+                {
+                    filters.map((filter, key) => {
+                        return <div key={key} className={`h-[4px] ${filterWidth(filter)} rounded-2xl ${activeTab === filter ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
+                    })
+                }
             </div>
 
             {/******************************************************* * table section  **************************************************************/}
@@ -169,7 +174,8 @@ const ProductsDashboard = () => {
                             {
                                 pagination.pageButtons.map((number, key) => {
                                     return (
-                                        <p key={key} className={`${page === number ? "bg-[#FFE0B2]" : null} ${number === "..." ? "text-[#CCCCCC]" : "text-[#333333]"} text-[13px] leading-[23px] mr-1 flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer transition-all duration-200 ease-in`} onClick={() => number !== "..." ? handlePage(number) : null}>{number}</p>
+                                        <p key={key}
+                                            className={`${page === number ? "bg-[#FFE0B2]" : null} ${number === "..." ? "text-[#CCCCCC]" : "text-[#333333]"} text-[13px] leading-[23px] mr-1 flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer transition-all duration-200 ease-in`} onClick={() => number !== "..." ? handlePage(number) : null}>{number}</p>
                                     )
                                 })
 
