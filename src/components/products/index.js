@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../../images";
-import PRODUCT_DATA from "../../../data/products";
+import { FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../images";
+import PRODUCT_DATA from "../../data/products";
 import Detail from "./details";
-import usePagination from "../../../hooks/usePagination";
+import usePagination from "../../hooks/usePagination";
 import StatusPills from "../status-pills";
 
 const ProductsDashboard = () => {
@@ -12,7 +12,7 @@ const ProductsDashboard = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
     // from usePagination hook
-    
+
     const pagination = usePagination(page, itemsPerPage, PRODUCT_DATA);
 
     const totalPages = pagination.totalPages; // sets total pages
@@ -24,68 +24,76 @@ const ProductsDashboard = () => {
     const prevPage = () => page > 1 ? setPage(page - 1) : null; // goes to previous page
     const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
 
+    const filters = ["all", "active", "pending", "drafts"];
+
+    const filterWidth = (filter) => {
+        switch (filter) {
+            case "all":
+                return "w-[49px]"
+            case "active":
+                return "w-[72px]"
+            case "pending":
+                return "w-[84px]"
+            case "drafts":
+                return "w-[72px]"
+            default:
+                return null
+        }
+    }
+
 
     return (
         <div className="bg-[#F2F2F2] w-full py-6 px-4">
 
-            <div className="flex items-center gap-8 mb-8 mt-2">
+            <div className="flex items-center gap-8 mb-6">
                 <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">...</p>
                 <p className="text-[13px] leading-[23px] text-[#186F3D]">Products</p>
             </div>
             <div className="bg-[#ffffff] w-[277px] h-[32px] flex items-center rounded">
-                <p
-                    className={`${activeTab === "all" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[49px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("all")}
-                >
-                    All
-                </p>
-                <p
-                    className={`${activeTab === "active" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[72px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("active")}
-                >
-                    Active
-                </p>
-                <p
-                    className={`${activeTab === "pending" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[84px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("pending")}
-                >
-                    Pending
-                </p>
-                <p
-                    className={`${activeTab === "drafts" ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full w-[72px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => handleActiveTab("drafts")}
-                >
-                    Drafts
-                </p>
+
+                {filters.map((filter, key) => {
+                    return (
+                        <p key={key}
+                            className={`${activeTab === filter ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full ${filterWidth(filter)} capitalize flex items-center justify-center cursor-pointer`}
+                            onClick={() => handleActiveTab(filter)}
+                        >
+                            {filter}
+                        </p>
+                    )
+                })}
             </div>
 
             <div className="bg-[#ffffff] rounded-2xl mt-1 flex">
-                <div className={`h-[4px] w-[47px] mr-[2px] rounded-2xl ${activeTab === "all" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-                <div className={`h-[4px] w-[70px] mr-[2px] rounded-2xl ${activeTab === "active" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-                <div className={`h-[4px] w-[82px] mr-[2px] rounded-2xl ${activeTab === "pending" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-                <div className={`h-[4px] w-[70px] mr-[2px] rounded-2xl ${activeTab === "drafts" ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
+                {
+                    filters.map((filter, key) => {
+                        return <div key={key} className={`h-[4px] ${filterWidth(filter)} rounded-2xl ${activeTab === filter ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
+                    })
+                }
             </div>
 
             {/******************************************************* * table section  **************************************************************/}
 
-            <div className="bg-[#ffffff] pt-6 mt-8">
-                <div className="w-full flex justify-end px-4 pb-8">
-                    <button className="bg-[#186F3D] text-[#ffffff] w-[216px] py-2 rounded">Add New Product</button>
-                </div>
+            <div className="pt-4 mt-4">
 
-                <div className="pl-4">
-                    <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold pb-2">Products</p>
-                </div>
-
-                <div className="border-t border-1 border-[##F2F2F2] flex justify-between items-center px-4 py-8">
-                    <div className="w-[514px] relative">
-                        <SearchIcon className="absolute top-[10px] left-[18px] " />
-                        <input type="text" placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12" />
+                <div className="bg-[#FFFFFF]">
+                    <div className="pl-4 border-b border-1 border-[#F2F2F2]">
+                        <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold py-4">Products</p>
                     </div>
 
-                    <div className="w-[108px] h-[44px] rounded border border-[0.5px] flex items-center justify-center gap-2">
-                        <p className="text-[16px] leading-[24px] text-[#333333]">Filter</p>
-                        <FilterIcon />
+                    <div className="w-full flex justify-end px-4 py-4">
+                        <button className="bg-[#186F3D] text-[#ffffff] w-[216px] py-2 rounded">Add New Product</button>
+                    </div>
+
+                    <div className="flex justify-between items-center px-4 py-6">
+                        <div className="w-[514px] relative">
+                            <SearchIcon className="absolute top-[10px] left-[18px] " />
+                            <input type="text" placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12" />
+                        </div>
+
+                        <div className="w-[108px] h-[44px] rounded border border-[0.5px] flex items-center justify-center gap-2">
+                            <p className="text-[16px] leading-[24px] text-[#333333]">Filter</p>
+                            <FilterIcon />
+                        </div>
                     </div>
                 </div>
 
@@ -112,14 +120,16 @@ const ProductsDashboard = () => {
                             {pagination.currentData.map(({ productName, SKU, dateAdded, salesPrice, availabilty, status }, key) => {
                                 return (
                                     <tr key={key} className="text-[13px] leading-[23px] text-[#333333] border border-1 border-[#E6E6E6]">
-                                        <td className="text-center"><input type="checkbox" name={productName} id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" /></td>
-                                        <td className="py-4">{productName}</td>
-                                        <td className="pl-8 py-4">{SKU}</td>
-                                        <td className="py-4">{dateAdded}</td>
-                                        <td className="py-4">{salesPrice}</td>
-                                        <td className="py-4">{availabilty}</td>
+                                        <td className="text-center">
+                                            <input type="checkbox" name={productName} id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" />
+                                        </td>
+                                        <td className="py-2">{productName}</td>
+                                        <td className="pl-8 py-2">{SKU}</td>
+                                        <td className="py-2">{dateAdded}</td>
+                                        <td className="py-2">{salesPrice}</td>
+                                        <td className="py-2">{availabilty}</td>
                                         <td className="capitalize py-4">
-                                        <StatusPills status={status} name="products"/>
+                                            <StatusPills status={status} name="products" />
                                         </td>
                                         <td className="py-4">
                                             <Detail />
@@ -131,18 +141,18 @@ const ProductsDashboard = () => {
                     </table>
                 </div>
 
-                <div className="flex justify-between px-4 mt-4 pb-4 text-[13px] leading-[23px] items-center">
+                <div className="flex justify-between px-4 py-4 text-[13px] leading-[23px] items-center bg-[#FFFFFF]">
                     <div className="flex gap-8 text-[#CCCCCC] items-center">
                         <p className="flex gap-4 items-center">
                             <span>Show</span>
                             <select name="lines" id=""
                                 className="w-[56px] h-[33px] border border-1 border-[#CCCCCC] rounded focus:outline-none font-medium text-[#333333] text-[14px] leading-[16.8px]"
                                 onChange={(e) => handleItemsPerPage(e)}>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="25">25</option>
-                                <option value="30">30</option>
+                                {
+                                    ["10", "15", "20", "25", "30"].map((num, key) => {
+                                        return <option value={num} key={key}>{num}</option>
+                                    })
+                                }
                             </select>
                             <span>Lines</span>
                         </p>
@@ -164,7 +174,8 @@ const ProductsDashboard = () => {
                             {
                                 pagination.pageButtons.map((number, key) => {
                                     return (
-                                        <p key={key} className={`${page === number ? "bg-[#FFE0B2]" : null} ${number === "..." ? "text-[#CCCCCC]" : "text-[#333333]"} text-[13px] leading-[23px] mr-1 flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer transition-all duration-200 ease-in`} onClick={() => number !== "..." ? handlePage(number) : null}>{number}</p>
+                                        <p key={key}
+                                            className={`${page === number ? "bg-[#FFE0B2]" : null} ${number === "..." ? "text-[#CCCCCC]" : "text-[#333333]"} text-[13px] leading-[23px] mr-1 flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer transition-all duration-200 ease-in`} onClick={() => number !== "..." ? handlePage(number) : null}>{number}</p>
                                     )
                                 })
 

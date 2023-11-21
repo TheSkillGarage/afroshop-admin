@@ -1,6 +1,6 @@
 import React from "react";
 import AdminNavbar from "../navbar";
-import { FilterIcon, GreenRightArrow, SearchIcon } from "../../../images";
+import { FilterIcon, GreenRightArrow, SearchIcon } from "../../images";
 import StatusPills from "../status-pills";
 
 

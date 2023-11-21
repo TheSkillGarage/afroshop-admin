@@ -10,8 +10,8 @@ export const usePagination = (page, itemsPerPage, DATA) => {
 
     useEffect(() => {
         // handles number of items displayed in a table depending on Items per page
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
+        const start = (page - 1) * parseInt(itemsPerPage);
+        const end = start + parseInt(itemsPerPage);
         setCurrentData(DATA.slice(start, end));
     
         // handles pagination buttons displayed

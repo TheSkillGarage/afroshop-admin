@@ -1,13 +1,13 @@
 import { PageLayout } from "../components";
-import AdminDashboard from "../components/store-admin";
+import Overview from "../components/overview";
 
 
-function StoreAdmin() {
+function OverviewPage() {
   return (
     <PageLayout>
-      <AdminDashboard />
+      <Overview />
     </PageLayout>
   );
 }
 
-export default StoreAdmin;
+export default OverviewPage;
