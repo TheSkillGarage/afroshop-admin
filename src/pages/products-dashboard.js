@@ -1,5 +1,4 @@
-import { PageLayout } from "../components";
-import ProductsDashboard from "../components/products";
+import { PageLayout, ProductsDashboard } from "../components";
 
 
 function Products() {
