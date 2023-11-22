@@ -49,12 +49,13 @@ const OrdersDashboard = () => {
     }
 
     return (
-        <div className="bg-[#F2F2F2] w-full py-6 px-4">
+        <div className="bg-[#F2F2F2] w-full pt-6 pb-8 px-4">
 
-            <div className="flex items-center gap-8 mb-6">
+            <div className="flex items-center gap-8 mb-6 h-[39px]">
                 <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">...</p>
                 <p className="text-[13px] leading-[23px] text-[#186F3D]">Orders</p>
             </div>
+
             <div className="bg-[#ffffff] w-[403px] h-[32px] flex items-center rounded">
                 {filters.map((filter, key) => {
                     return (
@@ -76,16 +77,17 @@ const OrdersDashboard = () => {
                 }
             </div>
 
-            {/******************************************************* * Filter section  **************************************************************/}
 
-            <div className="pt-4 mt-8 w-full">
 
+            <div className="mt-6 w-full">
+
+                {/******************************************************* * Filter section  **************************************************************/}
                 <div className="bg-[#ffffff] ">
                     <div className="pl-4">
-                        <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold py-4">Orders</p>
+                        <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold h-[64px] flex items-center">Orders</p>
                     </div>
 
-                    <div className="border-t border-1 border-[#F2F2F2] flex justify-between items-center px-4 py-8">
+                    <div className="border-t border-1 border-[#F2F2F2] flex justify-between items-center px-4 py-6 h-[93px]">
                         <div className="w-[514px] relative">
                             <SearchIcon className="absolute top-[10px] left-[18px] " />
                             <input type="text" placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12" />
@@ -121,20 +123,20 @@ const OrdersDashboard = () => {
                         <tbody className="bg-[#ffffff]">
                             {pagination.currentData.map(({ orderID, orderDate, customer, price, items, status }, key) => {
                                 return (
-                                    <tr key={key} className="text-[13px] leading-[23px] text-[#333333] border border-1 border-[#E6E6E6]">
-                                        <td className="text-center"><input type="checkbox" name={orderID} id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" /></td>
-                                        <td className="py-2">{orderID}</td>
-                                        <td className="py-2">{orderDate}</td>
-                                        <td className="py-2">{customer}</td>
-                                        <td className="py-2 pl-8">
+                                    <tr key={key} className="text-[13px] leading-[23px] text-[#333333] border border-1 border-[#E6E6E6] h-[52px]">
+                                        <td className="text-center "><input type="checkbox" name={orderID} id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" /></td>
+                                        <td className="">{orderID}</td>
+                                        <td className="">{orderDate}</td>
+                                        <td className="">{customer}</td>
+                                        <td className=" pl-8">
                                             <p>${price.price}</p>
                                             <p className="text-[#186F3D] text-[10px] leading-[15px]">{price.paymentMethod}</p>
                                         </td>
-                                        <td className="py-4 pl-8">{items}</td>
-                                        <td className="capitalize py-4">
+                                        <td className=" pl-8">{items}</td>
+                                        <td className="capitalize ">
                                             <StatusPills status={status} name="orders" />
                                         </td>
-                                        <td className="py-4">
+                                        <td className="">
                                             <EyeIcon className="cursor-pointer" onClick={() => handleViewOrder(orderID)} />
                                         </td>
                                     </tr>
@@ -144,7 +146,7 @@ const OrdersDashboard = () => {
                     </table>
                 </div>
 
-                <div className="flex justify-between py-4 px-6 text-[13px] leading-[23px] items-center bg-[#ffffff] w-full ">
+                <div className="flex justify-between pt-4 pb-6 px-6 text-[13px] leading-[23px] items-center bg-[#ffffff] w-full ">
                     <div className="flex gap-8 text-[#CCCCCC] items-center">
                         <p className="flex gap-4 items-center">
                             <span>Show</span>

@@ -24,9 +24,10 @@ const ViewOrders = () => {
                     <p className="text-[13px] leading-[23px] text-[#186F3D]">View Orders</p>
                 </div>
 
-                <div className="bg-[#ffffff] px-12 pt-12 pb-8">
+                <div className="bg-[#ffffff] px-8 pt-12 pb-8">
 
-                    <div className="flex gap-4">
+                   <div className="px-8">
+                   <div className="flex gap-4">
                         <div className="w-1/2 border border-1 border-[#E6E6E6] p-4 rounded">
                             <p className="font-semibold test-[16px] leading-[24px] uppercase text-[#186F3D] mb-4">order info</p>
 
@@ -116,8 +117,9 @@ const ViewOrders = () => {
                             </tbody>
                         </table>
                     </div>
+                   </div>
 
-                    <div className="flex justify-end gap-6 mt-16">
+                    <div className="flex justify-end gap-6 mt-24">
                         <button className="h-[40px] rounded bg-[rgba(252,174,23,0.15)] w-[133px] text-[16px] leading-[24px] text-[#333333]">Cancel</button>
                         <button className="h-[40px] rounded bg-[#186F3D] w-[136px] text-[16px] leading-[24px] text-[#FFFFFF]">Submit</button>
                     </div>
