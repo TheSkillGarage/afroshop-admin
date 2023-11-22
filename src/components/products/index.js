@@ -75,16 +75,16 @@ const ProductsDashboard = () => {
 
             <div className="pt-4 mt-4">
 
-                <div className="bg-[#FFFFFF]">
-                    <div className="pl-4 border-b border-1 border-[#F2F2F2]">
-                        <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold py-4">Products</p>
+                <div className="bg-[#FFFFFF] pt-4">
+                    <div className="pl-4 border-b border-1 border-[#F2F2F2] h-[64px] flex items-center">
+                        <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold">Products</p>
                     </div>
 
-                    <div className="w-full flex justify-end px-4 py-4">
-                        <button className="bg-[#186F3D] text-[#ffffff] w-[216px] py-2 rounded">Add New Product</button>
+                    <div className="w-full flex justify-end items-center px-4 h-[60px]">
+                        <button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button>
                     </div>
 
-                    <div className="flex justify-between items-center px-4 py-6">
+                    <div className="flex justify-between items-center px-4 h-[93px]">
                         <div className="w-[514px] relative">
                             <SearchIcon className="absolute top-[10px] left-[18px] " />
                             <input type="text" placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12" />
@@ -120,7 +120,7 @@ const ProductsDashboard = () => {
                         <tbody className="bg-[#ffffff]">
                             {pagination.currentData.map(({ productName, SKU, dateAdded, salesPrice, availabilty, status }, key) => {
                                 return (
-                                    <tr key={key} className="text-[13px] leading-[23px] text-[#333333] border-b border-1 border-[#E6E6E6]">
+                                    <tr key={key} className="text-[13px] leading-[23px] text-[#333333] border-b border-1 border-[#E6E6E6] min-h-[47px]">
                                         <td className="text-center">
                                             <input type="checkbox" name={productName} id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" />
                                         </td>
@@ -129,10 +129,10 @@ const ProductsDashboard = () => {
                                         <td className="py-2">{dateAdded}</td>
                                         <td className="py-2">{salesPrice}</td>
                                         <td className="py-2">{availabilty}</td>
-                                        <td className="capitalize py-4">
+                                        <td className="capitalize py-2">
                                             <StatusPills status={status} name="products" />
                                         </td>
-                                        <td className="py-4">
+                                        <td className="py-2">
                                             <Detail />
                                         </td>
                                     </tr>
@@ -142,7 +142,7 @@ const ProductsDashboard = () => {
                     </table>
                 </div>
 
-                <div className="flex justify-between px-4 py-4 text-[13px] leading-[23px] items-center bg-[#FFFFFF]">
+                <div className="flex justify-between px-4 pt-4 pb-6 text-[13px] leading-[23px] items-center bg-[#FFFFFF]">
                     <div className="flex gap-8 text-[#CCCCCC] items-center">
                         <p className="flex gap-4 items-center">
                             <span>Show</span>
