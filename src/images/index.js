@@ -13,6 +13,8 @@ import { ReactComponent as PrevIcon } from "./prev-arrow.svg";
 import { ReactComponent as EditIcon } from "./icon-edit.svg";
 import { ReactComponent as DeleteIcon } from "./icon-delete.svg";
 import { ReactComponent as EyeIcon } from "./eye.svg";
+import { ReactComponent as GreenRightArrow } from "./green-right-icon.svg";
+import { ReactComponent as LeftArrow } from "./icon-left-arrow.svg";
 
 
 
@@ -60,5 +62,7 @@ export {
     NextIcon,
     EditIcon,
     DeleteIcon,
-    EyeIcon
+    EyeIcon,
+    GreenRightArrow,
+    LeftArrow,
 };

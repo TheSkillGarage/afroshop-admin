@@ -1,163 +1,563 @@
 const ORDERS_DATA = [
     {
-        orderID: "XXXXXX",
+        orderID: "XXXXX1",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Paypal"},
+        price: {price: "15", paymentMethod: "Paypal"},
         items: 3,
-        status: "pending"
+        status: "pending",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXXX2",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Mastercard"},
+        price: {price: "15", paymentMethod: "Mastercard"},
         items: 4,
-        status: "shipped"
+        status: "shipped",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXXX3",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Paypal"},
+        price: {price: "15", paymentMethod: "Paypal"},
         items: 11,
-        status: "delivered"
+        status: "delivered",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXXX4",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Mastercard"},
+        price: {price: "15", paymentMethod: "Mastercard"},
         items: 1,
-        status: "cancelled"
+        status: "cancelled",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXXX5",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Paypal"},
+        price: {price: "15", paymentMethod: "Paypal"},
         items: 3,
-        status: "pending"
+        status: "pending",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXXX6",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Mastercard"},
+        price: {price: "15", paymentMethod: "Mastercard"},
         items: 4,
-        status: "shipped"
+        status: "shipped",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXXX7",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Paypal"},
+        price: {price: "15", paymentMethod: "Paypal"},
         items: 11,
-        status: "delivered"
+        status: "delivered",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXXX8",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Mastercard"},
+        price: {price: "15", paymentMethod: "Mastercard"},
         items: 1,
-        status: "cancelled"
+        status: "cancelled",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXXX9",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Paypal"},
+        price: {price: "15", paymentMethod: "Paypal"},
         items: 3,
-        status: "pending"
+        status: "pending",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXX10",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Mastercard"},
+        price: {price: "15", paymentMethod: "Mastercard"},
         items: 4,
-        status: "shipped"
+        status: "shipped",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXX11",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Paypal"},
+        price: {price: "15", paymentMethod: "Paypal"},
         items: 11,
-        status: "delivered"
+        status: "delivered",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXX12",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Mastercard"},
+        price: {price: "15", paymentMethod: "Mastercard"},
         items: 1,
-        status: "cancelled"
+        status: "cancelled",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXX13",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Paypal"},
+        price: {price: "15", paymentMethod: "Paypal"},
         items: 3,
-        status: "pending"
+        status: "pending",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXX14",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Mastercard"},
+        price: {price: "15", paymentMethod: "Mastercard"},
         items: 4,
-        status: "shipped"
+        status: "shipped",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXX15",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Paypal"},
+        price: {price: "15", paymentMethod: "Paypal"},
         items: 11,
-        status: "delivered"
+        status: "delivered",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXX16",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Mastercard"},
+        price: {price: "15", paymentMethod: "Mastercard"},
         items: 1,
-        status: "cancelled"
+        status: "cancelled",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXX17",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Paypal"},
+        price: {price: "15", paymentMethod: "Paypal"},
         items: 3,
-        status: "pending"
+        status: "pending",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXX18",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Mastercard"},
+        price: {price: "15", paymentMethod: "Mastercard"},
         items: 4,
-        status: "shipped"
+        status: "shipped",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXX19",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Paypal"},
+        price: {price: "15", paymentMethod: "Paypal"},
         items: 11,
-        status: "delivered"
+        status: "delivered",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
     {
-        orderID: "XXXXXX",
+        orderID: "XXXX20",
         orderDate: "23/12/23",
         customer: "Justin James A.",
-        price: {price: "$15", paymentMethod: "Mastercard"},
+        price: {price: "15", paymentMethod: "Mastercard"},
         items: 1,
-        status: "cancelled"
+        status: "cancelled",
+        order: [
+            {
+                name: "Peak Milk Full Cream Powder Pouch",
+                productID: "XC234",
+                price: "5.60",
+                status: "pending"
+            },
+            {
+                name: "Boneless Chicken Breasts with Rib Meat",
+                productID: "VR456",
+                price: "10.85",
+                status: "pending"
+            },
+            {
+                name: "Palm Fruit (Kernel)",
+                productID: "VY123",
+                price: "10.85",
+                status: "pending"
+            },
+        ]
     },
 ]
 
