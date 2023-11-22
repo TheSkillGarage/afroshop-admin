@@ -1,13 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { App} from "./pages";
-
+import { Orders, OverviewPage, Products } from "./pages";
 
 
 const MyRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<App />} />
+        <Route exact path="/" element={<OverviewPage />} />
+        <Route exact path="/products" element={<Products />} />
+        <Route exact path="/orders" element={<Orders />} />
       </Routes>
     </BrowserRouter>
   );
