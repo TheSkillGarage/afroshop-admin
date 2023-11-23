@@ -9,6 +9,7 @@ export const usePagination = (page, itemsPerPage, DATA) => {
     const totalPages = Math.ceil(DATA.length / itemsPerPage);
 
     useEffect(() => {
+        
         // handles number of items displayed in a table depending on Items per page
         const start = (page - 1) * parseInt(itemsPerPage);
         const end = start + parseInt(itemsPerPage);

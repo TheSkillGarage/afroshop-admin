@@ -4,6 +4,8 @@ import PRODUCT_DATA from "../../data/products";
 import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
 import StatusPills from "../status-pills";
+import Filters from "../filters";
+import useFilter from "../../hooks/useFilter";
 
 const ProductsDashboard = () => {
 
@@ -12,8 +14,8 @@ const ProductsDashboard = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
     // from usePagination hook
-
-    const pagination = usePagination(page, itemsPerPage, PRODUCT_DATA);
+    const data = useFilter(activeTab, PRODUCT_DATA).data;
+    const pagination = usePagination(page, itemsPerPage, data);
 
     const totalPages = pagination.totalPages; // sets total pages
 
@@ -24,52 +26,18 @@ const ProductsDashboard = () => {
     const prevPage = () => page > 1 ? setPage(page - 1) : null; // goes to previous page
     const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
 
-    const filters = ["all", "active", "pending", "drafts"];
-
-    const filterWidth = (filter) => {
-        switch (filter) {
-            case "all":
-                return "w-[49px]"
-            case "active":
-                return "w-[72px]"
-            case "pending":
-                return "w-[84px]"
-            case "drafts":
-                return "w-[72px]"
-            default:
-                return null
-        }
-    }
+    const filters = ["all", "active", "pending", "draft"];
 
 
     return (
         <div className="bg-[#F2F2F2] w-full py-6 px-4">
 
-            <div className="flex items-center gap-8 mb-6">
+            <div className="flex items-center gap-8 mb-6 h-[39px]">
                 <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">...</p>
                 <p className="text-[13px] leading-[23px] text-[#186F3D]">Products</p>
             </div>
-            <div className="bg-[#ffffff] w-[277px] h-[32px] flex items-center rounded">
 
-                {filters.map((filter, key) => {
-                    return (
-                        <p key={key}
-                            className={`${activeTab === filter ? "text-[#333333] font-semibold" : "text-[#999999]"} text-[13px] leading-[23px] h-full ${filterWidth(filter)} capitalize flex items-center justify-center cursor-pointer`}
-                            onClick={() => handleActiveTab(filter)}
-                        >
-                            {filter}
-                        </p>
-                    )
-                })}
-            </div>
-
-            <div className="bg-[#ffffff] rounded-2xl mt-1 flex">
-                {
-                    filters.map((filter, key) => {
-                        return <div key={key} className={`h-[4px] ${filterWidth(filter)} rounded-2xl ${activeTab === filter ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-                    })
-                }
-            </div>
+            <Filters filters={filters} activeTab={activeTab} handleActiveTab={handleActiveTab} />
 
             {/******************************************************* * filter section  **************************************************************/}
 

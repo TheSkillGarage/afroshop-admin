@@ -4,49 +4,33 @@ import ORDERS_DATA from "../../data/orders";
 import StatusPills from "../status-pills";
 import { useNavigate } from "react-router";
 import usePagination from "../../hooks/usePagination";
+import Filters from "../filters";
+import useFilter from "../../hooks/useFilter";
 
 const OrdersDashboard = () => {
+
+    const filters = ["all", "pending", "shipped", "delivered", "cancelled"];
+    const navigate = useNavigate();
 
     const [activeTab, setActiveTab] = useState('all');
     const [page, setPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
-    const pagination = usePagination(page, itemsPerPage, ORDERS_DATA);
+
+    // using custom  hooks
+    const data = useFilter(activeTab, ORDERS_DATA).data;
+    const pagination = usePagination(page, itemsPerPage, data);
     const totalPages = pagination.totalPages; // sets total 
 
-
+    //functions
     const handleItemsPerPage = (e) => setItemsPerPage(e.target.value); // set items per page when selected
     const handleActiveTab = (activeTab) => setActiveTab(activeTab); // controls styles for all, active, pending and draft filters
     const handlePage = (activePage) => setPage(activePage); // sets page when pagination button is clicked
     const prevPage = () => page > 1 ? setPage(page - 1) : null; // goes to previous page
     const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
 
+    const handleViewOrder = (orderID) => navigate(`/view-order/${orderID}`);
 
-    const filters = ["all", "pending", "shipped", "delivered", "cancelled"];
-
-    const filterWidth = (filter) => {
-        switch (filter) {
-            case "all":
-                return "w-[49px]"
-            case "shipped":
-                return "w-[84px]"
-            case "pending":
-                return "w-[84px]"
-            case "delivered":
-                return "w-[92px]"
-            case "cancelled":
-                return "w-[94px]"
-            default:
-                return null
-        }
-    }
-
-
-    const navigate = useNavigate()
-
-    const handleViewOrder = (orderID) => {
-        navigate(`/view-order/${orderID}`);
-    }
 
     return (
         <div className="bg-[#F2F2F2] w-full pt-6 pb-8 px-4">
@@ -56,28 +40,7 @@ const OrdersDashboard = () => {
                 <p className="text-[13px] leading-[23px] text-[#186F3D]">Orders</p>
             </div>
 
-            <div className="bg-[#ffffff] w-[403px] h-[32px] flex items-center rounded">
-                {filters.map((filter, key) => {
-                    return (
-                        <p key={key}
-                            className={`${activeTab === filter ? "text-[#333333] font-semibold" : "text-[#999999]"} capitalize text-[13px] leading-[23px] h-full ${filterWidth(filter)} capitalize flex items-center justify-center cursor-pointer`}
-                            onClick={() => handleActiveTab(filter)}
-                        >
-                            {filter}
-                        </p>
-                    )
-                })}
-            </div>
-
-            <div className="bg-[#ffffff] rounded-2xl mt-1 flex">
-                {
-                    filters.map((filter, key) => {
-                        return <div key={key} className={`h-[4px] ${filterWidth(filter)} rounded-2xl ${activeTab === filter ? "bg-[#FCAE17]" : "bg-[#ffffff]"}`}></div>
-                    })
-                }
-            </div>
-
-
+            <Filters filters={filters} activeTab={activeTab} handleActiveTab={handleActiveTab} />
 
             <div className="mt-6 w-full">
 
