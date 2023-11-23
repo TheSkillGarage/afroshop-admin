@@ -9,7 +9,6 @@ export const useFilter = (activeTab, DATA) => {
         } else {
             const filteredData = DATA.filter(obj => obj.status === activeTab);
             setData(filteredData);
-            console.log(filteredData);
         }
     }, [activeTab, DATA]);
 
