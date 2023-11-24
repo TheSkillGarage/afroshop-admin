@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../images";
+import { FilterIcon, SearchIcon } from "../../images";
 import PRODUCT_DATA from "../../data/products";
 import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
 import StatusPills from "../status-pills";
 import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";
+import TableFooter from "../table-footer/table-footer";
 
 const ProductsDashboard = () => {
 
@@ -110,56 +111,7 @@ const ProductsDashboard = () => {
                     </table>
                 </div>
 
-                <div className="flex justify-between px-4 pt-4 pb-6 text-[13px] leading-[23px] items-center bg-[#FFFFFF]">
-                    <div className="flex gap-8 text-[#CCCCCC] items-center">
-                        <p className="flex gap-4 items-center">
-                            <span>Show</span>
-                            <select name="lines" id=""
-                                className="w-[56px] h-[33px] border border-1 border-[#CCCCCC] rounded focus:outline-none font-medium text-[#333333] text-[14px] leading-[16.8px]"
-                                onChange={(e) => handleItemsPerPage(e)}>
-                                {
-                                    ["10", "15", "20", "25", "30"].map((num, key) => {
-                                        return <option value={num} key={key}>{num}</option>
-                                    })
-                                }
-                            </select>
-                            <span>Lines</span>
-                        </p>
-
-                        <p>Showing {pagination.count.start} to {pagination.count.stop} of {PRODUCT_DATA.length} orders</p>
-                    </div>
-
-                    <div className="flex gap-1 text-[#333333]">
-                        <p className="h-[31px] w-[31px] rounded cursor-pointer flex justify-center items-center" onClick={prevPage}>
-                            {page === 1 ? <PrevIcon />
-                                :
-                                <NextIcon className="rotate-180" />
-                            }
-                        </p>
-
-
-
-                        <div className="flex gap-1">
-                            {
-                                pagination.pageButtons.map((number, key) => {
-                                    return (
-                                        <p key={key}
-                                            className={`${page === number ? "bg-[#FFE0B2]" : null} ${number === "..." ? "text-[#CCCCCC]" : "text-[#333333]"} text-[13px] leading-[23px] mr-1 flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer transition-all duration-200 ease-in`} onClick={() => number !== "..." ? handlePage(number) : null}>{number}</p>
-                                    )
-                                })
-
-                            }
-                        </div>
-
-
-                        <p className="h-[31px] w-[31px] rounded cursor-pointer flex justify-center items-center" onClick={nextPage}>
-                            {page !== totalPages ? <NextIcon />
-                                :
-                                <PrevIcon className="rotate-180" />
-                            }
-                        </p>
-                    </div>
-                </div>
+                <TableFooter pagination={pagination} data={data} handleItemsPerPage={handleItemsPerPage} prevPage={prevPage} page={page} handlePage={handlePage} nextPage={nextPage} totalPages={totalPages}/>
             </div>
 
 
