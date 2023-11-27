@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { FilterIcon, SearchIcon } from "../../images";
 import PRODUCT_DATA from "../../data/products";
 import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
@@ -7,6 +6,7 @@ import StatusPills from "../status-pills";
 import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";
 import TableFooter from "../table-footer/table-footer";
+import Search from "../search";
 
 const ProductsDashboard = () => {
 
@@ -14,8 +14,10 @@ const ProductsDashboard = () => {
     const [page, setPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
+    const [searchTerm, setSearchTerm] = useState('');
     // from usePagination hook
-    const data = useFilter(activeTab, PRODUCT_DATA).data;
+    let data = useFilter("products", activeTab, PRODUCT_DATA, searchTerm).filteredData;
+
     const pagination = usePagination(page, itemsPerPage, data);
 
     const totalPages = pagination.totalPages; // sets total pages
@@ -26,6 +28,11 @@ const ProductsDashboard = () => {
     const handlePage = (activePage) => setPage(activePage); // sets page when pagination button is clicked
     const prevPage = () => page > 1 ? setPage(page - 1) : null; // goes to previous page
     const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
+
+    const handleSearch = (searchWord) => {
+        setSearchTerm(searchWord)
+    }
+
 
     const filters = ["all", "active", "pending", "draft"];
 
@@ -53,17 +60,7 @@ const ProductsDashboard = () => {
                         <button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button>
                     </div>
 
-                    <div className="flex justify-between items-center px-4 h-[93px]">
-                        <div className="w-[514px] relative">
-                            <SearchIcon className="absolute top-[10px] left-[18px] " />
-                            <input type="text" placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12" />
-                        </div>
-
-                        <div className="w-[108px] h-[44px] rounded border border-[0.5px] flex items-center justify-center gap-2">
-                            <p className="text-[16px] leading-[24px] text-[#333333]">Filter</p>
-                            <FilterIcon />
-                        </div>
-                    </div>
+                    <Search  handleSearch={handleSearch}/>
                 </div>
 
                 {/******************************************************* * table section  **************************************************************/}
@@ -111,7 +108,7 @@ const ProductsDashboard = () => {
                     </table>
                 </div>
 
-                <TableFooter pagination={pagination} data={data} handleItemsPerPage={handleItemsPerPage} prevPage={prevPage} page={page} handlePage={handlePage} nextPage={nextPage} totalPages={totalPages}/>
+                <TableFooter pagination={pagination} data={data} handleItemsPerPage={handleItemsPerPage} prevPage={prevPage} page={page} handlePage={handlePage} nextPage={nextPage} totalPages={totalPages} />
             </div>
 
 
