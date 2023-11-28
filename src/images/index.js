@@ -1,5 +1,23 @@
-<<<<<<< HEAD
-import { ReactComponent as AfroshopLogo } from "./afroshop-logo.svg";
+
+import AfroshopLogo from "./afroshop-logo.svg";
+
+
+import { ReactComponent as MenuIcon } from "./menu.svg";
+import { ReactComponent as NotificationIcon } from "./notification.svg";
+import { ReactComponent as SettingsIcon } from "./setting.svg";
+import { ReactComponent as ProfilePic } from "./profile-pic.svg";
+import { ReactComponent as SearchIcon } from "./icon-search.svg";
+import { ReactComponent as FilterIcon } from "./icon-filter.svg";
+import { ReactComponent as DetailsIcon } from "./icon-others.svg";
+import { ReactComponent as NextIcon } from "./icon-next-arrow.svg";
+import { ReactComponent as PrevIcon } from "./prev-arrow.svg";
+import { ReactComponent as EditIcon } from "./icon-edit.svg";
+import { ReactComponent as DeleteIcon } from "./icon-delete.svg";
+import { ReactComponent as EyeIcon } from "./eye.svg";
+import { ReactComponent as GreenRightArrow } from "./green-right-icon.svg";
+import { ReactComponent as LeftArrow } from "./icon-left-arrow.svg";
+
+
 import ArrowRight  from "./arrow-right.svg";
 import ArrowDown  from "./arrow-down.svg";
 import Dot  from "./dot.svg";
@@ -19,46 +37,6 @@ import Italic from "./italic.svg"
 import Link from "./link.svg"
 import OrderedList from "./ordered-list.svg"
 import UnorderedList from "./unordered-list.svg"
-
-export { AfroshopLogo, 
-     ArrowRight, 
-     ArrowDown, 
-     Dot,
-      Pause, 
-      Delete,
-       Chicken, 
-       DottedLine, 
-       Frame, 
-       Framer, 
-       ColorArrowRight,
-       AlignLeft,
-       AlignRight,
-       AlignCenter,
-       AlignJustify,
-       Bold,
-       Italic,
-       Link,
-       OrderedList,
-       UnorderedList,
-    };
-=======
-import AfroshopLogo from "./afroshop-logo.svg";
-
-
-import { ReactComponent as MenuIcon } from "./menu.svg";
-import { ReactComponent as NotificationIcon } from "./notification.svg";
-import { ReactComponent as SettingsIcon } from "./setting.svg";
-import { ReactComponent as ProfilePic } from "./profile-pic.svg";
-import { ReactComponent as SearchIcon } from "./icon-search.svg";
-import { ReactComponent as FilterIcon } from "./icon-filter.svg";
-import { ReactComponent as DetailsIcon } from "./icon-others.svg";
-import { ReactComponent as NextIcon } from "./icon-next-arrow.svg";
-import { ReactComponent as PrevIcon } from "./prev-arrow.svg";
-import { ReactComponent as EditIcon } from "./icon-edit.svg";
-import { ReactComponent as DeleteIcon } from "./icon-delete.svg";
-import { ReactComponent as EyeIcon } from "./eye.svg";
-import { ReactComponent as GreenRightArrow } from "./green-right-icon.svg";
-import { ReactComponent as LeftArrow } from "./icon-left-arrow.svg";
 
 
 
@@ -109,5 +87,23 @@ export {
     EyeIcon,
     GreenRightArrow,
     LeftArrow,
+    ArrowRight, 
+    ArrowDown, 
+    Dot,
+     Pause, 
+     Delete,
+      Chicken, 
+      DottedLine, 
+      Frame, 
+      Framer, 
+      ColorArrowRight,
+      AlignLeft,
+      AlignRight,
+      AlignCenter,
+      AlignJustify,
+      Bold,
+      Italic,
+      Link,
+      OrderedList,
+      UnorderedList,
 };
->>>>>>> a3599643171c2a5fcaa6f4c74b1e95511d7fdaf5

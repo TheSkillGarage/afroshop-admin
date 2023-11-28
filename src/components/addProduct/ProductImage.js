@@ -2,13 +2,8 @@ import { React, useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
-  Chicken,
   Delete,
-  Dot,
-  Pause,
   DottedLine,
-  Frame,
-  Framer,
   ColorArrowRight,
   AlignLeft,
   AlignRight,
@@ -16,11 +11,13 @@ import {
   AlignJustify,
   Bold,
   Italic,
-  Link,
   OrderedList,
   UnorderedList,
-} from "../images";
+} from "../../images";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { CATEGORY_DATA } from '../../data'
+import {TextIcons, FileInput, ImageDisplay} from "./helpers";
 
 const StyledList = styled.ul`
   box-shadow: 0 8px 16px 0 rgba(51, 51, 51, 0.12);
@@ -51,100 +48,7 @@ const Placeholder = styled.div`
   border-radius: 0.25rem;
   cursor: pointer;
 `;
-const StyledIcon = styled.span`
-  cursor: pointer;
-  background-color: ${(props) => (props.activeIcon ? "#FFE0B2" : "white")};
-  padding: 10px;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
 
-  img {
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-  }
-`;
-
-const TextIcons = ({ src }) => {
-  const [activeIcon, setActiveIcon] = useState(false);
-
-  const handleClickIcon = () => {
-    setActiveIcon((prev) => !prev);
-  };
-  return (
-    <StyledIcon activeIcon={activeIcon} onClick={handleClickIcon}>
-      <img src={src} alt="icon" />
-    </StyledIcon>
-  );
-};
-
-const FileInput = ({ onFilesSelect }) => {
-  const handleFileChange = (event) => {
-    const files = event.target.files;
-    onFilesSelect(files);
-
-    
-  };
-
-  return (
-    <div>
-      <input
-        type="file"
-        className="hidden"
-        id="productImage"
-        multiple
-        onChange={handleFileChange}
-        accept=".jpeg, .jpg, .png"
-      />
-      <label htmlFor="productImage">
-        <img src={Framer} className="w-[100%]" alt="Upload" />
-      </label>
-      <div className=" flex items-center justify-between py-[24px]">
-        <div>
-          <p className="text-[10px] text-[#186F3D] font-semibold">Uploading</p>
-          <div className=" flex items-center justify between gap-[10px]">
-            <span className="text-[10px] text-[#B3B3B3]">50%</span>
-            <span>
-              <img src={Dot} />
-            </span>
-            <span className="text-[10px] text-[#B3B3B3]">20 seconds left</span>
-          </div>
-        </div>
-        <div className="border border-2 border-[#186F3D] w-[706px]"></div>
-        <div className=" flex items-center justify between gap-[24px]">
-          <span>
-            <img src={Pause} />
-          </span>
-          <span>
-            <img src={Delete} />
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ImageDisplay = ({ selectedFiles, onDelete }) => {
-  return (
-    <div className="flex flex-wrap gap-[12px]">
-      {selectedFiles.map((file, index) => (
-        <div className="flex gap-[12px]">
-          <div key={index} className="mb-4 relative">
-            <img
-              src={URL.createObjectURL(file)}
-              alt={`Selected ${index + 1}`}
-              className="w-[120px] h-[120px]"
-            />
-          </div>
-          <div>
-            <img src={Delete} onClick={() => onDelete(index)} />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
 const ProductImage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -180,28 +84,21 @@ const ProductImage = () => {
     setSelectedFiles(newFiles);
   };
 
-  const categoryData = [
-    { cat: "Beverages" },
-    { cat: "Fruit Drinks" },
-    { cat: "Wine" },
-    { cat: "Snacks" },
-    { cat: "Spices" },
-    { cat: "Spirit" },
-    { cat: "Cakes" },
-    { cat: "Candy" },
-  ];
+
   return (
-    <div className="w-[98%] mx-auto">
+    <div className="w-[100%] mx-auto bg-[#F2F2F2]">
       <div className="py-[12px]">
-        <div className="flex items-center py-[8px] px-[12px]">
-          <span>Products</span>
+        <div className="flex items-center py-[8px] text-[13px] px-[24px]">
+          <Link to="/products">
+            <span className="text-[#999999]">Products</span>
+          </Link>
           <span className="px-[5px]">
             <img src={ColorArrowRight} />
           </span>
-          <span> Add New Products</span>
+          <span className="text-green"> Add New Products</span>
         </div>
       </div>
-      <div className="bg-white p-[24px]">
+      <div className="bg-white p-[24px] mx-[12px]">
         <div className="flex flex-col justify-between h-[100%]">
           <div>
             <section className="p-[24px]">
@@ -215,7 +112,7 @@ const ProductImage = () => {
                       value={selectedCategory}
                       className="absolute -z-10 opacity-0"
                     >
-                      {categoryData.map(({ cat }, index) => {
+                      {CATEGORY_DATA.map(({ cat }, index) => {
                         return (
                           <option key={index} value={cat}>
                             {cat}
@@ -230,7 +127,7 @@ const ProductImage = () => {
 
                   <div className="relative">
                     <StyledList open={isOpen}>
-                      {categoryData.map(({ cat }, index) => {
+                      {CATEGORY_DATA.map(({ cat }, index) => {
                         return (
                           <StyledListItem
                             key={index}

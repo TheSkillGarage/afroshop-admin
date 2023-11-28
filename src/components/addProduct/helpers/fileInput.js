@@ -1,0 +1,67 @@
+import { useState } from "react";
+import { Dot, Pause, Delete, Framer } from "../../../images";
+
+export const FileInput = ({ onFilesSelect }) => {
+  const [isUploading, setIsUploading] = useState(false);
+  const [activeUpload, setActiveUpload] = useState(false);
+
+  const handleIsUploading = () => {
+    setActiveUpload(true);
+    setTimeout(() => setIsUploading(true), 100);
+    setTimeout(() => {
+      setActiveUpload(false);
+      setIsUploading(false);
+    }, 2200);
+  };
+
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    onFilesSelect(files);
+    handleIsUploading();
+  };
+
+  return (
+    <div>
+      <input
+        type="file"
+        className="hidden"
+        id="productImage"
+        multiple
+        onChange={handleFileChange}
+        accept=".jpeg, .jpg, .png"
+      />
+      <label htmlFor="productImage">
+        <img src={Framer} className="w-[100%]" alt="Upload" />
+      </label>
+      <div className=" flex items-center justify-between py-[24px]">
+        <div>
+          <p className="text-[10px] text-[#186F3D] font-semibold">Uploading</p>
+          <div className=" flex items-center justify between gap-[10px]">
+            <span className="text-[10px] text-[#B3B3B3]">50%</span>
+            <span>
+              <img src={Dot} />
+            </span>
+            <span className="text-[10px] text-[#B3B3B3]">20 seconds left</span>
+          </div>
+        </div>
+        <div className={`bg-[#e6e6e6] rounded-[30px] h-[4px] w-[706px]`}>
+          {activeUpload && (
+            <div
+              className={`bg-[#186F3D] rounded-[30px] w-[0%] h-full transition-[width] duration-[2000ms] ease-linear ${
+                isUploading ? "w-[706px]" : "w-[0px]"
+              } `}
+            ></div>
+          )}
+        </div>
+        <div className=" flex items-center justify between gap-[24px]">
+          <span>
+            <img src={Pause} />
+          </span>
+          <span>
+            <img src={Delete} />
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};

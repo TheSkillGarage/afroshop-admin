@@ -4,6 +4,8 @@ import PRODUCT_DATA from "../../data/products";
 import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
 import StatusPills from "../status-pills";
+import { Link } from "react-router-dom";
+import ProductImage from "../addProduct/ProductImage";
 
 const ProductsDashboard = () => {
 
@@ -81,7 +83,7 @@ const ProductsDashboard = () => {
                     </div>
 
                     <div className="w-full flex justify-end items-center px-4 h-[60px]">
-                        <button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button>
+                      <Link to='/products/new'><button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button></Link>
                     </div>
 
                     <div className="flex justify-between items-center px-4 h-[93px]">
