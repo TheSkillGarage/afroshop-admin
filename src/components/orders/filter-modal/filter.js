@@ -7,7 +7,7 @@ const Filter = ({ toggleFilters, index, item, handleToggleFilters, DATA }) => {
     const uniqueValues = Array.from(
         new Set(
             DATA.map(obj => {
-                // Check if the key is 'price' and extract the 'price' value
+                // price is an object containing paymentMethod and price
                 if (item === 'price' && obj[item] && typeof obj[item] === 'object') {
                     return obj[item].price;
                 }
