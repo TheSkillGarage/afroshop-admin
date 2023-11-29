@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 const CustomScrollbar = styled.div`
   position: relative;
-  max-height: 393px;
   overflow-y: scroll;
   z-index: 10;
   background-color: #ffffff;
