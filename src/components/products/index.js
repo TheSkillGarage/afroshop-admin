@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PRODUCT_DATA from "../../data/products";
 import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
@@ -22,6 +22,8 @@ const ProductsDashboard = () => {
 
     const totalPages = pagination.totalPages; // sets total pages
 
+    const filters = ["all", "active", "pending", "draft"];
+
 
     const handleItemsPerPage = (e) => setItemsPerPage(e.target.value); // set items per page when selected from select dropdown
     const handleActiveTab = (activeTab) => setActiveTab(activeTab); // controls styles for all, active, pending and draft filters
@@ -33,8 +35,30 @@ const ProductsDashboard = () => {
         setSearchTerm(searchWord)
     }
 
+// function for checkboxes
+    const [checkbox, setCheckbox] = useState({});
+    const [checkAll, setCheckAll] = useState(false);
 
-    const filters = ["all", "active", "pending", "draft"];
+    useEffect(() => {
+        let keys = Array.from(Array(itemsPerPage).keys());
+        let checkboxes = {};
+
+        for (const key of keys) {
+            checkboxes[key] = false;
+        }
+
+        setCheckbox(checkboxes);
+
+    }, [itemsPerPage])
+
+
+    const handleCheckbox = (key) => {
+        setCheckbox((prevCheckbox) => ({
+            ...prevCheckbox,
+            [key]: !prevCheckbox[key],
+        }));
+    };
+
 
 
     return (
@@ -60,7 +84,7 @@ const ProductsDashboard = () => {
                         <button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button>
                     </div>
 
-                    <Search  handleSearch={handleSearch}/>
+                    <Search handleSearch={handleSearch} name="products" DATA={PRODUCT_DATA} />
                 </div>
 
                 {/******************************************************* * table section  **************************************************************/}
@@ -70,7 +94,8 @@ const ProductsDashboard = () => {
                         <thead className="h-[56px] uppercase text-left text-[13px] leading-[23px] text-[#186F3D] font-semibold bg-[#F2F2F2]">
                             <tr>
                                 <th className="w-[6.5%] text-center">
-                                    <input type="checkbox" name="order" id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D] " />
+                                    <input type="checkbox" name="order" id="" checked={checkAll} onChange={() => setCheckAll(!checkAll)}
+                                    className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D] " />
                                 </th>
                                 <th className="w-[14.5%]">product name</th>
                                 <th className=" w-[14.5%] pl-8">SKU</th>
@@ -88,7 +113,8 @@ const ProductsDashboard = () => {
                                 return (
                                     <tr key={key} className="text-[13px] leading-[23px] text-[#333333] border-b border-1 border-[#E6E6E6] min-h-[47px]">
                                         <td className="text-center">
-                                            <input type="checkbox" name={productName} id="" className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" />
+                                            <input type="checkbox" name={productName} id="" checked={checkbox[key] || checkAll} onChange={() => handleCheckbox(key)}
+                                            className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" />
                                         </td>
                                         <td className="py-2">{productName}</td>
                                         <td className="pl-8 py-2">{SKU}</td>

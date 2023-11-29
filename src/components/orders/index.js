@@ -87,7 +87,7 @@ const OrdersDashboard = () => {
                         <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold h-[64px] flex items-center">Orders</p>
                     </div>
 
-                    <Search handleSearch={handleSearch} />
+                    <Search handleSearch={handleSearch} name="orders" DATA={ORDERS_DATA}/>
 
                 </div>
 
