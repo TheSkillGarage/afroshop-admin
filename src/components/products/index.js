@@ -15,8 +15,12 @@ const ProductsDashboard = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
     const [searchTerm, setSearchTerm] = useState('');
+
+    const [filterObject, setFilterObject] = useState({});
+    const handleFilterObject = (filterObject) => setFilterObject(filterObject)
+    
     // from usePagination hook
-    let data = useFilter("products", activeTab, PRODUCT_DATA, searchTerm).filteredData;
+    let data = useFilter("products", activeTab, PRODUCT_DATA, searchTerm, filterObject).filteredData;
 
     const pagination = usePagination(page, itemsPerPage, data);
 
@@ -35,7 +39,7 @@ const ProductsDashboard = () => {
         setSearchTerm(searchWord)
     }
 
-// function for checkboxes
+    // function for checkboxes
     const [checkbox, setCheckbox] = useState({});
     const [checkAll, setCheckAll] = useState(false);
 
@@ -84,7 +88,7 @@ const ProductsDashboard = () => {
                         <button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button>
                     </div>
 
-                    <Search handleSearch={handleSearch} name="products" DATA={PRODUCT_DATA} />
+                    <Search handleSearch={handleSearch} name="products" DATA={PRODUCT_DATA} handleFilterObject={handleFilterObject}/>
                 </div>
 
                 {/******************************************************* * table section  **************************************************************/}
@@ -95,7 +99,7 @@ const ProductsDashboard = () => {
                             <tr>
                                 <th className="w-[6.5%] text-center">
                                     <input type="checkbox" name="order" id="" checked={checkAll} onChange={() => setCheckAll(!checkAll)}
-                                    className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D] " />
+                                        className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D] " />
                                 </th>
                                 <th className="w-[14.5%]">product name</th>
                                 <th className=" w-[14.5%] pl-8">SKU</th>
@@ -114,7 +118,7 @@ const ProductsDashboard = () => {
                                     <tr key={key} className="text-[13px] leading-[23px] text-[#333333] border-b border-1 border-[#E6E6E6] min-h-[47px]">
                                         <td className="text-center">
                                             <input type="checkbox" name={productName} id="" checked={checkbox[key] || checkAll} onChange={() => handleCheckbox(key)}
-                                            className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" />
+                                                className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" />
                                         </td>
                                         <td className="py-2">{productName}</td>
                                         <td className="pl-8 py-2">{SKU}</td>

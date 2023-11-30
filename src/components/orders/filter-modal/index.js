@@ -4,7 +4,7 @@ import Filter from "./filter";
 import CustomScrollbar from "./filter.styles";
 
 
-const FilterModal = ({ setOpenFilter, name, DATA }) => {
+const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject }) => {
 
 
     //functions for toggling filters
@@ -40,12 +40,12 @@ const FilterModal = ({ setOpenFilter, name, DATA }) => {
     const dropdownRef = useRef(null);
 
     const handleHideModal = () => {
-        document
-            .querySelector(".filter-modal")
-            .classList.add("slide-out");
-        setTimeout(() => {
-            setOpenFilter(false);
-        }, 500);
+        setOpenFilter(false);
+
+        // document.querySelector(".filter-modal").classList.add("slide-out");
+        // setTimeout(() => {
+        //     setOpenFilter(false);
+        // }, 500);
     };
 
     const handleClick = (event) => {
@@ -66,9 +66,11 @@ const FilterModal = ({ setOpenFilter, name, DATA }) => {
 
     const [formData, setFormData] = useState({});
 
+
+
     const handleChange = (e, item) => {
         const selectedValue = e.target.name;
-
+    
         setFormData((prevFormData) => ({
             ...prevFormData,
             [item]: {
@@ -77,32 +79,41 @@ const FilterModal = ({ setOpenFilter, name, DATA }) => {
             },
         }));
     };
-
-
+    
+    
     const handleSubmit = (e) => {
         e.preventDefault();
-
-
+    
         // Create an object to store the selected filter values
         const selectedFilters = {};
-
-        // for each filter item and add selected values to the array
+    
+        // Loop through each filter item and add selected values to the array
         filters.forEach((item) => {
-            const selectedValues = Object.keys(formData[item]).filter((key) => formData[item][key]);
+            const itemFormData = formData[item] || {};
+            const selectedValues = Object.keys(itemFormData).filter((key) => itemFormData[key]);
+    
             if (selectedValues.length > 0) {
                 selectedFilters[item] = selectedValues;
             }
         });
-
-        
-        console.log('Selected Filters:', selectedFilters);
+    
+        handleFilterObject(selectedFilters);
+        setOpenFilter(false);
     };
 
 
+    const handleReset = () => {
+        handleFilterObject({});
+        setOpenFilter(false);
+    }
+    
+    
+
+
     return (
-        <div className="flex justify-end fixed inset-0 bg-[rgba(0,0,0,0.2)] z-50">
+        <div className={`flex justify-end fixed inset-0 bg-[rgba(0,0,0,0.2)] z-50 ${openFilter ? "" : "hidden"}`}>
             <CustomScrollbar className="w-[595px] p-6 min-h-screen rounded shadow-lg bg-[#ffffff] filter-modal slide-in" ref={dropdownRef}>
-                <form action="" onSubmit={(e) => handleSubmit(e)}>
+                <form action="" onSubmit={(e) => handleSubmit(e)} onReset={handleReset}>
                     <div className="flex gap-3 items-center">
                         <LeftArrow className="cursor-pointer" onClick={() => setOpenFilter(false)} />
                         <p className="font-bold py-1 text-[#186F3D] text-[20px] leading-[32px]">Filter(s)</p>

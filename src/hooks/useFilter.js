@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useFilter = (name, activeTab, DATA, searchTerm) => {
+export const useFilter = (name, activeTab, DATA, searchTerm, filterObject) => {
 
     const [filteredData, setFilteredData] = useState(DATA);
 
@@ -19,9 +19,23 @@ export const useFilter = (name, activeTab, DATA, searchTerm) => {
             updatedData = updatedData.filter(obj => obj.status === activeTab);
         }
 
+
+        if (Object.keys(filterObject).length > 0) {
+
+            updatedData = DATA.filter(obj => {
+                return Object.entries(filterObject).every(([key, values]) => {
+                    if (key === 'price') {
+                        return values.includes(obj.price.price?.toString());
+                      } else {
+                        return values.includes(obj[key]?.toString());
+                      }
+                });
+            });
+        }
+
         setFilteredData(updatedData);
 
-    }, [name, activeTab, DATA, searchTerm]);
+    }, [name, activeTab, DATA, searchTerm, filterObject]);
 
 
     return {

@@ -20,15 +20,17 @@ const OrdersDashboard = () => {
 
 
     const [searchTerm, setSearchTerm] = useState('');
+    const [filterObject, setFilterObject] = useState({});
 
     const handleSearch = (searchWord) => {
         setSearchTerm(searchWord)
     }
 
+    const handleFilterObject = (filterObject) => setFilterObject(filterObject)
 
 
     // using custom  hooks
-    const data = useFilter("orders", activeTab, ORDERS_DATA, searchTerm).filteredData;
+    const data = useFilter("orders", activeTab, ORDERS_DATA, searchTerm, filterObject).filteredData;
     const pagination = usePagination(page, itemsPerPage, data);
     const totalPages = pagination.totalPages; // sets total 
 
@@ -87,7 +89,7 @@ const OrdersDashboard = () => {
                         <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold h-[64px] flex items-center">Orders</p>
                     </div>
 
-                    <Search handleSearch={handleSearch} name="orders" DATA={ORDERS_DATA}/>
+                    <Search handleSearch={handleSearch} name="orders" DATA={ORDERS_DATA} handleFilterObject={handleFilterObject}/>
 
                 </div>
 
