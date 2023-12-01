@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FilterIcon, SearchIcon } from "../../images";
-import FilterModal from "../orders/filter-modal";
+import FilterModal from "../filter-modal";
 
 
 const Search = ({ handleSearch, name, DATA, handleFilterObject }) => {

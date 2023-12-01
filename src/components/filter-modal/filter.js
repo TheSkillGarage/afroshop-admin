@@ -1,5 +1,5 @@
 import React from "react";
-import { NextIcon, SearchIcon } from "../../../images";
+import { NextIcon, SearchIcon } from "../../images";
 import CustomScrollbar from "./filter.styles";
 
 const Filter = ({ toggleFilters, index, item, handleToggleFilters, DATA, handleChange }) => {

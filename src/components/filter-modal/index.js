@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { LeftArrow } from "../../../images";
+import { LeftArrow } from "../../images";
 import Filter from "./filter";
 import CustomScrollbar from "./filter.styles";
 
