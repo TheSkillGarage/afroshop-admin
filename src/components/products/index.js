@@ -14,10 +14,13 @@ const ProductsDashboard = () => {
     const [page, setPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
+    const [checkbox, setCheckbox] = useState({});
+    const [checkAll, setCheckAll] = useState(false);
+
     const [searchTerm, setSearchTerm] = useState('');
 
     const [filterObject, setFilterObject] = useState({});
-    const handleFilterObject = (filterObject) => setFilterObject(filterObject)
+    
     
     // from usePagination hook
     let data = useFilter("products", activeTab, PRODUCT_DATA, searchTerm, filterObject).filteredData;
@@ -35,14 +38,12 @@ const ProductsDashboard = () => {
     const prevPage = () => page > 1 ? setPage(page - 1) : null; // goes to previous page
     const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
 
-    const handleSearch = (searchWord) => {
-        setSearchTerm(searchWord)
-    }
+    //search and filter modal
+    const handleSearch = (searchWord) => setSearchTerm(searchWord)
+    const handleFilterObject = (filterObject) => setFilterObject(filterObject)
+
 
     // function for checkboxes
-    const [checkbox, setCheckbox] = useState({});
-    const [checkAll, setCheckAll] = useState(false);
-
     useEffect(() => {
         let keys = Array.from(Array(itemsPerPage).keys());
         let checkboxes = {};

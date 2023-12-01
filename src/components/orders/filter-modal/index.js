@@ -6,11 +6,11 @@ import CustomScrollbar from "./filter.styles";
 
 const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject }) => {
 
+    const filters = name === "orders" ? Object.keys(DATA[0]).slice(0, -1) : Object.keys(DATA[0]) // sets DATA keys as filter criterias
 
     //functions for toggling filters
     const [toggleFilters, setToggleFilters] = useState({});
-
-    const filters = name === "orders" ? Object.keys(DATA[0]).slice(0, -1) : Object.keys(DATA[0])
+    const [formData, setFormData] = useState({});
 
     useEffect(() => {
         let num = {}
@@ -24,7 +24,7 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
         }
 
         setToggleFilters(num);
-    }, [])
+    }, [filters.length])
 
     const handleToggleFilters = (index) => {
 
@@ -39,19 +39,9 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
     //functions for handling filter modal animation and outside click events
     const dropdownRef = useRef(null);
 
-    const handleHideModal = () => {
-        setOpenFilter(false);
-
-        // document.querySelector(".filter-modal").classList.add("slide-out");
-        // setTimeout(() => {
-        //     setOpenFilter(false);
-        // }, 500);
-    };
-
     const handleClick = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setOpenFilter(false);
-            handleHideModal()
         }
     };
 
@@ -64,10 +54,8 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
     }, []);
 
 
-    const [formData, setFormData] = useState({});
 
-
-
+    // functions for handling filter application
     const handleChange = (e, item) => {
         const selectedValue = e.target.name;
     
@@ -84,10 +72,8 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
     const handleSubmit = (e) => {
         e.preventDefault();
     
-        // Create an object to store the selected filter values
         const selectedFilters = {};
     
-        // Loop through each filter item and add selected values to the array
         filters.forEach((item) => {
             const itemFormData = formData[item] || {};
             const selectedValues = Object.keys(itemFormData).filter((key) => itemFormData[key]);
@@ -107,8 +93,6 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
         setOpenFilter(false);
     }
     
-    
-
 
     return (
         <div className={`flex justify-end fixed inset-0 bg-[rgba(0,0,0,0.2)] z-50 ${openFilter ? "" : "hidden"}`}>

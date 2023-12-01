@@ -22,10 +22,7 @@ const OrdersDashboard = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterObject, setFilterObject] = useState({});
 
-    const handleSearch = (searchWord) => {
-        setSearchTerm(searchWord)
-    }
-
+    const handleSearch = (searchWord) => setSearchTerm(searchWord)
     const handleFilterObject = (filterObject) => setFilterObject(filterObject)
 
 

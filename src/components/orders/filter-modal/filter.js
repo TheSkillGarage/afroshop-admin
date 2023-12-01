@@ -17,15 +17,6 @@ const Filter = ({ toggleFilters, index, item, handleToggleFilters, DATA, handleC
         )
     );
 
-
-    // const handleFormData = (e) => {
-
-    // }
-
-    // const selectedFilters = [];
-
-    // const handleSelectedFilters = (filter) => selectedFilters.push(filter);
-
     return (
         <div className="mt-6">
             <div className="flex justify-between mb-6 cursor-pointer" onClick={() => handleToggleFilters(index)}>
@@ -33,8 +24,7 @@ const Filter = ({ toggleFilters, index, item, handleToggleFilters, DATA, handleC
                 <NextIcon className={`${toggleFilters[index] ? "rotate-90" : ""}`} />
             </div>
 
-            {toggleFilters[index] &&
-                <div className="p-6 border border-1 border-[#E6E6E6] rounded h-fit">
+                <div className={`p-6 border border-1 border-[#E6E6E6] rounded h-fit ${toggleFilters[index] ? "" : "hidden"}`}>
                     <div className="relative mb-2">
                         <SearchIcon className="absolute top-[10px] left-[18px] " />
                         <input type="text" name={`search-${item}`} id="tableSearch" placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12 focus:outline-none"/>
@@ -55,7 +45,6 @@ const Filter = ({ toggleFilters, index, item, handleToggleFilters, DATA, handleC
                         </div>
                     </CustomScrollbar>
                 </div>
-            }
         </div>
     )
 }
