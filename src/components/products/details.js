@@ -5,10 +5,13 @@ import DeleteUser from "../pop-ups/deleteUser";
 const Detail = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const handleShowDetails = () => setShowDetails(!showDetails);
+  const handleShowDetails = () => {
+    setShowDetails(!showDetails);
+    closeDeleteModal()
+  };
 
   const closeDeleteModal = (e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
     setOpenDeleteModal(false);
   };
 
