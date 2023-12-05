@@ -42,24 +42,5 @@ const CustomScrollbar = styled.div`
   }
 `;
 
-// const Paragraph = styled.p`
-//   position: relative;
-//   z-index: 1; /* Set a higher z-index */
-//   width: 100%;
-//   height: 48px;
-//   font-size: 16px;
-//   line-height: 24px;
-//   color: #333333;
-//   background-color: #ffffff;
-//   cursor: pointer;
-//   transition: background-color 0.3s, color 0.3s;
-
-//   &:hover {
-//     background-color: #f2f2f2;
-//     color: #186f3d;
-//   }
-// `;
-
-
 
 export default CustomScrollbar;

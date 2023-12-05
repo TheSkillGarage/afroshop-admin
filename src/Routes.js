@@ -1,6 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Orders, OverviewPage, Products, ViewOrdersPage,  } from "./pages";
-
+import {
+  AddNewRole,
+  Orders,
+  OverviewPage,
+  Products,
+  RolesAndPermissionsDashboard,
+  ViewOrdersPage,
+} from "./pages";
 
 const MyRoutes = () => {
   return (
@@ -10,6 +16,12 @@ const MyRoutes = () => {
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/orders" element={<Orders />} />
         <Route exact path="/view-order/:orderID" element={<ViewOrdersPage />} />
+        <Route
+          exact
+          path="/roles-and-permissions"
+          element={<RolesAndPermissionsDashboard />}
+        />
+        <Route exact path="/add-new-role" element={<AddNewRole />} />
       </Routes>
     </BrowserRouter>
   );
