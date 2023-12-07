@@ -140,7 +140,7 @@ const RolesAndPermissions = () => {
               />
             </div>
 
-            <div className="w-[108px] h-[44px] rounded border border-[0.5px] flex items-center justify-center gap-2">
+            <div className="w-[108px] h-[44px] rounded border-[0.5px] flex items-center justify-center gap-2">
               <p className="text-[16px] leading-[24px] text-[#333333]">
                 Filter
               </p>
