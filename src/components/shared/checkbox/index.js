@@ -13,13 +13,13 @@ import { CheckboxDisplay, CheckboxInput } from "./checkbox.styles";
  * @example <Checkbox name="newsletter" handleChange={handleChange} isChecked={isChecked}><p className="ml-3">Newsletter</p></Checkbox> or <Checkbox name="rating" handleChange={handleChange} isChecked={isChecked}><Ratings/></Checkbox>
  */
 
-const Checkbox = ({ name, handleChange, isChecked, isDisabled, children, valueOnChecked, value }) => {
+const Checkbox = ({ name, handleChange, isChecked, isDisabled, children }) => {
   return (
-    <label htmlFor={name} className="flex justify-center items-center">
+    <label htmlFor={name} className="flex items-center">
       <CheckboxInput
         id={name}
         type="checkbox"
-        checked={value === valueOnChecked}
+        checked={isChecked}
         onChange={handleChange}
         onClick={handleChange}
         disabled={isDisabled}

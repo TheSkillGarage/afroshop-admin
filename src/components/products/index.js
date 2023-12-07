@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PRODUCT_DATA from "../../data/products";
 import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
@@ -7,9 +7,6 @@ import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";
 import TableFooter from "../table-footer/table-footer";
 import Search from "../search";
-import Checkbox from "../shared/checkbox";
-import BaseTable from "../shared/table";
-import useTableSelect from "../../hooks/useTableSelect";
 
 const ProductsDashboard = () => {
 
@@ -17,6 +14,8 @@ const ProductsDashboard = () => {
     const [page, setPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
+    const [checkbox, setCheckbox] = useState({});
+    const [checkAll, setCheckAll] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -44,86 +43,27 @@ const ProductsDashboard = () => {
     const handleFilterObject = (filterObject) => setFilterObject(filterObject)
 
 
-    const { selectedRows, handleSelectAllRows, handleSelectRow } = useTableSelect(
-        { rows: pagination.currentData }
-      );
-    
-      const headers = [
-        {
-          id: "selection",
-          name: (
-            <Checkbox
-              name="all"
-              handleChange={handleSelectAllRows}
-              value={
-                selectedRows.length === pagination.currentData.length ? "all" : ""
-              }
-              valueOnChecked="all"
-            />
-          ),
-          width: "6.5%",
-        },
-        {
-          id: "productName",
-          name: "Product Name",
-          width: "14.5%",
-        },
-        {
-          id: "SKU",
-          name: "SKU",
-          width: "14.5%",
-        },
-        {
-          id: "dateAdded",
-          name: "Date Added",
-          width: "14.5%",
-        },
-        {
-          id: "salesPrice",
-          name: "Sales Price ($)",
-          width: "14.5%",
-        },
-        {
-          id: "availabilty",
-          name: "Availability",
-          width: "14.5%",
-        },
-        {
-          id: "status",
-          name: "Status",
-          width: "14.5%",
-        },
-        { 
-            id: "detail",
-            name: "",
-            width: "6.5%"
+    // function for checkboxes
+    useEffect(() => {
+        let keys = Array.from(Array(itemsPerPage).keys());
+        let checkboxes = {};
+
+        for (const key of keys) {
+            checkboxes[key] = false;
         }
-      ];
 
-      const results = pagination.currentData.map((data) => ({
-        ...data,
-        id: data.id,
-        selection: (
-          <Checkbox
-            name={data.id}
-            handleChange={(payload) => {
-              handleSelectRow(data.id);
+        setCheckbox(checkboxes);
 
-              console.log("handle change: ", payload, " data id: ", data.id);
-            }}
-            value={selectedRows.includes(data.id) ? data.id : ""}
-            valueOnChecked={data.id}
-          />
-        ),
-        status: (
-          <div className="capitalize">
-            <StatusPills status={data.status} name="products" />
-          </div>
-        ),
-        detail: (
-            <Detail />
-        )
-      }));
+    }, [itemsPerPage])
+
+
+    const handleCheckbox = (key) => {
+        setCheckbox((prevCheckbox) => ({
+            ...prevCheckbox,
+            [key]: !prevCheckbox[key],
+        }));
+    };
+
 
 
     return (
@@ -154,7 +94,50 @@ const ProductsDashboard = () => {
 
                 {/******************************************************* * table section  **************************************************************/}
 
-                <BaseTable tableHeaders={headers} data={results} />
+                <div className="w-full">
+                    <table className="w-full border-collapse">
+                        <thead className="h-[56px] uppercase text-left text-[13px] leading-[23px] text-[#186F3D] font-semibold bg-[#F2F2F2]">
+                            <tr>
+                                <th className="w-[6.5%] text-center">
+                                    <input type="checkbox" name="order" id="" checked={checkAll} onChange={() => setCheckAll(!checkAll)}
+                                        className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D] " />
+                                </th>
+                                <th className="w-[14.5%]">product name</th>
+                                <th className=" w-[14.5%] pl-8">SKU</th>
+                                <th className="w-[14.5%]">date added</th>
+                                <th className="w-[14.5%]">sales price ($)</th>
+                                <th className="w-[14.5%]">availability</th>
+                                <th className="w-[14.5%]">status</th>
+                                <th className="w-[6.5%]"></th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody className="bg-[#ffffff]">
+                            {pagination.currentData.map(({ productName, SKU, dateAdded, salesPrice, availabilty, status }, key) => {
+                                return (
+                                    <tr key={key} className="text-[13px] leading-[23px] text-[#333333] border-b border-1 border-[#E6E6E6] min-h-[47px]">
+                                        <td className="text-center">
+                                            <input type="checkbox" name={productName} id="" checked={checkbox[key] || checkAll} onChange={() => handleCheckbox(key)}
+                                                className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" />
+                                        </td>
+                                        <td className="py-2">{productName}</td>
+                                        <td className="pl-8 py-2">{SKU}</td>
+                                        <td className="py-2">{dateAdded}</td>
+                                        <td className="py-2">{salesPrice}</td>
+                                        <td className="py-2">{availabilty}</td>
+                                        <td className="capitalize py-2">
+                                            <StatusPills status={status} name="products" />
+                                        </td>
+                                        <td className="py-2">
+                                            <Detail />
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
 
                 <TableFooter pagination={pagination} data={data} handleItemsPerPage={handleItemsPerPage} prevPage={prevPage} page={page} handlePage={handlePage} nextPage={nextPage} totalPages={totalPages} />
             </div>

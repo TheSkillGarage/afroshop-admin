@@ -21,7 +21,7 @@ const SIDEBAR_TABS = [
     },
     {
         name: "roles & permissions",
-        path: "/roles-and-permissions"
+        path: "/roles-permissions"
     },
     {
         name: "support",

@@ -2,6 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 
 const SelectDropdown = ({ className, options, field, errors, placeholder }) => {
+
     const selectStyles = {
     control: (baseStyles, state) => ({
       ...baseStyles,
@@ -15,8 +16,7 @@ const SelectDropdown = ({ className, options, field, errors, placeholder }) => {
     }),
     placeholder :(baseStyles) =>({
       ...baseStyles,
-      color: "#333333",
-      fontSize: "16px"
+      color: "black"
     }),
     dropdownIndicator: (selectProps, state,baseStyles)=>({
       ...baseStyles,
@@ -39,10 +39,11 @@ const SelectDropdown = ({ className, options, field, errors, placeholder }) => {
         styles={selectStyles}
         isSearchable = {false}
         placeholder= {placeholder}
-        name={field?.name}
-        inputRef={field?.ref}
+        name={field.name}
+        inputRef={field.ref}
         options={options}
-        onChange={(val) => field.onChange(val?.value)}
+        value={options.find((c) => c.value === field.value)}
+        onChange={(val) => field.onChange(val.value)}
         className = {`${className}`}
       />
     </>
