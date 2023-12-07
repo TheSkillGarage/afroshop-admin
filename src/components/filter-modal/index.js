@@ -6,7 +6,7 @@ import CustomScrollbar from "./filter.styles";
 
 const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject }) => {
 
-    const filters = name === "orders" ? Object.keys(DATA[0]).slice(0, -1) : Object.keys(DATA[0]) // sets DATA keys as filter criterias
+    const filters = name === "orders" ? Object.keys(DATA[0]).slice(1, -1) : Object.keys(DATA[0]).slice(1) // sets DATA keys as filter criterias
 
     //functions for toggling filters
     const [toggleFilters, setToggleFilters] = useState({});
