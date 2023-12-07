@@ -48,7 +48,7 @@ const Filter = ({ toggleFilters, index, item, handleToggleFilters, DATA, handleC
                 <div className={`p-6 border border-1 border-[#E6E6E6] rounded h-fit ${toggleFilters[index] ? "" : "hidden"}`}>
                     <div className="relative mb-2">
                         <SearchIcon className="absolute top-[10px] left-[18px] " />
-                        <input type="text" name={`search-${item}`} id="tableSearch" placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12 focus:outline-none" onChange={(e) => searchUniqueValues(e)}/>
+                        <input type="text" name={`search-${item}`} placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12 focus:outline-none" onChange={(e) => searchUniqueValues(e)}/>
                     </div>
                     <CustomScrollbar className="max-h-[393px]">
                         <div className="mb-4">
