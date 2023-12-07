@@ -20,6 +20,8 @@ const StatusPills = ({ name, status }) => {
                 return "text-[#34C759] bg-[rgba(52,199,89,0.1)]"
             case "active":
                 return "text-[#34C759] bg-[rgba(52,199,89,0.1)]"
+            case "inactive":
+                return "text-[#FF3B30] bg-[#FF3B301A]"
             case "cancelled":
                 return "text-[#FF3B30] bg-[rgba(255,59,48,0.1)]"
             default:
