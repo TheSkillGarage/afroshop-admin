@@ -1,5 +1,16 @@
 import React from "react";
 
+
+const Price = ({ values }) => {
+  return (
+    <>
+      <p>${values.price}</p>
+      <p className="text-[#186F3D] text-[10px] leading-[15px]">{values.paymentMethod}</p>
+    </>
+  )
+}
+
+
 const BaseTable = ({ tableHeaders, data }) => {
   return (
     <div className="w-full">
@@ -7,7 +18,7 @@ const BaseTable = ({ tableHeaders, data }) => {
         <thead className="h-[56px] uppercase text-left text-[13px] leading-[23px] text-[#186F3D] font-semibold bg-[#F2F2F2]">
           <tr>
             {tableHeaders.map((header) => (
-                <th key={header.id} className={`w-[${header.width}]`}>
+                <th key={header.id} className={`w-[${header.width}] ${header.id === "SKU" ? "pl-8" : ""}`}>
                   {header.name}
                 </th>
               )
@@ -16,10 +27,12 @@ const BaseTable = ({ tableHeaders, data }) => {
         </thead>
 
         <tbody className="bg-[#ffffff]">
-          {data.map((row) => (
-            <tr key={row} className="text-[13px] leading-[23px] text-[#333333] border-b border-1 border-[#E6E6E6] min-h-[47px]">
-              {tableHeaders.map((header) => {
-                return <td className="py-2" key={header.id}>{row[header.id]}</td>;
+          {data.map((row, index) => (
+            <tr key={index} className="text-[13px] leading-[23px] text-[#333333] border-b border-1 border-[#E6E6E6] min-h-[47px]">
+             {tableHeaders.map((header, index) => {
+                return <td className={`py-2 ${header.id === "SKU" ? "pl-8" : ""}`} key={index}>
+                  {header.id !== "price" ? row[header.id] : <Price values={row[header.id]}/>}
+                </td>;
               })}
             </tr>
           ))}

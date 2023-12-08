@@ -29,6 +29,9 @@ const StatusPills = ({ name, status }) => {
         }
     }
 
+    useEffect(() => {
+        setIsStatus(status)
+    }, [status])
 
     const handleIsSelected = (event) => {
         event.stopPropagation();
