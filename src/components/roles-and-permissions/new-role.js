@@ -83,7 +83,7 @@ const NewRole = () => {
 
   return (
     <div>
-      <div className="bg-[#F2F2F2] w-full py-6 px-4">
+      <div className="bg-[#F2F2F2] py-6 px-4">
         <div className="flex items-center gap-8 mb-6">
           <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">
             ...
@@ -99,7 +99,7 @@ const NewRole = () => {
             Add New Role
           </p>
         </div>
-        <div className="bg-white p-6 w-[1328px]">
+        <div className="bg-white p-6">
           <div className="flex justify-between gap-12">
             <InputComponent
               inputType="text"
