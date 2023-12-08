@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import AdminNavbar from "../navbar";
-import { GreenRightArrow } from "../../images";
+import {
+  DropdownClose,
+  DropdownOpen,
+  GreenRightArrow,
+  LeftBlackArrow,
+} from "../../images";
 import { useNavigate } from "react-router-dom";
 import InputComponent from "../shared/inputComponent";
 import { useForm } from "react-hook-form";
+import ToggleSwitch from "../toggle-switch";
+import Checkbox from "../shared/checkbox";
 
 const NewRole = () => {
   const {
@@ -13,7 +20,8 @@ const NewRole = () => {
     handleSubmit,
   } = useForm({ mode: "all" });
   const navigate = useNavigate();
-
+  const [showActions, setShowActions] = useState(false);
+  const [openSection, setOpenSection] = useState("");
   const options = [
     {
       value: "admin",
@@ -22,6 +30,54 @@ const NewRole = () => {
     {
       value: "super_admin",
       label: "Super Admin",
+    },
+  ];
+  const actions = [
+    {
+      value: "create",
+      label: "Create",
+    },
+    {
+      value: "edit",
+      label: "Edit",
+    },
+    {
+      value: "view",
+      label: "View",
+    },
+    {
+      value: "delete",
+      label: "Delete",
+    },
+  ];
+  const sections = [
+    {
+      value: "overview",
+      label: "Overview",
+    },
+    {
+      value: "orders",
+      label: "Orders",
+    },
+    {
+      value: "products",
+      label: "Products",
+    },
+    {
+      value: "payments",
+      label: "Payments",
+    },
+    {
+      value: "profile",
+      label: "Profile",
+    },
+    {
+      value: "roles-and-permissions",
+      label: "Roles & Permissions",
+    },
+    {
+      value: "support",
+      label: "Support",
     },
   ];
 
@@ -49,7 +105,7 @@ const NewRole = () => {
               inputType="text"
               label="Email"
               fieldName={"email"}
-              placeholder=""
+              placeholder="Enter"
               className="bg-[#F2F2F2]"
               control={control}
               errors={errors}
@@ -67,6 +123,50 @@ const NewRole = () => {
               register={register}
             />
           </div>
+
+          {sections.map((section, index) => (
+            <div>
+              <div className="mt-8 border border-[#B3B3B3] p-4 rounded-lg">
+                <div
+                  className="flex justify-between items-center cursor-pointer"
+                  onClick={() => {
+                    setShowActions(!showActions);
+                    setOpenSection(section.value);
+                  }}
+                >
+                  <p className="text-[#186F3D] font-semibold">
+                    {section.label}
+                  </p>
+                  {showActions && openSection === section.value ? (
+                    <DropdownOpen className="w-4 h-4" />
+                  ) : (
+                    <DropdownClose className="w-4 h-4" />
+                  )}
+                </div>
+                {showActions && openSection === section.value && (
+                  <div className="flex flex-col gap-8 mt-8 w-full">
+                    <ToggleSwitch onToggle={() => {}}>
+                      Allow Access
+                    </ToggleSwitch>
+                    <div className="flex w-full justify-between">
+                      {actions.map((action) => (
+                        <div className="flex">
+                          <Checkbox
+                            value={action.value}
+                            valueOnChecked={null}
+                          />
+                          <p>{action.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              {index !== sections.length - 1 && (
+                <div className="mt-8 border border-[#B3B3B3] border-dashed" />
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </div>
