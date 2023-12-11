@@ -5,19 +5,11 @@ import {
   Delete,
   DottedLine,
   ColorArrowRight,
-  AlignLeft,
-  AlignRight,
-  AlignCenter,
-  AlignJustify,
-  Bold,
-  Italic,
-  OrderedList,
-  UnorderedList,
 } from "../../images";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { CATEGORY_DATA } from '../../data'
-import {TextIcons, FileInput, ImageDisplay} from "./helpers";
+import { CATEGORY_DATA, TEXT_ICONS } from "../../data";
+import { TextIcons, FileInput, ImageDisplay } from "./helpers";
 
 const StyledList = styled.ul`
   box-shadow: 0 8px 16px 0 rgba(51, 51, 51, 0.12);
@@ -54,6 +46,75 @@ const ProductImage = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isProductInfoOpen, setIsProductInfoOpen] = useState(false);
   const [isProductImageOpen, setIsProductImageOpen] = useState(false);
+  const [text, setText] = useState("");
+  const [textStyles, setTextStyles] = useState({
+    fontWeight: "normal",
+    fontStyle: "normal",
+    textAlign: "left",
+    listStyleType: "none",
+  });
+
+
+
+  const handleBtnClick = (label, isOrdered) => {
+    switch (label) {
+      case "Bold":
+        setTextStyles((prevStyles) => ({
+          ...prevStyles,
+          fontWeight: prevStyles.fontWeight === "bold" ? "normal" : "bold",
+        }));
+        break;
+      case "Italic":
+        setTextStyles((prevStyles) => ({
+          ...prevStyles,
+          fontStyle: prevStyles.fontStyle === "italic" ? "normal" : "italic",
+        }));
+        break;
+      case "AlignLeft":
+        setTextStyles((prevStyles) => ({ ...prevStyles, textAlign: "left" }));
+        break;
+      case "AlignCenter":
+        setTextStyles((prevStyles) => ({ ...prevStyles, textAlign: "center" }));
+        break;
+      case "AlignRight":
+        setTextStyles((prevStyles) => ({ ...prevStyles, textAlign: "right" }));
+        break;
+      case "AlignJustify":
+        setTextStyles((prevStyles) => ({
+          ...prevStyles,
+          textAlign: "justify",
+        }));
+        break;
+      case "OrderedList":
+        OrderedList(true)
+        break;
+      case "UnorderedList":
+        break;
+      default:
+        break;
+    }
+  };
+
+
+  const OrderedList = (isOrdered) => {
+    const lines = text.split('\n');
+
+    const list = isOrdered ? (
+      <ol>
+        {lines.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ol>
+    ) : (
+      <p>
+        {lines.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </p>
+    );
+
+    setText(list);
+  };
 
   const handleProductInfoOpen = () => {
     setIsProductInfoOpen((prev) => !prev);
@@ -83,7 +144,6 @@ const ProductImage = () => {
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
   };
-
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
@@ -188,17 +248,23 @@ const ProductImage = () => {
                     <div>
                       <div class="text-[13px] text-[#B3B3B3]">Description</div>
                       <div className="flex items-center gap-[16px] py-[10px]">
-                        <TextIcons src={Bold} />
-                        <TextIcons src={Italic} />
-                        <TextIcons src={UnorderedList} />
-                        <TextIcons src={OrderedList} />
-                        <TextIcons src={AlignLeft} />
-                        <TextIcons src={AlignCenter} />
-                        <TextIcons src={AlignRight} />
-                        <TextIcons src={AlignJustify} />
+                        {TEXT_ICONS.map(({ icon, label }, key) => (
+                          <TextIcons
+                            key={key}
+                            src={icon}
+                            alt={label}
+                            styleText={() => handleBtnClick(`${label}`)}
+                          />
+                        ))}
+                        
                       </div>
                       <div>
-                        <textarea className="w-[100%] sm:h-[144px] h-[20%] border border-gray-600"></textarea>
+                        <textarea
+                          style={textStyles}
+                          value={text}
+                          onChange={(e) => setText(e.target.value)}
+                          className="w-[100%] sm:h-[144px] h-[20%] border border-gray-600 p-2"
+                        ></textarea>
                       </div>
                     </div>
                     <div className="flex justify-between items-center pt-[25px]">

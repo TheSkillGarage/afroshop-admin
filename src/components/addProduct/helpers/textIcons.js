@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const StyledIcon = styled.span`
   cursor: pointer;
-  background-color: ${(props) => (props.activeIcon ? "#FFE0B2" : "white")};
+  background-color: ${(props) => (props.icon ? "#FFE0B2" : "white")};
   padding: 10px;
   width: 35px;
   height: 35px;
@@ -16,15 +16,33 @@ const StyledIcon = styled.span`
   }
 `;
 
-export const TextIcons = ({ src }) => {
+export const TextIcons = ({ src, alt, styleText }) => {
     const [activeIcon, setActiveIcon] = useState(false);
+    const [activeBtn, setActiveBtn] = useState({
+      Bold: true,
+      Italic: true,
+      UnorderedList: true,
+      OrderedList: true,
+      AlignLeft: false,
+      AlignRight: false,
+      AlignCenter: false,
+      AlignJustify: false,
+    })
   
     const handleClickIcon = () => {
-      setActiveIcon((prev) => !prev);
+      styleText()
+      setActiveIcon((prev) => {
+        if(alt === "OrrderedList"){
+
+        }
+        return !prev
+      });
     };
     return (
-      <StyledIcon activeIcon={activeIcon} onClick={handleClickIcon}>
-        <img src={src} alt="icon" />
+      <StyledIcon icon={activeIcon} onClick={handleClickIcon}>
+       <div>
+       <img src={src} alt={alt} />
+       </div>
       </StyledIcon>
     );
   };

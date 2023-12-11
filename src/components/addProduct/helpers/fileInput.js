@@ -44,22 +44,14 @@ export const FileInput = ({ onFilesSelect }) => {
             <span className="text-[10px] text-[#B3B3B3]">20 seconds left</span>
           </div>
         </div>
-        <div className={`bg-[#e6e6e6] rounded-[30px] h-[4px] w-[706px]`}>
+        <div className={`bg-[#e6e6e6] rounded-[30px] h-[4px] w-[980px]`}>
           {activeUpload && (
             <div
               className={`bg-[#186F3D] rounded-[30px] w-[0%] h-full transition-[width] duration-[2000ms] ease-linear ${
-                isUploading ? "w-[706px]" : "w-[0px]"
+                isUploading ? "w-[980px]" : "w-[0px]"
               } `}
             ></div>
           )}
-        </div>
-        <div className=" flex items-center justify between gap-[24px]">
-          <span>
-            <img src={Pause} />
-          </span>
-          <span>
-            <img src={Delete} />
-          </span>
         </div>
       </div>
     </div>
