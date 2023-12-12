@@ -44,9 +44,15 @@ import { ReactComponent as RightGreyIcon } from "./right-grey-arrow.svg";
 import { ReactComponent as RightWhiteArrow } from "./right-white-arrow.svg";
 import { ReactComponent as RightGreenArrow } from "./right-green-arrow.svg";
 import OrdersIconWhite  from "./bag-orders-white.svg";
-
+import SupportIllustration from "./support.svg"
+import EmailSupport from "./emailSupport.svg"
+import WhatsAppSupport from "./whatsAppSupport.svg"
+import PhoneSupport from "./phoneSupport.svg"
 
 export {
+    EmailSupport,
+    PhoneSupport,
+    WhatsAppSupport,
     WhiteCart,
     DownloadIcon,
     BackToTop,
@@ -89,5 +95,5 @@ export {
     EyeIcon,
     GreenRightArrow,
     LeftArrow,
-
+    SupportIllustration,
 };

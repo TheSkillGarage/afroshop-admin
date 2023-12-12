@@ -6,6 +6,7 @@ import {
   Products,
   RolesAndPermissionsDashboard,
   ViewOrdersPage,
+  SupportPage,
 } from "./pages";
 
 const MyRoutes = () => {
@@ -22,6 +23,7 @@ const MyRoutes = () => {
           element={<RolesAndPermissionsDashboard />}
         />
         <Route exact path="/add-new-role" element={<AddNewRole />} />
+        <Route exact path="/support" element={<SupportPage />} />
       </Routes>
     </BrowserRouter>
   );
