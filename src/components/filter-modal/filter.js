@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NextIcon, SearchIcon } from "../../images";
 import CustomScrollbar from "./filter.styles";
 
