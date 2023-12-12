@@ -144,6 +144,7 @@ const ProductImage = () => {
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
   };
+  
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
