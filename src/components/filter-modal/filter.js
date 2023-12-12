@@ -2,41 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NextIcon, SearchIcon } from "../../images";
 import CustomScrollbar from "./filter.styles";
 
-const Filter = ({ toggleFilters, index, item, handleToggleFilters, DATA, handleChange }) => {
-
-    const [uniqueValues, setUniqueValues] = useState([]);
-
-    const uniqueArray = Array.from(
-          new Set(
-            DATA.map(obj => {
-              if (item === 'price' && obj[item] && typeof obj[item] === 'object') {
-                return obj[item].price;
-              }
-              return obj[item];
-            }).filter(value => value !== undefined)
-          )
-        );
-      
-    
-    useEffect(() => {
-      setUniqueValues(uniqueArray);
-    }, []);
-    
-    const searchUniqueValues = (e) => {
-      let val = e.target.value;
-    
-      let uniqueItems = uniqueArray.filter(item => {
-        if (typeof item === 'string') {
-            return item.toLowerCase().includes(val.toLowerCase());
-        } else {
-            // Check if val is an empty string or item is equal to val
-            return val === '' || item == val; // Use loose equality for potential type coercion
-        }
-    })
-;    
-      setUniqueValues(uniqueItems);
-    };
-    
+const Filter = ({ toggleFilters, index, item, handleToggleFilters, handleChange, uniqueValues, searchUniqueValues }) => {
 
     return (
         <div className="mt-6">
@@ -48,11 +14,11 @@ const Filter = ({ toggleFilters, index, item, handleToggleFilters, DATA, handleC
                 <div className={`p-6 border border-1 border-[#E6E6E6] rounded h-fit ${toggleFilters[index] ? "" : "hidden"}`}>
                     <div className="relative mb-2">
                         <SearchIcon className="absolute top-[10px] left-[18px] " />
-                        <input type="text" name={`search-${item}`} placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12 focus:outline-none" onChange={(e) => searchUniqueValues(e)}/>
+                        <input type="text" name={`search-${item}`} placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12 focus:outline-none" onChange={(e) => searchUniqueValues(e, item)}/>
                     </div>
                     <CustomScrollbar className="max-h-[393px]">
                         <div className="mb-4">
-                            {uniqueValues.map((val, key) => {
+                            {uniqueValues[item] && uniqueValues[item].map((val, key) => {
                                 return (
                                     <div className="flex gap-3 items-center mb-4" key={key}>
                                         <div>
