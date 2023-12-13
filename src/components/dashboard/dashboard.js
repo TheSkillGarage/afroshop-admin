@@ -84,7 +84,7 @@ const Dashboard = () => {
 
             <div className="flex gap-4 items-end">
               <DropdownSelect options={options} placeholder="2023" />
-              <Button variant= "primary" className="w-[109px]">
+              <Button variant= "primary" className="text-[13px] w-[118px]">
                 View All Time
               </Button>
             </div>
@@ -149,7 +149,7 @@ const Dashboard = () => {
                   </Button>                  
               </div>
 
-              <BaseTable tableHeaders={headers} data={results} className= 'pl-3'/>
+              <BaseTable tableHeaders={headers} data={results} />
           </div>
 
             <div className='border-[0.5px] border-solid border-[#B3B3B3] rounded w-[320px] flex flex-col gap-4 p-6 '>
