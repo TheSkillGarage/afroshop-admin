@@ -20,7 +20,7 @@ import successIcon from "./SuccessIcon.png";
 import LoadingIcon from "./LoadingIcon.svg";
 import whiteMarkIcon from "./white-mark-icon.svg";
 import greyMarkIcon from "./grey-mark-icon.svg";
-
+import {ReactComponent as WelcomeImage} from "./welcomeImage.svg"
 
 import CardIcon  from "./card-payments.svg";
 import OrdersIcon  from "./icon-orders.svg";
@@ -44,7 +44,14 @@ import { ReactComponent as RightGreyIcon } from "./right-grey-arrow.svg";
 import { ReactComponent as RightWhiteArrow } from "./right-white-arrow.svg";
 import { ReactComponent as RightGreenArrow } from "./right-green-arrow.svg";
 import OrdersIconWhite  from "./bag-orders-white.svg";
-
+import ArrowUp from "./ArrowUp.png"
+import ArrowDown from "./ArrowDown.png"
+import PeachMilk from "./PeachMilk.png"
+import Fruit from "./Fruit.png"
+import BonelessChicken from "./BonelessChicken.png"
+import CustomerImage1 from "./CustomerImage1.png"
+import CustomerImage2 from "./CustomerImage2.png"
+import CustomerImage3 from "./CustomerImage3.png"
 
 export {
     WhiteCart,
@@ -89,5 +96,13 @@ export {
     EyeIcon,
     GreenRightArrow,
     LeftArrow,
-
+    WelcomeImage,
+    ArrowDown,
+    ArrowUp,
+    BonelessChicken,
+    PeachMilk,
+    Fruit,
+    CustomerImage1,
+    CustomerImage2,
+    CustomerImage3
 };

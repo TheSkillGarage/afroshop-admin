@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   AddNewRole,
+  DashboardPage,
   Orders,
   OverviewPage,
   Products,
   RolesAndPermissionsDashboard,
   ViewOrdersPage,
+  WelcomePage,
 } from "./pages";
 
 const MyRoutes = () => {
@@ -22,6 +24,8 @@ const MyRoutes = () => {
           element={<RolesAndPermissionsDashboard />}
         />
         <Route exact path="/add-new-role" element={<AddNewRole />} />
+        <Route exact path="/welcome" element={<WelcomePage/>} />
+        <Route exact path="/dashboard" element={<DashboardPage/>} />
       </Routes>
     </BrowserRouter>
   );
