@@ -1,18 +1,19 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import PropTypes from 'prop-types';
 import { LeftArrow } from "../../images";
 import Filter from "./filter";
 import CustomScrollbar from "./filter.styles";
 
 
-const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject }) => {
+const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA }) => {
 
     const filters = name === "orders" ? Object.keys(DATA[0]).slice(1, -1) : Object.keys(DATA[0]).slice(1) // sets DATA keys as filter criterias
 
     const [toggleFilters, setToggleFilters] = useState({});
     const [formData, setFormData] = useState({});
-    const [uniqueValues, setUniqueValues] = useState({});
+    const [filtersObject, setFiltersObject] = useState({});
 
-   //functions for toggling filters
+    //functions for toggling filters
     useEffect(() => {
         let num = {}
 
@@ -22,6 +23,7 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
             } else {
                 num[i] = false;
             }
+
         }
 
         setToggleFilters(num);
@@ -39,7 +41,7 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
 
 
     // functions for updating individual filters based on search
-    const uniqueArrays = useMemo(() => {
+    const filterSet = useMemo(() => {
         const updatedUniqueValues = {};
 
         filters.forEach((filter) => {
@@ -61,15 +63,15 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
     }, [DATA, filters]);
 
     useEffect(() => {
-        setUniqueValues(uniqueArrays);
+        setFiltersObject(filterSet);
     }, []);
-    
-    
+
+
 
     const searchUniqueValues = (e, item) => {
         let val = e.target.value;
-    
-        let filteredUniqueValues = uniqueArrays[item].filter(value => {
+
+        let filteredUniqueValues = filterSet[item].filter(value => {
             if (typeof value === 'string') {
                 return value.toLowerCase().includes(val.toLowerCase());
             } else {
@@ -77,14 +79,14 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
                 return val === '' || value == val; // Use loose equality for potential type coercion
             }
         });
-    
-        setUniqueValues(prevUniqueValues => ({
+
+        setFiltersObject(prevUniqueValues => ({
             ...prevUniqueValues,
             [item]: filteredUniqueValues,
         }));
     };
 
-// function for closing filter modal
+    // function for closing filter modal
     const closeFilter = () => {
         setOpenFilter(false);
     }
@@ -108,7 +110,7 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
     }, []);
 
 
-    
+
 
     // functions for handling filter application
     const handleChange = (e, item) => {
@@ -146,7 +148,7 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
     const handleReset = () => {
         handleFilterObject({});
         closeFilter();
-        setUniqueValues(uniqueArrays);
+        setFiltersObject(filterSet);
     }
 
 
@@ -161,7 +163,7 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
 
                     {
                         filters.map((item, key) => {
-                            return <Filter key={key} item={item} index={key} toggleFilters={toggleFilters} handleToggleFilters={handleToggleFilters} handleChange={handleChange} uniqueValues={uniqueValues} searchUniqueValues={searchUniqueValues} />
+                            return <Filter key={key} filter={item} index={key} toggleFilters={toggleFilters} handleToggleFilters={handleToggleFilters} handleChange={handleChange} filtersObject={filtersObject} searchUniqueValues={searchUniqueValues} />
                         })
                     }
                     <div className="flex justify-end gap-4 mt-20">
@@ -174,5 +176,13 @@ const FilterModal = ({ setOpenFilter, name, DATA, openFilter, handleFilterObject
     )
 }
 
+
+FilterModal.propTypes = {
+    name: PropTypes.string.isRequired,
+    openFilter: PropTypes.bool.isRequired,
+    handleFilterObject: PropTypes.func.isRequired,
+    setOpenFilter: PropTypes.func.isRequired,
+    DATA: PropTypes.array.isRequired
+};
 
 export default FilterModal;
