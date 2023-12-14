@@ -8,13 +8,38 @@ import { useNavigate } from "react-router-dom";
 import Checkbox from "../shared/checkbox";
 import useTableSelect from "../../hooks/useTableSelect";
 import BaseTable from "../shared/table";
+import useFilter from "../../hooks/useFilter";
+import Search from "../search";
+import TableFooter from "../table-footer/table-footer";
+import { useSelector } from "react-redux";
+import { getRoles } from "../../utils/roles";
 
 const RolesAndPermissions = () => {
   const [page, setPage] = useState(1);
+  const users = useSelector((s) => s.users);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterObject, setFilterObject] = useState({});
+  const [activeTab] = useState("all");
+  const handleSearch = (searchWord) => setSearchTerm(searchWord);
+  const handleFilterObject = (filterObject) => setFilterObject(filterObject);
+  const usersWithRoles = users.filter((user) => {
+    if (user.actions) {
+      return user;
+    }
+  });
+  // using custom  hooks
+  const data = useFilter(
+    "roles",
+    activeTab,
+    usersWithRoles,
+    searchTerm,
+    filterObject
+  ).filteredData;
+  console.log(ROLES_DATA);
   // from usePagination hook
-  const pagination = usePagination(page, itemsPerPage, ROLES_DATA);
+  const pagination = usePagination(page, itemsPerPage, data);
   const totalPages = pagination.totalPages; // sets total pages
 
   const handleItemsPerPage = (e) => setItemsPerPage(e.target.value); // set items per page when selected from select dropdown
@@ -71,13 +96,13 @@ const RolesAndPermissions = () => {
       name: "Status",
       width: "14.5%",
     },
-    { 
-        id: "detail",
-        name: "",
-        width: "6.5%"
-    }
+    {
+      id: "detail",
+      name: "",
+      width: "6.5%",
+    },
   ];
-  const results = pagination.currentData.map((data) => ({
+  const results = pagination?.currentData?.map((data) => ({
     ...data,
     id: data.id,
     selection: (
@@ -90,14 +115,13 @@ const RolesAndPermissions = () => {
         valueOnChecked={data.id}
       />
     ),
+    role: getRoles(data.role),
     status: (
       <div className="capitalize">
         <StatusPills status={data.status} name="roles" />
       </div>
     ),
-    detail: (
-        <Detail />
-    )
+    detail: <Detail />,
   }));
 
   return (
@@ -124,100 +148,44 @@ const RolesAndPermissions = () => {
           <div className="w-full flex justify-end items-center px-4 h-[60px]">
             <button
               className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded"
-              onClick={() => navigate("/add-new-role")}
+              onClick={() => navigate("/roles-and-permissions/add-new-role")}
             >
               Add New Role
             </button>
           </div>
 
-          <div className="flex justify-between items-center px-4 h-[93px]">
-            <div className="w-[514px] relative">
-              <SearchIcon className="absolute top-[10px] left-[18px] " />
-              <input
-                type="text"
-                placeholder="Text"
-                className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12"
-              />
-            </div>
-
-            <div className="w-[108px] h-[44px] rounded border-[0.5px] flex items-center justify-center gap-2">
-              <p className="text-[16px] leading-[24px] text-[#333333]">
-                Filter
-              </p>
-              <FilterIcon />
-            </div>
-          </div>
+          <Search
+            handleSearch={handleSearch}
+            name="roles"
+            DATA={ROLES_DATA}
+            handleFilterObject={handleFilterObject}
+          />
         </div>
 
         {/******************************************************* * table section  **************************************************************/}
 
-        <BaseTable tableHeaders={headers} data={results} />
-
-        <div className="flex justify-between px-4 pt-4 pb-6 text-[13px] leading-[23px] items-center bg-[#FFFFFF]">
-          <div className="flex gap-8 text-[#CCCCCC] items-center">
-            <p className="flex gap-4 items-center">
-              <span>Show</span>
-              <select
-                name="lines"
-                id=""
-                className="w-[56px] h-[33px] border border-1 border-[#CCCCCC] rounded focus:outline-none font-medium text-[#333333] text-[14px] leading-[16.8px]"
-                onChange={(e) => handleItemsPerPage(e)}
-              >
-                {["5", "10", "15", "20", "25", "30"].map((num, key) => {
-                  return (
-                    <option value={num} key={key}>
-                      {num}
-                    </option>
-                  );
-                })}
-              </select>
-              <span>Lines</span>
-            </p>
-
-            <p>
-              Showing {pagination.count.start} to {pagination.count.stop} of{" "}
-              {ROLES_DATA.length} orders
-            </p>
-          </div>
-
-          <div className="flex gap-1 text-[#333333]">
-            <p
-              className="h-[31px] w-[31px] rounded cursor-pointer flex justify-center items-center"
-              onClick={prevPage}
-            >
-              {page === 1 ? <PrevIcon /> : <NextIcon className="rotate-180" />}
-            </p>
-
-            <div className="flex gap-1">
-              {pagination.pageButtons.map((number, key) => {
-                return (
-                  <p
-                    key={key}
-                    className={`${page === number ? "bg-[#FFE0B2]" : null} ${
-                      number === "..." ? "text-[#CCCCCC]" : "text-[#333333]"
-                    } text-[13px] leading-[23px] mr-1 flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer transition-all duration-200 ease-in`}
-                    onClick={() =>
-                      number !== "..." ? handlePage(number) : null
-                    }
-                  >
-                    {number}
-                  </p>
-                );
-              })}
+        <BaseTable
+          tableHeaders={headers}
+          data={results}
+          emptyState={
+            <div className="bg-white border rounded-md min-h-[300px] flex items-center justify-center sticky bottom-0 left-0 mt-8">
+              <p className="text-sm text-gray-400">
+                There are no records to show for this table
+              </p>
             </div>
+          }
+        />
 
-            <p
-              className="h-[31px] w-[31px] rounded cursor-pointer flex justify-center items-center"
-              onClick={nextPage}
-            >
-              {page !== totalPages ? (
-                <NextIcon />
-              ) : (
-                <PrevIcon className="rotate-180" />
-              )}
-            </p>
-          </div>
-        </div>
+        <TableFooter
+          pagination={pagination}
+          data={data}
+          handleItemsPerPage={handleItemsPerPage}
+          prevPage={prevPage}
+          page={page}
+          handlePage={handlePage}
+          nextPage={nextPage}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );

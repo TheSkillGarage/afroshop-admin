@@ -1,27 +1,52 @@
-import React, { useState } from "react";
-import AdminNavbar from "../navbar";
-import {
-  DropdownClose,
-  DropdownOpen,
-  GreenRightArrow,
-  LeftBlackArrow,
-} from "../../images";
+import React, { useEffect, useState } from "react";
+import { GreenRightArrow } from "../../images";
 import { useNavigate } from "react-router-dom";
 import InputComponent from "../shared/inputComponent";
 import { useForm } from "react-hook-form";
-import ToggleSwitch from "../toggle-switch";
-import Checkbox from "../shared/checkbox";
+import RoleActionCard from "./role-action-card";
+import Button from "../shared/button";
+import { useDispatch, useSelector } from "react-redux";
+import sectionData from "../../data/roles-section-data";
+import { updateUserRole } from "../../redux/action";
 
 const NewRole = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const users = useSelector((s) => s.users);
+  const [sections, setSections] = useState(sectionData);
   const {
     control,
     formState: { errors },
     register,
     handleSubmit,
-  } = useForm({ mode: "all" });
-  const navigate = useNavigate();
-  const [showActions, setShowActions] = useState(false);
-  const [openSection, setOpenSection] = useState("");
+    getValues,
+  } = useForm({ defaultValues: { email: "", role: "" }, mode: "all" });
+
+  const handleSections = (data) => {
+    setSections(data);
+  };
+
+  const handleActionSubmit = (event) => {
+    event.preventDefault();
+    const values = getValues();
+
+    const newUsers = users.map((user) => {
+      if (user.email == values.email) {
+        return {
+          ...user,
+          role: values.role,
+          actions: sections,
+        };
+      } else {
+        return user;
+      }
+    });
+    console.log(newUsers);
+    dispatch(updateUserRole({ users: newUsers }));
+
+    // navigate("/roles-and-permissions")
+  };
+
   const options = [
     {
       value: "admin",
@@ -30,54 +55,6 @@ const NewRole = () => {
     {
       value: "super_admin",
       label: "Super Admin",
-    },
-  ];
-  const actions = [
-    {
-      value: "create",
-      label: "Create",
-    },
-    {
-      value: "edit",
-      label: "Edit",
-    },
-    {
-      value: "view",
-      label: "View",
-    },
-    {
-      value: "delete",
-      label: "Delete",
-    },
-  ];
-  const sections = [
-    {
-      value: "overview",
-      label: "Overview",
-    },
-    {
-      value: "orders",
-      label: "Orders",
-    },
-    {
-      value: "products",
-      label: "Products",
-    },
-    {
-      value: "payments",
-      label: "Payments",
-    },
-    {
-      value: "profile",
-      label: "Profile",
-    },
-    {
-      value: "roles-and-permissions",
-      label: "Roles & Permissions",
-    },
-    {
-      value: "support",
-      label: "Support",
     },
   ];
 
@@ -99,7 +76,10 @@ const NewRole = () => {
             Add New Role
           </p>
         </div>
-        <div className="bg-white p-6">
+        <form
+          className="bg-white p-6"
+          onSubmit={(event) => handleSubmit(handleActionSubmit(event))}
+        >
           <div className="flex justify-between gap-12">
             <InputComponent
               inputType="text"
@@ -124,50 +104,19 @@ const NewRole = () => {
             />
           </div>
 
-          {sections.map((section, index) => (
-            <div>
-              <div className="mt-8 border border-[#B3B3B3] p-4 rounded-lg">
-                <div
-                  className="flex justify-between items-center cursor-pointer"
-                  onClick={() => {
-                    setShowActions(!showActions);
-                    setOpenSection(section.value);
-                  }}
-                >
-                  <p className="text-[#186F3D] font-semibold">
-                    {section.label}
-                  </p>
-                  {showActions && openSection === section.value ? (
-                    <DropdownOpen className="w-4 h-4" />
-                  ) : (
-                    <DropdownClose className="w-4 h-4" />
-                  )}
-                </div>
-                {showActions && openSection === section.value && (
-                  <div className="flex flex-col gap-8 mt-8 w-full">
-                    <ToggleSwitch onToggle={() => {}}>
-                      Allow Access
-                    </ToggleSwitch>
-                    <div className="flex w-full justify-between">
-                      {actions.map((action) => (
-                        <div className="flex">
-                          <Checkbox
-                            value={action.value}
-                            valueOnChecked={null}
-                          />
-                          <p>{action.label}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-              {index !== sections.length - 1 && (
-                <div className="mt-8 border border-[#B3B3B3] border-dashed" />
-              )}
-            </div>
-          ))}
-        </div>
+          <RoleActionCard sections={sections} saveSections={handleSections} />
+
+          <div className="flex justify-end gap-6 mt-8">
+            <Button
+              variant="secondary"
+              type="button"
+              onClick={() => navigate("/roles-and-permissions")}
+            >
+              Cancel
+            </Button>
+            <Button type="submit"> Submit </Button>
+          </div>
+        </form>
       </div>
     </div>
   );
