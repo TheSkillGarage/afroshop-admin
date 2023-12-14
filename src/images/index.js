@@ -1,6 +1,4 @@
-
 import AfroshopLogo from "./afroshop-logo.svg";
-
 
 import { ReactComponent as MenuIcon } from "./menu.svg";
 import { ReactComponent as NotificationIcon } from "./notification.svg";
@@ -16,94 +14,115 @@ import { ReactComponent as DeleteIcon } from "./icon-delete.svg";
 import { ReactComponent as EyeIcon } from "./eye.svg";
 import { ReactComponent as GreenRightArrow } from "./green-right-icon.svg";
 import { ReactComponent as LeftArrow } from "./icon-left-arrow.svg";
+import ErrorIcon from "./ErrorIcon.svg";
+import successIcon from "./SuccessIcon.png";
+import LoadingIcon from "./LoadingIcon.svg";
+import whiteMarkIcon from "./white-mark-icon.svg";
+import greyMarkIcon from "./grey-mark-icon.svg";
 
-
-import ArrowRight  from "./arrow-right.svg";
-import ArrowDown  from "./arrow-down.svg";
-import Dot  from "./dot.svg";
-import Pause  from "./pause.svg";
-import Delete  from "./delete.svg";
+import ArrowRight from "./arrow-right.svg";
+import ArrowDown from "./arrow-down.svg";
+import Dot from "./dot.svg";
+import Pause from "./pause.svg";
+import Delete from "./delete.svg";
 import Chicken from "./chicken.svg";
 import DottedLine from "./dottedLine.svg";
 import Frame from "./frame.png";
 import Framer from "./framer.svg";
-import ColorArrowRight from "./coloredArrowRight.svg"
-import AlignLeft from "./align-left.svg"
-import AlignRight from "./align-right.svg"
-import AlignCenter from "./align-center.svg"
-import AlignJustify from "./align-justify.svg"
-import Bold from "./bold.svg"
-import Italic from "./italic.svg"
-import Link from "./link.svg"
-import OrderedList from "./ordered-list.svg"
-import UnorderedList from "./unordered-list.svg"
+import ColorArrowRight from "./coloredArrowRight.svg";
+import AlignLeft from "./align-left.svg";
+import AlignRight from "./align-right.svg";
+import AlignCenter from "./align-center.svg";
+import AlignJustify from "./align-justify.svg";
+import Bold from "./bold.svg";
+import Italic from "./italic.svg";
+import Link from "./link.svg";
+import OrderedList from "./ordered-list.svg";
+import UnorderedList from "./unordered-list.svg";
 
-
-
-import CardIcon  from "./card-payments.svg";
-import OrdersIcon  from "./icon-orders.svg";
-import OverviewIcon  from "./icon-overview.svg";
-import SupportIcon  from "./icon-support.svg";
-import RolesIcon  from "./key-roles.svg";
-import UserIcon  from "./user.svg";
-import ProductIcon  from "./icon-products.svg";
-import ProductIconWhite  from "./icon-products-white.svg";
-import PaymentsIconWhite  from "./icon-payments-white.svg";
-import OverviewIconWhite  from "./overview-white.svg";
-import UserIconWhite  from "./user-white.svg";
-import RolesIconWhite  from "./roles-white.svg";
-import SupportIconWhite  from "./icon-support-white.svg";
-
-import OrdersIconWhite  from "./bag-orders-white.svg";
-
+import CardIcon from "./card-payments.svg";
+import OrdersIcon from "./icon-orders.svg";
+import OverviewIcon from "./icon-overview.svg";
+import SupportIcon from "./icon-support.svg";
+import RolesIcon from "./key-roles.svg";
+import UserIcon from "./user.svg";
+import ProductIcon from "./icon-products.svg";
+import ProductIconWhite from "./icon-products-white.svg";
+import PaymentsIconWhite from "./icon-payments-white.svg";
+import OverviewIconWhite from "./overview-white.svg";
+import UserIconWhite from "./user-white.svg";
+import RolesIconWhite from "./roles-white.svg";
+import SupportIconWhite from "./icon-support-white.svg";
+import { ReactComponent as WhiteCart } from "./white-cart.svg";
+import { ReactComponent as DownloadIcon } from "./download.svg";
+import { ReactComponent as BackToTop } from "./back-to-top.svg";
+import { ReactComponent as LeftBlackArrow } from "./left-black-arrow.svg";
+import { ReactComponent as LoadingAnimation } from "./loading-animation.svg";
+import { ReactComponent as RightGreyIcon } from "./right-grey-arrow.svg";
+import { ReactComponent as RightWhiteArrow } from "./right-white-arrow.svg";
+import { ReactComponent as RightGreenArrow } from "./right-green-arrow.svg";
+import OrdersIconWhite from "./bag-orders-white.svg";
 
 export {
-    AfroshopLogo,
-    MenuIcon,
-    NotificationIcon,
-    SettingsIcon,
-    ProfilePic,
-    CardIcon,
-    OrdersIcon,
-    OverviewIcon,
-    SupportIcon,
-    RolesIcon,
-    UserIcon,
-    ProductIcon,
-    OrdersIconWhite,
-    ProductIconWhite,
-    PaymentsIconWhite,
-    OverviewIconWhite,
-    UserIconWhite,
-    RolesIconWhite,
-    SupportIconWhite,
-    SearchIcon,
-    FilterIcon,
-    DetailsIcon,
-    PrevIcon,
-    NextIcon,
-    EditIcon,
-    DeleteIcon,
-    EyeIcon,
-    GreenRightArrow,
-    LeftArrow,
-    ArrowRight, 
-    ArrowDown, 
-    Dot,
-     Pause, 
-     Delete,
-      Chicken, 
-      DottedLine, 
-      Frame, 
-      Framer, 
-      ColorArrowRight,
-      AlignLeft,
-      AlignRight,
-      AlignCenter,
-      AlignJustify,
-      Bold,
-      Italic,
-      Link,
-      OrderedList,
-      UnorderedList,
+  WhiteCart,
+  DownloadIcon,
+  BackToTop,
+  LeftBlackArrow,
+  LoadingAnimation,
+  RightGreenArrow,
+  RightGreyIcon,
+  RightWhiteArrow,
+  successIcon,
+  LoadingIcon,
+  ErrorIcon,
+  whiteMarkIcon,
+  greyMarkIcon,
+  AfroshopLogo,
+  MenuIcon,
+  NotificationIcon,
+  SettingsIcon,
+  ProfilePic,
+  CardIcon,
+  OrdersIcon,
+  OverviewIcon,
+  SupportIcon,
+  RolesIcon,
+  UserIcon,
+  ProductIcon,
+  OrdersIconWhite,
+  ProductIconWhite,
+  PaymentsIconWhite,
+  OverviewIconWhite,
+  UserIconWhite,
+  RolesIconWhite,
+  SupportIconWhite,
+  SearchIcon,
+  FilterIcon,
+  DetailsIcon,
+  PrevIcon,
+  NextIcon,
+  EditIcon,
+  DeleteIcon,
+  EyeIcon,
+  GreenRightArrow,
+  LeftArrow,
+  ArrowRight,
+  ArrowDown,
+  Dot,
+  Pause,
+  Delete,
+  Chicken,
+  DottedLine,
+  Frame,
+  Framer,
+  ColorArrowRight,
+  AlignLeft,
+  AlignRight,
+  AlignCenter,
+  AlignJustify,
+  Bold,
+  Italic,
+  Link,
+  OrderedList,
+  UnorderedList,
 };
