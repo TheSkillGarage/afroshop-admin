@@ -8,7 +8,7 @@ const DeleteUser = ({ handleClose }) => {
       <p className="text-base text-[#333333]">
         Are you sure you want to delete this user? This action cannot be undone.
       </p>
-      <div className="flex">
+      <div className="flex gap-6">
         <Button variant="secondary" onClick={handleClose}>
           No, cancel
         </Button>
