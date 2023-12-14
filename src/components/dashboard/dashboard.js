@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
-import DropdownSelect from '../shared/dropdown';
 import SummaryCards from './summaryCards';
-import { ArrowDown, ArrowUp, BonelessChicken, CustomerImage1, CustomerImage2, CustomerImage3, Fruit, PeachMilk } from '../../images';
+import {
+  ArrowDown,
+  ArrowUp,
+  BonelessChicken,
+  CustomerImage1,
+  CustomerImage2,
+  CustomerImage3,
+  Fruit,
+  PeachMilk,
+} from '../../images';
 import ProductCard from './productCard';
 import CustomerCard from './customerCard';
 import BaseTable from '../shared/table';
 import StatusPills from '../status-pills';
-import SelectDropdown from '../shared/dropdown';
+import SelectDropdown from '../shared/dropdownInput/dropdown';
 import Button from '../shared/button';
 import ORDERS_SUMMARY from '../../data/orderSummary';
-import {LineChart} from './lineChart';
-
+import { LineChart } from './lineChart';
 
 const Dashboard = () => {
-  
   const options = [
     { value: 2023, label: 2023 },
     { value: 2022, label: 2022 },
@@ -22,34 +28,34 @@ const Dashboard = () => {
 
   const headers = [
     {
-      id: "orderID",
-      name: "order ID",
-      width: "15%",
+      id: 'orderID',
+      name: 'order ID',
+      width: '15%',
     },
     {
-      id: "orderDate",
-      name: "order Date",
-      width: "15%",
+      id: 'orderDate',
+      name: 'order Date',
+      width: '15%',
     },
     {
-      id: "customer",
-      name: "customer",
-      width: "15%",
+      id: 'customer',
+      name: 'customer',
+      width: '15%',
     },
     {
-      id: "price",
-      name: "price",
-      width: "15%",
+      id: 'price',
+      name: 'price',
+      width: '15%',
     },
     {
-      id: "items",
-      name: "items",
-      width: "15%",
+      id: 'items',
+      name: 'items',
+      width: '15%',
     },
     {
-      id: "status",
-      name: "Status",
-      width: "15%",
+      id: 'status',
+      name: 'Status',
+      width: '15%',
     },
   ];
 
@@ -60,7 +66,7 @@ const Dashboard = () => {
       <div className="capitalize">
         <StatusPills status={data.status} name="orders" />
       </div>
-    )
+    ),
   }));
 
   return (
@@ -83,8 +89,8 @@ const Dashboard = () => {
             </div>
 
             <div className="flex gap-4 items-end">
-              <DropdownSelect options={options} placeholder="2023" />
-              <Button variant= "primary" className="text-[13px] w-[118px]">
+              <SelectDropdown options={options} placeholder="2023" />
+              <Button variant="primary" className="text-[13px] w-[118px]">
                 View All Time
               </Button>
             </div>
@@ -121,46 +127,77 @@ const Dashboard = () => {
             />
           </div>
 
-          <div className='flex justify-between h-[332px]'>
-            <div className='border-[0.5px] border-solid border-[#B3B3B3] rounded w-[830px] p-4 flex flex-col gap-4'>
-              <div className='flex justify-between h-10'>
-                  <p className='font-semibold text-base'>Summary</p>
-                  <SelectDropdown options={options} field="summary" placeholder= "Last 7 Days" />
+          <div className="flex justify-between h-[332px]">
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[830px] p-4 flex flex-col gap-4">
+              <div className="flex justify-between h-10">
+                <p className="font-semibold text-base">Summary</p>
+                <SelectDropdown
+                  options={options}
+                  placeholder="Last 7 Days"                  
+                />
+
               </div>
-              <div className='h-[250px]'>
+              <div className="h-[250px]">
                 <LineChart />
-              </div>                          
+              </div>
             </div>
 
-            <div className='border-[0.5px] border-solid border-[#B3B3B3] rounded w-[320px] flex flex-col gap-4 p-4 '>
-               <p className='font-semibold text-base'>Top Selling Products</p>
-               <ProductCard productImage={PeachMilk} productName= "Peak Milk Full Cream Powder Pouch" salesData= "124 Sales"/>
-               <ProductCard productImage={BonelessChicken} productName= "Boneless Chicken Breasts with Rib Meat" salesData= "124 Sales"/>
-               <ProductCard productImage={Fruit} productName= "Palm Fruit (Kernel)" salesData= "124 Sales"/>
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[320px] flex flex-col gap-4 p-4 ">
+              <p className="font-semibold text-base">Top Selling Products</p>
+              <ProductCard
+                productImage={PeachMilk}
+                productName="Peak Milk Full Cream Powder Pouch"
+                salesData="124 Sales"
+              />
+              <ProductCard
+                productImage={BonelessChicken}
+                productName="Boneless Chicken Breasts with Rib Meat"
+                salesData="124 Sales"
+              />
+              <ProductCard
+                productImage={Fruit}
+                productName="Palm Fruit (Kernel)"
+                salesData="124 Sales"
+              />
             </div>
           </div>
 
-          <div className='flex justify-between h-[332px]'>
-          <div className='border-[0.5px] border-solid border-[#B3B3B3] rounded w-[830px] py-6 px-4 flex flex-col gap-4'>
-              <div className='flex justify-between h-10'>
-                  <p className='font-semibold text-base'>Recent Orders</p>
-                  <Button variant= "tertiary" className="h-[40px] w-[109px]">
-                    View All
-                  </Button>                  
+          <div className="flex justify-between h-[332px]">
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[830px] py-6 px-4 flex flex-col gap-4">
+              <div className="flex justify-between h-10">
+                <p className="font-semibold text-base">Recent Orders</p>
+                <Button variant="tertiary" className="h-[40px] w-[109px]">
+                  View All
+                </Button>
               </div>
 
-              <BaseTable tableHeaders={headers} data={results} />
+                <BaseTable tableHeaders={headers} data={results} />
+            
+            </div>
+
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[320px] flex flex-col gap-4 p-6 ">
+              <p className="font-semibold text-base">Weekly Top Customers</p>
+              <CustomerCard
+                customerImage={CustomerImage1}
+                customerName="Paityn Dokidis"
+                customerEmail="paitynd@gmail.com"
+                numberOrders="54 orders"
+              />
+              <CustomerCard
+                customerImage={CustomerImage2}
+                customerName="Skylar Dowarts"
+                customerEmail="skyd@gmail.com"
+                numberOrders="43 orders"
+              />
+              <CustomerCard
+                customerImage={CustomerImage3}
+                customerName="Jacob Vetrovs"
+                customerEmail="jacobv@gmail.com"
+                numberOrders="22 orders"
+              />
+            </div>
           </div>
-
-            <div className='border-[0.5px] border-solid border-[#B3B3B3] rounded w-[320px] flex flex-col gap-4 p-6 '>
-               <p className='font-semibold text-base'>Weekly Top Customers</p>
-               <CustomerCard customerImage= {CustomerImage1} customerName= "Paityn Dokidis" customerEmail = "paitynd@gmail.com" numberOrders= "54 orders"/>
-               <CustomerCard customerImage= {CustomerImage2} customerName= "Skylar Dowarts" customerEmail = "skyd@gmail.com" numberOrders= "43 orders"/>
-               <CustomerCard customerImage= {CustomerImage3} customerName= "Jacob Vetrovs" customerEmail = "jacobv@gmail.com" numberOrders= "22 orders"/>
-          </div>          
         </div>
-
-      </div>
       </div>
     </div>
   );
