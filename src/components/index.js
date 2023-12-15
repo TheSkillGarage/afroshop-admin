@@ -7,3 +7,4 @@ export { default as ViewOrders } from './orders/view-orders';
 export {default as RolesAndPermissions} from './roles-and-permissions';
 export {default as Welcome} from './dashboard/welcome'
 export {default as Dashboard} from './dashboard/dashboard'
+export {default as Profile} from './profile';

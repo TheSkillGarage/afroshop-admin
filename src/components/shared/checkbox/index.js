@@ -32,7 +32,7 @@ const Checkbox = ({ name, handleChange, isChecked, isDisabled, children, valueOn
 
 Checkbox.propTypes = {
   name: PropTypes.string.isRequired,
-  isChecked: PropTypes.bool.isRequired,
+  isChecked: PropTypes.bool,
   handleChange: PropTypes.func.isRequired,
   isDisabled: PropTypes.bool,
   children: PropTypes.node,

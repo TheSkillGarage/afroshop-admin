@@ -33,9 +33,9 @@ export const useFilter = (name, activeTab, DATA, searchTerm, filterObject) => {
             });
         }
 
-        setFilteredData(updatedData);
+        if (updatedData.length !== 0) {setFilteredData(updatedData)};
 
-    }, [name, activeTab, DATA, searchTerm, filterObject]);
+    }, [name, activeTab, searchTerm, filterObject]);
 
 
     return {

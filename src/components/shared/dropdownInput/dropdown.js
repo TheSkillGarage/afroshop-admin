@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 
-const SelectDropdown = ({ className, options, field, errors, placeholder }) => {
+const SelectDropdown = ({ className, options, field, errors, placeholder, multiple }) => {
     const selectStyles = {
     control: (baseStyles, state) => ({
       ...baseStyles,
@@ -37,6 +37,7 @@ const SelectDropdown = ({ className, options, field, errors, placeholder }) => {
     <>
       <Select
         styles={selectStyles}
+        isMulti={multiple}
         isSearchable = {false}
         placeholder= {placeholder}
         name={field?.name}
