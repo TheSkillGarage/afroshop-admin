@@ -3,7 +3,7 @@ import React from 'react';
 const SummaryCards = ({ cardTitle, backgroundColor, cardNumber, arrowImage, percentage }) => {
   return (
     <div
-      className="w-[280px] h-[172px] px-4 py-6 flex flex-col gap-5"
+      className="w-[45%] h-[172px] px-4 py-6 flex flex-col gap-5"
       style={{backgroundColor}}
     >
       <p className="text-base font-normal text-[#7F7F7F]">{cardTitle}</p>

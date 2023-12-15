@@ -52,6 +52,7 @@ const Dashboard = () => {
             </div>
           </div>
 
+          {/* --------------Summary Cards--------------------------- */}
           <div className="flex gap-4">
             {DASHBOARD_SUMMARY_CARDS.map((data) => (
               <SummaryCards
@@ -63,9 +64,10 @@ const Dashboard = () => {
               />
             ))}
           </div>
-
+          
+          {/* --------------Line chart and Top products-------------- */}
           <div className="flex justify-between h-[332px]">
-            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[830px] p-4 flex flex-col gap-4">
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[68%] p-4 flex flex-col gap-4">
               <div className="flex justify-between h-10">
                 <p className="font-semibold text-base">Summary</p>
                 <SelectDropdown
@@ -78,15 +80,16 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[320px] flex flex-col gap-4 p-4 ">
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-4 ">
               <p className="font-semibold text-base">Top Selling Products</p>
               {DASHBOARD_PRODUCT_CARD.map((data)=>
               <ProductCard productImage={data.productImage} productName={data.productName} salesData={data.salesData}/>)}
             </div>
           </div>
 
-          <div className="flex justify-between h-[332px]">
-            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[830px] py-6 px-4 flex flex-col gap-4">
+          {/* --------------Table and Top customers---------------- */}
+           <div className="flex justify-between h-[332px]">
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[68%] py-6 px-4 flex flex-col gap-4">
               <div className="flex justify-between h-10">
                 <p className="font-semibold text-base">Recent Orders</p>
                 <Button variant="tertiary" className="h-[40px] w-[109px]">
@@ -100,7 +103,7 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[320px] flex flex-col gap-4 p-6 ">
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-6 ">
               <p className="font-semibold text-base">Weekly Top Customers</p>
               {DASHBOARD_CUSTOMER_CARD.map((data)=>
               <CustomerCard
@@ -111,7 +114,7 @@ const Dashboard = () => {
             />)}
              
             </div>
-          </div>
+          </div> 
         </div>
       </div>
     </div>
