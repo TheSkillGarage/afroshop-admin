@@ -49,7 +49,8 @@ import Fruit from "./Fruit.png"
 import BonelessChicken from "./BonelessChicken.png"
 import CustomerImage1 from "./CustomerImage1.png"
 import CustomerImage2 from "./CustomerImage2.png"
-import CustomerImage3 from "./CustomerImage3.png"import { ReactComponent as DropdownOpen } from "./dropdown-open.svg";
+import CustomerImage3 from "./CustomerImage3.png"
+import { ReactComponent as DropdownOpen } from "./dropdown-open.svg";
 import { ReactComponent as DropdownClose } from "./dropdown-close.svg";
 import { ReactComponent as EditIcon2 } from "./edit-icon.svg";
 import { ReactComponent as LocationIcon } from "./Location.svg";
@@ -103,13 +104,14 @@ export {
   DropdownClose,
   DropdownOpen,
   EditIcon2,
-  LocationIcon    WelcomeImage,
-    ArrowDown,
-    ArrowUp,
-    BonelessChicken,
-    PeachMilk,
-    Fruit,
-    CustomerImage1,
-    CustomerImage2,
-    CustomerImage3
+  LocationIcon,
+  WelcomeImage,
+  ArrowDown,
+  ArrowUp,
+  BonelessChicken,
+  PeachMilk,
+  Fruit,
+  CustomerImage1,
+  CustomerImage2,
+  CustomerImage3
 };
