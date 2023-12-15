@@ -24,7 +24,6 @@ const MyRoutes = () => {
           element={<RolesAndPermissionsDashboard />}
         />
         <Route exact path="/add-new-role" element={<AddNewRole />} />
-        <Route exact path="/welcome" element={<WelcomePage/>} />
         <Route exact path="/dashboard" element={<DashboardPage/>} />
       </Routes>
     </BrowserRouter>
