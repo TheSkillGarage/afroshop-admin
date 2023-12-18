@@ -32,6 +32,7 @@ const OrdersDashboard = () => {
 
   // using custom  hooks
   const data = useFilter("orders", activeTab, ORDERS_DATA, searchTerm, filterObject).filteredData;
+  console.log(data)
   const pagination = usePagination(page, itemsPerPage, data);
   const totalPages = pagination.totalPages; // sets total 
 

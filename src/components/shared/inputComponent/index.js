@@ -50,10 +50,11 @@ const InputComponent = ({
   handleChange,
   handleInputClick,
   isReadOnly = false,
+  multiple = false,
   compoundValidation = false,
 }) => {
   return (
-    <div className="w-full">
+    <div className="flex flex-col gap-2 w-full">
       <label className="text-[#B3B3B3] text-[13px]">{label}</label>
       {inputType === "select" ? (
         <Controller
@@ -61,15 +62,19 @@ const InputComponent = ({
           name={fieldName}
           rules={{ required: required }}
           render={({ field }) => (
-            <SelectDropdown
-              className={`${className}`}
-              field={field}
-              name={field?.name}
-              inputRef={field?.ref}
-              errors={errors}
-              options={options}
-              placeholder={placeholder}
-            />
+            <div className="relative">
+              {leftIcon ? <img src={leftIcon} className="absolute" alt="leftIcon" /> : null}
+              <SelectDropdown
+                multiple={multiple}
+                className={`${className} rounded`}
+                field={field}
+                name={field?.name}
+                inputRef={field?.ref}
+                errors={errors}
+                options={options}
+                placeholder={placeholder}
+              />
+            </div>
           )}
         />
       ) : (

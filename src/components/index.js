@@ -5,3 +5,4 @@ export { default as OrdersDashboard } from './orders';
 export { default as ProductsDashboard } from './products';
 export { default as ViewOrders } from './orders/view-orders';
 export {default as RolesAndPermissions} from './roles-and-permissions';
+export {default as Profile} from './profile';
