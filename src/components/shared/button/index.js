@@ -9,6 +9,7 @@ import {
   WhiteCart,
   DownloadIcon,
   BackToTop,
+  AddIcon,
 } from "../../../images";
 import PropTypes from "prop-types";
 
@@ -48,7 +49,8 @@ const ICONS = {
   black: <LeftBlackArrow />,
   cart: <WhiteCart />,
   download: <DownloadIcon />,
-  top: <BackToTop />
+  top: <BackToTop />,
+  add: <AddIcon />
 };
 const iconDirection = {
   row: "flex flex-row",

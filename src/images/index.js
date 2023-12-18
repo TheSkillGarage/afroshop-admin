@@ -63,7 +63,15 @@ import { ReactComponent as RightWhiteArrow } from "./right-white-arrow.svg";
 import { ReactComponent as RightGreenArrow } from "./right-green-arrow.svg";
 import OrdersIconWhite from "./bag-orders-white.svg";
 
+import { ReactComponent as DropdownOpen } from "./dropdown-open.svg";
+import { ReactComponent as DropdownClose } from "./dropdown-close.svg";
+import { ReactComponent as EditIcon2 } from "./edit-icon.svg";
+import { ReactComponent as LocationIcon } from "./Location.svg";
+import { ReactComponent as AddIcon } from "./add-icon.svg";
+import { ReactComponent as ProfileImage } from "./profile-image.svg";
 export {
+  ProfileImage,
+  AddIcon,
   WhiteCart,
   DownloadIcon,
   BackToTop,
@@ -125,4 +133,8 @@ export {
   Link,
   OrderedList,
   UnorderedList,
+  DropdownClose,
+  DropdownOpen,
+  EditIcon2,
+  LocationIcon
 };
