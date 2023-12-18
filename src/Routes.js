@@ -4,6 +4,7 @@ import {
   Orders,
   OverviewPage,
   Products,
+  ProfilePage,
   RolesAndPermissionsDashboard,
   ViewOrdersPage,
   SupportPage,
@@ -24,6 +25,8 @@ const MyRoutes = () => {
         />
         <Route exact path="/add-new-role" element={<AddNewRole />} />
         <Route exact path="/support" element={<SupportPage />} />
+        <Route exact path="/roles-and-permissions/add-new-role" element={<AddNewRole />} />
+        <Route exact path="/profile" element={<ProfilePage />} />
       </Routes>
     </BrowserRouter>
   );
