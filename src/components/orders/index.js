@@ -154,7 +154,16 @@ const OrdersDashboard = () => {
 
 
 
-        <TableFooter pagination={pagination} data={data} handleItemsPerPage={handleItemsPerPage} prevPage={prevPage} page={page} handlePage={handlePage} nextPage={nextPage} totalPages={totalPages} />
+        <TableFooter 
+        pagination={pagination} 
+        data={data}
+        itemsPerPage={itemsPerPage} 
+        handleItemsPerPage={handleItemsPerPage} 
+        prevPage={prevPage} 
+        page={page} 
+        handlePage={handlePage} 
+        nextPage={nextPage} 
+        totalPages={totalPages} />
 
       </div>
 
