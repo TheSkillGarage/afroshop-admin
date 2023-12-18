@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { InputBox } from './inputStyles';
-import PropTypes from 'prop-types';
-import { ErrorIcon, LoadingIcon, successIcon } from '../../../images';
-import SelectDropdown from '../dropdownInput/dropdown';
-import { Controller } from 'react-hook-form';
+import React, { useState } from "react";
+import { InputBox } from "./inputStyles";
+import PropTypes from "prop-types";
+import { ErrorIcon, LoadingIcon, successIcon } from "../../../images";
+import SelectDropdown from "../dropdownInput/dropdown";
+import { Controller } from "react-hook-form";
 
 /**
  * @description Input Component
@@ -33,6 +33,7 @@ const InputComponent = ({
   rightIcon,
   onIconClick,
   iconClassName,
+  label,
   name,
   placeholder,
   required,
@@ -49,32 +50,41 @@ const InputComponent = ({
   handleChange,
   handleInputClick,
   isReadOnly = false,
+  multiple = false,
   compoundValidation = false,
 }) => {
   return (
-    <div>
-      {inputType === 'Select' ? (
+    <div className="flex flex-col gap-2 w-full">
+      <label className="text-[#B3B3B3] text-[13px]">{label}</label>
+      {inputType === "select" ? (
         <Controller
           control={control}
           name={fieldName}
           rules={{ required: required }}
           render={({ field }) => (
-            <SelectDropdown
-              className={`${className}`}
-              field={field}
-              name={field.name}
-              inputRef={field.ref}
-              errors={errors}
-              options={options}
-              placeholder = {placeholder}
-            />
+            <div className="relative">
+              {leftIcon ? <img src={leftIcon} className="absolute" alt="leftIcon" /> : null}
+              <SelectDropdown
+                multiple={multiple}
+                className={`${className} rounded`}
+                field={field}
+                name={field?.name}
+                inputRef={field?.ref}
+                errors={errors}
+                options={options}
+                placeholder={placeholder}
+              />
+            </div>
           )}
         />
       ) : (
         <InputBox
           loading={loading}
           success={success}
-          className={`${className} ${errors[fieldName] && ( fieldName === 'currentPassword' ? null : 'input_error')}`}
+          className={`${className} ${
+            errors[fieldName] &&
+            (fieldName === "currentPassword" ? null : "input_error")
+          }`}
         >
           {leftIcon ? <img src={leftIcon} alt="leftIcon" /> : null}
           <input
@@ -98,19 +108,28 @@ const InputComponent = ({
                 : null,
             })}
             readOnly={isReadOnly}
-            onKeyDown={keyDown}            
+            onKeyDown={keyDown}
           />
-      
-        {rightIcon ? <img src={rightIcon} alt="rightIcon" onClick={onIconClick} className={iconClassName}/> : null}
-      </InputBox>
+
+          {rightIcon ? (
+            <img
+              src={rightIcon}
+              alt="rightIcon"
+              onClick={onIconClick}
+              className={iconClassName}
+            />
+          ) : null}
+        </InputBox>
       )}
-      
-        {fieldName !== "currentPassword" && errors[fieldName] && (
-          <div className="flex flex-row gap-2 mt-1 ">
-            <img src={ErrorIcon} alt="errorIcon" />
-            <span className="text-[#FF3B30] text-[10px]">{errors[fieldName].message}</span>
-          </div>
-        )}
+
+      {fieldName !== "currentPassword" && errors[fieldName] && (
+        <div className="flex flex-row gap-2 mt-1 ">
+          <img src={ErrorIcon} alt="errorIcon" />
+          <span className="text-[#FF3B30] text-[10px]">
+            {errors[fieldName].message}
+          </span>
+        </div>
+      )}
 
       {loading && (
         <div className="flex flex-row gap-2">
@@ -126,7 +145,7 @@ const InputComponent = ({
         </div>
       )}
     </div>
-  );  
+  );
 };
 
 InputComponent.propTypes = {
