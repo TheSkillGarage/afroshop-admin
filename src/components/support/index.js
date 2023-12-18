@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  SupportIllustration,
-  WhatsAppSupport,
-  PhoneSupport,
-  EmailSupport,
-} from "../../images";
+import { SupportIllustration } from "../../images";
 import { Link } from "react-router-dom";
 import { SUPPORT_DATA } from "../../data/supportData";
 
