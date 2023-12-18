@@ -1,0 +1,1 @@
+export {CATEGORY_DATA} from './AddCategory'
