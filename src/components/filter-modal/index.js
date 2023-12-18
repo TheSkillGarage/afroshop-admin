@@ -64,8 +64,6 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
 
     useEffect(() => {
         setFiltersObject(filterSet);
-
-        console.log(filterSet)
     }, []);
 
 
