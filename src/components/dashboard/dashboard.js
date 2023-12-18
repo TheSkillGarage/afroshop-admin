@@ -103,7 +103,7 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-6 ">
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-4 ">
               <p className="font-semibold text-base">Weekly Top Customers</p>
               {DASHBOARD_CUSTOMER_CARD.map((data)=>
               <CustomerCard

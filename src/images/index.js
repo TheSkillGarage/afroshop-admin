@@ -42,8 +42,8 @@ import { ReactComponent as RightGreyIcon } from "./right-grey-arrow.svg";
 import { ReactComponent as RightWhiteArrow } from "./right-white-arrow.svg";
 import { ReactComponent as RightGreenArrow } from "./right-green-arrow.svg";
 import OrdersIconWhite from "./bag-orders-white.svg";
-import ArrowUp from "./ArrowUp.png"
-import ArrowDown from "./ArrowDown.png"
+import ArrowUp from "./ArrowUp.svg"
+import ArrowDown from "./ArrowDown.svg"
 import PeachMilk from "./PeachMilk.png"
 import Fruit from "./Fruit.png"
 import BonelessChicken from "./BonelessChicken.png"

@@ -19,42 +19,45 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend, 
+  Legend
 );
 
 export function LineChart() {
   const options = {
+    bezierCurve : true,
     scales: {
-        x: {
-          beginAtZero: true,
-          grid:{
-            display:false
-        },    
-        border:{
-            color:'#B3B3B3'
-        }    
+      x: {
+        beginAtZero: true,
+        grid: {
+          display: false,
         },
-        y: {
-            beginAtZero: true,
-            border:{
-                display: false,
-                dash:[6],                
-            },                         
-          }
+        border: {
+          color: '#B3B3B3',
+        },
       },
+      y: {
+        beginAtZero: true,
+        border: {
+          display: false,
+          dash: [6],
+        },
+      },
+    },
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'bottom',
+        boxHeight: 3,
+        boxWidth:3,
         labels: {
           usePointStyle: true,
-          pointStyle: 'circle',
+          pointStyle: 'circle',                    
         },
       },
       title: {
         display: false,
-      },      
+      },
     },
   };
 
@@ -66,12 +69,14 @@ export function LineChart() {
         data: LINE_CHART_DATA.map((data) => data.orders),
         borderColor: '#186F3D',
         backgroundColor: '#186F3D',
+        lineTension: 0.5,        
       },
       {
         label: 'Orders',
         data: LINE_CHART_DATA.map((data) => data.income),
         borderColor: '#FCAE17',
         backgroundColor: '#FCAE17',
+        lineTension: 0.5,
       },
     ],
   };

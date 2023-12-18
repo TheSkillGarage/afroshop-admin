@@ -1,8 +1,13 @@
 import React from 'react'
 import { WelcomeImage } from '../../images'
 import Button from '../shared/button'
+import { useNavigate } from 'react-router-dom'
 
 const Welcome = () => {
+  const navigate = useNavigate();
+  const handleBtnClick = () =>{
+    navigate("/dashboard")
+  }
   return (
     <div className="bg-[#F2F2F2] w-full pt-6 pb-8 px-4">
         <div className="flex items-center gap-8 mb-6 h-[39px]">
@@ -20,7 +25,7 @@ const Welcome = () => {
         <p> Click the button below.</p>
 
         </div>
-        <Button className="h-[40px] w-[400px]" icon="white">Add My Store</Button>
+        <Button className="h-[40px] w-[400px]" icon="white" onClick={handleBtnClick}>Add My Store</Button>
 
     </div>
     </div>
