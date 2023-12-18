@@ -69,11 +69,18 @@ import { ReactComponent as EditIcon2 } from "./edit-icon.svg";
 import { ReactComponent as LocationIcon } from "./Location.svg";
 import { ReactComponent as AddIcon } from "./add-icon.svg";
 import { ReactComponent as ProfileImage } from "./profile-image.svg";
+//import OrdersIconWhite  from "./bag-orders-white.svg";
+import SupportIllustration from "./support.svg"
+import EmailSupport from "./emailSupport.svg"
+import WhatsAppSupport from "./whatsAppSupport.svg"
+import PhoneSupport from "./phoneSupport.svg"
+
+
 export {
-  ProfileImage,
-  AddIcon,
+  EmailSupport,
+  PhoneSupport,
+  WhatsAppSupport,
   WhiteCart,
-  DownloadIcon,
   BackToTop,
   LeftBlackArrow,
   LoadingAnimation,
@@ -114,6 +121,10 @@ export {
   EyeIcon,
   GreenRightArrow,
   LeftArrow,
+  SupportIllustration,
+  ProfileImage,
+  AddIcon,
+  DownloadIcon,
   ArrowRight,
   ArrowDown,
   Dot,
