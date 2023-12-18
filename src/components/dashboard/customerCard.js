@@ -7,11 +7,11 @@ const CustomerCard = ({
   numberOrders,
 }) => {
   return (
-    <div className="flex gap-4 w-full">
+    <div className="flex gap-4">
       <img src={customerImage} alt="Customer Image" />
 
       <div className="flex gap-4 justify-between w-full">
-        <div className="flex flex-col gap-1 flex-wrap">
+        <div className="flex flex-col gap-1 flex-wrap w-[60%]">
           <p className="font-semibold text-[13px] text-[#186F3D]">
             {customerName}
           </p>
