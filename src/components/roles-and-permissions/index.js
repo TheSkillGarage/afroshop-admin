@@ -179,6 +179,7 @@ const RolesAndPermissions = () => {
         <TableFooter
           pagination={pagination}
           data={data}
+          itemsPerPage={itemsPerPage}
           handleItemsPerPage={handleItemsPerPage}
           prevPage={prevPage}
           page={page}

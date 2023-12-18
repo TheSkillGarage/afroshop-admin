@@ -155,7 +155,16 @@ const ProductsDashboard = () => {
                 <BaseTable tableHeaders={headers} data={results} />
 
 
-                <TableFooter pagination={pagination} data={data} handleItemsPerPage={handleItemsPerPage} prevPage={prevPage} page={page} handlePage={handlePage} nextPage={nextPage} totalPages={totalPages} />
+                <TableFooter 
+                pagination={pagination}
+                itemsPerPage={itemsPerPage} 
+                data={data} 
+                handleItemsPerPage={handleItemsPerPage} 
+                prevPage={prevPage} 
+                page={page} 
+                handlePage={handlePage} 
+                nextPage={nextPage} 
+                totalPages={totalPages} />
             </div>
 
 

@@ -21,9 +21,9 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
               {tableHeaders.map((header) => (
                 <th
                   key={header.id}
-                  className={`w-[${header.width}] ${
-                    header.id === "SKU" ? "pl-8" : ""
-                  }`}
+                  className={`${(header.id === "selection" || header.id === "detail") ? "w-[6.5%]" : "w-[14.5%]"} 
+                  ${header.id === "SKU" ? "pl-8" : ""}`
+                }
                 >
                   {header.name}
                 </th>
