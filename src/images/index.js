@@ -20,6 +20,26 @@ import LoadingIcon from "./LoadingIcon.svg";
 import whiteMarkIcon from "./white-mark-icon.svg";
 import greyMarkIcon from "./grey-mark-icon.svg";
 
+import ArrowRight from "./arrow-right.svg";
+import ArrowDown from "./arrow-down.svg";
+import Dot from "./dot.svg";
+import Pause from "./pause.svg";
+import Delete from "./delete.svg";
+import Chicken from "./chicken.svg";
+import DottedLine from "./dottedLine.svg";
+import Frame from "./frame.png";
+import Framer from "./framer.svg";
+import ColorArrowRight from "./coloredArrowRight.svg";
+import AlignLeft from "./align-left.svg";
+import AlignRight from "./align-right.svg";
+import AlignCenter from "./align-center.svg";
+import AlignJustify from "./align-justify.svg";
+import Bold from "./bold.svg";
+import Italic from "./italic.svg";
+import Link from "./link.svg";
+import OrderedList from "./ordered-list.svg";
+import UnorderedList from "./unordered-list.svg";
+
 import CardIcon from "./card-payments.svg";
 import OrdersIcon from "./icon-orders.svg";
 import OverviewIcon from "./icon-overview.svg";
@@ -40,7 +60,9 @@ import { ReactComponent as LeftBlackArrow } from "./left-black-arrow.svg";
 import { ReactComponent as LoadingAnimation } from "./loading-animation.svg";
 import { ReactComponent as RightGreyIcon } from "./right-grey-arrow.svg";
 import { ReactComponent as RightWhiteArrow } from "./right-white-arrow.svg";
-import { ReactComponent as RightGreenArrow } from "./right-green-arrow.svg";import OrdersIconWhite from "./bag-orders-white.svg";
+import { ReactComponent as RightGreenArrow } from "./right-green-arrow.svg";
+import OrdersIconWhite from "./bag-orders-white.svg";
+
 import { ReactComponent as DropdownOpen } from "./dropdown-open.svg";
 import { ReactComponent as DropdownClose } from "./dropdown-close.svg";
 import { ReactComponent as EditIcon2 } from "./edit-icon.svg";
@@ -103,6 +125,25 @@ export {
   ProfileImage,
   AddIcon,
   DownloadIcon,
+  ArrowRight,
+  ArrowDown,
+  Dot,
+  Pause,
+  Delete,
+  Chicken,
+  DottedLine,
+  Frame,
+  Framer,
+  ColorArrowRight,
+  AlignLeft,
+  AlignRight,
+  AlignCenter,
+  AlignJustify,
+  Bold,
+  Italic,
+  Link,
+  OrderedList,
+  UnorderedList,
   DropdownClose,
   DropdownOpen,
   EditIcon2,
