@@ -16,7 +16,7 @@ const Support = () => {
           <Link to="/support">Support</Link>
         </div>
       </div>
-      <div className="flex items-center bg-white rounded-[6px] px-[24px] py-[50px] mx-[20px]">
+      <div className="flex items-center bg-white rounded-[6px] px-[24px] py-[50px] mx-[20px] h-screen mb-[20px]">
         <div className="w-[100%] py-[50px]">
           <div className="w-[50%] mx-auto text-center">
             <div>
