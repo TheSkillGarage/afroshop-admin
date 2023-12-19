@@ -3,7 +3,7 @@ import React from 'react'
 const ProductCard = ({productImage, productName, salesData}) => {
   return (
     <div className='flex gap-4'>
-        <img src= {productImage} alt= "Product Image"/>
+        <img src= {productImage} alt= "Product Image" className='w-[46px] h-[54px]'/>
 
         <div className='flex flex-col gap-1'>
           <p className='font-semibold text-[13px] text-[#186F3D]'>{productName}</p>

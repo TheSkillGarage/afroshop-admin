@@ -8,7 +8,7 @@ const CustomerCard = ({
 }) => {
   return (
     <div className="flex gap-4">
-      <img src={customerImage} alt="Customer Image"/>
+      <img src={customerImage} alt="Customer Image" className='w-[50px] h-[50px]'/>
 
       <div className="flex gap-4 justify-between w-full">
         <div className="flex flex-col gap-1 flex-wrap">
