@@ -48,11 +48,11 @@ export function LineChart() {
     plugins: {
       legend: {
         position: 'bottom',
-        boxHeight: 3,
-        boxWidth:3,
         labels: {
           usePointStyle: true,
-          pointStyle: 'circle',                    
+          pointStyle: 'circle',                              
+          boxHeight: 8,          
+          boxWidth:8,          
         },
       },
       title: {
@@ -69,14 +69,14 @@ export function LineChart() {
         data: LINE_CHART_DATA.map((data) => data.orders),
         borderColor: '#186F3D',
         backgroundColor: '#186F3D',
-        lineTension: 0.5,        
+        lineTension: 0.5,                
       },
       {
         label: 'Orders',
         data: LINE_CHART_DATA.map((data) => data.income),
         borderColor: '#FCAE17',
         backgroundColor: '#FCAE17',
-        lineTension: 0.5,
+        lineTension: 0.5,       
       },
     ],
   };
