@@ -9,10 +9,10 @@ const CustomerCard = ({
 }) => {
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-2">
       <img src={customerImage} alt="Customer Image" className='w-[50px] h-[50px]'/>
 
-      <div className="flex gap-4 justify-between w-full">
+      <div className="flex gap-4 justify-between items-center w-full">
         <div className="flex flex-col gap-1 flex-wrap">
           <p className="w-full font-semibold text-[13px] text-[#186F3D] ">
             {customerName}
@@ -22,7 +22,7 @@ const CustomerCard = ({
           </p>
         </div>
 
-        <p className="font-normal text-[13px] text-[#7F7F7F] pt-[15px]">
+        <p className="font-normal text-[13px] text-[#7F7F7F]">
           {window.innerWidth < 1100 ? TruncateWord(numberOrders, 3) :numberOrders}
         </p>
       </div>
