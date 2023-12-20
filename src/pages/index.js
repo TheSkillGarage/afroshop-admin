@@ -7,3 +7,4 @@ export { default as RolesAndPermissionsDashboard } from "./roles-and-permissions
 export { default as AddNewRole } from "./roles-and-permissions/add-new-role";
 export { default as SupportPage} from './support'
 export { default as ProfilePage } from "./profile";
+export { default as EditProducts } from './edit-products'
