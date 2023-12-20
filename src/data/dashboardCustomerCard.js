@@ -2,7 +2,7 @@ import { CustomerImage1, CustomerImage2, CustomerImage3 } from "../images"
 const DASHBOARD_CUSTOMER_CARD = [
    {customerImage:CustomerImage1,
    customerName:"Paityn Dokidis",
-   customerEmail:"paitynd@gmail.com",
+   customerEmail:"paityndfgdjdkuhfguidhuhgjvnfdjghrbghu@gmail.com",
    numberOrders:"54 orders",
 },
 {

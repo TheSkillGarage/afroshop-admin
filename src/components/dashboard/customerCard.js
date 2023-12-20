@@ -18,7 +18,7 @@ const CustomerCard = ({
             {customerName}
           </p>
           <p className=  "w-full font-normal text-[13px] text-[#7F7F7F]">
-            {window.innerWidth < 1200 ? TruncateWord(customerEmail, 9) : customerEmail}
+            {window.innerWidth < 1200 || customerEmail.length > 20 ? TruncateWord(customerEmail, 9) : customerEmail}
           </p>
         </div>
 
