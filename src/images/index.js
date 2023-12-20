@@ -20,6 +20,27 @@ import LoadingIcon from "./LoadingIcon.svg";
 import whiteMarkIcon from "./white-mark-icon.svg";
 import greyMarkIcon from "./grey-mark-icon.svg";
 import {ReactComponent as WelcomeImage} from "./welcomeImage.svg"
+
+import ArrowRight from "./arrow-right.svg";
+import ArrowDown from "./arrow-down.svg";
+import Dot from "./dot.svg";
+import Pause from "./pause.svg";
+import Delete from "./delete.svg";
+import Chicken from "./chicken.svg";
+import DottedLine from "./dottedLine.svg";
+import Frame from "./frame.png";
+import Framer from "./framer.svg";
+import ColorArrowRight from "./coloredArrowRight.svg";
+import AlignLeft from "./align-left.svg";
+import AlignRight from "./align-right.svg";
+import AlignCenter from "./align-center.svg";
+import AlignJustify from "./align-justify.svg";
+import Bold from "./bold.svg";
+import Italic from "./italic.svg";
+import Link from "./link.svg";
+import OrderedList from "./ordered-list.svg";
+import UnorderedList from "./unordered-list.svg";
+
 import CardIcon from "./card-payments.svg";
 import OrdersIcon from "./icon-orders.svg";
 import OverviewIcon from "./icon-overview.svg";
@@ -43,24 +64,32 @@ import { ReactComponent as RightWhiteArrow } from "./right-white-arrow.svg";
 import { ReactComponent as RightGreenArrow } from "./right-green-arrow.svg";
 import OrdersIconWhite from "./bag-orders-white.svg";
 import ArrowUp from "./ArrowUp.svg"
-import ArrowDown from "./ArrowDown.svg"
+import ArrowDownTriangle from "./ArrowDown.svg"
 import PeachMilk from "./PeachMilk.png"
 import Fruit from "./Fruit.png"
 import BonelessChicken from "./BonelessChicken.png"
 import CustomerImage1 from "./CustomerImage1.png"
 import CustomerImage2 from "./CustomerImage2.png"
 import CustomerImage3 from "./CustomerImage3.png"
+
 import { ReactComponent as DropdownOpen } from "./dropdown-open.svg";
 import { ReactComponent as DropdownClose } from "./dropdown-close.svg";
 import { ReactComponent as EditIcon2 } from "./edit-icon.svg";
 import { ReactComponent as LocationIcon } from "./Location.svg";
 import { ReactComponent as AddIcon } from "./add-icon.svg";
 import { ReactComponent as ProfileImage } from "./profile-image.svg";
+//import OrdersIconWhite  from "./bag-orders-white.svg";
+import SupportIllustration from "./support.svg"
+import EmailSupport from "./emailSupport.svg"
+import WhatsAppSupport from "./whatsAppSupport.svg"
+import PhoneSupport from "./phoneSupport.svg"
+
+
 export {
-  ProfileImage,
-  AddIcon,
+  EmailSupport,
+  PhoneSupport,
+  WhatsAppSupport,
   WhiteCart,
-  DownloadIcon,
   BackToTop,
   LeftBlackArrow,
   LoadingAnimation,
@@ -101,12 +130,35 @@ export {
   EyeIcon,
   GreenRightArrow,
   LeftArrow,
+  SupportIllustration,
+  ProfileImage,
+  AddIcon,
+  DownloadIcon,
+  ArrowRight,
+  ArrowDown,
+  Dot,
+  Pause,
+  Delete,
+  Chicken,
+  DottedLine,
+  Frame,
+  Framer,
+  ColorArrowRight,
+  AlignLeft,
+  AlignRight,
+  AlignCenter,
+  AlignJustify,
+  Bold,
+  Italic,
+  Link,
+  OrderedList,
+  UnorderedList,
   DropdownClose,
   DropdownOpen,
   EditIcon2,
   LocationIcon,
   WelcomeImage,
-  ArrowDown,
+  ArrowDownTriangle,
   ArrowUp,
   BonelessChicken,
   PeachMilk,

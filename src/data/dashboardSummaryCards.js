@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp } from "../images"
+import { ArrowDownTriangle, ArrowUp } from "../images"
 const DASHBOARD_SUMMARY_CARDS= [
     {
         cardTitle:"Total Sales",
@@ -17,7 +17,7 @@ const DASHBOARD_SUMMARY_CARDS= [
     {
               cardTitle:"Total Orders",
               cardNumber:"459",
-              arrowImage:ArrowDown,
+              arrowImage:ArrowDownTriangle,
               percentage:"15%",
               backgroundColor:"#FFD60A26",
     },
