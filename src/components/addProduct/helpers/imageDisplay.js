@@ -4,8 +4,8 @@ export const ImageDisplay = ({ selectedFiles, onDelete }) => {
     return (
       <div className="flex flex-wrap gap-[12px]">
         {selectedFiles.map((file, index) => (
-          <div className="flex gap-[12px]">
-            <div key={index} className="mb-4 relative">
+          <div  key={index} className="flex gap-[12px]">
+            <div className="mb-4 relative">
               <img
                 src={URL.createObjectURL(file)}
                 alt={`Selected ${index + 1}`}

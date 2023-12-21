@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dot, Pause, Delete, Framer } from "../../../images";
+import { Dot, Framer } from "../../../images";
 
 export const FileInput = ({ onFilesSelect }) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -31,7 +31,7 @@ export const FileInput = ({ onFilesSelect }) => {
         accept=".jpeg, .jpg, .png"
       />
       <label htmlFor="productImage">
-        <img src={Framer} className="w-[100%]" alt="Upload" />
+        <img src={Framer} className="w-[100%] cursor-pointer" alt="Upload" />
       </label>
       <div className=" flex items-center justify-between py-[24px]">
         <div>

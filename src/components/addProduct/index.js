@@ -2,14 +2,13 @@ import { React, useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
-  Delete,
   DottedLine,
   ColorArrowRight,
 } from "../../images";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { CATEGORY_DATA, TEXT_ICONS } from "../../data";
-import { TextIcons, FileInput, ImageDisplay } from "./helpers";
+import { CATEGORY_DATA} from "../../data";
+import { FileInput, ImageDisplay } from "./helpers";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -87,6 +86,7 @@ const ProductImage = () => {
         {list: 'bullet'}
       ],
       [{ align: 'center' }, { align: 'right' }, { align: 'justify' }], 
+      ['link']
     ]
   }
 
@@ -98,7 +98,7 @@ const ProductImage = () => {
             <span className="text-[#999999]">Products</span>
           </Link>
           <span className="px-[5px]">
-            <img src={ColorArrowRight} />
+            <img src={ColorArrowRight} alt="arrow-right"/>
           </span>
           <span className="text-green"> Add New Products</span>
         </div>
@@ -115,6 +115,7 @@ const ProductImage = () => {
                   <div onClick={toggleList}>
                     <select
                       value={selectedCategory}
+                      onChange={() => selectedCategory}
                       className="absolute -z-10 opacity-0"
                     >
                       {CATEGORY_DATA.map(({ cat }, index) => {
@@ -146,8 +147,8 @@ const ProductImage = () => {
                       })}
                     </StyledList>
                     {!isOpen ? (
-                      <div class="flex justify-end items-center px-2 absolute pointer-events-none my-[-35px] right-0">
-                        <img src={ArrowDown} />
+                      <div className="flex justify-end items-center px-2 absolute pointer-events-none my-[-35px] right-0">
+                        <img src={ArrowDown} alt="arrow-down"/>
                       </div>
                     ) : null}
                   </div>
@@ -158,11 +159,11 @@ const ProductImage = () => {
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Info
                   </div>
-                  <div onClick={handleProductInfoOpen}>
+                  <div onClick={handleProductInfoOpen} className="cursor-pointer">
                     {isProductInfoOpen ? (
-                      <img src={ArrowDown} />
+                      <img src={ArrowDown} alt="arrow-down"/>
                     ) : (
-                      <img src={ArrowRight} />
+                      <img src={ArrowRight} alt="arrow-right"/>
                     )}
                   </div>
                 </div>
@@ -196,6 +197,7 @@ const ProductImage = () => {
                         <ReactQuill
                           theme="snow"
                           value={text}
+
                           onChange={setText}
                           modules={modules}
                           className="h-[100%] w-[100%]"
@@ -229,24 +231,24 @@ const ProductImage = () => {
                 )}
               </div>
               <div className="py-[24px] w-[100%]">
-                <img className="w-[100%]" src={DottedLine} />
+                <img className="w-[100%]" src={DottedLine} alt="dotted-lines"/>
               </div>
               <div className="p-[16px] border border-[#B3B3B3] rounded-[8px]">
                 <div className="flex justify-between items-center">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Images
                   </div>
-                  <div onClick={handleProductImageOpen}>
+                  <div onClick={handleProductImageOpen} className="cursor-pointer">
                     {isProductImageOpen ? (
-                      <img src={ArrowDown} />
+                      <img src={ArrowDown} alt="arrow-down"/>
                     ) : (
-                      <img src={ArrowRight} />
+                      <img src={ArrowRight} alt="arrow-right"/>
                     )}
                   </div>
                 </div>
                 {isProductImageOpen && (
                   <div className="pt-[16px]">
-                    <div>
+                    <div className="w-[100%]">
                       <FileInput
                         className="hidden"
                         id="productImage"

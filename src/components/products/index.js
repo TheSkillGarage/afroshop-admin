@@ -4,7 +4,7 @@ import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
 import StatusPills from "../status-pills";
 import { Link } from "react-router-dom";
-import ProductImage from "../addProduct/ProductImage";
+import ProductImage from "../addProduct";
 import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";
 import TableFooter from "../table-footer/table-footer";
