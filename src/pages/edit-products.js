@@ -1,13 +1,14 @@
 import React from "react";
-import { AdminNavbar, Products } from "../components";
+import { AdminNavbar, EditProduct } from "../components";
 
 const EditProducts = () => {
   return (
     <>
       <AdminNavbar name={"EditProducts"} />
-      <Products />
+      <EditProduct />
     </>
   );
 };
 
 export default EditProducts;
+

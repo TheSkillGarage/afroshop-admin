@@ -9,11 +9,12 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const AdminNavbar = ({ name }) => {
+
   const navigate = useNavigate();
 
   return (
     <nav className="flex justify-between p-6 border-b border-1 border-[#E6E6E6] min-h-[69px] max-h-[69px] bg-[#ffffff]">
-      {name !== "viewOrders" && name !== "AddProducts" ? (
+      {name === "layout" ? (
         <div className="flex items-center gap-6">
           <MenuIcon alt="menu" className="w-[20px] h-[20px]" />
           <p className="font-bold text-[20px] leading-[32px] text-[#186F3D]">
