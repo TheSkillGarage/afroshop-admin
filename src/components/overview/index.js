@@ -1,11 +1,12 @@
 import React from "react";
+import Welcome from "../dashboard/welcome";
 
 
 const Overview = () => {
 
     return (
          <div >
-           <p>Overview</p>
+           <Welcome />
         </div>
     );
 };
