@@ -1,118 +1,92 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import DeliveryCard from "./delivery-holiday-card";
 import InputComponent from "../shared/inputComponent";
 import Button from "../shared/button";
-import { useForm } from "react-hook-form";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { holidayOptions } from "../../data/profile";
+import { DateIcon } from "../../images";
 
 const HolidayException = () => {
-  const [formCount, setFormCount] = useState([{}]);
   const {
+    holidayFormCount,
+    setHolidayFormCount,
+    editProfile,
+    holidayData,
+    setHolidayData,
     control,
-    formState: { errors },
+    errors,
     register,
-    handleSubmit,
-    getValues,
-  } = useForm({ mode: "all" });
+  } = useContext(ProfileContext);
 
-  const onSubmit = (event) => {
-    event.preventDefault();
-    const values = getValues();
-    console.log(values);
+  const deleteHolidayCard = (index) => {
+    setHolidayData((data) => data.filter((_, key) => key !== index));
   };
 
-  const data = [
-    {
-      label: "New Year",
-      value: false,
-      day: "Sun, Jan 1, 2023",
-    },
-    {
-      label: "Good Friday",
-      value: false,
-      day: "Fri, Apr 7, 2023",
-    },
-    {
-      label: "Easter Monday",
-      value: false,
-      day: "Mon, Apr 10, 2023",
-    },
-    {
-      label: "Victoria Day",
-      value: false,
-      day: "Mon, May 22, 2023",
-    },
-    {
-      label: "Jean-Baptiste Day",
-      value: false,
-      day: "Sat, Jun 24, 2023",
-    },
-    {
-      label: "Canada Day",
-      value: false,
-      day: "Sat, July 1, 2023",
-    },
-  ];
   return (
     <div>
-      <form
-        className="space-y-4"
-        onSubmit={(event) => {
-          handleSubmit(onSubmit(event));
-        }}
-      >
-        {formCount.map((f, index) => (
-          <div key={index} className="flex gap-14 mt-6">
-            <InputComponent
-              inputType="select"
-              label="Date"
-              fieldName={`date-${index}`}
-              placeholder="Select"
-              name={`date-${index}`}
-              className="bg-[#F2F2F2]"
-              control={control}
-              errors={errors}
-              register={register}
-              options={data.map((d) => {
-                return { label: d.label, value: d.value };
-              })}
-            />
-            <InputComponent
-              inputType="text"
-              label="Description"
-              fieldName={`desc-${index}`}
-              name={`desc-${index}`}
-              placeholder="Enter"
-              className="bg-[#F2F2F2]"
-              control={control}
-              errors={errors}
-              register={register}
-            />
+      {editProfile && (
+        <>
+          {holidayFormCount.map((_, index) => (
+            <div key={index} className="flex gap-14 mt-6">
+              <InputComponent
+                inputType="date"
+                type="date"
+                label="Date"
+                max={new Date()}
+                fieldName={`date[${index}]`}
+                placeholder="Select"
+                name={`date[${index}]`}
+                required={true}
+                requiredMessage={"This field is required"}
+                className="bg-[#F2F2F2] text-blue"
+                control={control}
+                errors={errors}
+                register={register}
+              />
+              <InputComponent
+                inputType="text"
+                label="Description"
+                fieldName={`description[${index}]`}
+                name={`description[${index}]`}
+                required={true}
+                requiredMessage={"This field is required"}
+                placeholder="Enter"
+                className="bg-[#F2F2F2]"
+                control={control}
+                errors={errors}
+                register={register}
+              />
+            </div>
+          ))}
+          <div className="mt-6 mb-8">
+            <Button
+              className="w-[144px]"
+              variant="tertiary"
+              icon="add"
+              direction="reverse"
+              onClick={() => {
+                setHolidayFormCount((prevCount) => [
+                  ...prevCount,
+                  { date: "", description: "" },
+                ]);
+              }}
+            >
+              Add
+            </Button>
           </div>
-        ))}
-        <Button type="submit">Submit</Button>
-        <div className=" mb-4">
-          <Button
-            className="w-[144px]"
-            variant="tertiary"
-            icon="add"
-            direction="reverse"
-            onClick={() => {
-              setFormCount((prevCount) => [
-                ...prevCount,
-                { date: "", description: "" },
-              ]);
-            }}
-          >
-            Add
-          </Button>
-        </div>
-      </form>
+        </>
+      )}
       <div className="py-4 grid grid-cols-3 gap-4">
-        {data.map((d, index) => (
-          <div key={index}>
-            <DeliveryCard title={d.label} subtitle={d.day} />
-          </div>
-        ))}
+        {holidayData &&
+          holidayData.map((d, index) => (
+            <div key={index}>
+              <DeliveryCard
+                card={d}
+                icon={<DateIcon />}
+                handleDelete={() => deleteHolidayCard(index)}
+              />
+            </div>
+          ))}
       </div>
     </div>
   );

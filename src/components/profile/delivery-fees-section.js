@@ -1,102 +1,96 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import DeliveryCard from "./delivery-holiday-card";
 import { useForm } from "react-hook-form";
 import InputComponent from "../shared/inputComponent";
 import Button from "../shared/button";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { destinationOptions } from "../../data/profile";
 
 const DeliveryFees = () => {
-  const [formCount, setFormCount] = useState([{}]);
   const {
+    deliveryFormCount,
+    setDeliveryFormCount,
+    editProfile,
     control,
-    formState: { errors },
+    errors,
     register,
-    handleSubmit,
-    getValues,
-  } = useForm({ mode: "all" });
+    deliveryFeeData,
+    setDeliveryFeeData,
+  } = useContext(ProfileContext);
 
-  const data = [
-    {
-      label: "Within 5 km",
-      value: false,
-      price: "$15",
-    },
-    {
-      label: "Between 5 to 10 km",
-      value: false,
-      price: "$20",
-    },
-    {
-      label: "Between 10 to 15 km",
-      value: false,
-      price: "$25",
-    },
-    {
-      label: "Between 15 to 20 km",
-      value: false,
-      price: "$30",
-    },
-    {
-      label: "Over 20 km",
-      value: false,
-      price: "$35",
-    },
-  ];
+  const deleteDeliveryCard = (index) => {
+    setDeliveryFeeData((data) => data.filter((_, key) => key !== index));
+  };
 
   return (
     <div>
-      <form className="mspace-y-4">
-        {formCount.map((f, index) => (
-          <div className="flex gap-14 mt-6">
-            <InputComponent
-              inputType="select"
-              label="Shipping Destination"
-              name={`destination-${index}`}
-              fieldName={`destination-${index}`}
-              placeholder="Enter"
-              className="bg-[#F2F2F2]"
-              control={control}
-              errors={errors}
-              register={register}
-              options={data.map((d) => {
-                return { label: d.label, value: d.value };
-              })}
-            />
-            <InputComponent
-              inputType="text"
-              label="Shipping Fee ($)"
-              name={`fee-${index}`}
-              fieldName={`fee-${index}`}
-              placeholder="Enter"
-              className="bg-[#F2F2F2]"
-              control={control}
-              errors={errors}
-              register={register}
-            />
-          </div>
-        ))}
+      {editProfile && (
+        <>
+          {deliveryFormCount.map((_, index) => (
+            <div className="flex gap-14 mt-6" key={index}>
+              <InputComponent
+                inputType="select"
+                label="Shipping Destination"
+                name={`destination-${index}`}
+                fieldName={`destination[${index}]`}
+                required={true}
+                requiredMessage={"This field is required"}
+                placeholder="Enter"
+                className="bg-[#F2F2F2]"
+                control={control}
+                errors={errors}
+                register={register}
+                options={destinationOptions.map((d) => {
+                  return { label: d.label, value: d.label };
+                })}
+              />
+              <InputComponent
+                inputType="number"
+                type="number"
+                label="Shipping Fee ($)"
+                name={`fee-${index}`}
+                fieldName={`fee[${index}]`}
+                required={true}
+                requiredMessage={"This field is required"}
+                placeholder="Enter"
+                className="bg-[#F2F2F2]"
+                control={control}
+                errors={errors}
+                register={register}
+              />
+            </div>
+          ))}
 
-        <div className="mt-6 mb-3">
-          <Button
-            className="w-[144px]"
-            variant="tertiary"
-            icon="add"
-            direction="reverse"
-            onClick={() => {
-              setFormCount((prevCount) => [
-                ...prevCount,
-                { date: "", description: "" },
-              ]);
-            }}
-          >
-            Add
-          </Button>
-        </div>
-      </form>
+          <div className="mt-6 mb-3">
+            <Button
+              className="w-[144px]"
+              variant="tertiary"
+              icon="add"
+              direction="reverse"
+              onClick={() => {
+                setDeliveryFormCount((prevCount) => [
+                  ...prevCount,
+                  { date: "", description: "" },
+                ]);
+              }}
+            >
+              Add
+            </Button>
+          </div>
+        </>
+      )}
       <div className="py-4 grid grid-cols-3 gap-4">
-        {data.map((d) => (
-          <DeliveryCard label={d.title} subtitle={d.price} />
-        ))}
-      </div>{" "}
+        {deliveryFeeData &&
+          deliveryFeeData.map((d, index) => (
+            <div key={index}>
+              <DeliveryCard
+                card={d}
+                type="delivery"
+                handleDelete={() => deleteDeliveryCard(index)}
+              />
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

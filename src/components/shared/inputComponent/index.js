@@ -22,6 +22,7 @@ import { Controller } from "react-hook-form";
  * */
 
 const InputComponent = ({
+  min, max,
   className,
   fieldName,
   inputType,
@@ -90,6 +91,8 @@ const InputComponent = ({
           <input
             className="bg-inherit w-full border-none focus:outline-none text-[16px] font-normal placeholder-[#333333]"
             type={type}
+            min={min}
+            max={max}
             name={name}
             placeholder={placeholder}
             value={value}
@@ -158,7 +161,7 @@ InputComponent.propTypes = {
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
   success: PropTypes.bool,
-  error: PropTypes.any.isRequired,
+  errors: PropTypes.any.isRequired,
   compoundValidation: PropTypes.bool,
   required: PropTypes.bool,
   value: PropTypes.any,

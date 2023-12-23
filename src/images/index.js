@@ -39,7 +39,8 @@ import Italic from "./italic.svg";
 import Link from "./link.svg";
 import OrderedList from "./ordered-list.svg";
 import UnorderedList from "./unordered-list.svg";
-
+import {ReactComponent as DateIcon} from "./date-icon.svg";
+// import {ReactComponent as DeleteIcon} from "./delete.svg";
 import CardIcon from "./card-payments.svg";
 import OrdersIcon from "./icon-orders.svg";
 import OverviewIcon from "./icon-overview.svg";
@@ -77,6 +78,7 @@ import PhoneSupport from "./phoneSupport.svg"
 
 
 export {
+  DateIcon,
   EmailSupport,
   PhoneSupport,
   WhatsAppSupport,

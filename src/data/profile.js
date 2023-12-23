@@ -11,6 +11,84 @@ const deliveryOptions = [
   { value: "pick-up", label: "Pick-Up" },
   { value: "delivery", label: "Delivery" },
 ];
+const destinationOptions = [
+  {
+    label: "Within 5 km",
+    value: "Within 5 km",
+  },
+  {
+    label: "Between 5 to 10 km",
+    value: "Between 5 to 10 km",
+  },
+  {
+    label: "Between 10 to 15 km",
+    value: "Between 10 to 15 km",
+  },
+  {
+    label: "Between 15 to 20 km",
+    value: "Between 15 to 20 km",
+  },
+  {
+    label: "Over 20 km",
+    value: "Over 20 km",
+  },
+];
+const deliveryData = [
+  {
+    label: "Within 5 km",
+    value: "15",
+  },
+  {
+    label: "Between 5 to 10 km",
+    value: "20",
+  },
+  {
+    label: "Between 10 to 15 km",
+    value: "25",
+  },
+];
+const holidayMockData = [
+  {
+    label: "New Year",
+    value: "Sun, Jan 1, 2023",
+  },
+  {
+    label: "Good Friday",
+    value: "Fri, Apr 7, 2023",
+  },
+  {
+    label: "Easter Monday",
+    value: "Mon, Apr 10, 2023",
+  }
+];
+
+const holidayOptions = [
+  {
+    label: "New Year",
+    value: "New Year",
+  },
+  {
+    label: "Good Friday",
+    value: "Good Friday",
+  },
+  {
+    label: "Easter Monday",
+    value: "Easter Monday",
+  },
+  {
+    label: "Victoria Day",
+    value: "Victoria Day",
+  },
+  {
+    label: "Jean-Baptiste Day",
+    value: "Jean-Baptiste Day",
+  },
+  {
+    label: "Canada Day",
+    value: "Canada Day",
+  },
+];
+
 const deliveryStartTimes = [
   {
     label: "8:00AM",
@@ -68,4 +146,8 @@ export {
   deliveryOptions,
   deliverySlots,
   deliveryStartTimes,
+  destinationOptions,
+  deliveryData,
+  holidayMockData,
+  holidayOptions,
 };
