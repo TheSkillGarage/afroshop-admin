@@ -36,15 +36,15 @@ const destinationOptions = [
 const deliveryData = [
   {
     label: "Within 5 km",
-    value: "15",
+    value: "$15",
   },
   {
     label: "Between 5 to 10 km",
-    value: "20",
+    value: "$20",
   },
   {
     label: "Between 10 to 15 km",
-    value: "25",
+    value: "$25",
   },
 ];
 const holidayMockData = [

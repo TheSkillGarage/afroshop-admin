@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { EditIcon2 } from "../../images";
+import { EditIcon2, EditIconGrey } from "../../images";
 import StoreInfo from "./store-info";
 import RoleActionCard from "../roles-and-permissions/role-action-card";
 import DeliveryFees from "./delivery-fees-section";
@@ -9,16 +9,17 @@ import { useForm } from "react-hook-form";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { format } from "date-fns";
 import { deliveryData, holidayMockData } from "../../data/profile";
+import EditPassword from "./edit-password";
 
 const Profile = () => {
   const {
     control,
-    formState: { errors },
+    formState,
     register,
     handleSubmit,
     getValues,
-    values,
     reset,
+    watch,
   } = useForm({
     defaultValues: {
       destination: [],
@@ -28,6 +29,8 @@ const Profile = () => {
     },
     mode: "all",
   });
+  const values = getValues();
+  const [currentTab, setCurrentTab] = useState("Profile");
   const [editProfile, setEditProfile] = useState(false);
   const [deliveryFormCount, setDeliveryFormCount] = useState([{}]);
   const [holidayFormCount, setHolidayFormCount] = useState([{}]);
@@ -35,12 +38,10 @@ const Profile = () => {
   const [holidayData, setHolidayData] = useState(holidayMockData);
 
   const handleFormSubmit = (data) => {
-    const values = getValues();
-    console.log(values);
-
     if (values.destination.length !== 0 && values.fee.length !== 0) {
       const deliveryFormData = values.destination.map((d, index) => {
-        return { label: d, value: `$${values.fee[index]}` };
+        if (d !== undefined && d !== "")
+          return { label: d, value: `$${values.fee[index]}` };
       });
       setDeliveryFeeData((prevData) => [...prevData, ...deliveryFormData]);
       console.log(deliveryFormData);
@@ -50,10 +51,11 @@ const Profile = () => {
       const holidayFormData =
         values.description.length !== 0 &&
         values.description.map((d, index) => {
-          return {
-            label: d,
-            value: format(values.date[index], "EEE, MMM dd, yyyy"),
-          };
+          if (d !== undefined && d !== "")
+            return {
+              label: d,
+              value: format(values.date[index], "EEE, MMM dd, yyyy"),
+            };
         });
       setHolidayData((prevData) => [...prevData, ...holidayFormData]);
       console.log(holidayFormData);
@@ -100,6 +102,7 @@ const Profile = () => {
   ]);
 
   const handleTabClick = (label) => {
+    setCurrentTab(label);
     const updatedTab = tab.map((t) => {
       if (t.label === label) {
         return { ...t, value: true };
@@ -115,7 +118,8 @@ const Profile = () => {
       value={{
         control,
         register,
-        errors,
+        watch,
+        errors: formState.errors,
         editProfile,
         deliveryFormCount,
         setDeliveryFormCount,
@@ -132,7 +136,9 @@ const Profile = () => {
           <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">
             ...
           </p>
-          <p className="text-[13px] leading-[23px] text-[#186F3D]">Profile</p>
+          <p className="text-[13px] leading-[23px] text-[#186F3D]">
+            {currentTab}
+          </p>
         </div>
         <div className="flex justify-center">
           <div className="rounded w-[800px] bg-[#FFFFFF] flex justify-around py-3 px-[10px]">
@@ -151,22 +157,36 @@ const Profile = () => {
             ))}
           </div>
         </div>
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
-          <div className="mt-8 w-full bg-white p-8">
-            <div className="py-4 px-4 border-b-[2px] border-[#E6E6E6] text-[#186F3D] flex items-center justify-between">
-              <p className="text-xl font-bold">Profile</p>
-              <p
-                className="flex gap-2 items-center font-semibold cursor-pointer"
-                onClick={() => setEditProfile(true)}
-              >
-                <EditIcon2 className="text-[#186F3D]" /> Edit
-              </p>
-            </div>
-            <RoleActionCard
-              sections={sections}
-              saveSections={(data) => setSections(data)}
-              ComponentsMap={ComponentsMap}
-            />
+
+        <div className="mt-8 w-full bg-white h-full p-8">
+          <div className="py-4 px-4 border-b-[2px] text-[#186F3D] border-[#E6E6E6] flex items-center justify-between">
+            <p className="text-xl font-bold">{currentTab}</p>
+            <p
+              className={`flex gap-2 items-center font-semibold cursor-pointer ${
+                editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
+              }`}
+              onClick={() => setEditProfile(true)}
+            >
+              {editProfile ? (
+                <EditIconGrey />
+              ) : (
+                <EditIcon2 className="text-[#186F3D]" />
+              )}{" "}
+              Edit
+            </p>
+          </div>
+          <form onSubmit={handleSubmit(handleFormSubmit)}>
+            {currentTab === "Profile" ? (
+              <RoleActionCard
+                sections={sections}
+                saveSections={(data) => setSections(data)}
+                ComponentsMap={ComponentsMap}
+                reset={reset}
+              />
+            ) : (
+              <EditPassword />
+            )}
+
             {editProfile && (
               <div className="flex justify-end gap-6 mt-8">
                 <Button
@@ -182,8 +202,8 @@ const Profile = () => {
                 </Button>
               </div>
             )}
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </ProfileContext.Provider>
   );

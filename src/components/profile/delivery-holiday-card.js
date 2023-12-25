@@ -14,7 +14,7 @@ const DeliveryCard = ({ card, icon, handleDelete }) => {
 
       <div>
         <p className="font-bold text-[#186F3D]">
-          {card.label ?? "Within 5 km"}
+          {card?.label ?? "Within 5 km"}
         </p>
         <p className="text-[#333333]">{card.value ?? "$15"}</p>
       </div>

@@ -14,6 +14,7 @@ import { ReactComponent as DeleteIcon } from "./icon-delete.svg";
 import { ReactComponent as EyeIcon } from "./eye.svg";
 import { ReactComponent as GreenRightArrow } from "./green-right-icon.svg";
 import { ReactComponent as LeftArrow } from "./icon-left-arrow.svg";
+import Eye from "./eye.svg";
 import ErrorIcon from "./ErrorIcon.svg";
 import successIcon from "./SuccessIcon.png";
 import LoadingIcon from "./LoadingIcon.svg";
@@ -67,9 +68,12 @@ import OrdersIconWhite from "./bag-orders-white.svg";
 import { ReactComponent as DropdownOpen } from "./dropdown-open.svg";
 import { ReactComponent as DropdownClose } from "./dropdown-close.svg";
 import { ReactComponent as EditIcon2 } from "./edit-icon.svg";
+import { ReactComponent as EditIconGrey } from "./edit-icon-grey.svg";
 import { ReactComponent as LocationIcon } from "./Location.svg";
 import { ReactComponent as AddIcon } from "./add-icon.svg";
 import { ReactComponent as ProfileImage } from "./profile-image.svg";
+import Lock  from "./Lock.svg";
+import EyeSlash from "./eye-slash.svg";
 //import OrdersIconWhite  from "./bag-orders-white.svg";
 import SupportIllustration from "./support.svg"
 import EmailSupport from "./emailSupport.svg"
@@ -78,6 +82,10 @@ import PhoneSupport from "./phoneSupport.svg"
 
 
 export {
+  EyeSlash,
+  Eye,
+  Lock,
+  EditIconGrey,
   DateIcon,
   EmailSupport,
   PhoneSupport,

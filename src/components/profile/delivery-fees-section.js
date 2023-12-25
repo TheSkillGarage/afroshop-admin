@@ -5,8 +5,10 @@ import InputComponent from "../shared/inputComponent";
 import Button from "../shared/button";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { destinationOptions } from "../../data/profile";
+import { LocationIcon } from "../../images";
 
 const DeliveryFees = () => {
+  const [destination, setDestination] = useState([]);
   const {
     deliveryFormCount,
     setDeliveryFormCount,
@@ -14,6 +16,7 @@ const DeliveryFees = () => {
     control,
     errors,
     register,
+    watch,
     deliveryFeeData,
     setDeliveryFeeData,
   } = useContext(ProfileContext);
@@ -31,24 +34,26 @@ const DeliveryFees = () => {
               <InputComponent
                 inputType="select"
                 label="Shipping Destination"
-                name={`destination-${index}`}
+                name={`destination[${index}]`}
                 fieldName={`destination[${index}]`}
                 required={true}
                 requiredMessage={"This field is required"}
-                placeholder="Enter"
+                placeholder="Select"
                 className="bg-[#F2F2F2]"
                 control={control}
                 errors={errors}
+                // defaultValue={{ value: "Select", label: "Select" }}
+                value={null}
                 register={register}
                 options={destinationOptions.map((d) => {
-                  return { label: d.label, value: d.label };
+                  return { value: d.label, label: d.label };
                 })}
               />
               <InputComponent
-                inputType="number"
-                type="number"
+                inputType="text"
+                type="text"
                 label="Shipping Fee ($)"
-                name={`fee-${index}`}
+                name={`fee[${index}]`}
                 fieldName={`fee[${index}]`}
                 required={true}
                 requiredMessage={"This field is required"}
@@ -87,6 +92,7 @@ const DeliveryFees = () => {
                 card={d}
                 type="delivery"
                 handleDelete={() => deleteDeliveryCard(index)}
+                icon={<LocationIcon />}
               />
             </div>
           ))}

@@ -22,7 +22,8 @@ import { Controller } from "react-hook-form";
  * */
 
 const InputComponent = ({
-  min, max,
+  min,
+  max,
   className,
   fieldName,
   inputType,
@@ -62,21 +63,29 @@ const InputComponent = ({
           control={control}
           name={fieldName}
           rules={{ required: required }}
-          render={({ field }) => (
-            <div className="relative">
-              {leftIcon ? <img src={leftIcon} className="absolute" alt="leftIcon" /> : null}
-              <SelectDropdown
-                multiple={multiple}
-                className={`${className} rounded`}
-                field={field}
-                name={field?.name}
-                inputRef={field?.ref}
-                errors={errors}
-                options={options}
-                placeholder={placeholder}
-              />
-            </div>
-          )}
+          render={({ field }) => {
+            console.log(field);
+            return (
+              <div className="relative">
+                {leftIcon ? (
+                  <img src={leftIcon} className="absolute" alt="leftIcon" />
+                ) : null}
+                <SelectDropdown
+                  multiple={multiple}
+                  className={`${className} rounded`}
+                  field={field}
+                  name={field?.name}
+                  register={register}
+                  inputRef={field?.ref}
+                  errors={errors}
+                  options={options}
+                  // value={{ value: field?.value, label: field?.value }}
+                  value={value}
+                  placeholder={placeholder}
+                />
+              </div>
+            );
+          }}
         />
       ) : (
         <InputBox
@@ -119,7 +128,7 @@ const InputComponent = ({
               src={rightIcon}
               alt="rightIcon"
               onClick={onIconClick}
-              className={iconClassName}
+              className={`cursor-pointer ${iconClassName}`}
             />
           ) : null}
         </InputBox>

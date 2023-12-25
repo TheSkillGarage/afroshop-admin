@@ -3,7 +3,7 @@ import { DropdownClose } from "../../images";
 import ToggleSwitch from "../toggle-switch";
 import Checkbox from "../shared/checkbox";
 
-const RoleActionCard = ({ sections, saveSections, ComponentsMap }) => {
+const RoleActionCard = ({ sections, saveSections, ComponentsMap, reset }) => {
   const handleDropdownClick = (updatedSection) => {
     const updatedItems = sections?.map((s) => {
       if (s.label === updatedSection) {
@@ -44,8 +44,8 @@ const RoleActionCard = ({ sections, saveSections, ComponentsMap }) => {
 
   return (
     <div>
-      {sections.map((section, index) => {
-        const Component = ComponentsMap[section.component];
+      {sections?.map((section, index) => {
+        const Component = ComponentsMap && ComponentsMap[section.component];
         return (
           <div key={index}>
             <div className="mt-8 border border-[#B3B3B3] p-4 rounded-lg">
@@ -58,7 +58,7 @@ const RoleActionCard = ({ sections, saveSections, ComponentsMap }) => {
                   className={`w-4 h-4 ${section.value ? "rotate-90" : ""}`}
                 />
               </div>
-              {section.value && <Component />}
+              {section.value && section.component && <Component />}
               {section.value && !section.component && (
                 <div className="flex flex-col gap-8 mt-8 w-full">
                   <ToggleSwitch onToggle={() => {}}>Allow Access</ToggleSwitch>
