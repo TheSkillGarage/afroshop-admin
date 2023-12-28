@@ -15,15 +15,13 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
   return (
     <div className="w-full">
       {data && data.length !== 0 && !loading ? (
-        <table className="w-full border-collapse">
-          <thead className="h-[56px] uppercase text-center text-[13px] leading-[23px] text-[#186F3D] font-semibold bg-[#F2F2F2]">
+        <table className="w-full ">
+          <thead className="h-[56px] uppercase text-[13px] leading-[23px] text-[#186F3D] font-semibold bg-[#F2F2F2]">
             <tr>
               {tableHeaders.map((header) => (
                 <th
                   key={header.id}
-                  className={`${(header.id === "selection" || header.id === "detail") ? "w-[6.5%]" : "w-[20%]"} 
-                  ${header.id === "SKU" ? "pl-8" : "pl-3"}`
-                }
+                  className={`${(header.id === "selection" || header.id === "detail") ? "w-[6.5%]" : "w-[14.5%]"}  text-left ${header.id === "SKU" ? "pl-4" : ""} `}
                 >
                   {header.name}
                 </th>
@@ -35,12 +33,12 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
             {data.map((row, index) => (
               <tr
                 key={index}
-                className="text-[13px] leading-[23px] text-[#333333] text-center border-b border-1 border-[#E6E6E6] min-h-[47px]"
+                className="text-[13px] leading-[23px] text-[#333333] border-b border-1 border-[#E6E6E6] min-h-[47px]"
               >
                 {tableHeaders.map((header, index) => {
                   return (
                     <td
-                      className={`py-2 w-[${header.width}] ${header.id === "SKU" ? "pl-8" : "pl-3"}`}
+                      className={`py-2 ${header.id === "SKU" ? "pl-4" : ""}`}
                       key={index}
                     >
                       {header.id !== "price" ? (
