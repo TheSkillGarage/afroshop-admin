@@ -19,6 +19,7 @@ import successIcon from "./SuccessIcon.png";
 import LoadingIcon from "./LoadingIcon.svg";
 import whiteMarkIcon from "./white-mark-icon.svg";
 import greyMarkIcon from "./grey-mark-icon.svg";
+import {ReactComponent as WelcomeImage} from "./welcomeImage.svg"
 
 import ArrowRight from "./arrow-right.svg";
 import ArrowDown from "./arrow-down.svg";
@@ -62,6 +63,14 @@ import { ReactComponent as RightGreyIcon } from "./right-grey-arrow.svg";
 import { ReactComponent as RightWhiteArrow } from "./right-white-arrow.svg";
 import { ReactComponent as RightGreenArrow } from "./right-green-arrow.svg";
 import OrdersIconWhite from "./bag-orders-white.svg";
+import ArrowUp from "./ArrowUp.svg"
+import ArrowDownTriangle from "./ArrowDown.svg"
+import PeachMilk from "./PeachMilk.png"
+import Fruit from "./Fruit.png"
+import BonelessChicken from "./BonelessChicken.png"
+import CustomerImage1 from "./CustomerImage1.png"
+import CustomerImage2 from "./CustomerImage2.png"
+import CustomerImage3 from "./CustomerImage3.png"
 
 import { ReactComponent as DropdownOpen } from "./dropdown-open.svg";
 import { ReactComponent as DropdownClose } from "./dropdown-close.svg";
@@ -149,5 +158,14 @@ export {
   DropdownOpen,
   EditIcon2,
   LocationIcon,
-  GreenRangerPic
+  GreenRangerPic,
+  WelcomeImage,
+  ArrowDownTriangle,
+  ArrowUp,
+  BonelessChicken,
+  PeachMilk,
+  Fruit,
+  CustomerImage1,
+  CustomerImage2,
+  CustomerImage3,
 };
