@@ -84,6 +84,10 @@ import EmailSupport from "./emailSupport.svg"
 import WhatsAppSupport from "./whatsAppSupport.svg"
 import PhoneSupport from "./phoneSupport.svg"
 
+import PasswordLock from "./icon-password.svg"
+import PasswordEye from "./icon-see-password.svg"
+import GreenEdit from "./edit-green.svg"
+
 
 export {
   EmailSupport,
@@ -165,5 +169,8 @@ export {
   Fruit,
   CustomerImage1,
   CustomerImage2,
-  CustomerImage3
+  CustomerImage3,
+  PasswordLock,
+  PasswordEye,
+  GreenEdit,
 };
