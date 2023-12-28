@@ -88,7 +88,7 @@ import GreenRangerPic from "./green-ranger.svg"
 import PasswordLock from "./icon-password.svg"
 import PasswordEye from "./icon-see-password.svg"
 import GreenEdit from "./edit-green.svg"
-
+import GreyEdit from "./grey-edit.svg"
 
 export {
   EmailSupport,
@@ -175,4 +175,5 @@ export {
   PasswordLock,
   PasswordEye,
   GreenEdit,
+  GreyEdit,
 };
