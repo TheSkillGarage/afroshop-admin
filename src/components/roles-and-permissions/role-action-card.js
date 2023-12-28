@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DropdownClose } from "../../images";
 import ToggleSwitch from "../toggle-switch";
 import Checkbox from "../shared/checkbox";
@@ -6,6 +6,7 @@ import Checkbox from "../shared/checkbox";
 const RoleActionCard = ({ sections, saveSections, ComponentsMap, reset }) => {
   const handleDropdownClick = (updatedSection) => {
     const updatedItems = sections?.map((s) => {
+      if(s.value === true) reset?.();
       if (s.label === updatedSection) {
         return { ...s, value: !s.value };
       }

@@ -22,7 +22,7 @@ const Profile = () => {
     watch,
   } = useForm({
     defaultValues: {
-      destination: [],
+      destination: [""],
       fee: [],
       description: [],
       date: [],
@@ -42,6 +42,7 @@ const Profile = () => {
       const deliveryFormData = values.destination.map((d, index) => {
         if (d !== undefined && d !== "")
           return { label: d, value: `$${values.fee[index]}` };
+        else return {};
       });
       setDeliveryFeeData((prevData) => [...prevData, ...deliveryFormData]);
       console.log(deliveryFormData);
@@ -118,6 +119,7 @@ const Profile = () => {
       value={{
         control,
         register,
+        values,
         watch,
         errors: formState.errors,
         editProfile,
@@ -129,6 +131,7 @@ const Profile = () => {
         setDeliveryFeeData,
         holidayData,
         setHolidayData,
+        handleSubmit,
       }}
     >
       <div className="bg-[#F2F2F2] w-full py-6 px-4">

@@ -64,23 +64,23 @@ const InputComponent = ({
           name={fieldName}
           rules={{ required: required }}
           render={({ field }) => {
-            console.log(field);
             return (
               <div className="relative">
                 {leftIcon ? (
                   <img src={leftIcon} className="absolute" alt="leftIcon" />
                 ) : null}
                 <SelectDropdown
+                  {...register(fieldName)}
                   multiple={multiple}
                   className={`${className} rounded`}
                   field={field}
                   name={field?.name}
                   register={register}
-                  inputRef={field?.ref}
                   errors={errors}
                   options={options}
-                  // value={{ value: field?.value, label: field?.value }}
-                  value={value}
+                  value={
+                    field.value ? { value: field?.value, label: field?.value } : null
+                  }
                   placeholder={placeholder}
                 />
               </div>

@@ -16,7 +16,7 @@ const DeliveryFees = () => {
     control,
     errors,
     register,
-    watch,
+    values,
     deliveryFeeData,
     setDeliveryFeeData,
   } = useContext(ProfileContext);
@@ -24,7 +24,6 @@ const DeliveryFees = () => {
   const deleteDeliveryCard = (index) => {
     setDeliveryFeeData((data) => data.filter((_, key) => key !== index));
   };
-
   return (
     <div>
       {editProfile && (
@@ -42,8 +41,6 @@ const DeliveryFees = () => {
                 className="bg-[#F2F2F2]"
                 control={control}
                 errors={errors}
-                // defaultValue={{ value: "Select", label: "Select" }}
-                value={null}
                 register={register}
                 options={destinationOptions.map((d) => {
                   return { value: d.label, label: d.label };
