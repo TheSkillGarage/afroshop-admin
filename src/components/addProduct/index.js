@@ -7,10 +7,8 @@ import {
 } from "../../images";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { CATEGORY_DATA} from "../../data";
-import { FileInput, ImageDisplay } from "./helpers";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { CATEGORY_DATA } from "../../data";
+import { FileInput, ImageDisplay, ProductInfo } from "./helpers";
 
 const StyledList = styled.ul`
   box-shadow: 0 8px 16px 0 rgba(51, 51, 51, 0.12);
@@ -47,7 +45,6 @@ const ProductImage = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isProductInfoOpen, setIsProductInfoOpen] = useState(false);
   const [isProductImageOpen, setIsProductImageOpen] = useState(false);
-  const [text, setText] = useState("");
 
   const handleProductInfoOpen = () => {
     setIsProductInfoOpen((prev) => !prev);
@@ -78,18 +75,6 @@ const ProductImage = () => {
     setSelectedFiles(newFiles);
   };
 
-  const modules = {
-    toolbar: [
-      ['bold', 'italic'],
-      [
-        {list: 'ordered'},
-        {list: 'bullet'}
-      ],
-      [{ align: 'center' }, { align: 'right' }, { align: 'justify' }], 
-      ['link']
-    ]
-  }
-
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
       <div className="py-[12px]">
@@ -98,7 +83,7 @@ const ProductImage = () => {
             <span className="text-[#999999]">Products</span>
           </Link>
           <span className="px-[5px]">
-            <img src={ColorArrowRight} alt="arrow-right"/>
+            <img src={ColorArrowRight} alt="arrow-right" />
           </span>
           <span className="text-green"> Add New Products</span>
         </div>
@@ -148,7 +133,7 @@ const ProductImage = () => {
                     </StyledList>
                     {!isOpen ? (
                       <div className="flex justify-end items-center px-2 absolute pointer-events-none my-[-35px] right-0">
-                        <img src={ArrowDown} alt="arrow-down"/>
+                        <img src={ArrowDown} alt="arrow-down" />
                       </div>
                     ) : null}
                   </div>
@@ -159,90 +144,35 @@ const ProductImage = () => {
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Info
                   </div>
-                  <div onClick={handleProductInfoOpen} className="cursor-pointer">
+                  <div
+                    onClick={handleProductInfoOpen}
+                    className="cursor-pointer"
+                  >
                     {isProductInfoOpen ? (
-                      <img src={ArrowDown} alt="arrow-down"/>
+                      <img src={ArrowDown} alt="arrow-down" />
                     ) : (
-                      <img src={ArrowRight} alt="arrow-right"/>
+                      <img src={ArrowRight} alt="arrow-right" />
                     )}
                   </div>
                 </div>
-                {isProductInfoOpen && (
-                  <div>
-                    <div className="flex justify-between items-center pb-[25px]">
-                      <div className=" w-[45%]">
-                        <div class="text-[13px] text-[#B3B3B3]">Name</div>
-                        <div>
-                          <input
-                            className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
-                            type="text"
-                          />
-                        </div>
-                      </div>
-                      <div className="w-[45%]">
-                        <div class="text-[13px] text-[#B3B3B3]">
-                          Availability
-                        </div>
-                        <div>
-                          <input
-                            className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
-                            type="text"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="text-[13px] text-[#B3B3B3]">Description</div>
-                      <div className="h-[200px] pb-[40px]">
-                        <ReactQuill
-                          theme="snow"
-                          value={text}
-
-                          onChange={setText}
-                          modules={modules}
-                          className="h-[100%] w-[100%]"
-                          
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center pt-[25px]">
-                      <div className=" w-[45%]">
-                        <div class="text-[13px] text-[#B3B3B3]">Price ($)</div>
-                        <div>
-                          <input
-                            className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
-                            type="text"
-                          />
-                        </div>
-                      </div>
-                      <div className="w-[45%]">
-                        <div class="text-[13px] text-[#B3B3B3]">
-                          Discount % (If Applicable)
-                        </div>
-                        <div>
-                          <input
-                            className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
-                            type="text"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                {isProductInfoOpen && <ProductInfo />}
               </div>
               <div className="py-[24px] w-[100%]">
-                <img className="w-[100%]" src={DottedLine} alt="dotted-lines"/>
+                <img className="w-[100%]" src={DottedLine} alt="dotted-lines" />
               </div>
               <div className="p-[16px] border border-[#B3B3B3] rounded-[8px]">
                 <div className="flex justify-between items-center">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Images
                   </div>
-                  <div onClick={handleProductImageOpen} className="cursor-pointer">
+                  <div
+                    onClick={handleProductImageOpen}
+                    className="cursor-pointer"
+                  >
                     {isProductImageOpen ? (
-                      <img src={ArrowDown} alt="arrow-down"/>
+                      <img src={ArrowDown} alt="arrow-down" />
                     ) : (
-                      <img src={ArrowRight} alt="arrow-right"/>
+                      <img src={ArrowRight} alt="arrow-right" />
                     )}
                   </div>
                 </div>
