@@ -45,7 +45,6 @@ const Profile = () => {
         else return {};
       });
       setDeliveryFeeData((prevData) => [...prevData, ...deliveryFormData]);
-      console.log(deliveryFormData);
     }
 
     if (values.description.length !== 0 && values.date.length !== 0) {
@@ -59,9 +58,8 @@ const Profile = () => {
             };
         });
       setHolidayData((prevData) => [...prevData, ...holidayFormData]);
-      console.log(holidayFormData);
     }
-    // setEditProfile(false);
+    
     setDeliveryFormCount([{}]);
     setHolidayFormCount([{}]);
     reset();

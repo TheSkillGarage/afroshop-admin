@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Checkbox from "../shared/checkbox";
 import { useForm } from "react-hook-form";
 import InputComponent from "../shared/inputComponent";
@@ -10,6 +10,7 @@ import {
   deliveryStartTimes,
 } from "../../data/profile";
 import { EditIcon, ProfileImage } from "../../images";
+import useTableSelect from "../../hooks/useTableSelect";
 
 const StoreInfo = () => {
   const {
@@ -19,18 +20,28 @@ const StoreInfo = () => {
     handleSubmit,
     getValues,
   } = useForm({ defaultValues: { email: "", role: "" }, mode: "all" });
-
+  const { handleSelectRow, selectedRows } = useTableSelect({
+    rows: daysOfTheWeek,
+  });
   return (
     <div className="flex flex-col gap-6">
       <div className="mt-8 mb-3">
-      <ProfileImage />
+        <ProfileImage />
       </div>
-  
+
       <p className="text-[13px] text-[#B3B3B3]">Open Day(s)</p>
       <div className="flex w-full justify-between">
         {daysOfTheWeek.map((day, index) => (
           <div key={index} className="flex">
-            <Checkbox /> {day.label}
+            <Checkbox
+              name={day.label}
+              handleChange={() => {
+                handleSelectRow(day.value);
+              }}
+              value={selectedRows.includes(day.value) ? day.value : ""}
+              valueOnChecked={day.value}
+            />{" "}
+            {day.label}
           </div>
         ))}
       </div>
@@ -80,7 +91,7 @@ const StoreInfo = () => {
         />
         <InputComponent
           inputType="select"
-          leftIcon={EditIcon}
+          // leftIcon={EditIcon}
           options={deliveryStartTimes}
           label="Delivery Start Time"
           fieldName={"delivery-start-time"}
