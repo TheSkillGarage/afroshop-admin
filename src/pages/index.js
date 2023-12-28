@@ -8,3 +8,4 @@ export { default as AddNewRole } from "./roles-and-permissions/add-new-role";
 export {default as DashboardPage} from './dashboardPage'
 export { default as SupportPage} from './support'
 export { default as ProfilePage } from "./profile";
+export { default as EditProducts } from './edit-products'

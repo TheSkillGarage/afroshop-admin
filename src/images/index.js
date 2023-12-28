@@ -83,6 +83,7 @@ import SupportIllustration from "./support.svg"
 import EmailSupport from "./emailSupport.svg"
 import WhatsAppSupport from "./whatsAppSupport.svg"
 import PhoneSupport from "./phoneSupport.svg"
+import GreenRangerPic from "./green-ranger.svg"
 
 
 export {
@@ -157,6 +158,7 @@ export {
   DropdownOpen,
   EditIcon2,
   LocationIcon,
+  GreenRangerPic,
   WelcomeImage,
   ArrowDownTriangle,
   ArrowUp,
@@ -165,5 +167,5 @@ export {
   Fruit,
   CustomerImage1,
   CustomerImage2,
-  CustomerImage3
+  CustomerImage3,
 };

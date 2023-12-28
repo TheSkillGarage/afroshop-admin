@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { DeleteIcon, DetailsIcon, EditIcon } from "../../images";
-import DeleteUser from "../pop-ups/deleteUser";
+import DeleteUser from "../pop-ups/deleteModal";
 
-const Detail = () => {
+const Detail = ({name, goToEdit, sku}) => {
   const [showDetails, setShowDetails] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const handleShowDetails = () => {
@@ -20,7 +20,7 @@ const Detail = () => {
       <DetailsIcon className="cursor-pointer" onClick={handleShowDetails} />
       {showDetails && (
         <div className="absolute top-[30px] right-[20px] bg-[#ffffff] rounded flex flex-col space-around py-3 px-2 z-[5] shadow-md">
-          <div className="px-1 flex items-center cursor-pointer mb-2 gap-2">
+          <div className="px-1 flex items-center cursor-pointer mb-2 gap-2" onClick={() => goToEdit(sku)}>
             <EditIcon className="w-4 h-4" />
             <p>Edit</p>
           </div>
@@ -44,7 +44,7 @@ const Detail = () => {
           onClick={handleShowDetails}
         >
           {openDeleteModal ? (
-            <DeleteUser handleClose={(e) => closeDeleteModal(e)} />
+          <DeleteUser name={name} handleClose={(e) => closeDeleteModal(e)} />
           ) : null}
         </div>
       )}

@@ -3,8 +3,7 @@ import PRODUCT_DATA from "../../data/products";
 import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
 import StatusPills from "../status-pills";
-import { Link } from "react-router-dom";
-import ProductImage from "../addProduct/ProductImage";
+import { Link, useNavigate } from "react-router-dom";
 import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";
 import TableFooter from "../table-footer/table-footer";
@@ -33,6 +32,7 @@ const ProductsDashboard = () => {
 
     const filters = ["all", "active", "pending", "draft"];
 
+    const navigate = useNavigate();
 
     const handleItemsPerPage = (e) => setItemsPerPage(e.target.value); // set items per page when selected from select dropdown
     const handleActiveTab = (activeTab) => setActiveTab(activeTab); // controls styles for all, active, pending and draft filters
@@ -43,6 +43,7 @@ const ProductsDashboard = () => {
     //search and filter modal
     const handleSearch = (searchWord) => setSearchTerm(searchWord)
     const handleFilterObject = (filterObject) => setFilterObject(filterObject)
+    const goToEdit = (sku) => navigate(`/products/edit/${sku}`)
 
 
     const { selectedRows, handleSelectAllRows, handleSelectRow } = useTableSelect(
@@ -101,7 +102,7 @@ const ProductsDashboard = () => {
         }
     ];
 
-    
+
     const results = pagination.currentData.map((data) => ({
         ...data,
         id: data.id,
@@ -122,7 +123,7 @@ const ProductsDashboard = () => {
             </div>
         ),
         detail: (
-            <Detail />
+            <Detail name="products" goToEdit={goToEdit} sku={data.SKU}/>
         )
     }));
 
@@ -146,7 +147,7 @@ const ProductsDashboard = () => {
                     </div>
 
                     <div className="w-full flex justify-end items-center px-4 h-[60px]">
-                      <Link to='/products/new'><button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button></Link>
+                        <Link to='/products/new'><button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button></Link>
                     </div>
 
                     <Search handleSearch={handleSearch} name="products" DATA={PRODUCT_DATA} handleFilterObject={handleFilterObject} />
@@ -157,16 +158,16 @@ const ProductsDashboard = () => {
                 <BaseTable tableHeaders={headers} data={results} />
 
 
-                <TableFooter 
-                pagination={pagination}
-                itemsPerPage={itemsPerPage} 
-                data={data} 
-                handleItemsPerPage={handleItemsPerPage} 
-                prevPage={prevPage} 
-                page={page} 
-                handlePage={handlePage} 
-                nextPage={nextPage} 
-                totalPages={totalPages} />
+                <TableFooter
+                    pagination={pagination}
+                    itemsPerPage={itemsPerPage}
+                    data={data}
+                    handleItemsPerPage={handleItemsPerPage}
+                    prevPage={prevPage}
+                    page={page}
+                    handlePage={handlePage}
+                    nextPage={nextPage}
+                    totalPages={totalPages} />
             </div>
 
 
