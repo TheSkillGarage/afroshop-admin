@@ -12,6 +12,7 @@ import {
   WelcomePage,
   SupportPage,
   AddProducts,
+  EditProducts,
 } from "./pages";
 
 const MyRoutes = () => {
@@ -34,6 +35,7 @@ const MyRoutes = () => {
         <Route exact path="/support" element={<SupportPage />} />
         <Route exact path="/roles-and-permissions/add-new-role" element={<AddNewRole />} />
         <Route exact path="/profile" element={<ProfilePage />} />
+        <Route exact path="/products/edit/:sku" element={<EditProducts />} />
       </Routes>
     </BrowserRouter>
   );
