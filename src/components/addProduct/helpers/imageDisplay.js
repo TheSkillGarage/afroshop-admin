@@ -1,13 +1,13 @@
 import { Delete } from "../../../images";
 
-export const ImageDisplay = ({ selectedFiles, onDelete, name }) => {
+export const ImageDisplay = ({ selectedFiles, onDelete }) => {
     return (
       <div className="flex flex-wrap gap-[12px]">
         {selectedFiles.map((file, index) => (
           <div className="flex gap-[12px]" key={index}>
             <div key={index} className="mb-4 relative">
               <img
-                src={name === "edit" ? file : URL.createObjectURL(file)}
+                src={(file instanceof File) ? URL.createObjectURL(file) : file}
                 alt={`Selected ${index + 1}`}
                 className="w-[120px] h-[120px]"
               />

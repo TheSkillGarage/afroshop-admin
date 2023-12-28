@@ -74,6 +74,7 @@ import SupportIllustration from "./support.svg"
 import EmailSupport from "./emailSupport.svg"
 import WhatsAppSupport from "./whatsAppSupport.svg"
 import PhoneSupport from "./phoneSupport.svg"
+import GreenRangerPic from "./green-ranger.svg"
 
 
 export {
@@ -147,5 +148,6 @@ export {
   DropdownClose,
   DropdownOpen,
   EditIcon2,
-  LocationIcon
+  LocationIcon,
+  GreenRangerPic
 };
