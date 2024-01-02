@@ -31,7 +31,7 @@ const Filters = ({ filters, activeTab, handleActiveTab }) => {
                 {filters.map((filter, key) => {
                     return (
                         <p key={key}
-                            className={`${activeTab === filter ? "text-[#333333] font-semibold" : "text-[#999999]"} capitalize text-[13px] leading-[23px] h-full ${filterWidth(filter)} capitalize flex items-center justify-center cursor-pointer`}
+                            className={`${activeTab === filter ? "text-[#333333] font-semibold" : "text-[#999999]"} capitalize text-[13px] leading-[23px] h-full ${filterWidth(filter)} flex items-center justify-center cursor-pointer`}
                             onClick={() => handleActiveTab(filter)}
                         >
                             {filter !== "draft" ? filter : "drafts"}

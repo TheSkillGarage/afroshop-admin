@@ -1,11 +1,12 @@
 import React from "react";
-import { AdminNavbar, Products } from "../components";
+import { AdminNavbar, } from "../components";
+import ProductChanges from "../components/products-changes";
 
 const AddProducts = () => {
   return (
     <>
       <AdminNavbar name={"AddProducts"} />
-      <Products />
+      <ProductChanges name="new"/>
     </>
   );
 };

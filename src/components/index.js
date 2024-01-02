@@ -4,7 +4,10 @@ export { default as AdminSidebar } from './sidebar';
 export { default as OrdersDashboard } from './orders';
 export { default as ProductsDashboard } from './products';
 export { default as ViewOrders } from './orders/view-orders';
-export {default as Products} from './addProduct'
+// export {default as ProductImage} from './addProduct/ProductImage'
 export {default as RolesAndPermissions} from './roles-and-permissions';
+export {default as Welcome} from './dashboard/welcome'
+export {default as Dashboard} from './dashboard/dashboard'
 export {default as Support} from './support';
 export {default as Profile} from './profile';
+export {default as EditProduct} from './edit-products';

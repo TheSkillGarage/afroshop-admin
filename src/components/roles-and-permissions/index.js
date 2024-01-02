@@ -121,7 +121,7 @@ const RolesAndPermissions = () => {
         <StatusPills status={data.status} name="roles" />
       </div>
     ),
-    detail: <Detail />,
+    detail: <Detail name={"roles"}/>,
   }));
 
   return (

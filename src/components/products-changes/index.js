@@ -8,7 +8,9 @@ import {
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { CATEGORY_DATA } from "../../data";
-import { FileInput, ImageDisplay, ProductInfo } from "./helpers";
+import "react-quill/dist/quill.snow.css";
+import { FileInput, ImageDisplay } from "../addProduct/helpers";
+import { ProductInfo } from "./productInfo";
 
 const StyledList = styled.ul`
   box-shadow: 0 8px 16px 0 rgba(51, 51, 51, 0.12);
@@ -40,11 +42,18 @@ const Placeholder = styled.div`
   cursor: pointer;
 `;
 
-const ProductImage = () => {
+const ProductChanges = ({ name, productInfo }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [isProductInfoOpen, setIsProductInfoOpen] = useState(false);
   const [isProductImageOpen, setIsProductImageOpen] = useState(false);
+
+  const [selectedCategory, setSelectedCategory] = useState(
+    name === "edit" ? productInfo.category : ""
+  );
+
+  const [selectedFiles, setSelectedFiles] = useState(
+    name === "edit" ? productInfo.images : []
+  );
 
   const handleProductInfoOpen = () => {
     setIsProductInfoOpen((prev) => !prev);
@@ -62,8 +71,6 @@ const ProductImage = () => {
     setSelectedCategory(newCategory);
     setIsOpen(false);
   };
-
-  const [selectedFiles, setSelectedFiles] = useState([]);
 
   const handleFilesSelect = (files) => {
     setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
@@ -85,7 +92,11 @@ const ProductImage = () => {
           <span className="px-[5px]">
             <img src={ColorArrowRight} alt="arrow-right" />
           </span>
-          <span className="text-green"> Add New Products</span>
+          {name !== "edit" ? (
+            <span className="text-green"> Add New Products</span>
+          ) : (
+            <span className="text-green"> Edit Product</span>
+          )}
         </div>
       </div>
       <div className="bg-white p-[24px] mx-[12px]">
@@ -100,7 +111,6 @@ const ProductImage = () => {
                   <div onClick={toggleList}>
                     <select
                       value={selectedCategory}
-                      onChange={() => selectedCategory}
                       className="absolute -z-10 opacity-0"
                     >
                       {CATEGORY_DATA.map(({ cat }, index) => {
@@ -132,7 +142,7 @@ const ProductImage = () => {
                       })}
                     </StyledList>
                     {!isOpen ? (
-                      <div className="flex justify-end items-center px-2 absolute pointer-events-none my-[-35px] right-0">
+                      <div class="flex justify-end items-center px-2 absolute pointer-events-none my-[-35px] right-0">
                         <img src={ArrowDown} alt="arrow-down" />
                       </div>
                     ) : null}
@@ -144,10 +154,7 @@ const ProductImage = () => {
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Info
                   </div>
-                  <div
-                    onClick={handleProductInfoOpen}
-                    className="cursor-pointer"
-                  >
+                  <div onClick={handleProductInfoOpen}>
                     {isProductInfoOpen ? (
                       <img src={ArrowDown} alt="arrow-down" />
                     ) : (
@@ -155,20 +162,19 @@ const ProductImage = () => {
                     )}
                   </div>
                 </div>
-                {isProductInfoOpen && <ProductInfo />}
+                {isProductInfoOpen && (
+                  <ProductInfo name="edit" productInfo={productInfo} />
+                )}
               </div>
               <div className="py-[24px] w-[100%]">
-                <img className="w-[100%]" src={DottedLine} alt="dotted-lines" />
+                <img className="w-[100%]" src={DottedLine} alt="dotted-line" />
               </div>
               <div className="p-[16px] border border-[#B3B3B3] rounded-[8px]">
                 <div className="flex justify-between items-center">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Images
                   </div>
-                  <div
-                    onClick={handleProductImageOpen}
-                    className="cursor-pointer"
-                  >
+                  <div onClick={handleProductImageOpen}>
                     {isProductImageOpen ? (
                       <img src={ArrowDown} alt="arrow-down" />
                     ) : (
@@ -178,7 +184,7 @@ const ProductImage = () => {
                 </div>
                 {isProductImageOpen && (
                   <div className="pt-[16px]">
-                    <div className="w-[100%]">
+                    <div>
                       <FileInput
                         className="hidden"
                         id="productImage"
@@ -202,12 +208,17 @@ const ProductImage = () => {
               </button>
             </div>
             <div className="flex justify-between items-center gap-[24px]">
-              <button className="py-[10px] px-[20px] text-[#333333] rounded-[4px] border bg-[rgba(252,174,23,0.15)] border-[rgba(252,174,23,0.15)]">
-                Cancel
-              </button>
-              <button className="py-[10px] px-[20px] border border-[#186F3D] bg-[#186F3D] text-[#ffffff] rounded-[4px]">
-                Submit
-              </button>
+              <Link to="/products">
+                <button className="py-[10px] px-[20px] text-[#333333] rounded-[4px] border bg-[rgba(252,174,23,0.15)] border-[rgba(252,174,23,0.15)]">
+                  Cancel
+                </button>
+              </Link>
+
+              <Link to="/products">
+                <button className="py-[10px] px-[20px] border border-[#186F3D] bg-[#186F3D] text-[#ffffff] rounded-[4px]">
+                  Submit
+                </button>
+              </Link>
             </div>
           </section>
         </div>
@@ -216,4 +227,4 @@ const ProductImage = () => {
   );
 };
 
-export default ProductImage;
+export default ProductChanges;
