@@ -3,6 +3,7 @@ import PRODUCT_DATA from "../../data/products";
 import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
 import StatusPills from "../status-pills";
+//import ProductImage from "../addProduct";
 import { Link, useNavigate } from "react-router-dom";
 import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";
