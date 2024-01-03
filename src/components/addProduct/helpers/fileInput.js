@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Dot, Framer } from "../../../images";
-import { upload } from "@testing-library/user-event/dist/upload";
+
 
 export const FileInput = ({ onFilesSelect }) => {
   const [isUploading, setIsUploading] = useState(false);
