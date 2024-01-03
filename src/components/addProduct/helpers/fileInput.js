@@ -50,7 +50,7 @@ export const FileInput = ({ onFilesSelect }) => {
             <div className=" flex items-center justify between gap-[10px]">
               <span className="text-[10px] text-[#B3B3B3]">50%</span>
               <span>
-                <img src={Dot} />
+                <img src={Dot} alt=""/>
               </span>
               <span className="text-[10px] text-[#B3B3B3]">
                 20 seconds left
