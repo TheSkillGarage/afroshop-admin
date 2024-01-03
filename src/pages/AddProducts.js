@@ -8,6 +8,6 @@ const AddProducts = () => {
       <AddProduct name="new"/>
     </>
   );
-};
+}
 
 export default AddProducts;
