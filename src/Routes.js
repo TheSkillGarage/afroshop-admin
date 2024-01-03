@@ -14,8 +14,9 @@ import {
   AddProducts,
   EditProducts,
   PasswordChange,
+  StoreCreated,
+  PasswordReset,
 } from "./pages";
-import StoreCreated from "./pages/StoreCreated";
 
 const MyRoutes = () => {
   return (
@@ -40,6 +41,7 @@ const MyRoutes = () => {
         <Route exact path="/products/edit/:sku" element={<EditProducts />} />
         <Route exact path="/reset-successful" element={<PasswordChange />} />
         <Route exact path="/store-created" element={<StoreCreated />} />
+        <Route exact path="/reset-password" element={<PasswordReset />} />
       </Routes>
     </BrowserRouter>
   );

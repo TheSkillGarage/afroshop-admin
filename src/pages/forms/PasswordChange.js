@@ -1,5 +1,5 @@
 import React from 'react'
-import { ResetSuccessful } from '../components'
+import { ResetSuccessful } from '../../components'
 
 const PasswordChange = () => {
   return (

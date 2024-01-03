@@ -9,4 +9,6 @@ export {default as DashboardPage} from './dashboardPage'
 export { default as SupportPage} from './support'
 export { default as ProfilePage } from "./profile";
 export { default as EditProducts } from './edit-products'
-export { default as PasswordChange} from './PasswordChange';
+export { default as PasswordChange} from './forms/PasswordChange';
+export { default as StoreCreated} from './forms/StoreCreated'
+export { default as PasswordReset} from './forms/PasswordReset';

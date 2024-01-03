@@ -1,5 +1,5 @@
 import React from 'react'
-import { CreateStore } from '../components'
+import { CreateStore } from '../../components'
 
 const StoreCreated = () => {
   return (

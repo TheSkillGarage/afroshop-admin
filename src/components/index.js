@@ -13,3 +13,4 @@ export {default as Profile} from './profile';
 export {default as EditProduct} from './edit-products';
 export {default as ResetSuccessful} from './forms/ResetSuccessful';
 export {default as CreateStore} from './forms/CreateStore';
+export {default as ResetPassword} from './forms/ResetPassword';
