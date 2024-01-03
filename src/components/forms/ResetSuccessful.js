@@ -1,7 +1,7 @@
 import React from "react";
 import { Store, Tick, SellerCenter, WhiteArrowRight } from "../../images";
 
-const ResetPassword = () => {
+const ResetSuccessful = () => {
   return (
     <div className="w-[100%] bg-[#F2F2F2]">
       <div className="flex">
@@ -34,4 +34,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ResetSuccessful;
