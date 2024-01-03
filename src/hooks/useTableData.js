@@ -60,7 +60,7 @@ export const useTableData = (name, headersArray, data, func) => {
         ),
         detail: name === "orders" ? (
             <EyeIcon
-                className="cursor-pointer"
+                className="ml-4 cursor-pointer"
                 onClick={() => func(data.orderID)}
             />
         ) : (
