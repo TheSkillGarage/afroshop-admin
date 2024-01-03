@@ -19,7 +19,7 @@ const ResetSuccessful = () => {
           </div>
           <div className="flex flex-col justify-center items-center">
             <div className="text-center font-bold py-[24px]">
-              Store Account Created Successfully!
+              Password Change Successful!
             </div>
             <button className="py-[10px] flex justify-center px-[20px] border border-[#186F3D] bg-[#186F3D] text-[#ffffff] rounded-[4px] w-[400px]">
               <span className="pr-2"> Go to Dashboard</span>
