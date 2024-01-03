@@ -121,7 +121,7 @@ const RolesAndPermissions = () => {
         <StatusPills status={data.status} name="roles" />
       </div>
     ),
-    detail: <Detail />,
+    detail: <Detail name={"roles"}/>,
   }));
 
   return (
@@ -179,6 +179,7 @@ const RolesAndPermissions = () => {
         <TableFooter
           pagination={pagination}
           data={data}
+          itemsPerPage={itemsPerPage}
           handleItemsPerPage={handleItemsPerPage}
           prevPage={prevPage}
           page={page}

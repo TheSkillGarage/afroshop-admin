@@ -4,6 +4,7 @@ import { NextIcon, PrevIcon } from "../../images";
 const TableFooter = ({
   pagination,
   data,
+  itemsPerPage,
   handleItemsPerPage,
   prevPage,
   page,
@@ -19,10 +20,11 @@ const TableFooter = ({
           <select
             name="lines"
             id=""
+            value={itemsPerPage}
             className="w-[56px] h-[33px] border border-1 border-[#CCCCCC] rounded focus:outline-none font-medium text-[#333333] text-[14px] leading-[16.8px]"
             onChange={(e) => handleItemsPerPage(e)}
           >
-            {["10", "15", "20", "25", "30"].map((num, key) => {
+            {["5", "10", "15", "20", "25", "30"].map((num, key) => {
               return (
                 <option value={num} key={key}>
                   {num}

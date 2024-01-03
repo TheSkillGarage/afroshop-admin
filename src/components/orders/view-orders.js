@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import AdminNavbar from "../navbar";
-import { FilterIcon, GreenRightArrow, SearchIcon } from "../../images";
+import { GreenRightArrow } from "../../images";
 import StatusPills from "../status-pills";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ORDERS_DATA from "../../data/orders";
+import useFilter from "../../hooks/useFilter";
+import Search from "../search";
 
 const ViewOrders = () => {
 
-    const { orderID } = useParams()
+    const { orderID } = useParams();
+
+    const navigate = useNavigate();
 
     const order = ORDERS_DATA.find((order) => order.orderID === orderID);
+
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterObject, setFilterObject] = useState({});
+  
+    const handleSearch = (searchWord) => setSearchTerm(searchWord)
+    const handleFilterObject = (filterObject) => setFilterObject(filterObject)
+  
+  
+    // using custom  hooks
+    const data = useFilter("products", "all", order.order, searchTerm, filterObject).filteredData;
 
     return (
         <div>
@@ -70,20 +85,11 @@ const ViewOrders = () => {
                     </div>
 
 
-                    <div className="mt-6 flex justify-between items-center px-4 py-8">
-                        <div className="w-[514px] relative">
-                            <SearchIcon className="absolute top-[10px] left-[18px] " />
-                            <input type="text" placeholder="Text" className="bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12" />
-                        </div>
-
-                        <div className="w-[108px] h-[44px] rounded border border-[0.5px] flex items-center justify-center gap-2">
-                            <p className="text-[16px] leading-[24px] text-[#333333]">Filter</p>
-                            <FilterIcon />
-                        </div>
-                    </div>
 
                     {/**************************************************************** * table section ***************************************************************/}
 
+                    <Search handleSearch={handleSearch} name="view-orders" DATA={order.order} handleFilterObject={handleFilterObject} />
+                    
                     <div className="w-full">
                         <table className="w-full border-collapse">
                             <thead className="text-left bg-[#F2F2F2] h-[56px] font-semibold text-[13px] leading-[23px] text-[#186F3D] uppercase">
@@ -99,11 +105,11 @@ const ViewOrders = () => {
 
                             <tbody>
                                 {
-                                    order.order.map(({name, productID, price, status}, key) => {
+                                    data.map(({productName, productID, price, status}, key) => {
                                         return (
                                             <tr key={key} className="border-b border-1 border-[#E6E6E6] text-[13px] leading-[23px] text-[#333333]">
                                                 <td className="py-2 pr-8"></td>
-                                                <td className="py-2 pr-8" >{name}</td>
+                                                <td className="py-2 pr-8" >{productName}</td>
                                                 <td className="py-2 pr-8">{productID}</td>
                                                 <td className="py-2 pr-8">{price}</td>
                                                 <td className="py-4 pr-8 capitalize">
@@ -119,9 +125,8 @@ const ViewOrders = () => {
                     </div>
                    </div>
 
-                    <div className="flex justify-end gap-6 mt-24">
-                        <button className="h-[40px] rounded bg-[rgba(252,174,23,0.15)] w-[133px] text-[16px] leading-[24px] text-[#333333]">Cancel</button>
-                        <button className="h-[40px] rounded bg-[#186F3D] w-[136px] text-[16px] leading-[24px] text-[#FFFFFF]">Submit</button>
+                    <div className="flex justify-end mt-24">
+                        <button className="h-[40px] rounded bg-[rgba(252,174,23,0.15)] w-[133px] text-[16px] leading-[24px] text-[#333333]" onClick={() => navigate("/orders")}>Close</button>
                     </div>
                 </div>
 

@@ -1,3 +1,5 @@
+import { Chicken } from "../images";
+
 const PRODUCT_DATA = [
     {
         id: "product-1",
@@ -6,7 +8,12 @@ const PRODUCT_DATA = [
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 34,
-        status: "pending"
+        status: "pending",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
+
     },
     {
         id: "product-2",
@@ -15,7 +22,11 @@ const PRODUCT_DATA = [
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 12,
-        status: "draft"
+        status: "draft",
+        category: "Spices",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-3",
@@ -24,7 +35,11 @@ const PRODUCT_DATA = [
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 45,
-        status: "active"
+        status: "active",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-4",
@@ -33,7 +48,11 @@ const PRODUCT_DATA = [
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 6,
-        status: "pending"
+        status: "pending",
+        category: "Candy",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-5",
@@ -42,7 +61,11 @@ const PRODUCT_DATA = [
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 8,
-        status: "active"
+        status: "active",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-6",
@@ -51,7 +74,11 @@ const PRODUCT_DATA = [
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 1,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-7",
@@ -60,7 +87,11 @@ const PRODUCT_DATA = [
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 3,
-        status: "pending"
+        status: "pending",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-8",
@@ -69,7 +100,11 @@ const PRODUCT_DATA = [
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "active"
+        status: "active",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-9",
@@ -78,7 +113,11 @@ const PRODUCT_DATA = [
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-10",
@@ -87,106 +126,154 @@ const PRODUCT_DATA = [
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 4,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-11",
         productName: "Strawberries",
-        SKU: "XA131R",
+        SKU: "XA133R",
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-12",
         productName: "Strawberries",
-        SKU: "XA131R",
+        SKU: "XA134R",
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-13",
         productName: "Strawberries",
-        SKU: "XA131R",
+        SKU: "XA135R",
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-14",
         productName: "Strawberries",
-        SKU: "XA131R",
+        SKU: "XA136R",
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-15",
         productName: "Strawberries",
-        SKU: "XA131R",
+        SKU: "XA137R",
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-16",
         productName: "Strawberries",
-        SKU: "XA131R",
+        SKU: "XA138R",
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-17",
         productName: "Strawberries",
-        SKU: "XA131R",
+        SKU: "XA139R",
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-18",
         productName: "Strawberries",
-        SKU: "XA131R",
+        SKU: "XA140R",
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-19",
         productName: "Strawberries",
-        SKU: "XA131R",
+        SKU: "XA141R",
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-20",
         productName: "Strawberries",
-        SKU: "XA131R",
+        SKU: "XA142R",
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
     {
         id: "product-21",
         productName: "Strawberries",
-        SKU: "XA131R",
+        SKU: "XA143R",
         dateAdded: "12/12/23",
         salesPrice: 10.85,
         availabilty: 2,
-        status: "draft"
+        status: "draft",
+        category: "Snacks",
+        description: "lorem ipsum dolor sit amet consectetur adipiscing elit et ea rebum ad minim veniam et dolore magna aliqu fugiat nulla pari",
+        discount: 0.01,
+        images: [Chicken, Chicken, Chicken]
     },
 ]
 

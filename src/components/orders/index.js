@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { EyeIcon } from "../../images";
 import ORDERS_DATA from "../../data/orders";
 import StatusPills from "../status-pills";
@@ -9,7 +9,6 @@ import useFilter from "../../hooks/useFilter";
 import TableFooter from "../table-footer/table-footer";
 import Search from "../search";
 import BaseTable from "../shared/table";
-import Detail from "../products/details";
 import Checkbox from "../shared/checkbox";
 import useTableSelect from "../../hooks/useTableSelect";
 
@@ -33,7 +32,6 @@ const OrdersDashboard = () => {
 
   // using custom  hooks
   const data = useFilter("orders", activeTab, ORDERS_DATA, searchTerm, filterObject).filteredData;
-  console.log(data)
   const pagination = usePagination(page, itemsPerPage, data);
   const totalPages = pagination.totalPages; // sets total 
 
@@ -155,7 +153,16 @@ const OrdersDashboard = () => {
 
 
 
-        <TableFooter pagination={pagination} data={data} handleItemsPerPage={handleItemsPerPage} prevPage={prevPage} page={page} handlePage={handlePage} nextPage={nextPage} totalPages={totalPages} />
+        <TableFooter 
+        pagination={pagination} 
+        data={data}
+        itemsPerPage={itemsPerPage} 
+        handleItemsPerPage={handleItemsPerPage} 
+        prevPage={prevPage} 
+        page={page} 
+        handlePage={handlePage} 
+        nextPage={nextPage} 
+        totalPages={totalPages} />
 
       </div>
 
