@@ -9,7 +9,6 @@ const Password = () => {
 
 
     const [viewPassword, setViewPassword] = useState({
-        current: false,
         reset: false,
         confirm: false
     });
@@ -24,7 +23,7 @@ const Password = () => {
 
     const handleEdit = () => {
         setEdit((prevEdit) => !prevEdit);
-    
+
         // Update all viewPassword values to false
         setViewPassword((prevViewPassword) => {
             const updatedViewPassword = { ...prevViewPassword };
@@ -34,9 +33,9 @@ const Password = () => {
             return updatedViewPassword;
         });
     };
-    
 
-    
+
+
     return (
         <div className="mt-8 w-full bg-white p-8">
             <div className="w-full flex justify-between items-center p-4 border-b border-1 border-[#E6E6E6]">
@@ -59,9 +58,8 @@ const Password = () => {
                             <div className="relative">
                                 <img src={PasswordLock} alt="lock" className="absolute left-6 top-3 w-6 h-6" />
 
-                                <input type={viewPassword["current"] ? "text" : "password"} id="current" name="password" className="w-full h-[53px] rounded py-2 px-14 bg-[#F2F2F2] focus:outline-none focus:border border-[#186F3D]" />
+                                <input type="password" id="current" name="password" className="w-full h-[53px] rounded py-2 px-14 bg-[#F2F2F2] focus:outline-none focus:border border-[#186F3D]" />
 
-                                <img src={viewPassword["current"] ? ViewPassword : PasswordEye} alt="lock" className="absolute right-6 top-3 w-6 h-6" onClick={() => handleViewPassword("current")}/>
                             </div>
 
                         </div>
@@ -75,9 +73,9 @@ const Password = () => {
                                     <div className="relative">
                                         <img src={PasswordLock} alt="lock" className="absolute left-6 top-3 w-6 h-6" />
 
-                                        <input type={viewPassword["reset"] ? "text" : "password"} id="new" name="password" className="w-full h-[53px] rounded py-2 px-14 bg-[#F2F2F2] focus:outline-none focus:border border-[#186F3D]" />
+                                        <input type={viewPassword["reset"] ? "text" : "password"} id="new" name="new-password" className="w-full h-[53px] rounded py-2 px-14 bg-[#F2F2F2] focus:outline-none focus:border border-[#186F3D]" />
 
-                                        <img src={viewPassword["reset"] ? ViewPassword : PasswordEye} alt="lock" className="absolute right-6 top-3 w-6 h-6" onClick={() => handleViewPassword("reset")}/>
+                                        <img src={viewPassword["reset"] ? ViewPassword : PasswordEye} alt="lock" className="absolute right-6 top-3 w-6 h-6" onClick={() => handleViewPassword("reset")} />
                                     </div>
 
                                 </div>
@@ -88,9 +86,9 @@ const Password = () => {
                                     <div className="relative">
                                         <img src={PasswordLock} alt="lock" className="absolute left-6 top-3 w-6 h-6" />
 
-                                        <input type="password" id="confirm" name="password" className="w-full h-[53px] rounded py-2 px-14 bg-[#F2F2F2] focus:outline-none focus:border border-[#186F3D]" />
+                                        <input type="password" id="confirm" name="confirm-password" className="w-full h-[53px] rounded py-2 px-14 bg-[#F2F2F2] focus:outline-none focus:border border-[#186F3D]" />
 
-                                        <img src={viewPassword["confirm"] ? ViewPassword : PasswordEye} alt="lock" className="absolute right-6 top-3 w-6 h-6" onClick={() => handleViewPassword("confirm")}/>
+                                        <img src={viewPassword["confirm"] ? ViewPassword : PasswordEye} alt="lock" className="absolute right-6 top-3 w-6 h-6" onClick={() => handleViewPassword("confirm")} />
                                     </div>
 
                                 </div>
@@ -99,7 +97,7 @@ const Password = () => {
 
                     </div>
 
-                 {edit && <div className="flex justify-end gap-6 mt-8">
+                    {edit && <div className="flex justify-end gap-6 mt-8">
                         <Button
                             variant="secondary"
                             type="button"
