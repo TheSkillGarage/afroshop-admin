@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import PRODUCT_DATA from "../../data/products";
-import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
-import StatusPills from "../status-pills";
 import { Link, useNavigate } from "react-router-dom";
 import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";
 import TableFooter from "../table-footer/table-footer";
 import Search from "../search";
-import useTableSelect from "../../hooks/useTableSelect";
-import Checkbox from "../shared/checkbox";
 import BaseTable from "../shared/table";
+import useTableData from "../../hooks/useTableData";
 
 const ProductsDashboard = () => {
 
@@ -46,86 +43,21 @@ const ProductsDashboard = () => {
     const goToEdit = (sku) => navigate(`/products/edit/${sku}`)
 
 
-    const { selectedRows, handleSelectAllRows, handleSelectRow } = useTableSelect(
-        { rows: pagination.currentData }
-    );
+    // generating table values with tableData Hook
+    let headersArray = [
+        "selection",
+        "product Name",
+        "SKU",
+        "date Added",
+        "sales Price",
+        "availabilty",
+        "status",
+        "detail"]
 
-    const headers = [
-        {
-            id: "selection",
-            name: (
-                <Checkbox
-                    name="all"
-                    handleChange={handleSelectAllRows}
-                    value={
-                        selectedRows.length === pagination.currentData.length ? "all" : ""
-                    }
-                    valueOnChecked="all"
-                />
-            ),
-            width: "6.5%",
-        },
-        {
-            id: "productName",
-            name: "product Name",
-            width: "14.5%",
-        },
-        {
-            id: "SKU",
-            name: "SKU",
-            width: "14.5%",
-        },
-        {
-            id: "dateAdded",
-            name: "date Added",
-            width: "14.5%",
-        },
-        {
-            id: "salesPrice",
-            name: "sales Price",
-            width: "14.5%",
-        },
-        {
-            id: "availabilty",
-            name: "availabilty",
-            width: "14.5%",
-        },
-        {
-            id: "status",
-            name: "Status",
-            width: "14.5%",
-        },
-        {
-            id: "detail",
-            name: "",
-            width: "6.5%"
-        }
-    ];
+    const tableData = useTableData("products", headersArray, pagination.currentData, goToEdit);
 
-
-    const results = pagination.currentData.map((data) => ({
-        ...data,
-        id: data.id,
-        selection: (
-            <Checkbox
-                name={`checkbox_${data.id}`}
-
-                handleChange={(payload) => {
-                    handleSelectRow(data.id);
-                }}
-                value={selectedRows.includes(data.id) ? data.id : ""}
-                valueOnChecked={data.id}
-            />
-        ),
-        status: (
-            <div className="capitalize">
-                <StatusPills status={data.status} name="products" />
-            </div>
-        ),
-        detail: (
-            <Detail name="products" goToEdit={goToEdit} sku={data.SKU}/>
-        )
-    }));
+    const headers = tableData.headers
+    const results = tableData.results
 
     return (
         <div className="bg-[#F2F2F2] w-full py-6 px-4">
