@@ -37,7 +37,7 @@ const Password = () => {
 
 
     return (
-        <div className="mt-8 w-full bg-white p-8">
+        <div className="mt-8 w-full bg-white p-8 min-h-screen">
             <div className="w-full flex justify-between items-center p-4 border-b border-1 border-[#E6E6E6]">
                 <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold">Password</p>
 
