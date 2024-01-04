@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Checkbox from "../shared/checkbox";
 import { useForm } from "react-hook-form";
 import InputComponent from "../shared/inputComponent";
@@ -11,18 +11,15 @@ import {
 } from "../../data/profile";
 import { EditIcon, ProfileImage } from "../../images";
 import useTableSelect from "../../hooks/useTableSelect";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const StoreInfo = () => {
-  const {
-    control,
-    formState: { errors },
-    register,
-    handleSubmit,
-    getValues,
-  } = useForm({ defaultValues: { email: "", role: "" }, mode: "all" });
+  const { control, errors, register } = useContext(ProfileContext);
+
   const { handleSelectRow, selectedRows } = useTableSelect({
     rows: daysOfTheWeek,
   });
+
   return (
     <div className="flex flex-col gap-6">
       <div className="mt-8 mb-3">
@@ -82,7 +79,7 @@ const StoreInfo = () => {
           multiple={true}
           options={deliveryOptions}
           label="Delivery Option(s)"
-          fieldName={"delivery-option"}
+          fieldName={"deliveryOption"}
           placeholder="Enter"
           className="bg-[#F2F2F2]"
           control={control}
@@ -94,7 +91,7 @@ const StoreInfo = () => {
           // leftIcon={EditIcon}
           options={deliveryStartTimes}
           label="Delivery Start Time"
-          fieldName={"delivery-start-time"}
+          fieldName={"deliveryStartTime"}
           placeholder="Enter"
           className="bg-[#F2F2F2]"
           control={control}
@@ -105,7 +102,7 @@ const StoreInfo = () => {
           inputType="select"
           options={deliveryEndTimes}
           label="Delivery End Time"
-          fieldName={"delivery-end-time"}
+          fieldName={"deliveryEndTime"}
           placeholder="Enter"
           className="bg-[#F2F2F2]"
           control={control}
@@ -116,7 +113,7 @@ const StoreInfo = () => {
           inputType="select"
           options={deliverySlots}
           label="Delivery Slots"
-          fieldName={"delivery-slot"}
+          fieldName={"deliverySlot"}
           placeholder="Enter"
           className="bg-[#F2F2F2]"
           control={control}
@@ -127,7 +124,7 @@ const StoreInfo = () => {
           inputType="select"
           options={deliverySlots}
           label="Rest Period"
-          fieldName={"rest-period"}
+          fieldName={"restPeriod"}
           placeholder="Enter"
           className="bg-[#F2F2F2]"
           control={control}

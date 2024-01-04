@@ -22,6 +22,14 @@ const Profile = () => {
     watch,
   } = useForm({
     defaultValues: {
+      name: "Green Ranger",
+      address: "No 3 Crimson Drive, CA",
+      email: "greenranger@gmail.com",
+      deliveryOption: ["Pick-Up", "Delivery"],
+      deliveryStartTime: "10:00AM",
+      deliveryEndTime: "9:00PM",
+      deliverySlot: "2 Hours",
+      restPeriod: "1 Hours",
       destination: [""],
       fee: [],
       description: [],
@@ -59,7 +67,7 @@ const Profile = () => {
         });
       setHolidayData((prevData) => [...prevData, ...holidayFormData]);
     }
-    
+
     setDeliveryFormCount([{}]);
     setHolidayFormCount([{}]);
     reset();

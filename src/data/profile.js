@@ -8,8 +8,8 @@ const daysOfTheWeek = [
   { label: "Sat", value: "saturday" },
 ];
 const deliveryOptions = [
-  { value: "pick-up", label: "Pick-Up" },
-  { value: "delivery", label: "Delivery" },
+  { value: "Pick-Up", label: "Pick-Up" },
+  { value: "Delivery", label: "Delivery" },
 ];
 const destinationOptions = [
   {
@@ -134,10 +134,10 @@ const deliveryEndTimes = [
   },
 ];
 const deliverySlots = [
-  { label: "1 Hours", value: "1" },
-  { label: "2 Hours", value: "2" },
-  { label: "3 Hours", value: "3" },
-  { label: "4 Hours", value: "4" },
+  { label: "1 Hours", value: "1 Hours" },
+  { label: "2 Hours", value: "2 Hours" },
+  { label: "3 Hours", value: "3 Hours" },
+  { label: "4 Hours", value: "4 Hours" },
 ];
 
 export {
