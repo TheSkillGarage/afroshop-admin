@@ -15,7 +15,7 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
   return (
     <div className="w-full">
       {data && data.length !== 0 && !loading ? (
-        <table className="w-full ">
+        <table className="w-full border-collapse">
           <thead className="h-[56px] uppercase text-[13px] leading-[23px] text-[#186F3D] font-semibold bg-[#F2F2F2]">
             <tr>
               {tableHeaders.map((header) => (

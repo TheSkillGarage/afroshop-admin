@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { EyeIcon } from "../../images";
 import ORDERS_DATA from "../../data/orders";
-import StatusPills from "../status-pills";
 import { useNavigate } from "react-router";
 import usePagination from "../../hooks/usePagination";
 import Filters from "../filters";
@@ -9,8 +7,7 @@ import useFilter from "../../hooks/useFilter";
 import TableFooter from "../table-footer/table-footer";
 import Search from "../search";
 import BaseTable from "../shared/table";
-import Checkbox from "../shared/checkbox";
-import useTableSelect from "../../hooks/useTableSelect";
+import useTableData from "../../hooks/useTableData";
 
 const OrdersDashboard = () => {
 
@@ -44,85 +41,21 @@ const OrdersDashboard = () => {
   const handleViewOrder = (orderID) => navigate(`/view-order/${orderID}`);
 
 
-  const { selectedRows, handleSelectAllRows, handleSelectRow } = useTableSelect(
-    { rows: pagination.currentData }
-  );
+  let headersArray = [
+    "selection",
+    "order ID",
+    "order Date",
+    "customer",
+    "price",
+    "items",
+    "status",
+    "detail"]
 
-  const headers = [
-    {
-      id: "selection",
-      name: (
-        <Checkbox
-          name="all"
-          handleChange={handleSelectAllRows}
-          value={
-            selectedRows.length === pagination.currentData.length ? "all" : ""
-          }
-          valueOnChecked="all"
-        />
-      ),
-      width: "6.5%",
-    },
-    {
-      id: "orderID",
-      name: "order ID",
-      width: "14.5%",
-    },
-    {
-      id: "orderDate",
-      name: "order Date",
-      width: "14.5%",
-    },
-    {
-      id: "customer",
-      name: "customer",
-      width: "14.5%",
-    },
-    {
-      id: "price",
-      name: "price",
-      width: "14.5%",
-    },
-    {
-      id: "items",
-      name: "items",
-      width: "14.5%",
-    },
-    {
-      id: "status",
-      name: "Status",
-      width: "14.5%",
-    },
-    {
-      id: "detail",
-      name: "",
-      width: "6.5%"
-    }
-  ];
 
-  const results = pagination.currentData.map((data) => ({
-    ...data,
-    id: data.id,
-    selection: (
-      <Checkbox
-        name={`checkbox_${data.id}`}
-        handleChange={(payload) => {
-          handleSelectRow(data.id);
-        }}
-        value={selectedRows.includes(data.id) ? data.id : ""}
-        valueOnChecked={data.id}
-      />
-    ),
-    status: (
-      <div className="capitalize">
-        <StatusPills status={data.status} name="orders" />
-      </div>
-    ),
-    detail: (
-      <EyeIcon className="cursor-pointer" onClick={() => handleViewOrder(data.orderID)} />
-    )
-  }));
+  const tableData = useTableData("orders", headersArray, pagination.currentData, handleViewOrder);
 
+  const headers = tableData.headers
+  const results = tableData.results
 
 
   return (
@@ -152,16 +85,16 @@ const OrdersDashboard = () => {
 
 
 
-        <TableFooter 
-        pagination={pagination} 
-        data={data}
-        itemsPerPage={itemsPerPage} 
-        handleItemsPerPage={handleItemsPerPage} 
-        prevPage={prevPage} 
-        page={page} 
-        handlePage={handlePage} 
-        nextPage={nextPage} 
-        totalPages={totalPages} />
+        <TableFooter
+          pagination={pagination}
+          data={data}
+          itemsPerPage={itemsPerPage}
+          handleItemsPerPage={handleItemsPerPage}
+          prevPage={prevPage}
+          page={page}
+          handlePage={handlePage}
+          nextPage={nextPage}
+          totalPages={totalPages} />
 
       </div>
 
