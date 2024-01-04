@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { DeleteIcon, DetailsIcon, EditIcon } from "../../images";
 import DeleteUser from "../pop-ups/deleteModal";
+import PropTypes from 'prop-types';
 
-const Detail = ({name, goToEdit, sku}) => {
+const Detail = ({name, goToEdit, param}) => {
   const [showDetails, setShowDetails] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const handleShowDetails = () => {
@@ -20,7 +21,7 @@ const Detail = ({name, goToEdit, sku}) => {
       <DetailsIcon className="cursor-pointer" onClick={handleShowDetails} />
       {showDetails && (
         <div className="absolute top-[30px] right-[20px] bg-[#ffffff] rounded flex flex-col space-around py-3 px-2 z-[5] shadow-md">
-          <div className="px-1 flex items-center cursor-pointer mb-2 gap-2" onClick={() => goToEdit(sku)}>
+          <div className="px-1 flex items-center cursor-pointer mb-2 gap-2" onClick={() => goToEdit(param)}>
             <EditIcon className="w-4 h-4" />
             <p>Edit</p>
           </div>
@@ -52,4 +53,13 @@ const Detail = ({name, goToEdit, sku}) => {
   );
 };
 
+
+Detail.propTypes = {
+  name: PropTypes.string.isRequired,
+  goToEdit: PropTypes.func.isRequired,
+  param: PropTypes.string.isRequired,
+}
+
 export default Detail;
+
+
