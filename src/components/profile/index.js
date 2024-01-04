@@ -5,6 +5,7 @@ import RoleActionCard from "../roles-and-permissions/role-action-card";
 import DeliveryFees from "./delivery-fees-section";
 import HolidayException from "./holiday-exception-section";
 import Button from "../shared/button";
+import Password from "./password";
 
 const Profile = () => {
   const [sections, setSections] = useState([
@@ -24,6 +25,7 @@ const Profile = () => {
       component: <HolidayException />,
     },
   ]);
+
   const [tab, setTab] = useState([
     {
       label: "Profile",
@@ -34,6 +36,7 @@ const Profile = () => {
       value: false,
     },
   ]);
+
   const handleTabClick = (label) => {
     const updatedTab = tab.map((t) => {
       if (t.label === label) {
@@ -72,17 +75,17 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="mt-8 w-full bg-white p-8">
+     {tab[0].value ? <div className="mt-8 w-full bg-white p-8">
         <div className="py-4 px-6 border-b-[2px] border-[#E6E6E6] text-[#186F3D] flex items-center justify-between">
           <p className="text-xl font-bold">Profile</p>
           <p className="flex gap-2 items-center font-semibold">
             <EditIcon2 className="text-[#186F3D]" /> Edit
           </p>
         </div>
-        <RoleActionCard
+        {/* <RoleActionCard
           sections={sections}
           saveSections={(data) => setSections(data)}
-        />
+        /> */}
         <div className="flex justify-end gap-6 mt-8">
           <Button
             variant="secondary"
@@ -98,6 +101,9 @@ const Profile = () => {
           </Button>
         </div>
       </div>
+      :
+      <Password />
+      }
     </div>
   );
 };

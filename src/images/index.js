@@ -90,6 +90,11 @@ import SellerCenter from "./sellerCenter.svg"
 import Tick from "./tick.svg"
 import WhiteArrowRight from "./whiteArrowRight.svg"
 
+import PasswordLock from "./icon-password.svg"
+import ViewPassword from "./view-password.svg"
+import PasswordEye from "./icon-see-password.svg"
+import GreenEdit from "./edit-green.svg"
+import GreyEdit from "./grey-edit.svg"
 
 export {
   EmailSupport,
@@ -178,4 +183,9 @@ export {
   Tick,
   WhiteArrowRight,
   IconMessage,
+  PasswordLock,
+  PasswordEye,
+  GreenEdit,
+  GreyEdit,
+  ViewPassword,
 };
