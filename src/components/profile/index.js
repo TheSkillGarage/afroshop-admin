@@ -79,10 +79,10 @@ const Profile = () => {
             <EditIcon2 className="text-[#186F3D]" /> Edit
           </p>
         </div>
-        <RoleActionCard
+        {/* <RoleActionCard
           sections={sections}
           saveSections={(data) => setSections(data)}
-        />
+        /> */}
         <div className="flex justify-end gap-6 mt-8">
           <Button
             variant="secondary"
