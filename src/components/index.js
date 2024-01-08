@@ -10,4 +10,7 @@ export {default as Dashboard} from './dashboard/dashboard'
 export {default as Support} from './support';
 export {default as Profile} from './profile';
 export {default as EditProduct} from './edit-products';
+export {default as ResetPassword} from './auth/forms/ResetPassword';
 export {default as AddProduct} from "./products-changes";
+export {default as AuthLayout} from "./layout/AuthLayout"
+export {default as AuthSuccess} from './auth/authSuccess';
