@@ -85,6 +85,11 @@ import WhatsAppSupport from "./whatsAppSupport.svg"
 import PhoneSupport from "./phoneSupport.svg"
 import GreenRangerPic from "./green-ranger.svg"
 
+import PasswordLock from "./icon-password.svg"
+import ViewPassword from "./view-password.svg"
+import PasswordEye from "./icon-see-password.svg"
+import GreenEdit from "./edit-green.svg"
+import GreyEdit from "./grey-edit.svg"
 
 export {
   EmailSupport,
@@ -168,4 +173,9 @@ export {
   CustomerImage1,
   CustomerImage2,
   CustomerImage3,
+  PasswordLock,
+  PasswordEye,
+  GreenEdit,
+  GreyEdit,
+  ViewPassword,
 };
