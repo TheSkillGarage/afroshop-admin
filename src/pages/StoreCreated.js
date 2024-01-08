@@ -1,11 +1,11 @@
 import React from "react";
-import { AuthWrapper, CreateStore } from "../components";
+import { AuthLayout, CreateStore } from "../components";
 
 const StoreCreated = () => {
   return (
-    <AuthWrapper>
+    <AuthLayout>
       <CreateStore />
-    </AuthWrapper>
+    </AuthLayout>
   );
 };
 

@@ -1,19 +1,13 @@
 import React from "react";
-import { Tick, SellerCenter} from "../../images";
+import { Tick} from "../../images";
 import Button from "../shared/button";
 import { Link } from "react-router-dom";
+import Formheader from "./forms/helper/Formheader";
 
 const CreateStore = () => {
   return (
     <div className="text-center flex flex-col justify-center items-center">
-      <div>
-        <div>
-          <img src={SellerCenter} alt="logo" />
-        </div>
-        <div>
-          <img src={Tick} alt="tick illustation" />
-        </div>
-      </div>
+     <Formheader icon={Tick}/>
       <div>
         <div className="text-center font-bold py-[24px]">
           Store Account Created Successfully!

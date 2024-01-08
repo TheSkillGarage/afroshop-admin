@@ -1,11 +1,11 @@
 import React from "react";
-import { AuthWrapper, ResetPassword } from "../components";
+import { AuthLayout, ResetPassword } from "../components";
 
 const PasswordReset = () => {
   return (
-    <AuthWrapper>
+    <AuthLayout>
       <ResetPassword />
-    </AuthWrapper>
+    </AuthLayout>
   );
 };
 

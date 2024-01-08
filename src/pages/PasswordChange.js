@@ -1,11 +1,11 @@
 import React from "react";
-import { AuthWrapper, ResetSuccessful } from "../components";
+import { AuthLayout, ResetSuccessful } from "../components";
 
 const PasswordChange = () => {
   return (
-    <AuthWrapper>
+    <AuthLayout>
       <ResetSuccessful />
-    </AuthWrapper>
+    </AuthLayout>
   );
 };
 

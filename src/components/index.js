@@ -14,4 +14,4 @@ export {default as ResetSuccessful} from './auth/ResetSuccessful';
 export {default as CreateStore} from './auth/CreateStore';
 export {default as ResetPassword} from './auth/forms/ResetPassword';
 export {default as AddProduct} from "./products-changes";
-export {default as AuthWrapper} from "./auth"
+export {default as AuthLayout} from "./layout/AuthLayout"

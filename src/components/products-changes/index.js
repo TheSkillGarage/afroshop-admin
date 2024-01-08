@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import { CATEGORY_DATA } from "../../data";
 import "react-quill/dist/quill.snow.css";
 import { FileInput, ImageDisplay } from "../addProduct/helpers";
+import PropTypes from 'prop-types';
+
 import { ProductInfo } from "./productInfo";
 
 const StyledList = styled.ul`
@@ -226,5 +228,13 @@ const ProductChanges = ({ name, productInfo }) => {
     </div>
   );
 };
+
+
+ProductChanges.propTypes = {
+    name: PropTypes.string.isRequired,
+    productInfo: PropTypes.object,
+}
+
+
 
 export default ProductChanges;

@@ -1,7 +1,7 @@
 import React from "react";
 import { Store } from "../../images";
 
-const AuthWrapper = ({ children }) => {
+const AuthLayout = ({ children }) => {
   return (
     <div className="w-[100%] bg-[#F2F2F2]">
       <div className="flex">
@@ -18,4 +18,4 @@ const AuthWrapper = ({ children }) => {
   );
 };
 
-export default AuthWrapper;
+export default AuthLayout;

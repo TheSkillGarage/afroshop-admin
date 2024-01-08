@@ -1,19 +1,13 @@
 import React from "react";
-import { Tick, SellerCenter } from "../../images";
 import { Link } from "react-router-dom";
+import { Tick} from "../../images";
 import Button from "../shared/button";
+import Formheader from "./forms/helper/Formheader";
 
 const ResetSuccessful = () => {
   return (
     <div className="text-center flex flex-col justify-center items-center">
-      <div>
-        <div>
-          <img src={SellerCenter} alt="logo" />
-        </div>
-        <div>
-          <img src={Tick} alt="tick illustation" />
-        </div>
-      </div>
+      <Formheader icon={Tick}/>
       <div className="flex flex-col justify-center items-center">
         <div className="text-center font-bold py-[24px]">
           Password Change Successful!
