@@ -10,8 +10,8 @@ export {default as Dashboard} from './dashboard/dashboard'
 export {default as Support} from './support';
 export {default as Profile} from './profile';
 export {default as EditProduct} from './edit-products';
-export {default as ResetSuccessful} from './forms/ResetSuccessful';
-export {default as CreateStore} from './forms/CreateStore';
-export {default as ResetPassword} from './forms/ResetPassword';
+export {default as ResetSuccessful} from './auth/ResetSuccessful';
+export {default as CreateStore} from './auth/CreateStore';
+export {default as ResetPassword} from './auth/forms/ResetPassword';
 export {default as AddProduct} from "./products-changes";
 export {default as AuthWrapper} from "./auth"

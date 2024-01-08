@@ -3,7 +3,7 @@ import {
   SellerCenter,
   WhiteArrowRight,
   IconMessage,
-} from "../../images";
+} from "../../../images";
 
 const ResetPassword = () => {
   return (
