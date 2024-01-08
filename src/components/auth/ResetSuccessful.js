@@ -1,5 +1,7 @@
 import React from "react";
-import { Tick, SellerCenter, WhiteArrowRight } from "../../images";
+import { Tick, SellerCenter } from "../../images";
+import { Link } from "react-router-dom";
+import Button from "../shared/button";
 
 const ResetSuccessful = () => {
   return (
@@ -16,12 +18,7 @@ const ResetSuccessful = () => {
         <div className="text-center font-bold py-[24px]">
           Password Change Successful!
         </div>
-        <button className="py-[10px] flex justify-center px-[20px] border border-[#186F3D] bg-[#186F3D] text-[#ffffff] rounded-[4px] w-[400px]">
-          <span className="pr-2"> Go to Dashboard</span>
-          <span>
-            <img src={WhiteArrowRight} alt="arrow" />
-          </span>
-        </button>
+        <Link to="/dashboard"> <Button icon="white" className="w-[400px]">Go to dashboard</Button></Link>
       </div>
     </div>
   );
