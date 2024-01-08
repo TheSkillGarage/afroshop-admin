@@ -1,5 +1,5 @@
 import React from "react";
-import { Store } from "../../images";
+import { Store, SellerCenter } from "../../images";
 
 const AuthLayout = ({ children }) => {
   return (
@@ -10,6 +10,7 @@ const AuthLayout = ({ children }) => {
         </div>
         <div className="mx-auto w-[50%] h-screen flex flex-col justify-center">
           <div className="flex flex-col justify-center items-center">
+          <img src={SellerCenter} alt="logo" />
             {children}
           </div>
         </div>

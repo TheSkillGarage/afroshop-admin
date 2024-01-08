@@ -1,10 +1,10 @@
 import React from "react";
-import { AuthLayout, CreateStore } from "../components";
+import { AuthLayout, AuthSuccess } from "../components";
 
 const StoreCreated = () => {
   return (
     <AuthLayout>
-      <CreateStore />
+      <AuthSuccess text="Store Account Created Successfully!" />
     </AuthLayout>
   );
 };
