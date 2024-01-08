@@ -5,6 +5,18 @@ import { EyeIcon } from "../images";
 import useTableSelect from "./useTableSelect";
 
 
+/**
+ * @description useTableData Hook
+ * @param {string} name : name of table e.g orders, products, etc.
+ * @param {array} headersArray : Array of table headers, should be same casing as object key e.g "productName" => "product Name".
+ * @param {array} data : Array of objects representing each table row.
+ * @param {function} func : Function associated with detail icons.
+ * @returns headers: Array of table headers
+ * @returns result: Array of objects representing each table row plus detail and checkbox.
+ * @returns handleSelectAllItems: a function that performs all rows selection
+ */
+
+
 export const useTableData = (name, headersArray, data, func) => {
 
     const { selectedRows, handleSelectAllRows, handleSelectRow } = useTableSelect(
@@ -64,7 +76,7 @@ export const useTableData = (name, headersArray, data, func) => {
                 onClick={() => func(data.orderID)}
             />
         ) : (
-            <Detail name={name} goToEdit={func} sku={data.SKU} />
+            <Detail name={name} goToEdit={func} param={data.SKU} />
         ),
     }));
 

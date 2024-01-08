@@ -14,6 +14,7 @@ const ViewOrders = () => {
     const navigate = useNavigate();
 
     const order = ORDERS_DATA.find((order) => order.orderID === orderID);
+    const shopperInfo = order.shopperInfo;
 
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -75,10 +76,10 @@ const ViewOrders = () => {
                                 </div>
 
                                 <div className="text-[13px] leading-[23px] text-[#7F7F7F] w-[70%]">
-                                    <p>Justin James A.</p>
-                                    <p>471 East Beaver Creek Rd, ON L4B 1M7, Ontario, Canada</p>
-                                    <p> +125 000 2892</p>
-                                    <p>jjames@gmail.com</p>
+                                    <p>{order.customer}</p>
+                                    <p>{shopperInfo.deliveryAddress}</p>
+                                    <p>{shopperInfo.phone}</p>
+                                    <p>{shopperInfo.email}</p>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +106,7 @@ const ViewOrders = () => {
 
                             <tbody>
                                 {
-                                    data.map(({productName, productID, price, status}, key) => {
+                                    data.map(({productName, productID, price}, key) => {
                                         return (
                                             <tr key={key} className="border-b border-1 border-[#E6E6E6] text-[13px] leading-[23px] text-[#333333]">
                                                 <td className="py-2 pr-8"></td>
@@ -113,7 +114,7 @@ const ViewOrders = () => {
                                                 <td className="py-2 pr-8">{productID}</td>
                                                 <td className="py-2 pr-8">{price}</td>
                                                 <td className="py-4 pr-8 capitalize">
-                                                    <StatusPills status={status} />
+                                                    <StatusPills status={order.status} />
                                                 </td>
                                                 <td className="py-2 pr-8"></td>
                                             </tr>
