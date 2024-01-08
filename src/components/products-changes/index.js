@@ -10,12 +10,9 @@ import { Link } from "react-router-dom";
 import { CATEGORY_DATA } from "../../data";
 import "react-quill/dist/quill.snow.css";
 import { FileInput, ImageDisplay } from "../addProduct/helpers";
-<<<<<<< HEAD
 import PropTypes from 'prop-types';
 
-=======
 import { ProductInfo } from "./productInfo";
->>>>>>> ddf65a94f82e92f35415f310444526210498c9cc
 
 const StyledList = styled.ul`
   box-shadow: 0 8px 16px 0 rgba(51, 51, 51, 0.12);
