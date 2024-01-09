@@ -49,10 +49,10 @@ const SidebarTab = ({ name, path }) => {
     }
 
     return (
-        <Link to={path}>
+        <Link to={path[0]}>
             <div
-                className={`flex gap-2 mb-4 cursor-pointer py-4 px-2 rounded max-h-[47px] min-h[47px] items-center ${(location.pathname === path || location.pathname === `${path}/`) ? "bg-[#186F3D] text-[#ffffff]" : "text-[#999999]"}`}>
-                <img src={(location.pathname === path || location.pathname === `${path}/`) ? isSelectedImage(name) : selectImage(name)} alt="icon" />
+                className={`flex gap-2 mb-4 cursor-pointer py-4 px-2 rounded max-h-[47px] min-h[47px] items-center ${(path.includes(location.pathname) || path.includes(`${location.pathname}/`)) ? "bg-[#186F3D] text-[#ffffff]" : "text-[#999999]"}`}>
+                <img src={(path.includes(location.pathname) || path.includes(`${location.pathname}/`)) ? isSelectedImage(name) : selectImage(name)} alt="icon" />
                 <p className={`text-[13px] leading-[23px] capitalize`}>{name}</p>
             </div>
         </Link>
