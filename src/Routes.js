@@ -16,6 +16,7 @@ import {
   PasswordSucess,
   StoreCreated,
   PasswordReset,
+  SignUpPage,
 } from "./pages";
 
 const MyRoutes = () => {
@@ -42,6 +43,7 @@ const MyRoutes = () => {
         <Route exact path="/reset-successful" element={<PasswordSucess />} />
         <Route exact path="/store-created" element={<StoreCreated />} />
         <Route exact path="/reset-password" element={<PasswordReset />} />
+        <Route exact path="/sign-up" element={<SignUpPage />} />
       </Routes>
     </BrowserRouter>
   );
