@@ -1,11 +1,11 @@
 import React from "react";
-import { AdminNavbar, Products } from "../components";
+import { AdminNavbar, AddProduct } from "../components";
 
 const AddProducts = () => {
   return (
     <>
       <AdminNavbar name={"AddProducts"} />
-      <Products />
+      <AddProduct name="new"/>
     </>
   );
 };

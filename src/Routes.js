@@ -2,14 +2,20 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./pages/App";
 import {
   AddNewRole,
+  DashboardPage,
   Orders,
   OverviewPage,
   Products,
   ProfilePage,
   RolesAndPermissionsDashboard,
   ViewOrdersPage,
+  WelcomePage,
   SupportPage,
   AddProducts,
+  EditProducts,
+  PasswordSucess,
+  StoreCreated,
+  PasswordReset,
 } from "./pages";
 
 const MyRoutes = () => {
@@ -28,9 +34,14 @@ const MyRoutes = () => {
           element={<RolesAndPermissionsDashboard />}
         />
         <Route exact path="/add-new-role" element={<AddNewRole />} />
+        <Route exact path="/dashboard" element={<DashboardPage/>} />
         <Route exact path="/support" element={<SupportPage />} />
         <Route exact path="/roles-and-permissions/add-new-role" element={<AddNewRole />} />
         <Route exact path="/profile" element={<ProfilePage />} />
+        <Route exact path="/products/edit/:sku" element={<EditProducts />} />
+        <Route exact path="/reset-successful" element={<PasswordSucess />} />
+        <Route exact path="/store-created" element={<StoreCreated />} />
+        <Route exact path="/reset-password" element={<PasswordReset />} />
       </Routes>
     </BrowserRouter>
   );
