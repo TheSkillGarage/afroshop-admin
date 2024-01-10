@@ -1,4 +1,4 @@
-import { BlackEmailIcon, BlackUserIcon, PasswordEye, PasswordLock } from "../images";
+import { BlackEmailIcon, BlackUserIcon, PasswordEye, PasswordLock, ViewPassword } from "../images";
 
 const SignUpData = [
     {
@@ -19,7 +19,7 @@ const SignUpData = [
     {
         label: "Password",
         type: "password",
-        icons: [PasswordLock, PasswordEye]
+        icons: [PasswordLock, PasswordEye, ViewPassword]
     },
 ]
 
