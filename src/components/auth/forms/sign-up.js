@@ -39,7 +39,7 @@ const SignUpForm = () => {
                                         {type !== "password" ?
                                             <div className="relative">
                                                 <img src={icons[0]} alt="user-icon" className="absolute left-[20px] top-[14px] w-6 h-6" />
-                                                <input type={type} id="firstname" className="w-full h-[53px] bg-[#F2F2F2] rounded focus:outline-0 focus:border border-[#186F3D] px-12 text-4 leading-6" />
+                                                <input type={type} id={label.replace(" ", "-").toLowerCase()} name="signup" className="w-full h-[53px] bg-[#F2F2F2] rounded focus:outline-0 focus:border border-[#186F3D] px-12 text-4 leading-6" />
                                             </div>
                                             :
                                             <div className="relative">
