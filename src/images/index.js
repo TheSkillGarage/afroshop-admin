@@ -19,6 +19,7 @@ import successIcon from "./SuccessIcon.png";
 import LoadingIcon from "./LoadingIcon.svg";
 import whiteMarkIcon from "./white-mark-icon.svg";
 import greyMarkIcon from "./grey-mark-icon.svg";
+import MessageIcon from "./message.svg";
 import {ReactComponent as WelcomeImage} from "./welcomeImage.svg"
 
 import ArrowRight from "./arrow-right.svg";
@@ -188,4 +189,5 @@ export {
   GreenEdit,
   GreyEdit,
   ViewPassword,
+  MessageIcon,
 };
