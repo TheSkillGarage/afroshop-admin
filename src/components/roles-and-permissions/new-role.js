@@ -8,12 +8,14 @@ import Button from "../shared/button";
 import { useDispatch, useSelector } from "react-redux";
 import sectionData from "../../data/roles-section-data";
 import { updateUserRole } from "../../redux/action";
+import RoleActionComponent from "./components/role-action-component";
 
 const NewRole = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const users = useSelector((s) => s.users);
   const [sections, setSections] = useState(sectionData);
+
   const {
     control,
     formState: { errors },
@@ -49,11 +51,11 @@ const NewRole = () => {
 
   const options = [
     {
-      value: "admin",
+      value: "Admin",
       label: "Admin",
     },
     {
-      value: "super_admin",
+      value: "Super Admin",
       label: "Super Admin",
     },
   ];
@@ -103,8 +105,21 @@ const NewRole = () => {
               register={register}
             />
           </div>
-
-          <RoleActionCard sections={sections} saveSections={handleSections} />
+          {sections.map((section, index) => (
+            <RoleActionCard
+              section={section}
+              component={
+                <RoleActionComponent
+                  sections={sections}
+                  section={section}
+                  saveSections={handleSections}
+                />
+              }
+              saveSections={handleSections}
+              sections={sections}
+              index={index}
+            />
+          ))}
 
           <div className="flex justify-end gap-6 mt-8">
             <Button

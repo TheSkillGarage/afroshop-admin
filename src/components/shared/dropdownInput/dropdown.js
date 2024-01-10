@@ -63,8 +63,7 @@ const SelectDropdown = forwardRef(
           inputRef={ref}
           options={options}
           onChange={(val) => {
-            field.onChange(
-              typeof val === "object" ? val.map((v) => v.value) : val?.value
+            field.onChange(!multiple ? val?.value : val?.map((v) => v.value)
             );
           }}
           className={`${className}`}

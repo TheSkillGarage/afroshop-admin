@@ -12,7 +12,7 @@ import useFilter from "../../hooks/useFilter";
 import Search from "../search";
 import TableFooter from "../table-footer/table-footer";
 import { useSelector } from "react-redux";
-import { getRoles } from "../../utils/roles";
+import { getPermissionCount, getRoles } from "../../utils/roles";
 
 const RolesAndPermissions = () => {
   const [page, setPage] = useState(1);
@@ -37,7 +37,7 @@ const RolesAndPermissions = () => {
     searchTerm,
     filterObject
   ).filteredData;
-  console.log(ROLES_DATA);
+  console.log(usersWithRoles);
   // from usePagination hook
   const pagination = usePagination(page, itemsPerPage, data);
   const totalPages = pagination.totalPages; // sets total pages
@@ -115,13 +115,14 @@ const RolesAndPermissions = () => {
         valueOnChecked={data.id}
       />
     ),
-    role: getRoles(data.role),
+    permissions: 0,
+    role: data.role,
     status: (
       <div className="capitalize">
         <StatusPills status={data.status} name="roles" />
       </div>
     ),
-    detail: <Detail name={"roles"}/>,
+    detail: <Detail name={"roles"} />,
   }));
 
   return (

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import Checkbox from "../shared/checkbox";
 import { useForm } from "react-hook-form";
 import InputComponent from "../shared/inputComponent";
@@ -9,23 +9,66 @@ import {
   deliverySlots,
   deliveryStartTimes,
 } from "../../data/profile";
-import { EditIcon, ProfileImage } from "../../images";
+import { DeleteIcon, EditIcon, ProfileImage } from "../../images";
 import useTableSelect from "../../hooks/useTableSelect";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
 const StoreInfo = () => {
   const { control, errors, register } = useContext(ProfileContext);
-
+  const [file, setFile] = useState(null);
+  const { editProfile } = useContext(ProfileContext);
   const { handleSelectRow, selectedRows } = useTableSelect({
     rows: daysOfTheWeek,
   });
 
-  return (
-    <div className="flex flex-col gap-6">
-      <div className="mt-8 mb-3">
-        <ProfileImage />
-      </div>
+  const handleFileUpload = useCallback((e) => {
+    console.log(e.target.files);
+    if (e.target.files.length > 0) {
+      setFile(URL.createObjectURL(e.target.files[0]));
+    } else {
+      return;
+    }
+  }, []);
 
+  return (
+    <div className="flex flex-col mt-6 gap-6">
+      {editProfile ? (
+        <div className="flex items-center gap-3">
+          <div className="rounded-full w-[100px] h-[100px] mb-3">
+            <label htmlFor="profileImage">
+              <div className="w-fit rounded-full">
+                {file ? (
+                  <img
+                    className="w-[100px] h-[100px] rounded-full"
+                    src={file ? file : ProfileImage}
+                  />
+                ) : (
+                  <ProfileImage />
+                )}
+              </div>
+
+              <input
+                id="profileImage"
+                name="profileImage"
+                type="file"
+                accept="image/*"
+                className="w-fit hidden"
+                onChange={handleFileUpload}
+              />
+            </label>
+          </div>
+          {file && (
+            <p
+              className="bg-[#FF3B301A] rounded p-2 cursor-pointer"
+              onClick={() => setFile(null)}
+            >
+              <DeleteIcon />
+            </p>
+          )}
+        </div>
+      ) : (
+        <ProfileImage />
+      )}
       <p className="text-[13px] text-[#B3B3B3]">Open Day(s)</p>
       <div className="flex w-full justify-between">
         {daysOfTheWeek.map((day, index) => (
@@ -88,7 +131,7 @@ const StoreInfo = () => {
         />
         <InputComponent
           inputType="select"
-          // leftIcon={EditIcon}
+          leftIcon={EditIcon}
           options={deliveryStartTimes}
           label="Delivery Start Time"
           fieldName={"deliveryStartTime"}
