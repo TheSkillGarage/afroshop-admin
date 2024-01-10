@@ -7,7 +7,7 @@ const PageLayout = ({ children }) => {
 
   return (
     <section className="bg-[#F2F2F2]">
-      <AdminNavbar />
+      <AdminNavbar name={"layout"}/>
 
       <div className="flex">
         <AdminSidebar />

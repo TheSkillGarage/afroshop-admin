@@ -2,16 +2,17 @@ import { React, useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
-  Delete,
   DottedLine,
   ColorArrowRight,
 } from "../../images";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { CATEGORY_DATA, TEXT_ICONS } from "../../data";
-import { TextIcons, FileInput, ImageDisplay } from "./helpers";
-import ReactQuill from "react-quill";
+import { CATEGORY_DATA } from "../../data";
 import "react-quill/dist/quill.snow.css";
+import { FileInput, ImageDisplay } from "../addProduct/helpers";
+import PropTypes from 'prop-types';
+
+import { ProductInfo } from "./productInfo";
 
 const StyledList = styled.ul`
   box-shadow: 0 8px 16px 0 rgba(51, 51, 51, 0.12);
@@ -43,12 +44,18 @@ const Placeholder = styled.div`
   cursor: pointer;
 `;
 
-const ProductImage = () => {
+const ProductChanges = ({ name, productInfo }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [isProductInfoOpen, setIsProductInfoOpen] = useState(false);
   const [isProductImageOpen, setIsProductImageOpen] = useState(false);
-  const [text, setText] = useState("");
+
+  const [selectedCategory, setSelectedCategory] = useState(
+    name === "edit" ? productInfo.category : ""
+  );
+
+  const [selectedFiles, setSelectedFiles] = useState(
+    name === "edit" ? productInfo.images : []
+  );
 
   const handleProductInfoOpen = () => {
     setIsProductInfoOpen((prev) => !prev);
@@ -67,8 +74,6 @@ const ProductImage = () => {
     setIsOpen(false);
   };
 
-  const [selectedFiles, setSelectedFiles] = useState([]);
-
   const handleFilesSelect = (files) => {
     setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
   };
@@ -79,17 +84,6 @@ const ProductImage = () => {
     setSelectedFiles(newFiles);
   };
 
-  const modules = {
-    toolbar: [
-      ['bold', 'italic'],
-      [
-        {list: 'ordered'},
-        {list: 'bullet'}
-      ],
-      [{ align: 'center' }, { align: 'right' }, { align: 'justify' }], 
-    ]
-  }
-
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
       <div className="py-[12px]">
@@ -98,9 +92,13 @@ const ProductImage = () => {
             <span className="text-[#999999]">Products</span>
           </Link>
           <span className="px-[5px]">
-            <img src={ColorArrowRight} />
+            <img src={ColorArrowRight} alt="arrow-right" />
           </span>
-          <span className="text-green"> Add New Products</span>
+          {name !== "edit" ? (
+            <span className="text-green"> Add New Products</span>
+          ) : (
+            <span className="text-green"> Edit Product</span>
+          )}
         </div>
       </div>
       <div className="bg-white p-[24px] mx-[12px]">
@@ -147,7 +145,7 @@ const ProductImage = () => {
                     </StyledList>
                     {!isOpen ? (
                       <div class="flex justify-end items-center px-2 absolute pointer-events-none my-[-35px] right-0">
-                        <img src={ArrowDown} />
+                        <img src={ArrowDown} alt="arrow-down" />
                       </div>
                     ) : null}
                   </div>
@@ -160,76 +158,18 @@ const ProductImage = () => {
                   </div>
                   <div onClick={handleProductInfoOpen}>
                     {isProductInfoOpen ? (
-                      <img src={ArrowDown} />
+                      <img src={ArrowDown} alt="arrow-down" />
                     ) : (
-                      <img src={ArrowRight} />
+                      <img src={ArrowRight} alt="arrow-right" />
                     )}
                   </div>
                 </div>
                 {isProductInfoOpen && (
-                  <div>
-                    <div className="flex justify-between items-center pb-[25px]">
-                      <div className=" w-[45%]">
-                        <div class="text-[13px] text-[#B3B3B3]">Name</div>
-                        <div>
-                          <input
-                            className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
-                            type="text"
-                          />
-                        </div>
-                      </div>
-                      <div className="w-[45%]">
-                        <div class="text-[13px] text-[#B3B3B3]">
-                          Availability
-                        </div>
-                        <div>
-                          <input
-                            className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
-                            type="text"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="text-[13px] text-[#B3B3B3]">Description</div>
-                      <div className="h-[200px] pb-[40px]">
-                        <ReactQuill
-                          theme="snow"
-                          value={text}
-                          onChange={setText}
-                          modules={modules}
-                          className="h-[100%] w-[100%]"
-                          
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center pt-[25px]">
-                      <div className=" w-[45%]">
-                        <div class="text-[13px] text-[#B3B3B3]">Price ($)</div>
-                        <div>
-                          <input
-                            className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
-                            type="text"
-                          />
-                        </div>
-                      </div>
-                      <div className="w-[45%]">
-                        <div class="text-[13px] text-[#B3B3B3]">
-                          Discount % (If Applicable)
-                        </div>
-                        <div>
-                          <input
-                            className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
-                            type="text"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <ProductInfo name="edit" productInfo={productInfo} />
                 )}
               </div>
               <div className="py-[24px] w-[100%]">
-                <img className="w-[100%]" src={DottedLine} />
+                <img className="w-[100%]" src={DottedLine} alt="dotted-line" />
               </div>
               <div className="p-[16px] border border-[#B3B3B3] rounded-[8px]">
                 <div className="flex justify-between items-center">
@@ -238,9 +178,9 @@ const ProductImage = () => {
                   </div>
                   <div onClick={handleProductImageOpen}>
                     {isProductImageOpen ? (
-                      <img src={ArrowDown} />
+                      <img src={ArrowDown} alt="arrow-down" />
                     ) : (
-                      <img src={ArrowRight} />
+                      <img src={ArrowRight} alt="arrow-right" />
                     )}
                   </div>
                 </div>
@@ -270,12 +210,17 @@ const ProductImage = () => {
               </button>
             </div>
             <div className="flex justify-between items-center gap-[24px]">
-              <button className="py-[10px] px-[20px] text-[#333333] rounded-[4px] border bg-[rgba(252,174,23,0.15)] border-[rgba(252,174,23,0.15)]">
-                Cancel
-              </button>
-              <button className="py-[10px] px-[20px] border border-[#186F3D] bg-[#186F3D] text-[#ffffff] rounded-[4px]">
-                Submit
-              </button>
+              <Link to="/products">
+                <button className="py-[10px] px-[20px] text-[#333333] rounded-[4px] border bg-[rgba(252,174,23,0.15)] border-[rgba(252,174,23,0.15)]">
+                  Cancel
+                </button>
+              </Link>
+
+              <Link to="/products">
+                <button className="py-[10px] px-[20px] border border-[#186F3D] bg-[#186F3D] text-[#ffffff] rounded-[4px]">
+                  Submit
+                </button>
+              </Link>
             </div>
           </section>
         </div>
@@ -284,4 +229,12 @@ const ProductImage = () => {
   );
 };
 
-export default ProductImage;
+
+ProductChanges.propTypes = {
+    name: PropTypes.string.isRequired,
+    productInfo: PropTypes.object,
+}
+
+
+
+export default ProductChanges;

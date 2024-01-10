@@ -1,17 +1,13 @@
 import React, { useState } from "react";
 import PRODUCT_DATA from "../../data/products";
-import Detail from "./details";
 import usePagination from "../../hooks/usePagination";
-import StatusPills from "../status-pills";
-import { Link } from "react-router-dom";
-import ProductImage from "../addProduct/ProductImage";
+import { Link, useNavigate } from "react-router-dom";
 import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";
 import TableFooter from "../table-footer/table-footer";
 import Search from "../search";
-import useTableSelect from "../../hooks/useTableSelect";
-import Checkbox from "../shared/checkbox";
 import BaseTable from "../shared/table";
+import useTableData from "../../hooks/useTableData";
 
 const ProductsDashboard = () => {
 
@@ -33,6 +29,7 @@ const ProductsDashboard = () => {
 
     const filters = ["all", "active", "pending", "draft"];
 
+    const navigate = useNavigate();
 
     const handleItemsPerPage = (e) => setItemsPerPage(e.target.value); // set items per page when selected from select dropdown
     const handleActiveTab = (activeTab) => setActiveTab(activeTab); // controls styles for all, active, pending and draft filters
@@ -43,88 +40,24 @@ const ProductsDashboard = () => {
     //search and filter modal
     const handleSearch = (searchWord) => setSearchTerm(searchWord)
     const handleFilterObject = (filterObject) => setFilterObject(filterObject)
+    const goToEdit = (sku) => navigate(`/products/edit/${sku}`)
 
 
-    const { selectedRows, handleSelectAllRows, handleSelectRow } = useTableSelect(
-        { rows: pagination.currentData }
-    );
+    // generating table values with tableData Hook
+    let headersArray = [
+        "selection",
+        "product Name",
+        "SKU",
+        "date Added",
+        "sales Price",
+        "availabilty",
+        "status",
+        "detail"]
 
-    const headers = [
-        {
-            id: "selection",
-            name: (
-                <Checkbox
-                    name="all"
-                    handleChange={handleSelectAllRows}
-                    value={
-                        selectedRows.length === pagination.currentData.length ? "all" : ""
-                    }
-                    valueOnChecked="all"
-                />
-            ),
-            width: "6.5%",
-        },
-        {
-            id: "productName",
-            name: "product Name",
-            width: "14.5%",
-        },
-        {
-            id: "SKU",
-            name: "SKU",
-            width: "14.5%",
-        },
-        {
-            id: "dateAdded",
-            name: "date Added",
-            width: "14.5%",
-        },
-        {
-            id: "salesPrice",
-            name: "sales Price",
-            width: "14.5%",
-        },
-        {
-            id: "availabilty",
-            name: "availabilty",
-            width: "14.5%",
-        },
-        {
-            id: "status",
-            name: "Status",
-            width: "14.5%",
-        },
-        {
-            id: "detail",
-            name: "",
-            width: "6.5%"
-        }
-    ];
+    const tableData = useTableData("products", headersArray, pagination.currentData, goToEdit);
 
-    
-    const results = pagination.currentData.map((data) => ({
-        ...data,
-        id: data.id,
-        selection: (
-            <Checkbox
-                name={`checkbox_${data.id}`}
-
-                handleChange={(payload) => {
-                    handleSelectRow(data.id);
-                }}
-                value={selectedRows.includes(data.id) ? data.id : ""}
-                valueOnChecked={data.id}
-            />
-        ),
-        status: (
-            <div className="capitalize">
-                <StatusPills status={data.status} name="products" />
-            </div>
-        ),
-        detail: (
-            <Detail />
-        )
-    }));
+    const headers = tableData.headers
+    const results = tableData.results
 
     return (
         <div className="bg-[#F2F2F2] w-full py-6 px-4">
@@ -146,7 +79,7 @@ const ProductsDashboard = () => {
                     </div>
 
                     <div className="w-full flex justify-end items-center px-4 h-[60px]">
-                      <Link to='/products/new'><button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button></Link>
+                        <Link to='/products/new'><button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button></Link>
                     </div>
 
                     <Search handleSearch={handleSearch} name="products" DATA={PRODUCT_DATA} handleFilterObject={handleFilterObject} />
@@ -157,16 +90,16 @@ const ProductsDashboard = () => {
                 <BaseTable tableHeaders={headers} data={results} />
 
 
-                <TableFooter 
-                pagination={pagination}
-                itemsPerPage={itemsPerPage} 
-                data={data} 
-                handleItemsPerPage={handleItemsPerPage} 
-                prevPage={prevPage} 
-                page={page} 
-                handlePage={handlePage} 
-                nextPage={nextPage} 
-                totalPages={totalPages} />
+                <TableFooter
+                    pagination={pagination}
+                    itemsPerPage={itemsPerPage}
+                    data={data}
+                    handleItemsPerPage={handleItemsPerPage}
+                    prevPage={prevPage}
+                    page={page}
+                    handlePage={handlePage}
+                    nextPage={nextPage}
+                    totalPages={totalPages} />
             </div>
 
 
