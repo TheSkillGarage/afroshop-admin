@@ -67,7 +67,7 @@ const ProductsDashboard = () => {
         {
             id: "productName",
             name: "product Name",
-            width: "14.5%",
+            width: "14.5%",  
         },
         {
             id: "SKU",
