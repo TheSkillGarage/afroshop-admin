@@ -3,11 +3,19 @@ import { GoogleLogo } from "../../../images";
 import SignUpData from "../../../data/SignUp";
 import Button from "../../shared/button";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import InputComponent from "../../shared/inputComponent";
 
 
 const SignUpForm = () => {
 
     const [showPassword, setShowPassword] = useState(false);
+
+    const {
+        control,
+        formState: { errors },
+        register,
+    } = useForm({ mode: "all" });
 
     return (
         <div className="mt-8 w-full flex justify-center">
@@ -34,18 +42,32 @@ const SignUpForm = () => {
                             SignUpData.map(({ label, type, icons }, index) => {
                                 return (
                                     <div key={index} className="w-[400px]">
-                                        <label htmlFor="firstname" className="text-[13px] leading-[23px] text-[#B3B3B3] mb-2 block">{label}</label>
-
                                         {type !== "password" ?
                                             <div className="relative">
-                                                <img src={icons[0]} alt="user-icon" className="absolute left-[20px] top-[14px] w-6 h-6" />
-                                                <input type={type} id={label.replace(" ", "-").toLowerCase()} name="signup" className="w-full h-[53px] bg-[#F2F2F2] rounded focus:outline-0 focus:border border-[#186F3D] px-12 text-4 leading-6" />
+                                                <InputComponent
+                                                    type={type}
+                                                    label={label}
+                                                    fieldName={label.replace(" ", "-").toLowerCase()}
+                                                    leftIcon={icons[0]}
+                                                    control={control}
+                                                    errors={errors}
+                                                    register={register}
+                                                />
                                             </div>
                                             :
                                             <div className="relative">
-                                                <img src={icons[0]} alt="user-icon" className="absolute left-[20px] top-[14px] w-6 h-6" />
-                                                <input type={showPassword ? "text" : type} id={label.toLowerCase()} name="signup" className="w-full h-[53px] bg-[#F2F2F2] rounded focus:outline-0 focus:border border-[#186F3D] px-12 text-4 leading-6" />
-                                                <img src={showPassword ? icons[2] : icons[1]} alt="user-icon" className="absolute right-[20px] top-[14px] w-6 h-6 cursor-pointer" onClick={() => setShowPassword(!showPassword)}/>
+                                                <InputComponent
+                                                    type={showPassword ? "text" : type}
+                                                    label={label}
+                                                    fieldName={label.toLowerCase()}
+                                                    leftIcon={icons[0]}
+                                                    rightIcon={showPassword ? icons[2] : icons[1]}
+                                                    onIconClick={() => setShowPassword(!showPassword)}
+                                                    control={control}
+                                                    errors={errors}
+                                                    register={register}
+                                                />
+
                                             </div>
                                         }
                                     </div>
