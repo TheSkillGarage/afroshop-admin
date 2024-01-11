@@ -76,7 +76,7 @@ const SignUpForm = () => {
                         }
 
                         <div>
-                            <Button icon="white" className="w-full mt-2">
+                            <Button type="submit" icon="white" className="w-full mt-2">
                                 Sign Up
                             </Button>
 

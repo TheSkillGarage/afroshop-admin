@@ -12,7 +12,7 @@ const AuthLayout = ({ children }) => {
       <div className="flex w-full">
         <div className="w-1/2 min-h-screen bg-center bg-scroll" style={backgroundImageStyle}></div>
 
-        <div className="w-1/2 flex justify-center p-20">
+        <div className="w-1/2 flex justify-center items-center p-20">
 
           <div className="w-[585px]">
             <div className="flex justify-center">
