@@ -1,14 +1,16 @@
 import React from "react";
 import { SupportIllustration } from "../../images";
-import { Link } from "react-router-dom";
 import { SUPPORT_DATA } from "../../data/supportData";
 
 const Support = () => {
   return (
-    <div className="w-[100%] mx-auto bg-[#F2F2F2]">
-      <div className="py-[12px]">
-        <div className="py-[8px] text-[13px] px-[30px] text-[#186F3D]">
-          <Link to="/support">Support</Link>
+    <div className="w-[100%] mx-auto bg-[#F2F2F2] pt-6 pb-8">
+      <div className="px-[20px]">
+        <div className="flex items-center gap-8 mb-6 h-[39px]">
+          <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">
+            ...
+          </p>
+          <p className="text-[13px] leading-[23px] text-[#186F3D]">Support</p>
         </div>
       </div>
       <div className="flex items-center bg-white rounded-[6px] px-[24px] py-[50px] mx-[20px] h-screen mb-[20px]">

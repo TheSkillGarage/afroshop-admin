@@ -13,6 +13,9 @@ import {
   SupportPage,
   AddProducts,
   EditProducts,
+  PasswordSucess,
+  StoreCreated,
+  PasswordReset,
 } from "./pages";
 
 const MyRoutes = () => {
@@ -36,6 +39,9 @@ const MyRoutes = () => {
         <Route exact path="/roles-and-permissions/add-new-role" element={<AddNewRole />} />
         <Route exact path="/profile" element={<ProfilePage />} />
         <Route exact path="/products/edit/:sku" element={<EditProducts />} />
+        <Route exact path="/reset-successful" element={<PasswordSucess />} />
+        <Route exact path="/store-created" element={<StoreCreated />} />
+        <Route exact path="/reset-password" element={<PasswordReset />} />
       </Routes>
     </BrowserRouter>
   );
