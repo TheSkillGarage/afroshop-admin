@@ -1,39 +1,32 @@
 import React, { useState } from "react";
 import { GreenEdit, GreyEdit, PasswordEye, PasswordLock, ViewPassword } from "../../images";
 import Button from "../shared/button";
+import InputComponent from "../shared/inputComponent";
+import { useForm } from "react-hook-form";
 
 
 const Password = () => {
 
     const [edit, setEdit] = useState(false);
 
+    const [viewNewPassword, setViewNewPassword] = useState(false);
+    const [viewConfirmPassword, setViewConfirmPassword] = useState(false);
 
-    const [viewPassword, setViewPassword] = useState({
-        reset: false,
-        confirm: false
-    });
-
-
-    const handleViewPassword = (text) => {
-        setViewPassword(prevPassword => ({
-            ...prevPassword,
-            [text]: !prevPassword[text]
-        }))
-    }
 
     const handleEdit = () => {
         setEdit((prevEdit) => !prevEdit);
 
         // Update all viewPassword values to false
-        setViewPassword((prevViewPassword) => {
-            const updatedViewPassword = { ...prevViewPassword };
-            Object.keys(updatedViewPassword).forEach((key) => {
-                updatedViewPassword[key] = false;
-            });
-            return updatedViewPassword;
-        });
+        setViewConfirmPassword(false);
+        setViewNewPassword(false);
     };
 
+
+    const {
+        control,
+        formState: { errors },
+        register,
+    } = useForm({ mode: "all" });
 
 
     return (
@@ -51,47 +44,42 @@ const Password = () => {
             <div className="mt-8 w-full">
                 <form className="">
                     <div className="w-[500px] mx-auto flex flex-col gap-6">
-
-                        <div>
-                            <label htmlFor="current" className="block text-[13px] leading-[23px] text-[#B3B3B3] mb-1">Current Password</label>
-
-                            <div className="relative">
-                                <img src={PasswordLock} alt="lock" className="absolute left-6 top-3 w-6 h-6" />
-
-                                <input type="password" id="current" name="password" className="w-full h-[53px] rounded py-2 px-14 bg-[#F2F2F2] focus:outline-none focus:border border-[#186F3D]" />
-
-                            </div>
-
-                        </div>
+                        <InputComponent
+                            type="password"
+                            label="Current Password"
+                            fieldName="currentPassword"
+                            leftIcon={PasswordLock}
+                            control={control}
+                            errors={errors}
+                            register={register}
+                        />
 
 
                         {edit &&
                             <div className="flex flex-col gap-6">
-                                <div>
-                                    <label htmlFor="new" className="block text-[13px] leading-[23px] text-[#B3B3B3] mb-1">New Password</label>
+                                <InputComponent
+                                    type={viewNewPassword ? "text" : "password"}
+                                    label="New Password"
+                                    fieldName="newPassword"
+                                    leftIcon={PasswordLock}
+                                    rightIcon={viewNewPassword ? ViewPassword : PasswordEye}
+                                    onIconClick={() => setViewNewPassword(!viewNewPassword)}
+                                    control={control}
+                                    errors={errors}
+                                    register={register}
+                                />
 
-                                    <div className="relative">
-                                        <img src={PasswordLock} alt="lock" className="absolute left-6 top-3 w-6 h-6" />
-
-                                        <input type={viewPassword["reset"] ? "text" : "password"} id="new" name="new-password" className="w-full h-[53px] rounded py-2 px-14 bg-[#F2F2F2] focus:outline-none focus:border border-[#186F3D]" />
-
-                                        <img src={viewPassword["reset"] ? ViewPassword : PasswordEye} alt="lock" className="absolute right-6 top-3 w-6 h-6" onClick={() => handleViewPassword("reset")} />
-                                    </div>
-
-                                </div>
-
-                                <div>
-                                    <label htmlFor="confirm" className="block text-[13px] leading-[23px] text-[#B3B3B3] mb-1">Confirm New Password</label>
-
-                                    <div className="relative">
-                                        <img src={PasswordLock} alt="lock" className="absolute left-6 top-3 w-6 h-6" />
-
-                                        <input type="password" id="confirm" name="confirm-password" className="w-full h-[53px] rounded py-2 px-14 bg-[#F2F2F2] focus:outline-none focus:border border-[#186F3D]" />
-
-                                        <img src={viewPassword["confirm"] ? ViewPassword : PasswordEye} alt="lock" className="absolute right-6 top-3 w-6 h-6" onClick={() => handleViewPassword("confirm")} />
-                                    </div>
-
-                                </div>
+                                <InputComponent
+                                    type={viewConfirmPassword ? "text" : "password"}
+                                    label="Confirm New Password"
+                                    fieldName="confirmPassword"
+                                    leftIcon={PasswordLock}
+                                    rightIcon={viewConfirmPassword ? ViewPassword : PasswordEye}
+                                    onIconClick={() => setViewConfirmPassword(!viewConfirmPassword)}
+                                    control={control}
+                                    errors={errors}
+                                    register={register}
+                                />
                             </div>
                         }
 

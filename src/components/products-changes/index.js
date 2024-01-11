@@ -6,13 +6,14 @@ import {
   ColorArrowRight,
 } from "../../images";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CATEGORY_DATA } from "../../data";
 import "react-quill/dist/quill.snow.css";
 import { FileInput, ImageDisplay } from "../addProduct/helpers";
 import PropTypes from 'prop-types';
 
 import { ProductInfo } from "./productInfo";
+import Button from "../shared/button";
 
 const StyledList = styled.ul`
   box-shadow: 0 8px 16px 0 rgba(51, 51, 51, 0.12);
@@ -83,6 +84,8 @@ const ProductChanges = ({ name, productInfo }) => {
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
   };
+
+  const navigate = useNavigate()
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
@@ -203,24 +206,36 @@ const ProductChanges = ({ name, productInfo }) => {
               </div>
             </section>
           </div>
-          <section className="flex items-center justify-between pt-[7%]">
-            <div>
-              <button className="py-[10px] px-[20px] border border-[#186F3D] text-[#186F3D] rounded-[4px]">
-                Save as Draft
-              </button>
-            </div>
-            <div className="flex justify-between items-center gap-[24px]">
-              <Link to="/products">
-                <button className="py-[10px] px-[20px] text-[#333333] rounded-[4px] border bg-[rgba(252,174,23,0.15)] border-[rgba(252,174,23,0.15)]">
-                  Cancel
-                </button>
-              </Link>
 
-              <Link to="/products">
-                <button className="py-[10px] px-[20px] border border-[#186F3D] bg-[#186F3D] text-[#ffffff] rounded-[4px]">
-                  Submit
-                </button>
-              </Link>
+          <section className="flex items-center justify-between pt-[7%]">
+            <Button
+              variant="tertiary"
+              size="big"
+              type="button"
+              className=""
+            >
+              Save as Draft
+            </Button>
+
+            <div className="flex justify-between items-center gap-[24px]">
+
+              <Button
+                variant="secondary"
+                type="button"
+                className="w-[133px] h-[40px]"
+                onClick={() => navigate("/products")}
+              >
+                Cancel
+              </Button>
+
+              <Button
+                variant="primary"
+                type="button"
+                className="w-[133px] h-[40px]"
+                onClick={() => navigate("/products")}
+              >
+                Submit
+              </Button>
             </div>
           </section>
         </div>
@@ -231,8 +246,8 @@ const ProductChanges = ({ name, productInfo }) => {
 
 
 ProductChanges.propTypes = {
-    name: PropTypes.string.isRequired,
-    productInfo: PropTypes.object,
+  name: PropTypes.string.isRequired,
+  productInfo: PropTypes.object,
 }
 
 
