@@ -193,11 +193,8 @@ export {
   GreenEdit,
   GreyEdit,
   ViewPassword,
-<<<<<<< HEAD
   MessageIcon,
-=======
   GoogleLogo,
   BlackEmailIcon,
   BlackUserIcon,
->>>>>>> 2e3a295775feb9783469936533b63375cc5f1cd7
 };

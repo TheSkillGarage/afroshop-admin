@@ -29,7 +29,7 @@ const VerifyEmail = () => {
         <p className="text-center text-[16px] text-[#ccc] pb-[24px]">
           Please enter the 4 digit code sent to <br /> greenranger@gmail.com
         </p>
-        <div className="flex flex-row justify-center gap-[10px] sm:gap-[10px]">
+        <div className="flex flex-row justify-between sm:gap-[10px] w-[380]">
           {otp.map((data, index) => {
             return (
               <input
