@@ -16,9 +16,7 @@ const EditPassword = ({ editProfile }) => {
       confirmPassword: "",
     },
   });
-  // const { editProfile, control, errors, register, watch } =
-  //   useContext(ProfileContext);
-
+ 
   return (
     <div className="max-w-[500px] space-y-6 m-auto py-8 items-center">
       <InputComponent
