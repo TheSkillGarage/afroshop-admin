@@ -17,6 +17,8 @@ import {
   StoreCreated,
   PasswordReset,
   EmailVerification,
+  SignUpPage,
+  LogInPage,
 } from "./pages";
 
 const MyRoutes = () => {
@@ -44,6 +46,8 @@ const MyRoutes = () => {
         <Route exact path="/store-created" element={<StoreCreated />} />
         <Route exact path="/reset-password" element={<PasswordReset />} />
         <Route exact path="/verify-email" element={<EmailVerification />} />
+        <Route exact path="/sign-up" element={<SignUpPage />} />
+        <Route exact path="/login" element={<LogInPage />} />
       </Routes>
     </BrowserRouter>
   );

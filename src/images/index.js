@@ -97,6 +97,10 @@ import PasswordEye from "./icon-see-password.svg"
 import GreenEdit from "./edit-green.svg"
 import GreyEdit from "./grey-edit.svg"
 
+import GoogleLogo from "./google-logo.svg"
+import BlackUserIcon from "./user-black.svg"
+import BlackEmailIcon from "./sms-black.svg"
+
 export {
   EmailSupport,
   PhoneSupport,
@@ -189,5 +193,11 @@ export {
   GreenEdit,
   GreyEdit,
   ViewPassword,
+<<<<<<< HEAD
   MessageIcon,
+=======
+  GoogleLogo,
+  BlackEmailIcon,
+  BlackUserIcon,
+>>>>>>> 2e3a295775feb9783469936533b63375cc5f1cd7
 };

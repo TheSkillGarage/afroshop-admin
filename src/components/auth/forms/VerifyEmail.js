@@ -7,7 +7,6 @@ const VerifyEmail = () => {
   const [otp, setOtp] = useState(new Array(4).fill(""));
 
   const handleOtp = (element, index) => {
-    console.log("heerere", element, index);
     if (isNaN(element.value)) return false;
     setOtp([
       ...otp.map((value, idx) => (index === idx ? element.value : value)),
@@ -24,9 +23,9 @@ const VerifyEmail = () => {
 
   return (
     <div className="text-center flex flex-col justify-center items-center">
-      <img src={MessageIcon} alt="tick illustration" />
+      <img src={MessageIcon} alt="message icon" />
       <div>
-        <div className="text-center font-bold py-[24px]">Verify your email</div>
+        <p className="text-center font-bold py-[24px]">Verify your email</p>
         <p className="text-center text-[16px] text-[#ccc] pb-[24px]">
           Please enter the 4 digit code sent to <br /> greenranger@gmail.com
         </p>
@@ -46,7 +45,7 @@ const VerifyEmail = () => {
             );
           })}
         </div>
-        <div className="text-center text-[16px] text-green py-[24px] cursor-pointer">Resend Code</div>
+        <p className="text-center text-[16px] text-green py-[24px] cursor-pointer">Resend Code</p>
         <Link to="/#">
           <Button icon="white" className="w-[400px]">
             Verify

@@ -13,3 +13,5 @@ export { default as PasswordSucess} from './password-success';
 export { default as StoreCreated} from './store-create-success'
 export { default as PasswordReset} from './password-reset';
 export {default as EmailVerification} from './verify-email';
+export { default as SignUpPage} from './sign-up';
+export { default as LogInPage} from './login';
