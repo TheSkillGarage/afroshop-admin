@@ -16,7 +16,7 @@ import { getPermissionCount, getRoles } from "../../utils/roles";
 
 const RolesAndPermissions = () => {
   const [page, setPage] = useState(1);
-  const users = useSelector((s) => s.users);
+  const users = useSelector((s) => s.roles);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,7 +37,7 @@ const RolesAndPermissions = () => {
     searchTerm,
     filterObject
   ).filteredData;
-  console.log(usersWithRoles);
+  
   // from usePagination hook
   const pagination = usePagination(page, itemsPerPage, data);
   const totalPages = pagination.totalPages; // sets total pages
@@ -115,14 +115,14 @@ const RolesAndPermissions = () => {
         valueOnChecked={data.id}
       />
     ),
-    permissions: 0,
+    permissions: data.permissions,
     role: data.role,
     status: (
       <div className="capitalize">
         <StatusPills status={data.status} name="roles" />
       </div>
     ),
-    detail: <Detail name={"roles"} />,
+    detail: <Detail name={"roles"} user={data} />,
   }));
 
   return (

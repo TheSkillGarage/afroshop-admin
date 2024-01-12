@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { DeleteIcon, LocationIcon } from "../../images";
-import { ProfileContext } from "../../contexts/ProfileContext";
 
-const DeliveryCard = ({ card, icon, handleDelete }) => {
-  const { editProfile } = useContext(ProfileContext);
+const DeliveryCard = ({ card, icon, handleDelete, editProfile }) => {
+  
   return (
     <div className="w-full flex gap-3 shadow-lg p-3 rounded items-center">
       {icon ?? (

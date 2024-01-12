@@ -1,12 +1,23 @@
 import React, { useContext, useState } from "react";
-import { ProfileContext } from "../../contexts/ProfileContext";
 import InputComponent from "../shared/inputComponent";
 import { EyeSlash, Lock } from "../../images";
+import { useForm } from "react-hook-form";
 
-const EditPassword = () => {
+const EditPassword = ({ editProfile }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const { editProfile, control, errors, register, watch } =
-    useContext(ProfileContext);
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
+  // const { editProfile, control, errors, register, watch } =
+  //   useContext(ProfileContext);
 
   return (
     <div className="max-w-[500px] space-y-6 m-auto py-8 items-center">

@@ -24,6 +24,19 @@ export const addUserRole = (hash) => (dispatch) => {
     ...hash,
   });
 };
+export const addDeliveryData = (hash) => (dispatch) => {
+  dispatch({
+    type: "ADD_DELIVERY_DATA",
+    ...hash,
+  });
+};
+export const addHolidayData = (hash) => (dispatch) => {
+  dispatch({
+    type: "ADD_HOLIDAY_DATA",
+    ...hash,
+  });
+};
+
 
 export const updateUserRole = (hash) => (dispatch) => {
   dispatch({

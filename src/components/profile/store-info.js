@@ -11,18 +11,32 @@ import {
 } from "../../data/profile";
 import { DeleteIcon, EditIcon, ProfileImage } from "../../images";
 import useTableSelect from "../../hooks/useTableSelect";
-import { ProfileContext } from "../../contexts/ProfileContext";
 
-const StoreInfo = () => {
-  const { control, errors, register } = useContext(ProfileContext);
+const StoreInfo = ({ editProfile }) => {
   const [file, setFile] = useState(null);
-  const { editProfile } = useContext(ProfileContext);
+  const {
+    control,
+    formState: errors,
+    register
+  } = useForm({
+    defaultValues: {
+      name: "Green Ranger",
+      address: "No 3 Crimson Drive, CA",
+      email: "greenranger@gmail.com",
+      deliveryOption: ["Pick-Up", "Delivery"],
+      deliveryStartTime: "10:00AM",
+      deliveryEndTime: "9:00PM",
+      deliverySlot: "2 Hours",
+      restPeriod: "1 Hours",
+    },
+    mode: "all",
+  });
+ 
   const { handleSelectRow, selectedRows } = useTableSelect({
     rows: daysOfTheWeek,
   });
 
   const handleFileUpload = useCallback((e) => {
-    console.log(e.target.files);
     if (e.target.files.length > 0) {
       setFile(URL.createObjectURL(e.target.files[0]));
     } else {
@@ -131,7 +145,7 @@ const StoreInfo = () => {
         />
         <InputComponent
           inputType="select"
-          leftIcon={EditIcon}
+          // leftIcon={EditIcon}
           options={deliveryStartTimes}
           label="Delivery Start Time"
           fieldName={"deliveryStartTime"}

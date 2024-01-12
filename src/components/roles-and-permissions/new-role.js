@@ -9,11 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import sectionData from "../../data/roles-section-data";
 import { updateUserRole } from "../../redux/action";
 import RoleActionComponent from "./components/role-action-component";
+import { getPermissionCount } from "../../utils/roles";
+import USER_DATA from "../../data/user";
 
 const NewRole = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const users = useSelector((s) => s.users);
+  const roles = useSelector((s) => s.roles);
   const [sections, setSections] = useState(sectionData);
 
   const {
@@ -31,22 +33,23 @@ const NewRole = () => {
   const handleActionSubmit = (event) => {
     event.preventDefault();
     const values = getValues();
+    const newUser = USER_DATA.find((user) => user.email === values.email);
 
-    const newUsers = users.map((user) => {
-      if (user.email == values.email) {
-        return {
-          ...user,
-          role: values.role,
-          actions: sections,
-        };
-      } else {
-        return user;
-      }
-    });
-    console.log(newUsers);
-    dispatch(updateUserRole({ users: newUsers }));
-
-    // navigate("/roles-and-permissions")
+    dispatch(
+      updateUserRole({
+        roles: [
+          ...roles,
+          {
+            ...newUser,
+            role: values.role,
+            permissions: getPermissionCount(sections),
+            updated_at: new Date(),
+            actions: sections,
+          },
+        ],
+      })
+    );
+    navigate("/roles-and-permissions");
   };
 
   const options = [

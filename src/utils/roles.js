@@ -8,9 +8,14 @@ export const getRoles = (role) => {
       return "Super Admin";
   }
 };
-export const getPermissionCount = (actions) => {
-  Object.values(actions).map((c) => (c === true ? count+=1 : count));
-  console.log(count)
+export const getPermissionCount = (sections) => {
+  let count = 0;
+  sections.map((c) =>
+    c?.value === true
+      ? Object.values(c?.action).map((v) => (v === true ? count+=1 : count))
+      : count
+  );
+  console.log(count);
 
-  // return count;
+  return count;
 };
