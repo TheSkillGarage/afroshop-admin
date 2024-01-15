@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 const AdminSidebar = () => {
 
-    const { isSidebarToggled } = useSelector((state) => state)
+    const isSidebarToggled = useSelector((state) => state.isSidebarToggled)
 
     return (
         <aside className={`px-6 flex flex-col ${isSidebarToggled ? "w-[92px]" : "w-[266px]"} min-h-screen max-h-screen border-r border-1 border-[#E6E6E6] justify-between bg-[#ffffff] sticky top-0 pb-4`}>

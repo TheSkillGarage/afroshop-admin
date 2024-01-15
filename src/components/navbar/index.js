@@ -14,7 +14,7 @@ import { sidebarToggle } from "../../redux/action";
 const AdminNavbar = ({ name }) => {
 
   const dispatch = useDispatch()
-  const { isSidebarToggled } = useSelector((state) => state)
+  const isSidebarToggled = useSelector((state) => state.isSidebarToggled)
 
   const toggleSidebar = () => {
     dispatch(sidebarToggle(isSidebarToggled))
