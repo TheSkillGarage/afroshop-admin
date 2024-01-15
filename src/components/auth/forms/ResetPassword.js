@@ -24,7 +24,7 @@ const ResetPassword = () => {
           fieldName={"email"}
           placeholder="Enter email"
           leftIcon={IconMessage}
-          className="bg-[#F2F2F2]  border mb-[20px] border-[#186F3D]"
+          className="mb-[20px]"
           control={control}
           errors={errors}
           register={register}
