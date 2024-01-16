@@ -37,7 +37,6 @@ const NewPassword = () => {
           errors={errors}
           register={register}
         />
-        <div>
           <InputComponent
             type={confirmPassword ? 'text' : 'password'}
             label="Password"
@@ -51,7 +50,6 @@ const NewPassword = () => {
             errors={errors}
             register={register}
           />
-        </div>
         <Button icon="white" className="w-[400px]">
           Submit
         </Button>

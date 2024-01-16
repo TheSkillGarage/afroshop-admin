@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { MessageIcon } from "../../../images";
-import { Link } from "react-router-dom";
 import Button from "../../shared/button";
 
 const VerifyEmail = () => {
@@ -46,11 +45,9 @@ const VerifyEmail = () => {
           })}
         </div>
         <p className="text-center text-[16px] text-green py-[24px] cursor-pointer">Resend Code</p>
-        <Link to="/#">
           <Button icon="white" className="w-[400px]">
             Verify
           </Button>
-        </Link>
       </div>
     </div>
   );
