@@ -49,7 +49,7 @@ export function LineChart() {
       legend: {
         position: 'bottom',
         labels: {
-          usePointStyle: true,
+          usePointStyle: false,
           pointStyle: 'circle',                              
           boxHeight: 8,          
           boxWidth:8,          

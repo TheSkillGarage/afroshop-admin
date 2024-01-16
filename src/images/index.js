@@ -56,6 +56,11 @@ import OverviewIconWhite from "./overview-white.svg";
 import UserIconWhite from "./user-white.svg";
 import RolesIconWhite from "./roles-white.svg";
 import SupportIconWhite from "./icon-support-white.svg";
+import LogoImage from "./logo-2.svg"
+
+
+
+
 import Store from "./store2.png";
 import { ReactComponent as WhiteCart } from "./white-cart.svg";
 import { ReactComponent as DownloadIcon } from "./download.svg";
@@ -193,6 +198,7 @@ export {
   GreenEdit,
   GreyEdit,
   ViewPassword,
+  LogoImage,
   MessageIcon,
   GoogleLogo,
   BlackEmailIcon,
