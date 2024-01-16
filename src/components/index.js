@@ -15,3 +15,4 @@ export {default as AddProduct} from "./products-changes";
 export {default as AuthLayout} from "./layout/AuthLayout"
 export {default as AuthSuccess} from './auth/authSuccess';
 export {default as VerifyEmail} from './auth/forms/VerifyEmail';
+export {default as NewPassword} from './auth/forms/NewPassword'
