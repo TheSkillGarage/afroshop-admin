@@ -3,7 +3,7 @@ import { CardIcon, OrdersIcon, OrdersIconWhite, OverviewIcon, OverviewIconWhite,
 import { Link, useLocation } from "react-router-dom";
 
 
-const SidebarTab = ({ name, path }) => {
+const SidebarTab = ({ name, path, isSidebarToggled }) => {
 
     const location = useLocation()
 
@@ -49,11 +49,11 @@ const SidebarTab = ({ name, path }) => {
     }
 
     return (
-        <Link to={path[0]}>
+        <Link to={path}>
             <div
-                className={`flex gap-2 mb-4 cursor-pointer py-4 px-2 rounded max-h-[47px] min-h[47px] items-center ${(path.includes(location.pathname) || path.includes(`${location.pathname}/`)) ? "bg-[#186F3D] text-[#ffffff]" : "text-[#999999]"}`}>
+                className={`flex gap-2 mb-4 cursor-pointer py-4 px-2 rounded max-h-[47px] min-h[47px] items-center ${(location.pathname === path || location.pathname === `${path}/`) ? "bg-[#186F3D] text-[#ffffff]" : "text-[#999999]"}`}>
                 <img src={(path.includes(location.pathname) || path.includes(`${location.pathname}/`)) ? isSelectedImage(name) : selectImage(name)} alt="icon" />
-                <p className={`text-[13px] leading-[23px] capitalize`}>{name}</p>
+                {!isSidebarToggled && <p className={`text-[13px] leading-[23px] capitalize`}>{name}</p>}
             </div>
         </Link>
     )
