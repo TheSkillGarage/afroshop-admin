@@ -19,6 +19,7 @@ import {
   EmailVerification,
   SignUpPage,
   LogInPage,
+  NewPasswordPage,
 } from "./pages";
 
 const MyRoutes = () => {
@@ -48,6 +49,7 @@ const MyRoutes = () => {
         <Route exact path="/verify-email" element={<EmailVerification />} />
         <Route exact path="/sign-up" element={<SignUpPage />} />
         <Route exact path="/login" element={<LogInPage />} />
+        <Route exact path="/new-password" element={<NewPasswordPage />} />
       </Routes>
     </BrowserRouter>
   );
