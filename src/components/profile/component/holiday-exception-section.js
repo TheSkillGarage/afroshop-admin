@@ -1,20 +1,17 @@
 import React, { useContext, useState } from "react";
 import DeliveryCard from "./delivery-holiday-card";
-import InputComponent from "../shared/inputComponent";
-import Button from "../shared/button";
+import InputComponent from "../../shared/inputComponent";
+import Button from "../../shared/button";
 import { useDispatch } from "react-redux";
-import { DateIcon } from "../../images";
+import { DateIcon } from "../../../images";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
-import { addHolidayData } from "../../redux/action";
 
 const HolidayException = ({
-  holidayData,
-  setHolidayData,
-  enableSave,
   editProfile,
+  profileData,
+  setProfileData
 }) => {
-  const [tempData, setTempData] = useState(holidayData);
   const dispatch = useDispatch();
   const {
     control,
@@ -34,11 +31,11 @@ const HolidayException = ({
           label: values?.description,
           value: format(values?.date, "EEE, MMM dd, yyyy"),
         };
-        setTempData((prevData) => [...prevData, holidayFormData]);
-        enableSave(() => {
-          dispatch(
-            addHolidayData({ holidays: [...tempData, holidayFormData] })
-          );
+        setProfileData((prev) => {
+          return {
+            ...prev,
+            holidays: [...prev["holidays"], holidayFormData],
+          };
         });
       }
       reset();
@@ -46,9 +43,12 @@ const HolidayException = ({
   };
 
   const deleteHolidayCard = (index) => {
-    setTempData((data) => data.filter((_, key) => key !== index));
-    enableSave(() => {
-      setHolidayData((data) => data.filter((_, key) => key !== index));
+    const remainingData =  profileData?.holidays?.filter((_, key) => key != index);
+    setProfileData((prev) => {
+      return {
+        ...prev,
+        holidays: remainingData
+      }
     });
   };
 
@@ -105,8 +105,8 @@ const HolidayException = ({
         </>
       )}
       <div className="py-4 grid grid-cols-3 gap-4">
-        {holidayData &&
-          tempData.map((d, index) => (
+        {profileData &&
+          profileData?.holidays?.map((d, index) => (
             <div key={index}>
               <DeliveryCard
                 card={d}

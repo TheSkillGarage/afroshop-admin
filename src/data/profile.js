@@ -8,8 +8,8 @@ const daysOfTheWeek = [
   { label: "Sat", value: "saturday" },
 ];
 const deliveryOptions = [
-  { value: "Pick-Up", label: "Pick-Up" },
-  { value: "Delivery", label: "Delivery" },
+  { value: "pickup", label: "Pick-Up" },
+  { value: "delivery", label: "Delivery" },
 ];
 const destinationOptions = [
   {
@@ -59,7 +59,7 @@ const holidayMockData = [
   {
     label: "Easter Monday",
     value: "Mon, Apr 10, 2023",
-  }
+  },
 ];
 
 const holidayOptions = [
@@ -139,6 +139,23 @@ const deliverySlots = [
   { label: "3 Hours", value: "3 Hours" },
   { label: "4 Hours", value: "4 Hours" },
 ];
+const storeInitialState = {
+  days: [],
+  profile_image: {},
+  store_name: "Green Ranger",
+  address: "No 3 Crimson Drive, CA",
+  email: "greenranger@gmail.com",
+  deliveryOption: [deliveryOptions[0], deliveryOptions[1]],
+  deliveryStartTime: "10:00AM",
+  deliveryEndTime: "9:00PM",
+  deliverySlot: "2 Hours",
+  restPeriod: "1 Hours",
+};
+const profileInitialState = {
+  store: storeInitialState,
+  delivery: deliveryData,
+  holidays: holidayMockData,
+};
 
 export {
   daysOfTheWeek,
@@ -150,4 +167,6 @@ export {
   deliveryData,
   holidayMockData,
   holidayOptions,
+  storeInitialState,
+  profileInitialState,
 };

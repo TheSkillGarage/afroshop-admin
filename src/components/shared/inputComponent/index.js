@@ -54,6 +54,10 @@ const InputComponent = ({
   isReadOnly = false,
   multiple = false,
   compoundValidation = false,
+  isDisabled = false,
+  onBlur,
+  defaultValue,
+  closeMenuOnSelect,
 }) => {
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -77,9 +81,17 @@ const InputComponent = ({
                   name={field?.name}
                   register={register}
                   errors={errors}
+                  isDisabled={isDisabled}
                   options={options}
+                  handleChange={handleChange}
+                  closeMenuOnSelect={closeMenuOnSelect}
+                  defaultValue={defaultValue}
                   value={
-                    field.value ? { value: field?.value, label: field?.value } : null
+                    field.value
+                      ? !multiple
+                        ? { value: field?.value, label: field?.value }
+                        : field.value?.map((v) => v)
+                      : null
                   }
                   placeholder={placeholder}
                 />
@@ -121,6 +133,7 @@ const InputComponent = ({
             })}
             readOnly={isReadOnly}
             onKeyDown={keyDown}
+            onBlur={onBlur}
           />
 
           {rightIcon ? (

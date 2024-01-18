@@ -1,5 +1,5 @@
 import React from "react";
-import { DeleteIcon, LocationIcon } from "../../images";
+import { DeleteIcon, LocationIcon } from "../../../images";
 
 const DeliveryCard = ({ card, icon, handleDelete, editProfile }) => {
   

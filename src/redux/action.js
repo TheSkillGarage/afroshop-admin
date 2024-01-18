@@ -18,6 +18,12 @@ export const addActionRole = (hash) => (dispatch) => {
     ...hash,
   });
 };
+export const updateProfile = (hash) => (dispatch) => {
+  dispatch({
+    type: "UPDATE_PROFILE_INFO",
+    ...hash
+  })
+};
 export const addUserRole = (hash) => (dispatch) => {
   dispatch({
     type: "ADD_USER_ROLE",

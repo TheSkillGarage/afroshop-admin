@@ -1,10 +1,23 @@
 import React, { useContext, useState } from "react";
-import InputComponent from "../shared/inputComponent";
-import { EyeSlash, Lock } from "../../images";
+import InputComponent from "../../shared/inputComponent";
+import { EyeSlash, Lock } from "../../../images";
 import { useForm } from "react-hook-form";
+import { PasswordEye, ViewPassword } from "../../../images";
 
 const EditPassword = ({ editProfile }) => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [viewPassword, setViewPassword] = useState({
+    current: false,
+    reset: false,
+    confirm: false,
+  });
+
+  const handleViewPassword = (text) => {
+    setViewPassword((prevPassword) => ({
+      ...prevPassword,
+      [text]: !prevPassword[text],
+    }));
+  };
+
   const {
     control,
     register,
@@ -21,7 +34,7 @@ const EditPassword = ({ editProfile }) => {
     <div className="max-w-[500px] space-y-6 m-auto py-8 items-center">
       <InputComponent
         inputType=""
-        type={showPassword ? "text" : "password"}
+        type={viewPassword["current"] ? "text" : "password"}
         label="Current Password"
         name="currentPassword"
         fieldName="currentPassword"
@@ -29,46 +42,51 @@ const EditPassword = ({ editProfile }) => {
         requiredMessage={"This field is required"}
         placeholder="Enter"
         className="bg-[#F2F2F2]"
+        isReadOnly={!editProfile}
         control={control}
         errors={errors}
         register={register}
         leftIcon={Lock}
-        rightIcon={EyeSlash}
-        onIconClick={() => setShowPassword(!showPassword)}
+        rightIcon={viewPassword["current"] ? ViewPassword : PasswordEye}
+        onIconClick={() => handleViewPassword("current")}
       />
       {editProfile && (
         <>
           <InputComponent
             inputType=""
-            type={showPassword ? "text" : "password"}
+            type={viewPassword["reset"] ? "text" : "password"}
             label="New Password"
             name="newPassword"
             fieldName="newPassword"
             required={true}
             requiredMessage={"This field is required"}
             placeholder="Enter"
+            isReadOnly={!editProfile}
             className="bg-[#F2F2F2]"
             control={control}
             errors={errors}
             register={register}
             leftIcon={Lock}
-            rightIcon={EyeSlash}
+            rightIcon={viewPassword["reset"] ? ViewPassword : PasswordEye}
+            onIconClick={() => handleViewPassword("reset")}
           />
           <InputComponent
             inputType=""
-            type={showPassword ? "text" : "password"}
+            type={viewPassword["confirm"] ? "text" : "password"}
             label="Confirm New Password"
             name="confirmPassword"
             fieldName="confirmPassword"
             required={true}
             requiredMessage={"This field is required"}
             placeholder="Enter"
+            isReadOnly={!editProfile}
             className="bg-[#F2F2F2]"
             control={control}
             errors={errors}
             register={register}
             leftIcon={Lock}
-            rightIcon={EyeSlash}
+            rightIcon={viewPassword["confirm"] ? ViewPassword : PasswordEye}
+            onIconClick={() => handleViewPassword("confirm")}
           />
         </>
       )}

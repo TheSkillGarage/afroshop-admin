@@ -1,4 +1,4 @@
-let count = 0;
+
 export const getRoles = (role) => {
   console.log(role);
   switch (role) {
@@ -15,7 +15,6 @@ export const getPermissionCount = (sections) => {
       ? Object.values(c?.action).map((v) => (v === true ? count+=1 : count))
       : count
   );
-  console.log(count);
 
   return count;
 };

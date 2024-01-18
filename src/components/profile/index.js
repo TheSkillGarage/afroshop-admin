@@ -1,55 +1,19 @@
 import React, { useState } from "react";
 import { EditIcon2, EditIconGrey } from "../../images";
-import StoreInfo from "./store-info";
-import RoleActionCard from "../roles-and-permissions/role-action-card";
-import DeliveryFees from "./delivery-fees-section";
-import HolidayException from "./holiday-exception-section";
 import Button from "../shared/button";
-import { useSelector } from "react-redux";
-import EditPassword from "./edit-password";
+import ProfileTab from "./profileTab";
+import { useSelector, useDispatch } from "react-redux";
+import { updateProfile } from "../../redux/action";
+import EditPassword from "./component/edit-password";
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("Profile");
   const [editProfile, setEditProfile] = useState(false);
-  const [deliveryCallback, setDeliveryCallback] = useState(() => {});
-  const [holidayCallback, setHolidayCallback] = useState(() => {});
-  const [deliveryFeeData, setDeliveryFeeData] = useState(
-    useSelector((d) => d.delivery)
-  );
-  const [holidayData, setHolidayData] = useState(
-    useSelector((d) => d.holidays)
-  );
-
-  const enableSaveDelivery = (callback) => {
-    setDeliveryCallback(() => callback);
-  };
-
-  const enableSaveHoliday = (callback) => {
-    setHolidayCallback(() => callback);
-  };
+  const [profileData, setProfileData] = useState(useSelector((d) => d.profile));
 
   const handleFormSubmit = () => {
-    if (deliveryCallback) deliveryCallback();
-    if (holidayCallback) holidayCallback();
-  };
-
-  const [sections, setSections] = useState([
-    {
-      label: "Store Info",
-      value: false,
-    },
-    {
-      label: "Delivery Fees",
-      value: false,
-    },
-    {
-      label: "Holidays & Exceptions",
-      value: false,
-    },
-  ]);
-
-  const handleSections = (data) => {
-    setSections(data);
+    dispatch(updateProfile({ profile: profileData }));
   };
 
   const [tab, setTab] = useState([
@@ -62,31 +26,6 @@ const Profile = () => {
       value: false,
     },
   ]);
-
-  const getComponent = (label) => {
-    switch (label) {
-      case "Store Info":
-        return <StoreInfo editProfile={editProfile} />;
-      case "Delivery Fees":
-        return (
-          <DeliveryFees
-            editProfile={editProfile}
-            deliveryFeeData={deliveryFeeData}
-            setDeliveryFeeData={setDeliveryFeeData}
-            enableSave={enableSaveDelivery}
-          />
-        );
-      case "Holidays & Exceptions":
-        return (
-          <HolidayException
-            editProfile={editProfile}
-            holidayData={holidayData}
-            setHolidayData={setHolidayData}
-            enableSave={enableSaveHoliday}
-          />
-        );
-    }
-  };
 
   const handleTabClick = (label) => {
     setCurrentTab(label);
@@ -147,19 +86,11 @@ const Profile = () => {
         </div>
         <form>
           {currentTab === "Profile" ? (
-            sections.map((section, index) => {
-              return (
-                <div key={index}>
-                  <RoleActionCard
-                    section={section}
-                    component={getComponent(section.label)}
-                    saveSections={handleSections}
-                    sections={sections}
-                    index={index}
-                  />
-                </div>
-              );
-            })
+            <ProfileTab
+              editProfile={editProfile}
+              profileData={profileData}
+              setProfileData={setProfileData}
+            />
           ) : (
             <EditPassword editProfile={editProfile} />
           )}

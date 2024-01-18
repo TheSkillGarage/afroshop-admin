@@ -1,20 +1,17 @@
 import React, { useContext, useState } from "react";
 import DeliveryCard from "./delivery-holiday-card";
 import { useForm } from "react-hook-form";
-import InputComponent from "../shared/inputComponent";
-import Button from "../shared/button";
-import { destinationOptions } from "../../data/profile";
-import { LocationIcon } from "../../images";
+import InputComponent from "../../shared/inputComponent";
+import Button from "../../shared/button";
+import { destinationOptions } from "../../../data/profile";
+import { LocationIcon } from "../../../images";
 import { useDispatch } from "react-redux";
-import { addDeliveryData } from "../../redux/action";
 
 const DeliveryFees = ({
   editProfile,
-  deliveryFeeData,
-  setDeliveryFeeData,
-  enableSave,
+  profileData,
+  setProfileData,
 }) => {
-  const [tempData, setTempData] = useState(deliveryFeeData);
   const dispatch = useDispatch();
   const {
     control,
@@ -29,6 +26,7 @@ const DeliveryFees = ({
       fee: "",
     },
   });
+  console.log(profileData);
 
   const handleAddCard = (values) => {
     try {
@@ -37,11 +35,11 @@ const DeliveryFees = ({
           label: values.destination,
           value: values.fee,
         };
-        setTempData((prevData) => [...prevData, deliveryFormData]);
-        enableSave(() => {
-          dispatch(
-            addDeliveryData({ delivery: [...tempData, deliveryFormData] })
-          );
+        setProfileData((prev) => {
+          return {
+            ...prev,
+            delivery: [...prev["delivery"], deliveryFormData],
+          };
         });
       }
       reset();
@@ -49,9 +47,12 @@ const DeliveryFees = ({
   };
 
   const deleteDeliveryCard = (index) => {
-    setTempData((data) => data.filter((_, key) => key !== index));
-    enableSave(() => {
-      setDeliveryFeeData((data) => data.filter((_, key) => key !== index));
+    const remainingData = profileData?.delivery?.filter((_, key) => key != index);
+    setProfileData((prev) => {
+      return {
+        ...prev,
+        delivery: remainingData
+      }
     });
   };
 
@@ -110,8 +111,8 @@ const DeliveryFees = ({
         </>
       )}
       <div className="py-4 grid grid-cols-3 gap-4">
-        {deliveryFeeData &&
-          tempData.map((d, index) => (
+        {profileData &&
+          profileData.delivery.map((d, index) => (
             <div key={index}>
               <DeliveryCard
                 card={d}

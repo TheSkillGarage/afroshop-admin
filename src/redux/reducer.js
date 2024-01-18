@@ -1,13 +1,20 @@
-import { deliveryData, holidayMockData } from "../data/profile";
+import {
+  deliveryData,
+  holidayMockData,
+  profileInitialState,
+  storeInitialState,
+} from "../data/profile";
 import sectionData from "../data/roles-section-data";
 import ROLES_DATA from "../data/rolesAndPermissions";
+
 
 const INITIAL_STATE = {
   isFetching: false,
   sections: sectionData,
   roles: ROLES_DATA,
   delivery: deliveryData,
-  holidays: holidayMockData
+  holidays: holidayMockData,
+  profile: profileInitialState
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
@@ -29,11 +36,17 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...action.hash,
         isFetching: false,
       };
+    case "UPDATE_PROFILE_INFO":
+      return {
+        ...previousState,
+        profile: action.profile,
+      };
     case "ADD_DELIVERY_DATA":
       return {
         ...previousState,
         delivery: action.delivery,
       };
+
     case "ADD_HOLIDAY_DATA":
       return {
         ...previousState,

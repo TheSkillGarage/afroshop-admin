@@ -34,22 +34,24 @@ const NewRole = () => {
     event.preventDefault();
     const values = getValues();
     const newUser = USER_DATA.find((user) => user.email === values.email);
-
-    dispatch(
-      updateUserRole({
-        roles: [
-          ...roles,
-          {
-            ...newUser,
-            role: values.role,
-            permissions: getPermissionCount(sections),
-            updated_at: new Date(),
-            actions: sections,
-          },
-        ],
-      })
-    );
-    navigate("/roles-and-permissions");
+    console.log(newUser);
+    if (newUser) {
+      dispatch(
+        updateUserRole({
+          roles: [
+            ...roles,
+            {
+              ...newUser,
+              role: values.role,
+              permissions: getPermissionCount(sections),
+              updated_at: new Date(),
+              actions: sections,
+            },
+          ],
+        })
+      );
+      navigate("/roles-and-permissions");
+    }
   };
 
   const options = [

@@ -1,5 +1,6 @@
 import React, { forwardRef, useState } from "react";
 import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 const SelectDropdown = forwardRef(
   (
@@ -12,9 +13,14 @@ const SelectDropdown = forwardRef(
       multiple,
       value,
       defaultValue,
+      isDisabled,
+      handleChange,
+      closeMenuOnSelect,
     },
     ref
   ) => {
+    const [selectedOptions, setSelectedOptions] = useState(value ?? []);
+    const components = makeAnimated();
     const selectStyles = {
       control: (baseStyles, state) => ({
         ...baseStyles,
@@ -53,20 +59,34 @@ const SelectDropdown = forwardRef(
     return (
       <>
         <Select
-          value={value}
-          defaultValue={defaultValue}
+          value={multiple ? selectedOptions : value}
+          defaultValue={[options[0]]}
           styles={selectStyles}
           isMulti={multiple}
           isSearchable={false}
           placeholder={placeholder}
+          components={components}
           name={field?.name}
           inputRef={ref}
           options={options}
+          isDisabled={isDisabled}
+          classNamePrefix="select"
+          closeMenuOnSelect={closeMenuOnSelect}
           onChange={(val) => {
-            field.onChange(!multiple ? val?.value : val?.map((v) => v.value)
+            field.onChange(
+              !multiple
+                ? val?.label
+                : setSelectedOptions((prev) =>
+                    val?.map((v) =>
+                      v?.value !== prev?.value
+                        ? { label: v?.label, value: v?.value }
+                        : prev
+                    )
+                  )
             );
+            handleChange?.(multiple ? val : val?.label);
           }}
-          className={`${className}`}
+          className={`${className} basic-multi-select`}
         />
       </>
     );
