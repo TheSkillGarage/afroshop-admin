@@ -54,7 +54,7 @@ const EditPassword = ({ editProfile, form }) => {
             fieldName="newPassword"
             required={true}
             requiredMessage={"This field is required"}
-            patternValue={/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/}
+            patternValue={/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/}
             patternMessage={
               "Password must contain at least one letter, one number, and be at least 8 characters long"
             }

@@ -12,14 +12,17 @@ const HolidayException = ({
   setProfileData,
   form
 }) => {
-  const { control, formState: errors, register, resetField } = form;
+  const { control, formState: errors, register, resetField, watch } = form;
+ 
+  const handleAddCard = () => {
+    const description = watch("description");
+    const date = watch("date");
 
-  const handleAddCard = (values) => {
     try {
-      if (values?.description !== "" && values?.date !== "") {
+      if (description !== "" && date !== "") {
         const holidayFormData = {
-          label: values?.description,
-          value: format(values?.date, "EEE, MMM dd, yyyy"),
+          label: description,
+          value: format(date, "EEE, MMM dd, yyyy"),
         };
 
         setProfileData((prev) => {

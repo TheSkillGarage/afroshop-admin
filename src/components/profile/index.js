@@ -16,18 +16,19 @@ const Profile = () => {
       ...profileData?.store,
       destination: "",
       fee: "",
-      description: "", 
-      date: ""
+      description: "",
+      date: "",
     },
-    mode: "all"
+    mode: "all",
   });
 
   const passwordForm = useForm({
     defaultValues: {
       currentPassword: "",
       newPassword: "",
-      confirmPassword: ""
-    }, mode: "all"
+      confirmPassword: "",
+    },
+    mode: "all",
   });
 
   const [currentTab, setCurrentTab] = useState("Profile");
@@ -41,16 +42,23 @@ const Profile = () => {
   const handlePasswordFormSubmit = () => {
     passwordForm?.reset();
     setEditProfile(false);
-  }
+  };
 
   const handleTabClick = (label) => {
     setCurrentTab(label);
   };
 
   const handleCancelClick = () => {
-    setProfileData(data);
+    setProfileData(profileData);
     setEditProfile(false);
+    passwordForm?.reset();
   };
+
+  const disableButton =
+    (Object.keys(profileForm?.formState?.errors).length === 0 &&
+      currentTab === "Profile") ||
+    (Object.keys(passwordForm?.formState?.errors).length === 0 &&
+      currentTab === "Password");
 
   return (
     <div className="bg-[#F2F2F2] w-full py-6 px-4">
@@ -124,10 +132,11 @@ const Profile = () => {
                 type="submit"
                 onClick={(event) => {
                   event.preventDefault();
-                  currentTab === "Profile" ?
-                  profileForm?.handleSubmit(handleProfileFormSubmit)()
-                  : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
+                  currentTab === "Profile"
+                    ? profileForm?.handleSubmit(handleProfileFormSubmit)()
+                    : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
                 }}
+                variant={disableButton ? "primary" : "disabled"}
               >
                 Save
               </Button>

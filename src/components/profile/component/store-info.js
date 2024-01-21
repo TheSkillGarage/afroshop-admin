@@ -18,7 +18,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     setValue,
     trigger,
   } = form;
-  
+
   const handleFileUpload = (e) => {
     if (e.target.files.length > 0) {
       handleData("profile_image", e.target.files[0]);
@@ -33,16 +33,18 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
       ? store?.days?.filter((p) => p !== value) ?? []
       : [...store?.days, value];
   };
-  
+ 
   //sets the state of the profile data on change of the input fields
   const handleData = (input, value) => {
     setProfileData((prev) => {
       switch (input) {
         case "day":
-          console.log(value);
           return {
             ...prev,
-            store: getSelectedDays(prev?.store, value),
+            store: {
+              ...prev["store"],
+              days: getSelectedDays(prev?.store, value),
+            },
           };
         default:
           return {
@@ -102,11 +104,11 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
             <Checkbox
               name={day.label}
               handleChange={() => {
-                handleData("day", day.value);
+                handleData("day", day?.value);
               }}
               isDisabled={!editProfile}
               value={
-                profileData?.store?.days?.includes(day.value) ? day.value : ""
+                profileData?.store?.days?.includes(day?.value) ? day?.value : ""
               }
               valueOnChecked={day.value}
             >
@@ -180,7 +182,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           isDisabled={!editProfile}
           handleChange={(value) => {
             setValue("deliveryOption", value);
-            trigger("deliveryOption");// triggers the input field after a change to re-trigger validation
+            trigger("deliveryOption"); // triggers the input field after a change to re-trigger validation
             handleData("deliveryOption", value);
           }}
         />

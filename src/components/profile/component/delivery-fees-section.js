@@ -7,18 +7,19 @@ import { destinationOptions } from "../../../data/profile";
 import { LocationIcon } from "../../../images";
 
 const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
-  const { control, formState: errors, register, resetField } = form;
+  const { control, formState: errors, register, resetField, watch } = form;
 
-  console.log(profileData);
-
-  const handleAddCard = (values) => {
+  const handleAddCard = () => {
+    const destination = watch("destination");
+    const fee = watch("fee");
     try {
-      if (values?.destination !== "" && values?.fee !== "") {
+      if (destination !== "" && fee !== "") {
         const deliveryFormData = {
-          label: values.destination,
-          value: `$${values.fee}`,
+          label: destination,
+          value: `$${fee}`,
         };
-      
+        console.log(deliveryFormData);
+
         setProfileData((prev) => {
           //checks if the value exists in the current array of deliverys objects and overrides it if true
           const updatedArray = prev?.delivery?.map((d) =>
@@ -28,7 +29,9 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
           );
 
           //adds a new delivery object to the array if it doesn't exist
-          if ( !updatedArray.some((obj) => obj.label === deliveryFormData.label)) {
+          if (
+            !updatedArray.some((obj) => obj.label === deliveryFormData.label)
+          ) {
             updatedArray.push(deliveryFormData);
           }
 
