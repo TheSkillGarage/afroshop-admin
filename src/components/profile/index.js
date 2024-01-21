@@ -32,7 +32,6 @@ const Profile = () => {
 
   const [currentTab, setCurrentTab] = useState("Profile");
   const [editProfile, setEditProfile] = useState(false);
-  const [activeTab, setActiveTab] = useState(true);
 
   const handleProfileFormSubmit = (data) => {
     dispatch(updateProfile({ profile: profileData }));
@@ -43,10 +42,9 @@ const Profile = () => {
     passwordForm?.reset();
     setEditProfile(false);
   }
-  
+
   const handleTabClick = (label) => {
     setCurrentTab(label);
-    setActiveTab(true);
   };
 
   const handleCancelClick = () => {
@@ -71,7 +69,7 @@ const Profile = () => {
               key={index}
               onClick={() => handleTabClick(t)}
               className={`cursor-pointer w-[380px] flex items-center justify-center ${
-                t === currentTab && activeTab
+                t === currentTab
                   ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
                   : "text-[#4F4F4F] font-normal"
               }`}
