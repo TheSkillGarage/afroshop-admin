@@ -59,6 +59,7 @@ const InputComponent = ({
   defaultValue,
   closeMenuOnSelect,
 }) => {
+
   return (
     <div className="flex flex-col gap-2 w-full">
       <label className="text-[#B3B3B3] text-[13px]">{label}</label>
@@ -103,6 +104,7 @@ const InputComponent = ({
         <InputBox
           loading={loading}
           success={success}
+          isReadOnly={isReadOnly}
           className={`${className} ${
             errors[fieldName] &&
             (fieldName === "currentPassword" ? null : "input_error")

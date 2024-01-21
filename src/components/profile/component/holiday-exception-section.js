@@ -1,8 +1,7 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import DeliveryCard from "./delivery-holiday-card";
 import InputComponent from "../../shared/inputComponent";
 import Button from "../../shared/button";
-import { useDispatch } from "react-redux";
 import { DateIcon } from "../../../images";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
@@ -10,19 +9,10 @@ import { format } from "date-fns";
 const HolidayException = ({
   editProfile,
   profileData,
-  setProfileData
+  setProfileData,
+  form
 }) => {
-  const dispatch = useDispatch();
-  const {
-    control,
-    formState: errors,
-    register,
-    handleSubmit,
-    reset,
-  } = useForm({
-    defaultValues: { description: "", date: "" },
-    mode: "all",
-  });
+  const { control, formState: errors, register, resetField } = form;
 
   const handleAddCard = (values) => {
     try {
@@ -31,19 +21,35 @@ const HolidayException = ({
           label: values?.description,
           value: format(values?.date, "EEE, MMM dd, yyyy"),
         };
+
         setProfileData((prev) => {
+           //checks if the value exists in the current array of holiday objects and overrides it if true
+          const updatedArray = prev?.holidays?.map((d) =>
+            d.label === holidayFormData.label
+              ? { ...d, ...holidayFormData }
+              : d
+          );
+
+          //adds a new holiday object to the array if it doesn't exist
+          if (!updatedArray.some((obj) => obj.label === holidayFormData.label)) {
+            updatedArray.push(holidayFormData);
+          }
+
           return {
             ...prev,
-            holidays: [...prev["holidays"], holidayFormData],
+            holidays: updatedArray,
           };
         });
       }
-      reset();
+      //resets the fields
+      resetField("description");
+      resetField("date");
     } catch (error) {}
   };
 
   const deleteHolidayCard = (index) => {
-    const remainingData =  profileData?.holidays?.filter((_, key) => key != index);
+    //filters out an holiday object by index to be deleted
+    const remainingData =  profileData?.holidays?.filter((_, key) => key !== index);
     setProfileData((prev) => {
       return {
         ...prev,
@@ -96,7 +102,7 @@ const HolidayException = ({
               type="submit"
               onClick={(event) => {
                 event.preventDefault();
-                handleSubmit(handleAddCard)();
+                handleAddCard();
               }}
             >
               Add

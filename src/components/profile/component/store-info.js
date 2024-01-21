@@ -1,6 +1,5 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React from "react";
 import Checkbox from "../../shared/checkbox";
-import { useForm } from "react-hook-form";
 import InputComponent from "../../shared/inputComponent";
 import {
   daysOfTheWeek,
@@ -10,128 +9,55 @@ import {
   deliveryStartTimes,
 } from "../../../data/profile";
 import { DeleteIcon, ProfileImage } from "../../../images";
-import useTableSelect from "../../../hooks/useTableSelect";
 
-const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
+const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
   const {
     control,
-    formState: errors,
+    formState: { errors },
     register,
-  } = useForm({
-    defaultValues: profileData?.store,
-    mode: "all",
-  });
-  const { handleSelectRow, selectedRows } = useTableSelect({
-    rows: daysOfTheWeek,
-  });
-
-  const handleFileUpload = useCallback((e) => {
+    setValue,
+    trigger,
+  } = form;
+  
+  const handleFileUpload = (e) => {
     if (e.target.files.length > 0) {
       handleData("profile_image", e.target.files[0]);
     } else {
       return;
     }
-  }, []);
+  };
 
+  //gets the selected open days by adding a new day to the array of days when checked or removing a day from the array when unchecked
+  const getSelectedDays = (store, value) => {
+    return store?.days?.includes(value)
+      ? store?.days?.filter((p) => p !== value) ?? []
+      : [...store?.days, value];
+  };
+  
+  //sets the state of the profile data on change of the input fields
   const handleData = (input, value) => {
     setProfileData((prev) => {
       switch (input) {
-        case "profile_image":
-          return {
-            ...prev,
-            store: {
-              ...prev["store"],
-              profile_image: value,
-            },
-          };
-        case "email":
-          return {
-            ...prev,
-            store: {
-              ...prev["store"],
-              email: value,
-            },
-          };
         case "day":
-          console.log(value)
+          console.log(value);
           return {
             ...prev,
-            store: {
-              ...prev?.store,
-              days: prev?.store?.days?.includes(value)
-                ? prev?.store?.days?.filter((p) => p !== value) ?? []
-                : [...prev?.store?.days, value],
-            },
-          };
-        case "store_name":
-          return {
-            ...prev,
-            store: {
-              ...prev["store"],
-              store_name: value,
-            },
-          };
-        case "address":
-          return {
-            ...prev,
-            store: {
-              ...prev["store"],
-              address: value,
-            },
-          };
-        case "deliveryOption":
-          return {
-            ...prev,
-            store: {
-              ...prev["store"],
-              deliveryOption: value,
-            },
-          };
-        case "deliveryStartTime":
-          return {
-            ...prev,
-            store: {
-              ...prev["store"],
-              deliveryStartTime: value,
-            },
-          };
-        case "deliveryEndTime":
-          return {
-            ...prev,
-            store: {
-              ...prev["store"],
-              deliveryEndTime: value,
-            },
-          };
-        case "deliverySlot":
-          return {
-            ...prev,
-            store: {
-              ...prev["store"],
-              deliverySlot: value,
-            },
-          };
-        case "restPeriod":
-          return {
-            ...prev,
-            store: {
-              ...prev["store"],
-              restPeriod: value,
-            },
+            store: getSelectedDays(prev?.store, value),
           };
         default:
           return {
             ...prev,
-            [input]: value,
+            store: {
+              ...prev["store"],
+              [input]: value,
+            },
           };
       }
     });
   };
-  console.log(profileData);
 
   return (
     <div className="flex flex-col mt-6 gap-6">
-      {/* {editProfile ? ( */}
       <div className="flex items-center gap-3">
         <div className="rounded-full w-[100px] h-[100px] mb-3">
           <label htmlFor="profileImage">
@@ -140,7 +66,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
                 <img
                   className="w-[100px] h-[100px] rounded-full"
                   src={URL.createObjectURL(profileData?.store?.profile_image)}
-                  alt="Profile Image"
+                  alt="Profile"
                 />
               ) : (
                 <ProfileImage />
@@ -168,15 +94,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
           </p>
         )}
       </div>
-      {/* ) : profileData?.store?.profile_image?.type?.startsWith("image/") ? (
-        <img
-          className="w-[100px] h-[100px] rounded-full"
-          src={URL.createObjectURL(profileData?.store?.profile_image)}
-          alt="Profile Image"
-        />
-      ) : (
-        <ProfileImage />
-      )} */}
+
       <p className="text-[13px] text-[#B3B3B3]">Open Day(s)</p>
       <div className="flex w-full justify-between">
         {daysOfTheWeek.map((day, index) => (
@@ -185,7 +103,6 @@ const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
               name={day.label}
               handleChange={() => {
                 handleData("day", day.value);
-                handleSelectRow(day.value);
               }}
               isDisabled={!editProfile}
               value={
@@ -210,7 +127,9 @@ const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
           errors={errors}
           register={register}
           required={true}
-          requireddMessage={"Store name is required"}
+          requiredMessage={"Store name is required"}
+          patternValue={/^[A-Za-z -]+$/}
+          patternMessage={"Enter a valid store Name"}
           isReadOnly={!editProfile}
           handleChange={(e) => handleData("store_name", e.target.value)}
         />
@@ -222,6 +141,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
           className="bg-[#F2F2F2]"
           control={control}
           errors={errors}
+          required={true}
+          requiredMessage={"Store address is required"}
           register={register}
           isReadOnly={!editProfile}
           handleChange={(e) => handleData("address", e.target.value)}
@@ -232,6 +153,10 @@ const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
           fieldName={"email"}
           placeholder="Enter"
           className="bg-[#F2F2F2]"
+          required={true}
+          requiredMessage={"Email address is required"}
+          patternValue={/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/}
+          patternMessage={"Enter a valid email address"}
           control={control}
           errors={errors}
           register={register}
@@ -248,11 +173,16 @@ const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
           placeholder="Enter"
           className="bg-[#F2F2F2]"
           closeMenuOnSelect={false}
+          required={"At least one delivery option is required"}
           control={control}
           errors={errors}
           register={register}
           isDisabled={!editProfile}
-          handleChange={(value) => handleData("deliveryOption", value)}
+          handleChange={(value) => {
+            setValue("deliveryOption", value);
+            trigger("deliveryOption");// triggers the input field after a change to re-trigger validation
+            handleData("deliveryOption", value);
+          }}
         />
         <InputComponent
           inputType="select"
@@ -260,6 +190,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
           label="Delivery Start Time"
           fieldName={"deliveryStartTime"}
           placeholder="Enter"
+          required={"Delivery Start Time is required"}
           className="bg-[#F2F2F2]"
           control={control}
           errors={errors}
@@ -273,6 +204,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
           label="Delivery End Time"
           fieldName={"deliveryEndTime"}
           placeholder="Enter"
+          required={"Delivery End Time is required"}
           className="bg-[#F2F2F2]"
           control={control}
           errors={errors}
@@ -286,6 +218,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
           label="Delivery Slots"
           fieldName={"deliverySlot"}
           placeholder="Enter"
+          required={"Delivery Slot is required"}
           className="bg-[#F2F2F2]"
           control={control}
           errors={errors}
@@ -299,6 +232,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData }) => {
           label="Rest Period"
           fieldName={"restPeriod"}
           placeholder="Enter"
+          required={"Rest Period is required"}
           className="bg-[#F2F2F2]"
           control={control}
           errors={errors}

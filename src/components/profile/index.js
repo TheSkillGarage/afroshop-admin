@@ -4,39 +4,54 @@ import Button from "../shared/button";
 import ProfileTab from "./profileTab";
 import { useSelector, useDispatch } from "react-redux";
 import { updateProfile } from "../../redux/action";
-import EditPassword from "./component/edit-password";
+import EditPassword from "./edit-password";
+import { useForm } from "react-hook-form";
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const data = useSelector((d) => d.profile);
+  const [profileData, setProfileData] = useState(data);
+  const profileForm = useForm({
+    defaultValues: {
+      ...profileData?.store,
+      destination: "",
+      fee: "",
+      description: "", 
+      date: ""
+    },
+    mode: "all"
+  });
+
+  const passwordForm = useForm({
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: ""
+    }, mode: "all"
+  });
+
   const [currentTab, setCurrentTab] = useState("Profile");
   const [editProfile, setEditProfile] = useState(false);
-  const [profileData, setProfileData] = useState(useSelector((d) => d.profile));
+  const [activeTab, setActiveTab] = useState(true);
 
-  const handleFormSubmit = () => {
+  const handleProfileFormSubmit = (data) => {
     dispatch(updateProfile({ profile: profileData }));
+    setEditProfile(false);
   };
 
-  const [tab, setTab] = useState([
-    {
-      label: "Profile",
-      value: true,
-    },
-    {
-      label: "Password",
-      value: false,
-    },
-  ]);
-
+  const handlePasswordFormSubmit = () => {
+    passwordForm?.reset();
+    setEditProfile(false);
+  }
+  
   const handleTabClick = (label) => {
     setCurrentTab(label);
-    const updatedTab = tab.map((t) => {
-      if (t.label === label) {
-        return { ...t, value: true };
-      } else {
-        return { ...t, value: false };
-      }
-    });
-    setTab(updatedTab);
+    setActiveTab(true);
+  };
+
+  const handleCancelClick = () => {
+    setProfileData(data);
+    setEditProfile(false);
   };
 
   return (
@@ -51,17 +66,17 @@ const Profile = () => {
       </div>
       <div className="flex justify-center">
         <div className="rounded w-[800px] bg-[#FFFFFF] flex justify-around py-3 px-[10px]">
-          {tab.map((t, index) => (
+          {["Profile", "Password"].map((t, index) => (
             <p
               key={index}
-              onClick={() => handleTabClick(t.label)}
+              onClick={() => handleTabClick(t)}
               className={`cursor-pointer w-[380px] flex items-center justify-center ${
-                t.value
+                t === currentTab && activeTab
                   ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
                   : "text-[#4F4F4F] font-normal"
               }`}
             >
-              {t.label}
+              {t}
             </p>
           ))}
         </div>
@@ -90,9 +105,10 @@ const Profile = () => {
               editProfile={editProfile}
               profileData={profileData}
               setProfileData={setProfileData}
+              form={profileForm}
             />
           ) : (
-            <EditPassword editProfile={editProfile} />
+            <EditPassword editProfile={editProfile} form={passwordForm} />
           )}
 
           {editProfile && (
@@ -101,7 +117,7 @@ const Profile = () => {
                 variant="secondary"
                 type="button"
                 className="w-[133px]"
-                onClick={() => setEditProfile(false)}
+                onClick={() => handleCancelClick()}
               >
                 Cancel
               </Button>
@@ -110,7 +126,9 @@ const Profile = () => {
                 type="submit"
                 onClick={(event) => {
                   event.preventDefault();
-                  handleFormSubmit();
+                  currentTab === "Profile" ?
+                  profileForm?.handleSubmit(handleProfileFormSubmit)()
+                  : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
                 }}
               >
                 Save

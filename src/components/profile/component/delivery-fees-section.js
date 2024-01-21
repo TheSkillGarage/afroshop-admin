@@ -1,31 +1,14 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import DeliveryCard from "./delivery-holiday-card";
 import { useForm } from "react-hook-form";
 import InputComponent from "../../shared/inputComponent";
 import Button from "../../shared/button";
 import { destinationOptions } from "../../../data/profile";
 import { LocationIcon } from "../../../images";
-import { useDispatch } from "react-redux";
 
-const DeliveryFees = ({
-  editProfile,
-  profileData,
-  setProfileData,
-}) => {
-  const dispatch = useDispatch();
-  const {
-    control,
-    formState: errors,
-    register,
-    handleSubmit,
-    reset,
-  } = useForm({
-    mode: "all",
-    defaultValues: {
-      destination: "",
-      fee: "",
-    },
-  });
+const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
+  const { control, formState: errors, register, resetField } = form;
+
   console.log(profileData);
 
   const handleAddCard = (values) => {
@@ -33,26 +16,44 @@ const DeliveryFees = ({
       if (values?.destination !== "" && values?.fee !== "") {
         const deliveryFormData = {
           label: values.destination,
-          value: values.fee,
+          value: `$${values.fee}`,
         };
+      
         setProfileData((prev) => {
+          //checks if the value exists in the current array of deliverys objects and overrides it if true
+          const updatedArray = prev?.delivery?.map((d) =>
+            d.label === deliveryFormData.label
+              ? { ...d, ...deliveryFormData }
+              : d
+          );
+
+          //adds a new delivery object to the array if it doesn't exist
+          if ( !updatedArray.some((obj) => obj.label === deliveryFormData.label)) {
+            updatedArray.push(deliveryFormData);
+          }
+
           return {
             ...prev,
-            delivery: [...prev["delivery"], deliveryFormData],
+            delivery: updatedArray,
           };
         });
       }
-      reset();
+      //resets the fields after adding the object
+      resetField("destination");
+      resetField("fee");
     } catch (error) {}
   };
 
   const deleteDeliveryCard = (index) => {
-    const remainingData = profileData?.delivery?.filter((_, key) => key != index);
+    //filters a delivery object by index and sets its new state
+    const remainingData = profileData?.delivery?.filter(
+      (_, key) => key != index
+    );
     setProfileData((prev) => {
       return {
         ...prev,
-        delivery: remainingData
-      }
+        delivery: remainingData,
+      };
     });
   };
 
@@ -78,8 +79,8 @@ const DeliveryFees = ({
               })}
             />
             <InputComponent
-              inputType="text"
-              type="text"
+              inputType="number"
+              type="number"
               label="Shipping Fee ($)"
               name="fee"
               fieldName="fee"
@@ -102,7 +103,7 @@ const DeliveryFees = ({
               type="submit"
               onClick={(event) => {
                 event.preventDefault();
-                handleSubmit(handleAddCard)();
+                handleAddCard();
               }}
             >
               Add

@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import StoreInfo from "./component/store-info";
 import DeliveryFees from "./component/delivery-fees-section";
 import HolidayException from "./component/holiday-exception-section";
-import RoleActionCard from "../roles-and-permissions/role-action-card";
+import RoleActionCard from "../shared/cardDropdown/role-action-card";
 
-const ProfileTab = ({
-  editProfile,
-  profileData,
-  setProfileData,
-}) => {
+const ProfileTab = (props) => {
   const [sections, setSections] = useState([
     {
       label: "Store Info",
@@ -28,34 +24,6 @@ const ProfileTab = ({
     setSections(data);
   };
 
-  const getComponent = (label) => {
-    switch (label) {
-      case "Store Info":
-        return (
-          <StoreInfo
-            editProfile={editProfile}
-            profileData={profileData}
-            setProfileData={setProfileData}
-          />
-        );
-      case "Delivery Fees":
-        return (
-          <DeliveryFees
-            editProfile={editProfile}
-            profileData={profileData}
-            setProfileData={setProfileData}
-          />
-        );
-      case "Holidays & Exceptions":
-        return (
-          <HolidayException
-            editProfile={editProfile}
-            profileData={profileData}
-            setProfileData={setProfileData}
-          />
-        );
-    }
-  };
   return (
     <div>
       {sections.map((section, index) => {
@@ -63,11 +31,16 @@ const ProfileTab = ({
           <div key={index}>
             <RoleActionCard
               section={section}
-              component={getComponent(section.label)}
               saveSections={handleSections}
               sections={sections}
               index={index}
-            />
+            >
+              {section.label === "Store Info" && <StoreInfo {...props} />}
+              {section.label === "Delivery Fees" && <DeliveryFees {...props} />}
+              {section.label === "Holidays & Exceptions" && (
+                <HolidayException {...props} />
+              )}
+            </RoleActionCard>
           </div>
         );
       })}

@@ -3,7 +3,7 @@ import { GreenRightArrow } from "../../images";
 import { useNavigate } from "react-router-dom";
 import InputComponent from "../shared/inputComponent";
 import { useForm } from "react-hook-form";
-import RoleActionCard from "./role-action-card";
+import RoleActionCard from "../shared/cardDropdown/role-action-card";
 import Button from "../shared/button";
 import { useDispatch, useSelector } from "react-redux";
 import sectionData from "../../data/roles-section-data";

@@ -1,5 +1,5 @@
 import React from "react";
-import { DropdownClose } from "../../images";
+import { DropdownClose } from "../../../images";
 
 const RoleActionCard = ({
   section,
@@ -7,7 +7,7 @@ const RoleActionCard = ({
   saveSections,
   index,
   reset,
-  component,
+  children,
 }) => {
   const handleDropdownClick = (updatedSection) => {
     const updatedItems = sections?.map((s) => {
@@ -19,6 +19,7 @@ const RoleActionCard = ({
     });
     saveSections?.(updatedItems);
   };
+
   return (
     <div>
       <div className="mt-8 border border-[#B3B3B3] p-4 rounded-lg">
@@ -31,7 +32,9 @@ const RoleActionCard = ({
             className={`w-4 h-4 ${section?.value ? "rotate-90" : ""}`}
           />
         </div>
-        {section?.value && component && component}
+        {(section?.value && children)
+         && 
+         children}
       </div>
       {index !== sections?.length - 1 && (
         <div className="mt-8 border border-[#B3B3B3] border-dashed" />
