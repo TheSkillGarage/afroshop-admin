@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 const Profile = () => {
   const dispatch = useDispatch();
   const data = useSelector((d) => d.profile);
-  const [profileData, setProfileData] = useState(data);
+  const [profileData, setProfileData] = useState({ ...data });
   const profileForm = useForm({
     defaultValues: {
       ...profileData?.store,
@@ -35,7 +35,7 @@ const Profile = () => {
   const [editProfile, setEditProfile] = useState(false);
 
   const handleProfileFormSubmit = (data) => {
-    dispatch(updateProfile({ profile: profileData }));
+    dispatch(updateProfile({ profile: { ...profileData } }));
     setEditProfile(false);
   };
 
@@ -49,7 +49,7 @@ const Profile = () => {
   };
 
   const handleCancelClick = () => {
-    setProfileData(profileData);
+    setProfileData(data);
     setEditProfile(false);
     passwordForm?.reset();
   };
@@ -76,11 +76,10 @@ const Profile = () => {
             <p
               key={index}
               onClick={() => handleTabClick(t)}
-              className={`cursor-pointer w-[380px] flex items-center justify-center ${
-                t === currentTab
-                  ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
-                  : "text-[#4F4F4F] font-normal"
-              }`}
+              className={`cursor-pointer w-[380px] flex items-center justify-center ${t === currentTab
+                ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
+                : "text-[#4F4F4F] font-normal"
+                }`}
             >
               {t}
             </p>
@@ -92,9 +91,8 @@ const Profile = () => {
         <div className="py-4 px-4 border-b-[2px] text-[#186F3D] border-[#E6E6E6] flex items-center justify-between">
           <p className="text-xl font-bold">{currentTab}</p>
           <p
-            className={`flex gap-2 items-center font-semibold cursor-pointer ${
-              editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
-            }`}
+            className={`flex gap-2 items-center font-semibold cursor-pointer ${editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
+              }`}
             onClick={() => setEditProfile(true)}
           >
             {editProfile ? (

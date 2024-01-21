@@ -20,7 +20,7 @@ import successIcon from "./SuccessIcon.png";
 import LoadingIcon from "./LoadingIcon.svg";
 import whiteMarkIcon from "./white-mark-icon.svg";
 import greyMarkIcon from "./grey-mark-icon.svg";
-import {ReactComponent as WelcomeImage} from "./welcomeImage.svg"
+import { ReactComponent as WelcomeImage } from "./welcomeImage.svg"
 
 import ArrowRight from "./arrow-right.svg";
 import ArrowDown from "./arrow-down.svg";
@@ -41,7 +41,7 @@ import Italic from "./italic.svg";
 import Link from "./link.svg";
 import OrderedList from "./ordered-list.svg";
 import UnorderedList from "./unordered-list.svg";
-import {ReactComponent as DateIcon} from "./date-icon.svg";
+import { ReactComponent as DateIcon } from "./date-icon.svg";
 // import {ReactComponent as DeleteIcon} from "./delete.svg";
 import IconMessage from "./Icon-message.svg";
 
@@ -83,8 +83,8 @@ import { ReactComponent as EditIcon2 } from "./edit-icon.svg";
 import { ReactComponent as EditIconGrey } from "./edit-icon-grey.svg";
 import { ReactComponent as LocationIcon } from "./Location.svg";
 import { ReactComponent as AddIcon } from "./add-icon.svg";
-import { ReactComponent as ProfileImage } from "./profile-image.svg";
-import Lock  from "./Lock.svg";
+import ProfileImage from "./profile-image.svg";
+import Lock from "./Lock.svg";
 import EyeSlash from "./eye-slash.svg";
 //import OrdersIconWhite  from "./bag-orders-white.svg";
 import SupportIllustration from "./support.svg"
@@ -101,8 +101,10 @@ import ViewPassword from "./view-password.svg"
 import PasswordEye from "./icon-see-password.svg"
 import GreenEdit from "./edit-green.svg"
 import GreyEdit from "./grey-edit.svg"
+import DefaultImage from "./camera_icon.jpg"
 
 export {
+  DefaultImage,
   EyeSlash,
   Eye,
   Lock,

@@ -1,3 +1,5 @@
+import { ProfileImage } from "../images";
+
 const daysOfTheWeek = [
   { label: "Sun", value: "sunday" },
   { label: "Mon", value: "monday" },
@@ -141,7 +143,8 @@ const deliverySlots = [
 ];
 const storeInitialState = {
   days: [],
-  profile_image: {},
+  profile_image: ProfileImage,
+  profile_image_data: null,
   store_name: "Green Ranger",
   address: "No 3 Crimson Drive, CA",
   email: "greenranger@gmail.com",
