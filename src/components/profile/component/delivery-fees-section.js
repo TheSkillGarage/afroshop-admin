@@ -18,8 +18,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
           label: destination,
           value: `$${fee}`,
         };
-        console.log(deliveryFormData);
-
+       
         setProfileData((prev) => {
           //checks if the value exists in the current array of deliverys objects and overrides it if true
           const updatedArray = prev?.delivery?.map((d) =>
