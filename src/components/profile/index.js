@@ -34,7 +34,7 @@ const Profile = () => {
   const [currentTab, setCurrentTab] = useState("Profile");
   const [editProfile, setEditProfile] = useState(false);
 
-  const handleProfileFormSubmit = (data) => {
+  const handleProfileFormSubmit = () => {
     dispatch(updateProfile({ profile: { ...profileData } }));
     setEditProfile(false);
   };

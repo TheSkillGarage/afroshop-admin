@@ -59,7 +59,6 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     });
   };
 
-  console.log(profileData?.store?.profile_image)
   return (
     <div className="flex flex-col mt-6 gap-6">
       <div className="flex items-center gap-3">
@@ -183,7 +182,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           placeholder="Enter"
           className="bg-[#F2F2F2]"
           closeMenuOnSelect={false}
-          required={"At least one delivery option is required"}
+          requiredMessage={"At least one delivery option is required"}
           control={control}
           errors={errors}
           register={register}
@@ -200,7 +199,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           label="Delivery Start Time"
           fieldName={"deliveryStartTime"}
           placeholder="Enter"
-          required={"Delivery Start Time is required"}
+          requiredMessage={"Delivery Start Time is required"}
           className="bg-[#F2F2F2]"
           control={control}
           errors={errors}
@@ -214,7 +213,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           label="Delivery End Time"
           fieldName={"deliveryEndTime"}
           placeholder="Enter"
-          required={"Delivery End Time is required"}
+          requiredMessage={"Delivery End Time is required"}
           className="bg-[#F2F2F2]"
           control={control}
           errors={errors}
@@ -228,7 +227,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           label="Delivery Slots"
           fieldName={"deliverySlot"}
           placeholder="Enter"
-          required={"Delivery Slot is required"}
+          requiredMessage={"Delivery Slot is required"}
           className="bg-[#F2F2F2]"
           control={control}
           errors={errors}
@@ -242,7 +241,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           label="Rest Period"
           fieldName={"restPeriod"}
           placeholder="Enter"
-          required={"Rest Period is required"}
+          requiredMessage={"Rest Period is required"}
           className="bg-[#F2F2F2]"
           control={control}
           errors={errors}

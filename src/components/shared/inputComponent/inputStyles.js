@@ -20,11 +20,11 @@ const InputBox = styled.div`
   }
 
   &:hover {
-    border: ${({ isReadOnly }) => (isReadOnly ? "none" : "1px solid #cccccc")};
+    border: ${({ readOnly }) => (readOnly ? "none" : "1px solid #cccccc")};
   }
 
   &:focus-within {
-    border: ${({ isReadOnly }) => (isReadOnly ? "none" : "1px solid #186f3d")};
+    border: ${({ readOnly }) => (readOnly ? "none" : "1px solid #186f3d")};
   }
 
   &:disabled {

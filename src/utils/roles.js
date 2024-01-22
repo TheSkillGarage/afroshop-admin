@@ -6,6 +6,8 @@ export const getRoles = (role) => {
       return "Admin";
     case "super_admin":
       return "Super Admin";
+    default:
+      return;
   }
 };
 export const getPermissionCount = (sections) => {

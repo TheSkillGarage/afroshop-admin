@@ -2,7 +2,6 @@ import {
   deliveryData,
   holidayMockData,
   profileInitialState,
-  storeInitialState,
 } from "../data/profile";
 import sectionData from "../data/roles-section-data";
 import ROLES_DATA from "../data/rolesAndPermissions";
