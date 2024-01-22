@@ -62,19 +62,24 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
   return (
     <div className="flex flex-col mt-6 gap-6">
       <div className="flex items-center gap-3">
-        <div className="rounded-full w-[100px] h-[100px] mb-3">
+        <div className="mb-3">
           <label htmlFor="profileImage">
-            <div className="rounded-full cursor-pointer">
+            <div className="rounded-full w-[100px] h-[100px]">
               {profileData?.store?.profile_image?.length > 0 ? (
-                <img
-                  className="w-full h-auto rounded-full"
-                  src={profileData?.store?.profile_image}
-                  alt="Profile"
-                />
+                <div className="relative h-full w-full">
+                  <img
+                    className="h-full object-cover rounded-full"
+                    src={profileData?.store?.profile_image}
+                    alt="Profile"
+                  />
+                   <div className="absolute bottom-[-2px] right-[-4px] w-[30px] h-[30px] rounded-full">
+                    <GreenCamera />
+                  </div>
+                </div>
               ) : (
                 <div className="relative">
                   <img
-                    className="w-[100px] h-[100px] rounded-full border border-2"
+                    className="rounded-full border border-2"
                     src={DefaultImage}
                     alt="Profile"
                   />
