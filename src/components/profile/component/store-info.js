@@ -61,42 +61,45 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
 
   return (
     <div className="flex flex-col mt-6 gap-6">
-      <div className="flex items-center gap-3">
-        <div className="mb-3">
-          <label htmlFor="profileImage">
-            <div className="rounded-full w-[100px] h-[100px]">
-              {profileData?.store?.profile_image?.length > 0 ? (
-                <div className="relative h-full w-full">
-                  <img
-                    className="h-full w-full object-cover rounded-full"
-                    src={profileData?.store?.profile_image}
-                    alt="Profile"
-                  />
-                  <div className="absolute bottom-[-2px] right-[-4px] w-[30px] h-[30px] rounded-full">
-                    <GreenCamera />
-                  </div>
-                </div>
-              ) : (
+      <div className="flex items-center gap-3 mb-3">
+        <label htmlFor="profileImage">
+          <div
+            className={`rounded-full w-[100px] h-[100px] ${
+              editProfile ? "cursor-pointer" : ""
+            }`}
+          >
+            {profileData?.store?.profile_image?.length > 0 ? (
+              <div className="relative h-full w-full">
                 <img
-                  className="rounded-full border border-2"
-                  src={DefaultImage}
+                  className="h-full w-full object-cover rounded-full"
+                  src={profileData?.store?.profile_image}
                   alt="Profile"
                 />
-              )}
-            </div>
-
-            {editProfile && (
-              <input
-                id="profileImage"
-                name="profileImage"
-                type="file"
-                accept="image/*"
-                className="w-fit hidden"
-                onChange={handleFileUpload}
+                <div className="absolute bottom-[-2px] right-[-4px] w-[30px] h-[30px] rounded-full">
+                  <GreenCamera />
+                </div>
+              </div>
+            ) : (
+              <img
+                className="rounded-full border border-2"
+                src={DefaultImage}
+                alt="Profile"
               />
             )}
-          </label>
-        </div>
+          </div>
+
+          {editProfile && (
+            <input
+              id="profileImage"
+              name="profileImage"
+              type="file"
+              accept="image/*"
+              className="w-fit hidden"
+              onChange={handleFileUpload}
+            />
+          )}
+        </label>
+
         {editProfile && profileData?.store?.profile_image.length > 0 && (
           <p
             className="bg-[#FF3B301A] rounded p-2 cursor-pointer"
