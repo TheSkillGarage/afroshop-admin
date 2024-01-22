@@ -23,7 +23,6 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     if (e.target.files.length > 0) {
       handleData("profile_image_data", e.target.files[0]);
       handleData("profile_image", URL.createObjectURL(e.target.files[0]));
-    } else {
       return;
     }
   };
@@ -83,7 +82,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
               </div>
             ) : (
               <img
-                className="rounded-full border border-2"
+                className="rounded-full border-2"
                 src={DefaultImage}
                 alt="Profile"
               />

@@ -1,6 +1,6 @@
 import React from "react";
 import DeliveryCard from "./delivery-holiday-card";
-import { useForm } from "react-hook-form";
+
 import InputComponent from "../../shared/inputComponent";
 import Button from "../../shared/button";
 import { destinationOptions } from "../../../data/profile";
@@ -49,7 +49,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
   const deleteDeliveryCard = (index) => {
     //filters a delivery object by index and sets its new state
     const remainingData = profileData?.delivery?.filter(
-      (_, key) => key != index
+      (_, key) => key !== index
     );
     setProfileData((prev) => {
       return {
