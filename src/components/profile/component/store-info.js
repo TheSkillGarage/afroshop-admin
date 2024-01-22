@@ -72,21 +72,16 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
                     src={profileData?.store?.profile_image}
                     alt="Profile"
                   />
-                   <div className="absolute bottom-[-2px] right-[-4px] w-[30px] h-[30px] rounded-full">
-                    <GreenCamera />
-                  </div>
-                </div>
-              ) : (
-                <div className="relative">
-                  <img
-                    className="rounded-full border border-2"
-                    src={DefaultImage}
-                    alt="Profile"
-                  />
                   <div className="absolute bottom-[-2px] right-[-4px] w-[30px] h-[30px] rounded-full">
                     <GreenCamera />
                   </div>
                 </div>
+              ) : (
+                <img
+                  className="rounded-full border border-2"
+                  src={DefaultImage}
+                  alt="Profile"
+                />
               )}
             </div>
 
