@@ -43,6 +43,7 @@ import Link from "./link.svg";
 import OrderedList from "./ordered-list.svg";
 import UnorderedList from "./unordered-list.svg";
 import { ReactComponent as DateIcon } from "./date-icon.svg";
+import {ReactComponent as GreenCamera} from "./green-camera.svg";
 // import {ReactComponent as DeleteIcon} from "./delete.svg";
 import IconMessage from "./Icon-message.svg";
 
@@ -174,6 +175,7 @@ export {
   Pause,
   Delete,
   Chicken,
+  GreenCamera,
   DottedLine,
   Frame,
   Framer,

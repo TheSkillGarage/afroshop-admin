@@ -52,6 +52,7 @@ const Profile = () => {
     setProfileData(data);
     setEditProfile(false);
     passwordForm?.reset();
+    profileForm?.reset();
   };
 
   const disableButton =
