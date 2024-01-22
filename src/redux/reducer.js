@@ -14,7 +14,9 @@ const INITIAL_STATE = {
   roles: ROLES_DATA,
   delivery: deliveryData,
   holidays: holidayMockData,
-  profile: profileInitialState
+  profile: profileInitialState,
+  users: ROLES_DATA,
+  isSidebarToggled: false,
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
@@ -69,6 +71,11 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         sections: action.sections,
       };
+    case "SIDEBAR_TOGGLE":
+      return {
+        ...previousState,
+        isSidebarToggled: !action.toggle,
+      }
     default:
       return previousState;
   }

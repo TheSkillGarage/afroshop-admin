@@ -51,6 +51,13 @@ export const updateUserRole = (hash) => (dispatch) => {
   });
 };
 
+export const sidebarToggle = (bool) => dispatch => {
+  dispatch({
+    type: 'SIDEBAR_TOGGLE',
+    toggle: bool
+  });
+};
+
 export const postRequest = (url, data) => {
   return fetch(renderValidUrl(url), {
     method: "POST",

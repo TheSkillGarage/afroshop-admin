@@ -20,7 +20,8 @@ import successIcon from "./SuccessIcon.png";
 import LoadingIcon from "./LoadingIcon.svg";
 import whiteMarkIcon from "./white-mark-icon.svg";
 import greyMarkIcon from "./grey-mark-icon.svg";
-import { ReactComponent as WelcomeImage } from "./welcomeImage.svg"
+import MessageIcon from "./message.svg";
+import {ReactComponent as WelcomeImage} from "./welcomeImage.svg"
 
 import ArrowRight from "./arrow-right.svg";
 import ArrowDown from "./arrow-down.svg";
@@ -58,6 +59,11 @@ import OverviewIconWhite from "./overview-white.svg";
 import UserIconWhite from "./user-white.svg";
 import RolesIconWhite from "./roles-white.svg";
 import SupportIconWhite from "./icon-support-white.svg";
+import LogoImage from "./logo-2.svg"
+
+
+
+
 import Store from "./store2.png";
 import { ReactComponent as WhiteCart } from "./white-cart.svg";
 import { ReactComponent as DownloadIcon } from "./download.svg";
@@ -102,6 +108,10 @@ import PasswordEye from "./icon-see-password.svg"
 import GreenEdit from "./edit-green.svg"
 import GreyEdit from "./grey-edit.svg"
 import DefaultImage from "./camera_icon.jpg"
+
+import GoogleLogo from "./google-logo.svg"
+import BlackUserIcon from "./user-black.svg"
+import BlackEmailIcon from "./sms-black.svg"
 
 export {
   DefaultImage,
@@ -201,4 +211,9 @@ export {
   GreenEdit,
   GreyEdit,
   ViewPassword,
+  LogoImage,
+  MessageIcon,
+  GoogleLogo,
+  BlackEmailIcon,
+  BlackUserIcon,
 };

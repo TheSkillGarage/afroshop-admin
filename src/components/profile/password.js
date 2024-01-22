@@ -3,7 +3,7 @@ import {
   PasswordEye,
   PasswordLock,
   ViewPassword,
-} from "../../images";
+} from "../../images";;
 
 const Password = ({ editProfile }) => {
   const [viewPassword, setViewPassword] = useState({
