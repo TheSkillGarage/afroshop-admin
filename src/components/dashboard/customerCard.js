@@ -7,6 +7,7 @@ const CustomerCard = ({
   customerEmail,
   numberOrders,
 }) => { 
+
   const [hover, setHover] = useState(false)
   const showFullText =() =>{
       setHover(!hover)
@@ -19,15 +20,15 @@ const CustomerCard = ({
         className="w-[50px] h-[50px]"
       />
 
-      <div className="flex gap-4 justify-between items-center w-full">
+      <div className="flex flex-col gap-1 w-full">
         <div className="flex flex-col gap-1 flex-wrap">
           <p className="w-full font-semibold text-[13px] text-[#186F3D]">
             {customerName}
           </p>
           {hover ? <p className='w-full font-normal text-[13px] text-[#7F7F7F]' onMouseLeave={showFullText}>{customerEmail}</p> 
           : <p className="w-full font-normal text-[13px] text-[#7F7F7F]" onMouseEnter={showFullText} >
-            {window.innerWidth < 1200 || customerEmail.length > 20
-              ? TruncateWord(customerEmail, 9)
+            {window.innerWidth < 1200 || customerEmail.length > 25
+              ? TruncateWord(customerEmail, 24)
               : customerEmail}              
           </p>}          
          </div>

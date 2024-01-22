@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 
-const SelectDropdown = ({ className, options, field, errors, placeholder, multiple }) => {
+const SelectDropdown = ({ className, options, field, errors, placeholder, multiple, handleSelectedYear }) => {
     const selectStyles = {
     control: (baseStyles, state) => ({
       ...baseStyles,
@@ -44,7 +44,7 @@ const SelectDropdown = ({ className, options, field, errors, placeholder, multip
         name={field?.name}
         inputRef={field?.ref}
         options={options}
-        onChange={(val) => field?.onChange(val?.value)}
+        onChange={(val) => {field?.onChange(val?.value); handleSelectedYear(val?.value);}}
         className = {`${className}`}
       />
     </>
