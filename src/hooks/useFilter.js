@@ -9,11 +9,11 @@ export const useFilter = (name, activeTab, DATA, searchTerm, filterObject) => {
 
         if (searchTerm !== '') {
             if (name === "products") {
-                updatedData = DATA.filter(product => product.productName.toLowerCase().includes(searchTerm.toLowerCase()));
+                updatedData = DATA.filter(product => product.productName?.toLowerCase().includes(searchTerm?.toLowerCase()));
             } else if (name === "orders") {
-                updatedData = DATA.filter(order => order.orderID.toLowerCase().includes(searchTerm.toLowerCase()));
+                updatedData = DATA.filter(order => order.orderID?.toLowerCase().includes(searchTerm?.toLowerCase()));
             }else if (name === "roles"){
-                updatedData = DATA.filter(role => role.name.toLowerCase().includes(searchTerm.toLowerCase()));
+                updatedData = DATA.filter(role => role.name?.toLowerCase().includes(searchTerm?.toLowerCase()));
             }
         }
 

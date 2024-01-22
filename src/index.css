@@ -29,7 +29,15 @@
 a {
   text-decoration: none;
 }
-
+/* Remove the spin arrows from number input */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield; /* Firefox */
+}
 @keyframes slide-in {
   from {
     transform: translateX(100%);
