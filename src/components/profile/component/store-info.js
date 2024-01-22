@@ -68,7 +68,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
               {profileData?.store?.profile_image?.length > 0 ? (
                 <div className="relative h-full w-full">
                   <img
-                    className="h-full object-cover rounded-full"
+                    className="h-full w-full object-cover rounded-full"
                     src={profileData?.store?.profile_image}
                     alt="Profile"
                   />
