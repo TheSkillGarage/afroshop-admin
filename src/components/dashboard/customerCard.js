@@ -6,17 +6,17 @@ const CustomerCard = ({
   customerName,
   customerEmail,
   numberOrders,
-}) => { 
+}) => {
 
   const [hover, setHover] = useState(false)
-  const showFullText =() =>{
-      setHover(!hover)
+  const showFullText = () => {
+    setHover(!hover)
   }
   return (
     <div className="flex gap-2">
       <img
         src={customerImage}
-        alt="Customer Image"
+        alt="Customer Profile Pic"
         className="w-[50px] h-[50px]"
       />
 
@@ -25,20 +25,20 @@ const CustomerCard = ({
           <p className="w-full font-semibold text-[13px] text-[#186F3D]">
             {customerName}
           </p>
-          {hover ? <p className='w-full font-normal text-[13px] text-[#7F7F7F]' onMouseLeave={showFullText}>{customerEmail}</p> 
-          : <p className="w-full font-normal text-[13px] text-[#7F7F7F]" onMouseEnter={showFullText} >
-            {window.innerWidth < 1200 || customerEmail.length > 25
-              ? TruncateWord(customerEmail, 24)
-              : customerEmail}              
-          </p>}          
-         </div>
-         
-        {hover && customerEmail.length >20 ? " " : <p className="font-normal text-[13px] text-[#7F7F7F]">
-          {window.innerWidth < 1100
-            ? TruncateWord(numberOrders, 3)
-            : numberOrders}
-        </p>}
-      </div>      
+          {hover ? <div className={`${customerEmail.length > 25 ? "p-1 rounded shadow-md bg-white break-all" : ''}`}>
+            <p className='w-full font-normal text-[13px] text-[#7F7F7F]' onMouseLeave={showFullText}>{customerEmail}</p>
+          </div>
+            : <p className="w-full font-normal text-[13px] text-[#7F7F7F]" onMouseEnter={showFullText} >
+              {window.innerWidth < 1200 || customerEmail.length > 25
+                ? TruncateWord(customerEmail, 24)
+                : customerEmail}
+            </p>}
+        </div>
+
+        <p className="font-normal text-[13px] text-[#7F7F7F]">
+          {numberOrders}
+        </p>
+      </div>
     </div>
   );
 };

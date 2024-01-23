@@ -4,7 +4,6 @@ import CustomerCard from './customerCard';
 import BaseTable from '../shared/table';
 import StatusPills from '../status-pills';
 import Button from '../shared/button';
-import ORDERS_SUMMARY from '../../data/orderSummary';
 import DASHBOARD_ORDERS_HEADERS from '../../data/dashboardHeaders';
 import DASHBOARD_PRODUCT_CARD from '../../data/dashboardProductCard';
 import DASHBOARD_CUSTOMER_CARD from '../../data/dashboardCustomerCard';
@@ -12,9 +11,10 @@ import { useNavigate } from 'react-router-dom';
 
 import BusinessSummary from './cards-section';
 import LineChartComponent from './lineChart-section';
+import ORDERS_DATA from '../../data/orders';
 
 const Dashboard = () => {
-  const results = ORDERS_SUMMARY.map((data) => ({
+  const results = ORDERS_DATA.slice(-3).map((data) => ({
     ...data,
     id: data.id,
     status: (
