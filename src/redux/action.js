@@ -18,17 +18,43 @@ export const addActionRole = (hash) => (dispatch) => {
     ...hash,
   });
 };
+export const updateProfile = (hash) => (dispatch) => {
+  dispatch({
+    type: "UPDATE_PROFILE_INFO",
+    ...hash
+  })
+};
 export const addUserRole = (hash) => (dispatch) => {
   dispatch({
     type: "ADD_USER_ROLE",
     ...hash,
   });
 };
+export const addDeliveryData = (hash) => (dispatch) => {
+  dispatch({
+    type: "ADD_DELIVERY_DATA",
+    ...hash,
+  });
+};
+export const addHolidayData = (hash) => (dispatch) => {
+  dispatch({
+    type: "ADD_HOLIDAY_DATA",
+    ...hash,
+  });
+};
+
 
 export const updateUserRole = (hash) => (dispatch) => {
   dispatch({
     type: "UPDATE_USER_ROLE",
     ...hash,
+  });
+};
+
+export const sidebarToggle = (bool) => dispatch => {
+  dispatch({
+    type: 'SIDEBAR_TOGGLE',
+    toggle: bool
   });
 };
 

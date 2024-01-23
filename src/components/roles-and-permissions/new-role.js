@@ -3,17 +3,21 @@ import { GreenRightArrow } from "../../images";
 import { useNavigate } from "react-router-dom";
 import InputComponent from "../shared/inputComponent";
 import { useForm } from "react-hook-form";
-import RoleActionCard from "./role-action-card";
+import RoleActionCard from "../shared/cardDropdown/role-action-card";
 import Button from "../shared/button";
 import { useDispatch, useSelector } from "react-redux";
 import sectionData from "../../data/roles-section-data";
 import { updateUserRole } from "../../redux/action";
+import RoleActionComponent from "./components/role-action-component";
+import { getPermissionCount } from "../../utils/roles";
+import USER_DATA from "../../data/user";
 
 const NewRole = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const users = useSelector((s) => s.users);
+  const roles = useSelector((s) => s.roles);
   const [sections, setSections] = useState(sectionData);
+
   const {
     control,
     formState: { errors },
@@ -29,31 +33,34 @@ const NewRole = () => {
   const handleActionSubmit = (event) => {
     event.preventDefault();
     const values = getValues();
-
-    const newUsers = users.map((user) => {
-      if (user.email == values.email) {
-        return {
-          ...user,
-          role: values.role,
-          actions: sections,
-        };
-      } else {
-        return user;
-      }
-    });
-    console.log(newUsers);
-    dispatch(updateUserRole({ users: newUsers }));
-
-    // navigate("/roles-and-permissions")
+    const newUser = USER_DATA.find((user) => user.email === values.email);
+    console.log(newUser);
+    if (newUser) {
+      dispatch(
+        updateUserRole({
+          roles: [
+            ...roles,
+            {
+              ...newUser,
+              role: values.role,
+              permissions: getPermissionCount(sections),
+              updated_at: new Date(),
+              actions: sections,
+            },
+          ],
+        })
+      );
+      navigate("/roles-and-permissions");
+    }
   };
 
   const options = [
     {
-      value: "admin",
+      value: "Admin",
       label: "Admin",
     },
     {
-      value: "super_admin",
+      value: "Super Admin",
       label: "Super Admin",
     },
   ];
@@ -103,8 +110,21 @@ const NewRole = () => {
               register={register}
             />
           </div>
-
-          <RoleActionCard sections={sections} saveSections={handleSections} />
+          {sections.map((section, index) => (
+            <RoleActionCard
+              section={section}
+              component={
+                <RoleActionComponent
+                  sections={sections}
+                  section={section}
+                  saveSections={handleSections}
+                />
+              }
+              saveSections={handleSections}
+              sections={sections}
+              index={index}
+            />
+          ))}
 
           <div className="flex justify-end gap-6 mt-8">
             <Button

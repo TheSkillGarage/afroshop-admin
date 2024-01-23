@@ -1,109 +1,148 @@
 import React, { useState } from "react";
-import { EditIcon, EditIcon2 } from "../../images";
-import StoreInfo from "./store-info";
-import RoleActionCard from "../roles-and-permissions/role-action-card";
-import DeliveryFees from "./delivery-fees-section";
-import HolidayException from "./holiday-exception-section";
+import { EditIcon2, EditIconGrey } from "../../images";
 import Button from "../shared/button";
-import Password from "./password";
+import ProfileTab from "./profileTab";
+import { useSelector, useDispatch } from "react-redux";
+import { updateProfile } from "../../redux/action";
+import EditPassword from "./edit-password";
+import { useForm } from "react-hook-form";
 
 const Profile = () => {
-  const [sections, setSections] = useState([
-    {
-      label: "Store Info",
-      value: false,
-      component: <StoreInfo />,
+  const dispatch = useDispatch();
+  const data = useSelector((d) => d.profile);
+  const [profileData, setProfileData] = useState({ ...data });
+  const profileForm = useForm({
+    defaultValues: {
+      ...profileData?.store,
+      destination: "",
+      fee: "",
+      description: "",
+      date: "",
     },
-    {
-      label: "Delivery Fees",
-      value: false,
-      component: <DeliveryFees />,
-    },
-    {
-      label: "Holidays & Exceptions",
-      value: false,
-      component: <HolidayException />,
-    },
-  ]);
+    mode: "all",
+  });
 
-  const [tab, setTab] = useState([
-    {
-      label: "Profile",
-      value: true,
+  const passwordForm = useForm({
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     },
-    {
-      label: "Password",
-      value: false,
-    },
-  ]);
+    mode: "all",
+  });
 
-  const handleTabClick = (label) => {
-    const updatedTab = tab.map((t) => {
-      if (t.label === label) {
-        return { ...t, value: true };
-      } else {
-        return { ...t, value: false };
-      }
-    });
-    setTab(updatedTab);
+  const [currentTab, setCurrentTab] = useState("Profile");
+  const [editProfile, setEditProfile] = useState(false);
+
+  const handleProfileFormSubmit = () => {
+    dispatch(updateProfile({ profile: { ...profileData } }));
+    setEditProfile(false);
   };
 
-  // console.log(tab);
+  const handlePasswordFormSubmit = () => {
+    passwordForm?.reset();
+    setEditProfile(false);
+  };
+
+  const handleTabClick = (label) => {
+    setCurrentTab(label);
+  };
+
+  const handleCancelClick = () => {
+    setProfileData(data);
+    setEditProfile(false);
+    passwordForm?.reset();
+    profileForm?.reset();
+  };
+
+  const disableButton =
+    (Object.keys(profileForm?.formState?.errors).length === 0 &&
+      currentTab === "Profile") ||
+    (Object.keys(passwordForm?.formState?.errors).length === 0 &&
+      currentTab === "Password");
+
   return (
     <div className="bg-[#F2F2F2] w-full py-6 px-4">
       <div className="flex items-center gap-8 mb-6">
         <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">
           ...
         </p>
-        <p className="text-[13px] leading-[23px] text-[#186F3D]">Profile</p>
+        <p className="text-[13px] leading-[23px] text-[#186F3D]">
+          {currentTab}
+        </p>
       </div>
       <div className="flex justify-center">
         <div className="rounded w-[800px] bg-[#FFFFFF] flex justify-around py-3 px-[10px]">
-          {tab.map((t, index) => (
+          {["Profile", "Password"].map((t, index) => (
             <p
-            key={index}
-              onClick={() => handleTabClick(t.label)}
-              className={`cursor-pointer w-[380px] flex items-center justify-center ${
-                t.value
-                  ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
-                  : "text-[#4F4F4F] font-normal"
-              }`}
+              key={index}
+              onClick={() => handleTabClick(t)}
+              className={`cursor-pointer w-[380px] flex items-center justify-center ${t === currentTab
+                ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
+                : "text-[#4F4F4F] font-normal"
+                }`}
             >
-              {t.label}
+              {t}
             </p>
           ))}
         </div>
       </div>
 
-     {tab[0].value ? <div className="mt-8 w-full bg-white p-8">
-        <div className="py-4 px-6 border-b-[2px] border-[#E6E6E6] text-[#186F3D] flex items-center justify-between">
-          <p className="text-xl font-bold">Profile</p>
-          <p className="flex gap-2 items-center font-semibold">
-            <EditIcon2 className="text-[#186F3D]" /> Edit
+      <div className="mt-8 w-full bg-white h-full p-8">
+        <div className="py-4 px-4 border-b-[2px] text-[#186F3D] border-[#E6E6E6] flex items-center justify-between">
+          <p className="text-xl font-bold">{currentTab}</p>
+          <p
+            className={`flex gap-2 items-center font-semibold cursor-pointer ${editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
+              }`}
+            onClick={() => setEditProfile(true)}
+          >
+            {editProfile ? (
+              <EditIconGrey />
+            ) : (
+              <EditIcon2 className="text-[#186F3D]" />
+            )}{" "}
+            Edit
           </p>
         </div>
-        {/* <RoleActionCard
-          sections={sections}
-          saveSections={(data) => setSections(data)}
-        /> */}
-        <div className="flex justify-end gap-6 mt-8">
-          <Button
-            variant="secondary"
-            type="button"
-            className="w-[133px]"
-            // onClick={() => navigate("/roles-and-permissions")}
-          >
-            Cancel
-          </Button>
-          <Button className="w-[133px]" type="submit">
-            {" "}
-            Save{" "}
-          </Button>
-        </div>
+        <form>
+          {currentTab === "Profile" ? (
+            <ProfileTab
+              editProfile={editProfile}
+              profileData={profileData}
+              setProfileData={setProfileData}
+              form={profileForm}
+            />
+          ) : (
+            <EditPassword editProfile={editProfile} form={passwordForm} />
+          )}
+
+          {editProfile && (
+            <div className="flex justify-end gap-6 mt-8">
+              <Button
+                variant="secondary"
+                type="button"
+                className="w-[133px]"
+                onClick={() => handleCancelClick()}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="w-[133px]"
+                type="submit"
+                onClick={(event) => {
+                  event.preventDefault();
+                  currentTab === "Profile"
+                    ? profileForm?.handleSubmit(handleProfileFormSubmit)()
+                    : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
+                }}
+                variant={disableButton ? "primary" : "disabled"}
+              >
+                Save
+              </Button>
+            </div>
+          )}
+        </form>
       </div>
-      :
-      <Password />
-      }
     </div>
   );
 };

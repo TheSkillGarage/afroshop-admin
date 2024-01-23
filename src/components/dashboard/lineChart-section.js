@@ -44,6 +44,7 @@ const LineChartComponent = () => {
             <div className="flex justify-between h-10">
                 <p className="font-semibold text-base">Summary</p>
                 <SelectDropdown
+                    name="line-chart"
                     handleSelectedYear={handleSelectedYear}
                     options={SELECT_OPTIONS}
                     placeholder="Last 7 Days"

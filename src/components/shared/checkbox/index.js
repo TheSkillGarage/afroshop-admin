@@ -21,7 +21,7 @@ const Checkbox = ({ name, handleChange, isChecked, isDisabled, children, valueOn
         type="checkbox"
         checked={value === valueOnChecked}
         onChange={handleChange}
-        onClick={handleChange}
+        // onClick={handleChange}
         disabled={isDisabled}
       />
       <CheckboxDisplay />

@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { DeleteIcon, DetailsIcon, EditIcon } from "../../images";
 import DeleteUser from "../pop-ups/deleteModal";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserRole } from "../../redux/action";
 
-const Detail = ({name, goToEdit, param}) => {
+const Detail = ({ name, goToEdit, param, user }) => {
+  const dispatch = useDispatch();
+  const roles = useSelector((s) => s.roles);
   const [showDetails, setShowDetails] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const handleShowDetails = () => {
     setShowDetails(!showDetails);
-    closeDeleteModal()
+    closeDeleteModal();
   };
 
   const closeDeleteModal = (e) => {
@@ -16,12 +20,23 @@ const Detail = ({name, goToEdit, param}) => {
     setOpenDeleteModal(false);
   };
 
+  const deleteUser = (e) => {
+    e?.stopPropagation();
+    const newUsers = roles.filter((r) => r.id !== user.id);
+    dispatch(updateUserRole({ roles: newUsers }));
+    setOpenDeleteModal(false);
+    setShowDetails(false);
+  };
+
   return (
     <div className="relative flex flex-col items-center">
       <DetailsIcon className="cursor-pointer" onClick={handleShowDetails} />
       {showDetails && (
         <div className="absolute top-[30px] right-[20px] bg-[#ffffff] rounded flex flex-col space-around py-3 px-2 z-[5] shadow-md">
-          <div className="px-1 flex items-center cursor-pointer mb-2 gap-2" onClick={() => goToEdit(param)}>
+          <div
+            className="px-1 flex items-center cursor-pointer mb-2 gap-2"
+            onClick={() => goToEdit?.(param)}
+          >
             <EditIcon className="w-4 h-4" />
             <p>Edit</p>
           </div>
@@ -45,7 +60,11 @@ const Detail = ({name, goToEdit, param}) => {
           onClick={handleShowDetails}
         >
           {openDeleteModal ? (
-          <DeleteUser name={name} handleClose={(e) => closeDeleteModal(e)} />
+            <DeleteUser
+              name={name}
+              handleDelete={(e) => deleteUser(e)}
+              handleClose={(e) => closeDeleteModal(e)}
+            />
           ) : null}
         </div>
       )}
@@ -53,13 +72,10 @@ const Detail = ({name, goToEdit, param}) => {
   );
 };
 
-
 Detail.propTypes = {
   name: PropTypes.string.isRequired,
   goToEdit: PropTypes.func.isRequired,
   param: PropTypes.string.isRequired,
-}
+};
 
 export default Detail;
-
-

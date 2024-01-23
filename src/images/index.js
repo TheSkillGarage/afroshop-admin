@@ -14,11 +14,13 @@ import { ReactComponent as DeleteIcon } from "./icon-delete.svg";
 import { ReactComponent as EyeIcon } from "./eye.svg";
 import { ReactComponent as GreenRightArrow } from "./green-right-icon.svg";
 import { ReactComponent as LeftArrow } from "./icon-left-arrow.svg";
+import Eye from "./eye.svg";
 import ErrorIcon from "./ErrorIcon.svg";
 import successIcon from "./SuccessIcon.png";
 import LoadingIcon from "./LoadingIcon.svg";
 import whiteMarkIcon from "./white-mark-icon.svg";
 import greyMarkIcon from "./grey-mark-icon.svg";
+import MessageIcon from "./message.svg";
 import {ReactComponent as WelcomeImage} from "./welcomeImage.svg"
 
 import ArrowRight from "./arrow-right.svg";
@@ -40,6 +42,9 @@ import Italic from "./italic.svg";
 import Link from "./link.svg";
 import OrderedList from "./ordered-list.svg";
 import UnorderedList from "./unordered-list.svg";
+import { ReactComponent as DateIcon } from "./date-icon.svg";
+import {ReactComponent as GreenCamera} from "./green-camera.svg";
+// import {ReactComponent as DeleteIcon} from "./delete.svg";
 import IconMessage from "./Icon-message.svg";
 
 import CardIcon from "./card-payments.svg";
@@ -55,6 +60,11 @@ import OverviewIconWhite from "./overview-white.svg";
 import UserIconWhite from "./user-white.svg";
 import RolesIconWhite from "./roles-white.svg";
 import SupportIconWhite from "./icon-support-white.svg";
+import LogoImage from "./logo-2.svg"
+
+
+
+
 import Store from "./store2.png";
 import { ReactComponent as WhiteCart } from "./white-cart.svg";
 import { ReactComponent as DownloadIcon } from "./download.svg";
@@ -77,9 +87,12 @@ import CustomerImage3 from "./CustomerImage3.png"
 import { ReactComponent as DropdownOpen } from "./dropdown-open.svg";
 import { ReactComponent as DropdownClose } from "./dropdown-close.svg";
 import { ReactComponent as EditIcon2 } from "./edit-icon.svg";
+import { ReactComponent as EditIconGrey } from "./edit-icon-grey.svg";
 import { ReactComponent as LocationIcon } from "./Location.svg";
 import { ReactComponent as AddIcon } from "./add-icon.svg";
-import { ReactComponent as ProfileImage } from "./profile-image.svg";
+import ProfileImage from "./profile-image.svg";
+import Lock from "./Lock.svg";
+import EyeSlash from "./eye-slash.svg";
 //import OrdersIconWhite  from "./bag-orders-white.svg";
 import SupportIllustration from "./support.svg"
 import EmailSupport from "./emailSupport.svg"
@@ -95,8 +108,19 @@ import ViewPassword from "./view-password.svg"
 import PasswordEye from "./icon-see-password.svg"
 import GreenEdit from "./edit-green.svg"
 import GreyEdit from "./grey-edit.svg"
+import DefaultImage from "./camera_icon.jpg"
+
+import GoogleLogo from "./google-logo.svg"
+import BlackUserIcon from "./user-black.svg"
+import BlackEmailIcon from "./sms-black.svg"
 
 export {
+  DefaultImage,
+  EyeSlash,
+  Eye,
+  Lock,
+  EditIconGrey,
+  DateIcon,
   EmailSupport,
   PhoneSupport,
   WhatsAppSupport,
@@ -151,6 +175,7 @@ export {
   Pause,
   Delete,
   Chicken,
+  GreenCamera,
   DottedLine,
   Frame,
   Framer,
@@ -188,4 +213,9 @@ export {
   GreenEdit,
   GreyEdit,
   ViewPassword,
+  LogoImage,
+  MessageIcon,
+  GoogleLogo,
+  BlackEmailIcon,
+  BlackUserIcon,
 };
