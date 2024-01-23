@@ -18,7 +18,7 @@ const BusinessSummary = () => {
         }, 0);
     };
 
-    const totalSales = calculateTotals('sales_in_usd', parseInt(selectedYear));
+    const totalSales = calculateTotals('income', parseInt(selectedYear));
     const totalCustomers = calculateTotals('customers', parseInt(selectedYear));
     const totalOrders = calculateTotals('orders', parseInt(selectedYear));
     const totalProducts = calculateTotals('products', parseInt(selectedYear));
@@ -65,7 +65,7 @@ const BusinessSummary = () => {
     }
 
 
-    const percentChangeInSales = percentChangeInMetric(totalSales, 'sales_in_usd');
+    const percentChangeInSales = percentChangeInMetric(totalSales, 'income');
     const percentChangeInCustomers = percentChangeInMetric(totalCustomers, 'customers');
     const percentChangeInOrders = percentChangeInMetric(totalOrders, 'orders');
     const percentChangeInProducts = percentChangeInMetric(totalProducts, 'products');

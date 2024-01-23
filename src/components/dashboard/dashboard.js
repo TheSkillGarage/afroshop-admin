@@ -3,17 +3,15 @@ import ProductCard from './productCard';
 import CustomerCard from './customerCard';
 import BaseTable from '../shared/table';
 import StatusPills from '../status-pills';
-import SelectDropdown from '../shared/dropdownInput/dropdown';
 import Button from '../shared/button';
 import ORDERS_SUMMARY from '../../data/orderSummary';
-import { LineChart } from './lineChart';
-import SELECT_OPTIONS from '../../data/dashboardTimeOptions';
 import DASHBOARD_ORDERS_HEADERS from '../../data/dashboardHeaders';
 import DASHBOARD_PRODUCT_CARD from '../../data/dashboardProductCard';
 import DASHBOARD_CUSTOMER_CARD from '../../data/dashboardCustomerCard';
 import { useNavigate } from 'react-router-dom';
 
 import BusinessSummary from './cards-section';
+import LineChartComponent from './lineChart-section';
 
 const Dashboard = () => {
   const results = ORDERS_SUMMARY.map((data) => ({
@@ -44,18 +42,8 @@ const Dashboard = () => {
 
           {/* --------------Line chart and Top products-------------- */}
           <div className="flex justify-between h-[332px]">
-            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[68%] p-4 flex flex-col gap-4">
-              <div className="flex justify-between h-10">
-                <p className="font-semibold text-base">Summary</p>
-                <SelectDropdown
-                  options={SELECT_OPTIONS}
-                  placeholder="Last 7 Days"
-                />
-              </div>
-              <div className="h-[250px]">
-                <LineChart />
-              </div>
-            </div>
+            
+           <LineChartComponent />
 
             <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-4 ">
               <p className="font-semibold text-base">Top Selling Products</p>
