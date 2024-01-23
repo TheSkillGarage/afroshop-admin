@@ -25,17 +25,17 @@ const SelectDropdown = forwardRef(
     const selectStyles = {
       control: (baseStyles, state) => ({
         ...baseStyles,
-        background: errors?.errors[field?.name] ? "#FF3B300D" : "#F2F2F2",
+        background: errors?.errors[field?.name] ? "#FF3B300D" : "#FFFFFF",
         fontWeight: 400,
         fontSize: "16px",
-        height: "53px",
+        height: "40px",
+        width: "fit-content",
+        color: "#186F3D",
         border: errors?.errors[field?.name]
           ? "1px solid #FF3B30"
-          : state.isFocused
-          ? 0
-          : 0,
+          : "1px solid #186F3D",
         boxShadow: state.isFocused ? 0 : 0,
-        "&:hover": { border: state.isFocused ? "1px solid #186F3D" : 0 },
+        "&:hover": { border: "1px solid #186F3D" },
       }),
       placeholder: (baseStyles) => ({
         ...baseStyles,
@@ -44,7 +44,7 @@ const SelectDropdown = forwardRef(
       }),
       dropdownIndicator: (selectProps, state, baseStyles) => ({
         ...baseStyles,
-        color: "black",
+        color: "#186F3D",
         width: "34px",
         transition: "all .1s ease",
         transform: state.selectProps.menuIsOpen ? "rotate(180deg)" : null,
