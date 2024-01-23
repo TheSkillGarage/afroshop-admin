@@ -12,7 +12,7 @@ const SummaryCards = ({ cardTitle, backgroundColor, cardNumber, percentage }) =>
       
       <div className='w-[75px] h-10 px-2 py-3 bg-white border rounded-[30px] flex gap-2 justify-center items-center'>
         <img src={(percentage >= 0) ? ArrowUp : ArrowDownTriangle} alt="Arrow"/>
-        <p className={`text-[13px] font-semibold ${(percentage >= 0 )? "text-[#34C759]" : "text-[#FF3B30]"}`}>{`${percentage}%`}</p>
+        <p className={`text-[13px] font-semibold ${(percentage >= 0 )? "text-[#34C759]" : "text-[#FF3B30]"}`}>{`${Math.abs(percentage)}%`}</p>
       </div>
     </div>
   );
