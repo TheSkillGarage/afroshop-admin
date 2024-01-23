@@ -74,7 +74,7 @@ const SelectDropdown = forwardRef(
           classNamePrefix="select"
           closeMenuOnSelect={closeMenuOnSelect}
           onChange={(val) => {
-            field.onChange(
+            field?.onChange(
               !multiple
                 ? val?.label
                 : setSelectedOptions((prev) =>

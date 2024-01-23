@@ -86,9 +86,9 @@ const BusinessSummary = () => {
                     </p>
                 </div>
 
-                <div className="flex gap-4">
-                    <SelectDropdown name="summary" options={SELECT_OPTIONS} placeholder="2023" handleSelectedYear={handleSelectedYear} />
-                    <Button variant="primary" className="text-[13px] w-[118px]" onClick={() => setSelectedYear("all")}>
+                <div className="flex gap-4 items-center">
+                    <SelectDropdown name="summary" options={SELECT_OPTIONS.slice(1)} placeholder="2023" handleSelectedYear={handleSelectedYear} />
+                    <Button variant="primary" className="text-[13px] w-[118px] h-[40px]" onClick={() => setSelectedYear("all")}>
                         View All Time
                     </Button>
                 </div>
