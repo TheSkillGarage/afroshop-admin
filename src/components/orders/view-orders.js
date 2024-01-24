@@ -36,7 +36,7 @@ const ViewOrders = () => {
 
                 <div className="flex items-center gap-8 mb-6">
                     <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">...</p>
-                    <p className="text-[13px] leading-[23px] text-[#999999]">Orders</p>
+                    <p className="text-[13px] leading-[23px] text-[#999999] cursor-pointer" onClick={() => navigate("/orders")}>Orders</p>
                     <GreenRightArrow alt="" />
                     <p className="text-[13px] leading-[23px] text-[#186F3D]">View Orders</p>
                 </div>

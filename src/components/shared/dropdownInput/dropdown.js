@@ -16,6 +16,7 @@ const SelectDropdown = forwardRef(
       isDisabled,
       handleChange,
       closeMenuOnSelect,
+      handleSelectedYear
     },
     ref
   ) => {
@@ -24,26 +25,26 @@ const SelectDropdown = forwardRef(
     const selectStyles = {
       control: (baseStyles, state) => ({
         ...baseStyles,
-        background: errors[field.name] ? "#FF3B300D" : "#F2F2F2",
+        background: errors?.errors[field?.name] ? "#FF3B300D" : "#FFFFFF",
         fontWeight: 400,
-        fontSize: "16px",
-        height: "53px",
-        border: errors[field.name]
+        fontSize: "13px",
+        lineHeight: "23px",
+        height: "40px",
+        color: "#186F3D",
+        border: errors?.errors[field?.name]
           ? "1px solid #FF3B30"
-          : state.isFocused
-          ? 0
-          : 0,
+          : "1px solid #186F3D",
         boxShadow: state.isFocused ? 0 : 0,
-        "&:hover": { border: state.isFocused ? "1px solid #186F3D" : 0 },
+        "&:hover": { border: "1px solid #186F3D" },
       }),
       placeholder: (baseStyles) => ({
         ...baseStyles,
         color: "#333333",
-        fontSize: "16px",
+        fontSize: "13px",
       }),
       dropdownIndicator: (selectProps, state, baseStyles) => ({
         ...baseStyles,
-        color: "black",
+        color: "#186F3D",
         width: "34px",
         transition: "all .1s ease",
         transform: state.selectProps.menuIsOpen ? "rotate(180deg)" : null,
@@ -52,7 +53,7 @@ const SelectDropdown = forwardRef(
       option: (baseStyles, state) => ({
         ...baseStyles,
         background: state.isFocused || state.isSelected ? "#F2F2F2" : "#FFFFF",
-        fontSize: "16px",
+        fontSize: "13px",
         color: state.isFocused || state.isSelected ? "#186F3D" : "black",
       }),
     };
@@ -73,7 +74,7 @@ const SelectDropdown = forwardRef(
           classNamePrefix="select"
           closeMenuOnSelect={closeMenuOnSelect}
           onChange={(val) => {
-            field.onChange(
+            field?.onChange(
               !multiple
                 ? val?.label
                 : setSelectedOptions((prev) =>
@@ -85,6 +86,7 @@ const SelectDropdown = forwardRef(
                   )
             );
             handleChange?.(multiple ? val : val?.label);
+            handleSelectedYear(val?.value);
           }}
           className={`${className} basic-multi-select`}
         />

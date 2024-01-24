@@ -1,15 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import App from "./pages/App";
 import {
   AddNewRole,
-  DashboardPage,
   Orders,
   OverviewPage,
   Products,
   ProfilePage,
   RolesAndPermissionsDashboard,
   ViewOrdersPage,
-  WelcomePage,
   SupportPage,
   AddProducts,
   EditProducts,
@@ -26,7 +23,6 @@ const MyRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<App />} />
         <Route exact path="/" element={<OverviewPage />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/products/new" element={<AddProducts />} />
@@ -38,7 +34,6 @@ const MyRoutes = () => {
           element={<RolesAndPermissionsDashboard />}
         />
         <Route exact path="/add-new-role" element={<AddNewRole />} />
-        <Route exact path="/dashboard" element={<DashboardPage/>} />
         <Route exact path="/support" element={<SupportPage />} />
         <Route exact path="/roles-and-permissions/add-new-role" element={<AddNewRole />} />
         <Route exact path="/profile" element={<ProfilePage />} />
