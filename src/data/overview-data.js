@@ -207,6 +207,14 @@ export const OVERVIEW_DATA = [
         orders: 280,
         products: 17,
     },
+    {
+        id: 27,
+        date: "2024-01-24",
+        income: 230,
+        customers: 28,
+        orders: 380,
+        products: 21,
+    },
 ] 
 
 

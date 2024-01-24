@@ -27,9 +27,9 @@ const SelectDropdown = forwardRef(
         ...baseStyles,
         background: errors?.errors[field?.name] ? "#FF3B300D" : "#FFFFFF",
         fontWeight: 400,
-        fontSize: "16px",
+        fontSize: "13px",
+        lineHeight: "23px",
         height: "40px",
-        width: "fit-content",
         color: "#186F3D",
         border: errors?.errors[field?.name]
           ? "1px solid #FF3B30"
@@ -40,7 +40,7 @@ const SelectDropdown = forwardRef(
       placeholder: (baseStyles) => ({
         ...baseStyles,
         color: "#333333",
-        fontSize: "16px",
+        fontSize: "13px",
       }),
       dropdownIndicator: (selectProps, state, baseStyles) => ({
         ...baseStyles,
@@ -53,7 +53,7 @@ const SelectDropdown = forwardRef(
       option: (baseStyles, state) => ({
         ...baseStyles,
         background: state.isFocused || state.isSelected ? "#F2F2F2" : "#FFFFF",
-        fontSize: "16px",
+        fontSize: "13px",
         color: state.isFocused || state.isSelected ? "#186F3D" : "black",
       }),
     };

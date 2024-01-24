@@ -48,6 +48,7 @@ const LineChartComponent = () => {
                     handleSelectedYear={handleSelectedYear}
                     options={SELECT_OPTIONS}
                     placeholder="Last 7 Days"
+                    className="w-[127px]"
                 />
             </div>
             <div className="h-[250px]">

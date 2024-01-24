@@ -594,7 +594,7 @@ const ORDERS_DATA = [
         id: "order-20",
         orderID: "XXXX20",
         orderDate: "23/12/23",
-        customer: "Justin James A.",
+        customer: "Justin James Alexander",
         price: { price: "15", paymentMethod: "Mastercard" },
         items: 1,
         status: "cancelled",

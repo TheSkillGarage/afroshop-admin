@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { TruncateWord } from '../../utils/truncate';
+import React from 'react';
 
 const CustomerCard = ({
   customerImage,
@@ -8,10 +7,6 @@ const CustomerCard = ({
   numberOrders,
 }) => {
 
-  const [hover, setHover] = useState(false)
-  const showFullText = () => {
-    setHover(!hover)
-  }
   return (
     <div className="flex gap-2">
       <img
@@ -25,14 +20,7 @@ const CustomerCard = ({
           <p className="w-full font-semibold text-[13px] text-[#186F3D]">
             {customerName}
           </p>
-          {hover ? <div className={`${customerEmail.length > 25 ? "p-1 rounded shadow-md bg-white break-all" : ''}`}>
-            <p className='w-full font-normal text-[13px] text-[#7F7F7F]' onMouseLeave={showFullText}>{customerEmail}</p>
-          </div>
-            : <p className="w-full font-normal text-[13px] text-[#7F7F7F]" onMouseEnter={showFullText} >
-              {window.innerWidth < 1200 || customerEmail.length > 25
-                ? TruncateWord(customerEmail, 24)
-                : customerEmail}
-            </p>}
+          <p className='w-full font-normal text-[13px] text-[#7F7F7F] leading-[23px] break-all'>{customerEmail}</p>
         </div>
 
         <p className="font-normal text-[13px] text-[#7F7F7F]">
