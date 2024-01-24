@@ -8,7 +8,7 @@ import {
   deliverySlots,
   deliveryStartTimes,
 } from "../../../data/profile";
-import { DeleteIcon, DefaultImage, GreenCamera } from "../../../images";
+import { DeleteIcon, DefaultImage, GreenCamera, UserAvatar } from "../../../images";
 
 const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
   const {
@@ -83,7 +83,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
             ) : (
               <img
                 className="rounded-full border-2"
-                src={DefaultImage}
+                src={UserAvatar}
                 alt="Profile"
               />
             )}
