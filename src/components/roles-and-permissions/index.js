@@ -13,6 +13,7 @@ import Search from "../search";
 import TableFooter from "../table-footer/table-footer";
 import { useSelector } from "react-redux";
 import { getPermissionCount, getRoles } from "../../utils/roles";
+import useTableData from "../../hooks/useTableData";
 
 const RolesAndPermissions = () => {
   const [page, setPage] = useState(1);
@@ -37,7 +38,7 @@ const RolesAndPermissions = () => {
     searchTerm,
     filterObject
   ).filteredData;
-  
+
   // from usePagination hook
   const pagination = usePagination(page, itemsPerPage, data);
   const totalPages = pagination.totalPages; // sets total pages
@@ -50,80 +51,17 @@ const RolesAndPermissions = () => {
   const { selectedRows, handleSelectAllRows, handleSelectRow } = useTableSelect(
     { rows: pagination.currentData }
   );
-
-  const headers = [
-    {
-      id: "selection",
-      name: (
-        <Checkbox
-          name="all"
-          handleChange={handleSelectAllRows}
-          value={
-            selectedRows.length === pagination.currentData.length ? "all" : ""
-          }
-          valueOnChecked="all"
-        />
-      ),
-      width: "6.5%",
-    },
-    {
-      id: "name",
-      name: "Name",
-      width: "14.5%",
-    },
-    {
-      id: "email",
-      name: "Email",
-      width: "14.5%",
-    },
-    {
-      id: "role",
-      name: "Role",
-      width: "14.5%",
-    },
-    {
-      id: "permissions",
-      name: "Permissions",
-      width: "14.5%",
-    },
-    {
-      id: "created_at",
-      name: "Date Created",
-      width: "14.5%",
-    },
-    {
-      id: "status",
-      name: "Status",
-      width: "14.5%",
-    },
-    {
-      id: "detail",
-      name: "",
-      width: "6.5%",
-    },
+  const headersArray = [
+    "selection",
+    "name",
+    "email",
+    "role",
+    "permissions",
+    "created_at",
+    "status",
+    "detail",
   ];
-  const results = pagination?.currentData?.map((data) => ({
-    ...data,
-    id: data.id,
-    selection: (
-      <Checkbox
-        name={data.id}
-        handleChange={(payload) => {
-          handleSelectRow(data.id);
-        }}
-        value={selectedRows.includes(data.id) ? data.id : ""}
-        valueOnChecked={data.id}
-      />
-    ),
-    permissions: data.permissions,
-    role: data.role,
-    status: (
-      <div className="capitalize">
-        <StatusPills status={data.status} name="roles" />
-      </div>
-    ),
-    detail: <Detail name={"roles"} user={data} />,
-  }));
+  const tableData = useTableData("roles", headersArray, pagination.currentData, ()=>{})
 
   return (
     <div className="bg-[#F2F2F2] w-full py-6 px-4">
@@ -166,8 +104,8 @@ const RolesAndPermissions = () => {
         {/******************************************************* * table section  **************************************************************/}
 
         <BaseTable
-          tableHeaders={headers}
-          data={results}
+          tableHeaders={tableData.headers}
+          data={tableData.results}
           emptyState={
             <div className="bg-white border rounded-md min-h-[300px] flex items-center justify-center sticky bottom-0 left-0 mt-8">
               <p className="text-sm text-gray-400">

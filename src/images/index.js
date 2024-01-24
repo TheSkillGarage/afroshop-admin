@@ -114,7 +114,10 @@ import GoogleLogo from "./google-logo.svg"
 import BlackUserIcon from "./user-black.svg"
 import BlackEmailIcon from "./sms-black.svg"
 
+import UserAvatar from "./avatar.svg";
+
 export {
+  UserAvatar,
   DefaultImage,
   EyeSlash,
   Eye,
