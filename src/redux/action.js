@@ -58,6 +58,31 @@ export const sidebarToggle = (bool) => dispatch => {
   });
 };
 
+export const editProduct = (sku, productInfo, PRODUCT_DATA) => dispatch => {
+
+  const updatedProductData = PRODUCT_DATA.map(product => {
+    if (product.SKU === sku) {
+      // Update the product keys with values from productInfo
+      return {
+        ...product,
+        productName: productInfo.name,
+        salesPrice: productInfo.price,
+        availabilty: productInfo.availabilty,
+        category: productInfo.category,
+        description: productInfo.description,
+        discount: productInfo.discount,
+      };
+    }
+    return product;
+  });
+
+  dispatch({
+    type: 'EDIT_PRODUCT',
+    productsData: updatedProductData,
+  });
+};
+
+
 export const postRequest = (url, data) => {
   return fetch(renderValidUrl(url), {
     method: "POST",

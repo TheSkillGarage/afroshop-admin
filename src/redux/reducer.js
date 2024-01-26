@@ -1,3 +1,4 @@
+import PRODUCT_DATA from "../data/products";
 import {
   deliveryData,
   holidayMockData,
@@ -16,6 +17,7 @@ const INITIAL_STATE = {
   profile: profileInitialState,
   users: ROLES_DATA,
   isSidebarToggled: false,
+  productsData: PRODUCT_DATA,
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
@@ -74,6 +76,11 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
       return {
         ...previousState,
         isSidebarToggled: !action.toggle,
+      }
+    case "EDIT_PRODUCT":
+      return {
+        ...previousState,
+        productsData: action.productsData,
       }
     default:
       return previousState;

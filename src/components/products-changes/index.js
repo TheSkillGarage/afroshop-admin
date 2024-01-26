@@ -45,7 +45,7 @@ const Placeholder = styled.div`
   cursor: pointer;
 `;
 
-const ProductChanges = ({ name, productInfo }) => {
+const ProductChanges = ({ name, productInfo, handleProductInfo, handleEditFormSubmit }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProductInfoOpen, setIsProductInfoOpen] = useState(false);
   const [isProductImageOpen, setIsProductImageOpen] = useState(false);
@@ -73,6 +73,7 @@ const ProductChanges = ({ name, productInfo }) => {
     const newCategory = event.target.id;
     setSelectedCategory(newCategory);
     setIsOpen(false);
+    handleProductInfo("category", newCategory);
   };
 
   const handleFilesSelect = (files) => {
@@ -116,6 +117,10 @@ const ProductChanges = ({ name, productInfo }) => {
                   <div onClick={toggleList}>
                     <select
                       value={selectedCategory}
+                      onClick={(e) => e.stopPropagation()}
+                      onChange={(e) => {
+                        setSelectedCategory(e.target.value);
+                      }}
                       className="absolute -z-10 opacity-0"
                     >
                       {CATEGORY_DATA.map(({ cat }, index) => {
@@ -147,7 +152,7 @@ const ProductChanges = ({ name, productInfo }) => {
                       })}
                     </StyledList>
                     {!isOpen ? (
-                      <div class="flex justify-end items-center px-2 absolute pointer-events-none my-[-35px] right-0">
+                      <div className="flex justify-end items-center px-2 absolute pointer-events-none my-[-35px] right-0">
                         <img src={ArrowDown} alt="arrow-down" />
                       </div>
                     ) : null}
@@ -167,9 +172,9 @@ const ProductChanges = ({ name, productInfo }) => {
                     )}
                   </div>
                 </div>
-                {isProductInfoOpen && (
-                  <ProductInfo name="edit" productInfo={productInfo} />
-                )}
+
+                <ProductInfo name="edit" productInfo={productInfo} isProductInfoOpen={isProductInfoOpen} handleProductInfo={handleProductInfo} />
+
               </div>
               <div className="py-[24px] w-[100%]">
                 <img className="w-[100%]" src={DottedLine} alt="dotted-line" />
@@ -232,7 +237,7 @@ const ProductChanges = ({ name, productInfo }) => {
                 variant="primary"
                 type="button"
                 className="w-[133px] h-[40px]"
-                onClick={() => navigate("/products")}
+                onClick={() => handleEditFormSubmit()}
               >
                 Submit
               </Button>

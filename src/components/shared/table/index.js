@@ -18,10 +18,10 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
         <table className="w-full border-collapse">
           <thead className="h-[56px] uppercase text-[13px] leading-[23px] text-[#186F3D] font-semibold bg-[#F2F2F2]">
             <tr>
-              {tableHeaders.map((header) => (
+              {tableHeaders.map((header, index) => (
                 <th
                   key={header.id}
-                  className={`${(header.id === "selection" || header.id === "detail") ? "w-[6.5%]" : "w-[14.5%]"}  text-left ${header.id === "SKU" ? "pl-4" : ""} `}
+                  className={`${(header.id === "selection" || header.id === "detail") ? "w-[6.5%]" : "w-[14.5%]"}  text-left ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
                 >
                   {header.name}
                 </th>
@@ -38,7 +38,7 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
                 {tableHeaders.map((header, index) => {
                   return (
                     <td
-                      className={`py-2 ${header.id === "SKU" ? "pl-4" : ""}`}
+                      className={`py-2 ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
                       key={index}
                     >
                       {header.id !== "price" ? (
