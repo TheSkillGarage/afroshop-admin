@@ -71,6 +71,7 @@ export const editProduct = (sku, productInfo, PRODUCT_DATA) => dispatch => {
         category: productInfo.category,
         description: productInfo.description,
         discount: productInfo.discount,
+        images: productInfo.images,
       };
     }
     return product;

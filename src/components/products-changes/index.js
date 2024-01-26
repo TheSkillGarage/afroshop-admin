@@ -77,13 +77,16 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleEditFormSu
   };
 
   const handleFilesSelect = (files) => {
-    setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
+    const newFiles = [...selectedFiles, ...files];
+    setSelectedFiles(newFiles);
+    handleProductInfo("images", newFiles);
   };
 
   const handleDelete = (index) => {
     const newFiles = [...selectedFiles];
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
+    handleProductInfo("images", newFiles);
   };
 
   const navigate = useNavigate()
@@ -237,7 +240,7 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleEditFormSu
                 variant="primary"
                 type="button"
                 className="w-[133px] h-[40px]"
-                onClick={() => handleEditFormSubmit()}
+                onClick={() => {name === "edit" ? handleEditFormSubmit() : navigate("/products")}}
               >
                 Submit
               </Button>
