@@ -50,7 +50,7 @@ const EditSingleProduct = () => {
       name="edit"
       productInfo={productInfo}
       handleProductInfo={handleProductInfo}
-      handleEditFormSubmit={handleEditFormSubmit}
+      handleFormSubmit={handleEditFormSubmit}
     />
   );
 };

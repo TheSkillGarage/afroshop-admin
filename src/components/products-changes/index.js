@@ -45,7 +45,7 @@ const Placeholder = styled.div`
   cursor: pointer;
 `;
 
-const ProductChanges = ({ name, productInfo, handleProductInfo, handleEditFormSubmit }) => {
+const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProductInfoOpen, setIsProductInfoOpen] = useState(false);
   const [isProductImageOpen, setIsProductImageOpen] = useState(false);
@@ -240,7 +240,7 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleEditFormSu
                 variant="primary"
                 type="button"
                 className="w-[133px] h-[40px]"
-                onClick={() => {name === "edit" ? handleEditFormSubmit() : navigate("/products")}}
+                onClick={() => {name === "edit" ? handleFormSubmit() : navigate("/products")}}
               >
                 Submit
               </Button>
