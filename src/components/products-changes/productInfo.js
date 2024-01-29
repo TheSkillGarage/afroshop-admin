@@ -27,6 +27,11 @@ export const ProductInfo = ({ name, productInfo }) => {
     ],
   };
 
+  console.log("product Name", productName)
+  console.log("product Availability", productAvailability)
+  console.log("product Price", productPrice)
+  console.log("product Discount", productDiscount)
+
   return (
     <div>
       <div className="flex justify-between items-center pb-[25px]">

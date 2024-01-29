@@ -85,6 +85,8 @@ const ProductChanges = ({ name, productInfo }) => {
     setSelectedFiles(newFiles);
   };
 
+  console.log("name", )
+
   const navigate = useNavigate()
 
   return (
