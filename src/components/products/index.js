@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PRODUCT_DATA from "../../data/products";
+// import PRODUCT_DATA from "../../data/products";
 import usePagination from "../../hooks/usePagination";
 import { Link, useNavigate } from "react-router-dom";
 import Filters from "../filters";
@@ -8,6 +8,7 @@ import TableFooter from "../table-footer/table-footer";
 import Search from "../search";
 import BaseTable from "../shared/table";
 import useTableData from "../../hooks/useTableData";
+import { useSelector } from "react-redux";
 
 const ProductsDashboard = () => {
 
@@ -18,6 +19,8 @@ const ProductsDashboard = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const [filterObject, setFilterObject] = useState({});
+
+    const PRODUCT_DATA = useSelector((state) => state.addedNewProducts);
 
 
     // from usePagination hook
@@ -50,7 +53,7 @@ const ProductsDashboard = () => {
         "SKU",
         "date Added",
         "sales Price",
-        "availabilty",
+        "availability",
         "status",
         "detail"]
 

@@ -16,7 +16,7 @@ const EditSingleProduct = () => {
   const productInfo = {
     category: product.category,
     name: product.productName,
-    availabilty: product.availabilty,
+    availability: product.availability,
     price: product.salesPrice,
     discount: product.discount,
     description: product.description,

@@ -2,7 +2,7 @@ import { React, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-export const ProductInfo = ({ name, productInfo }) => {
+export const ProductInfo = ({ name, productInfo, handleProductInfo, isProductInfoOpen }) => {
   const [text, setText] = useState(
     name === "edit" ? productInfo?.description : ""
   );
@@ -10,7 +10,7 @@ export const ProductInfo = ({ name, productInfo }) => {
     name === "edit" ? productInfo?.name : ""
   );
   const [productAvailability, setProductAvailability] = useState(
-    productInfo?.availabilty
+    productInfo?.availability
   );
   const [productPrice, setProductPrice] = useState(
     name === "edit" ? productInfo?.price : ""
@@ -27,13 +27,8 @@ export const ProductInfo = ({ name, productInfo }) => {
     ],
   };
 
-  console.log("product Name", productName)
-  console.log("product Availability", productAvailability)
-  console.log("product Price", productPrice)
-  console.log("product Discount", productDiscount)
-
   return (
-    <div>
+    <div className={`${isProductInfoOpen ? 'show' : 'hidden'} `}>
       <div className="flex justify-between items-center pb-[25px]">
         <div className=" w-[48%]">
           <div class="text-[13px] text-[#B3B3B3]">Name</div>
@@ -42,7 +37,11 @@ export const ProductInfo = ({ name, productInfo }) => {
               className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
               type="text"
               value={productName}
-              onChange={(e) => setProductName(e.target.value)}
+              onChange={(e) => {
+                setProductName(e.target.value); 
+                handleProductInfo("productName", e.target.value)
+              }}
+
             />
           </div>
         </div>
@@ -53,7 +52,7 @@ export const ProductInfo = ({ name, productInfo }) => {
               className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
               type="text"
               value={productAvailability}
-              onChange={(e) => setProductAvailability(e.target.value)}
+              onChange={(e) => {setProductAvailability(e.target.value); handleProductInfo("availability", e.target.value)}}
             />
           </div>
         </div>
@@ -64,7 +63,7 @@ export const ProductInfo = ({ name, productInfo }) => {
           <ReactQuill
             theme="snow"
             value={text}
-            onChange={setText}
+            onChange={(value) => {setText(value); handleProductInfo("description", value)}}
             modules={modules}
             className="h-[100%] w-[100%]"
           />
@@ -78,7 +77,7 @@ export const ProductInfo = ({ name, productInfo }) => {
               className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
               type="text"
               value={productPrice}
-              onChange={(e) => setProductPrice(e.target.value)}
+              onChange={(e) => {setProductPrice(e.target.value); handleProductInfo("salesPrice", e.target.value)}}
             />
           </div>
         </div>
@@ -91,7 +90,7 @@ export const ProductInfo = ({ name, productInfo }) => {
               className="py-[8px] px-[20px] bg-[#F2F2F2] border rounded-[4px] w-[100%] focus:outline-green"
               type="text"
               value={productDiscount}
-              onChange={(e) => setProductDiscount(e.target.value)}
+              onChange={(e) => {setProductDiscount(e.target.value); handleProductInfo("discount", e.target.value)}}
             />
           </div>
         </div>

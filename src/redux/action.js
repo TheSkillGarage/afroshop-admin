@@ -21,8 +21,8 @@ export const addActionRole = (hash) => (dispatch) => {
 export const updateProfile = (hash) => (dispatch) => {
   dispatch({
     type: "UPDATE_PROFILE_INFO",
-    ...hash
-  })
+    ...hash,
+  });
 };
 export const addUserRole = (hash) => (dispatch) => {
   dispatch({
@@ -43,7 +43,6 @@ export const addHolidayData = (hash) => (dispatch) => {
   });
 };
 
-
 export const updateUserRole = (hash) => (dispatch) => {
   dispatch({
     type: "UPDATE_USER_ROLE",
@@ -51,11 +50,20 @@ export const updateUserRole = (hash) => (dispatch) => {
   });
 };
 
-export const sidebarToggle = (bool) => dispatch => {
+export const sidebarToggle = (bool) => (dispatch) => {
   dispatch({
-    type: 'SIDEBAR_TOGGLE',
-    toggle: bool
+    type: "SIDEBAR_TOGGLE",
+    toggle: bool,
   });
+};
+
+export const addProduct = (productInfo, PRODUCT_DATA) => (dispatch) => {
+  const newAddedProducts = PRODUCT_DATA;
+  const allProductData = newAddedProducts.push(productInfo);
+  dispatch({
+    type: 'ADD_PRODUCT',
+    allProductData: allProductData
+  })
 };
 
 export const postRequest = (url, data) => {

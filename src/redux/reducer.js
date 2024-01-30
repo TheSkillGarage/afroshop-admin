@@ -5,6 +5,7 @@ import {
 } from "../data/profile";
 import sectionData from "../data/roles-section-data";
 import ROLES_DATA from "../data/rolesAndPermissions";
+import PRODUCT_DATA from "../data/products";
 
 
 const INITIAL_STATE = {
@@ -16,6 +17,7 @@ const INITIAL_STATE = {
   profile: profileInitialState,
   users: ROLES_DATA,
   isSidebarToggled: false,
+  addedNewProducts: PRODUCT_DATA,
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
@@ -75,6 +77,11 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         isSidebarToggled: !action.toggle,
       }
+      case "ADD_PRODUCT":
+        return{
+          ...previousState,
+          products: action.allProductData,
+        }
     default:
       return previousState;
   }

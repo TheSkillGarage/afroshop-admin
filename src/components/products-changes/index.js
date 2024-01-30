@@ -45,7 +45,7 @@ const Placeholder = styled.div`
   cursor: pointer;
 `;
 
-const ProductChanges = ({ name, productInfo }) => {
+const ProductChanges = ({ name, productInfo, handleProductInfo, handleAddFormSubmit }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProductInfoOpen, setIsProductInfoOpen] = useState(false);
   const [isProductImageOpen, setIsProductImageOpen] = useState(false);
@@ -57,6 +57,8 @@ const ProductChanges = ({ name, productInfo }) => {
   const [selectedFiles, setSelectedFiles] = useState(
     name === "edit" ? productInfo.images : []
   );
+
+  console.log('hereeeeeee', isProductInfoOpen)
 
   const handleProductInfoOpen = () => {
     setIsProductInfoOpen((prev) => !prev);
@@ -73,10 +75,12 @@ const ProductChanges = ({ name, productInfo }) => {
     const newCategory = event.target.id;
     setSelectedCategory(newCategory);
     setIsOpen(false);
+    handleProductInfo("category", newCategory)
   };
 
   const handleFilesSelect = (files) => {
     setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
+    handleProductInfo("images", files)
   };
 
   const handleDelete = (index) => {
@@ -84,8 +88,6 @@ const ProductChanges = ({ name, productInfo }) => {
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
   };
-
-  console.log("name", )
 
   const navigate = useNavigate()
 
@@ -169,9 +171,9 @@ const ProductChanges = ({ name, productInfo }) => {
                     )}
                   </div>
                 </div>
-                {isProductInfoOpen && (
-                  <ProductInfo name="edit" productInfo={productInfo} />
-                )}
+              
+                  <ProductInfo name="edit" productInfo={productInfo} handleProductInfo={handleProductInfo} isProductInfoOpen={isProductInfoOpen}/>
+
               </div>
               <div className="py-[24px] w-[100%]">
                 <img className="w-[100%]" src={DottedLine} alt="dotted-line" />
@@ -196,6 +198,7 @@ const ProductChanges = ({ name, productInfo }) => {
                         className="hidden"
                         id="productImage"
                         onFilesSelect={handleFilesSelect}
+
                       />
                     </div>
 
@@ -234,7 +237,7 @@ const ProductChanges = ({ name, productInfo }) => {
                 variant="primary"
                 type="button"
                 className="w-[133px] h-[40px]"
-                onClick={() => navigate("/products")}
+                onClick={() => {name === "new" ? handleAddFormSubmit() : navigate("/products")}}
               >
                 Submit
               </Button>
