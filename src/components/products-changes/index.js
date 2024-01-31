@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 
 import { ProductInfo } from "./productInfo";
 import Button from "../shared/button";
+import { useForm } from "react-hook-form";
 
 const StyledList = styled.ul`
   box-shadow: 0 8px 16px 0 rgba(51, 51, 51, 0.12);
@@ -89,6 +90,12 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
     handleProductInfo("images", newFiles);
   };
 
+  const {
+    control,
+    formState: { errors },
+    register,
+  } = useForm({ mode: "all" });
+
   const navigate = useNavigate()
 
   return (
@@ -108,7 +115,7 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
           )}
         </div>
       </div>
-      <div className="bg-white p-[24px] mx-[12px]">
+      <form className="bg-white p-[24px] mx-[12px]">
         <div className="flex flex-col justify-between h-[100%]">
           <div>
             <section className="p-[24px]">
@@ -162,12 +169,12 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
                   </div>
                 </div>
               </div>
-              <div className="p-[16px] rounded-[8px] border border-[#B3B3B3]">
-                <div className="flex justify-between items-center">
+              <div className="px-4 rounded-[8px] border border-[#B3B3B3]" onClick={handleProductInfoOpen}>
+                <div className="flex justify-between items-center py-4 cursor-pointer">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Info
                   </div>
-                  <div onClick={handleProductInfoOpen}>
+                  <div>
                     {isProductInfoOpen ? (
                       <img src={ArrowDown} alt="arrow-down" />
                     ) : (
@@ -176,18 +183,27 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
                   </div>
                 </div>
 
-                <ProductInfo name="edit" productInfo={productInfo} isProductInfoOpen={isProductInfoOpen} handleProductInfo={handleProductInfo} />
+                <ProductInfo
+                  name="edit"
+                  productInfo={productInfo}
+                  isProductInfoOpen={isProductInfoOpen}
+                  handleProductInfo={handleProductInfo}
+                  register={register}
+                  control={control}
+                  errors={errors}
+                />
 
               </div>
               <div className="py-[24px] w-[100%]">
                 <img className="w-[100%]" src={DottedLine} alt="dotted-line" />
               </div>
-              <div className="p-[16px] border border-[#B3B3B3] rounded-[8px]">
-                <div className="flex justify-between items-center">
+
+              <div className="px-[16px] border border-[#B3B3B3] rounded-[8px]" onClick={handleProductImageOpen}>
+                <div className="flex justify-between items-center py-4 cursor-pointer">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Images
                   </div>
-                  <div onClick={handleProductImageOpen}>
+                  <div >
                     {isProductImageOpen ? (
                       <img src={ArrowDown} alt="arrow-down" />
                     ) : (
@@ -196,12 +212,15 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
                   </div>
                 </div>
                 {isProductImageOpen && (
-                  <div className="pt-[16px]">
+                  <div className="pb-4" onClick={(e) => e.stopPropagation()}>
                     <div>
                       <FileInput
                         className="hidden"
                         id="productImage"
                         onFilesSelect={handleFilesSelect}
+                        register={register}
+                        control={control}
+                        errors={errors}
                       />
                     </div>
 
@@ -240,14 +259,14 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
                 variant="primary"
                 type="button"
                 className="w-[133px] h-[40px]"
-                onClick={() => {name === "edit" ? handleFormSubmit() : navigate("/products")}}
+                onClick={() => { name === "edit" ? handleFormSubmit() : navigate("/products") }}
               >
                 Submit
               </Button>
             </div>
           </section>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
