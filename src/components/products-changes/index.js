@@ -1,11 +1,11 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
   DottedLine,
   ColorArrowRight,
 } from "../../images";
-import styled from "styled-components";
+
 import { Link, useNavigate } from "react-router-dom";
 import { CATEGORY_DATA } from "../../data";
 import "react-quill/dist/quill.snow.css";
@@ -15,49 +15,16 @@ import PropTypes from 'prop-types';
 import { ProductInfo } from "./productInfo";
 import Button from "../shared/button";
 import { useForm } from "react-hook-form";
-
-const StyledList = styled.ul`
-  box-shadow: 0 8px 16px 0 rgba(51, 51, 51, 0.12);
-  border-radius: 4px;
-  list-style-type: none;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  display: ${(props) => (props.open ? "block" : "none")};
-  opacity: ${(props) => (props.open ? "1" : "0")};
-  transition: display 0.3s, opacity 0.3s;
-  height: 150px;
-  overflow-y: auto;
-`;
-
-const StyledListItem = styled.li`
-  padding: 0.5rem;
-  cursor: pointer;
-  &:hover {
-    background-color: #f2f2f2;
-    color: #186f3d;
-  }
-`;
-const Placeholder = styled.div`
-  padding: 0.75rem;
-  border: none;
-  background-color: #f2f2f2;
-  border-radius: 0.25rem;
-  cursor: pointer;
-`;
+import SelectDropdown from "../shared/dropdownInput/dropdown";
 
 const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit }) => {
-  const [isOpen, setIsOpen] = useState(false);
+
   const [isProductInfoOpen, setIsProductInfoOpen] = useState(false);
   const [isProductImageOpen, setIsProductImageOpen] = useState(false);
 
-  const [selectedCategory, setSelectedCategory] = useState(
-    name === "edit" ? productInfo.category : ""
-  );
 
-  const [selectedFiles, setSelectedFiles] = useState(
-    name === "edit" ? productInfo.images : []
-  );
+  const [initialProductInfo] = useState(() => ({ ...productInfo }));
+
 
   const handleProductInfoOpen = () => {
     setIsProductInfoOpen((prev) => !prev);
@@ -67,28 +34,28 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
     setIsProductImageOpen((prev) => !prev);
     setIsProductInfoOpen(false);
   };
-  const toggleList = () => {
-    setIsOpen(!isOpen);
-  };
-  const handleSelectCategory = (event) => {
-    const newCategory = event.target.id;
-    setSelectedCategory(newCategory);
-    setIsOpen(false);
-    handleProductInfo("category", newCategory);
+
+  const handleSelectCategory = (val) => {
+    handleProductInfo("category", val);
   };
 
   const handleFilesSelect = (files) => {
-    const newFiles = [...selectedFiles, ...files];
-    setSelectedFiles(newFiles);
+    const newFiles = [...productInfo.images, ...files];
     handleProductInfo("images", newFiles);
   };
 
   const handleDelete = (index) => {
-    const newFiles = [...selectedFiles];
+    const newFiles = [...productInfo.images];
     newFiles.splice(index, 1);
-    setSelectedFiles(newFiles);
     handleProductInfo("images", newFiles);
   };
+
+  useEffect(() => {
+    console.log("product info here: ", productInfo);
+    console.log("intial product info here: ", initialProductInfo);
+
+    console.log("is equal? ", JSON.stringify(initialProductInfo) === JSON.stringify(productInfo))
+  }, [productInfo, initialProductInfo])
 
   const {
     control,
@@ -123,50 +90,16 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
                 <div className="text-[13px] font-normal text-[#B3B3B3]">
                   Category
                 </div>
-                <div className="mb-4 text-start w-100">
-                  <div onClick={toggleList}>
-                    <select
-                      value={selectedCategory}
-                      onClick={(e) => e.stopPropagation()}
-                      onChange={(e) => {
-                        setSelectedCategory(e.target.value);
-                      }}
-                      className="absolute -z-10 opacity-0"
-                    >
-                      {CATEGORY_DATA.map(({ cat }, index) => {
-                        return (
-                          <option key={index} value={cat}>
-                            {cat}
-                          </option>
-                        );
-                      })}
-                    </select>
-                    <Placeholder>
-                      {selectedCategory ? selectedCategory : "Select an option"}
-                    </Placeholder>
-                  </div>
-
-                  <div className="relative">
-                    <StyledList open={isOpen}>
-                      {CATEGORY_DATA.map(({ cat }, index) => {
-                        return (
-                          <StyledListItem
-                            key={index}
-                            className={selectedCategory === `${cat}`}
-                            id={cat}
-                            onClick={(e) => handleSelectCategory(e)}
-                          >
-                            {cat}
-                          </StyledListItem>
-                        );
-                      })}
-                    </StyledList>
-                    {!isOpen ? (
-                      <div className="flex justify-end items-center px-2 absolute pointer-events-none my-[-35px] right-0">
-                        <img src={ArrowDown} alt="arrow-down" />
-                      </div>
-                    ) : null}
-                  </div>
+                <div className="mb-4 text-start w-[327px]">
+                  <SelectDropdown
+                    name="category-data"
+                    handleSelectedYear={handleSelectCategory}
+                    errors={errors}
+                    options={CATEGORY_DATA}
+                    placeholder="Select"
+                    height="53px"
+                    className="w-full"
+                  />
                 </div>
               </div>
               <div className="px-4 rounded-[8px] border border-[#B3B3B3]" onClick={handleProductInfoOpen}>
@@ -225,7 +158,7 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
                     </div>
 
                     <ImageDisplay
-                      selectedFiles={selectedFiles}
+                      selectedFiles={productInfo.images}
                       onDelete={handleDelete}
                     />
                   </div>
@@ -259,6 +192,7 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
                 variant="primary"
                 type="button"
                 className="w-[133px] h-[40px]"
+                disabled={JSON.stringify(initialProductInfo) === JSON.stringify(productInfo)}
                 onClick={() => { name === "edit" ? handleFormSubmit() : navigate("/products") }}
               >
                 Submit
