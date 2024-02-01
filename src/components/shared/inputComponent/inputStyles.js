@@ -10,8 +10,8 @@ const InputBox = styled.div`
   background: #f2f2f2;
   height: 53px;
   width: 100%;
-  border: ${({ loading, success }) =>
-    loading || success ? "1px solid #cccccc " : " "};
+  border: ${({ loading, success, error }) =>
+    loading || success ? "1px solid #cccccc " : error ? "1px solid #FF3B30" : ""};
   border-radius: 4px;
 
   &.input_error {
@@ -24,7 +24,7 @@ const InputBox = styled.div`
   }
 
   &:focus-within {
-    border: ${({ readOnly }) => (readOnly ? "none" : "1px solid #186f3d")};
+    border: ${({ readOnly, error }) => (readOnly ? "none" : !error && "1px solid #186f3d")};
   }
 
   &:disabled {

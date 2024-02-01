@@ -25,15 +25,15 @@ const SelectDropdown = forwardRef(
     const selectStyles = {
       control: (baseStyles, state) => ({
         ...baseStyles,
-        background: errors?.errors[field?.name] ? "#FF3B300D" : "#FFFFFF",
+        background: errors ? errors[field?.name] ? "#FF3B300D" : "#FFFFFF" : "",
         fontWeight: 400,
         fontSize: "13px",
         lineHeight: "23px",
         height: "40px",
         color: "#186F3D",
-        border: errors?.errors[field?.name]
-          ? "1px solid #FF3B30"
-          : "1px solid #186F3D",
+        border: errors ? errors[field?.name]
+        ? "1px solid #FF3B30"
+        : "1px solid #186F3D" : "",
         boxShadow: state.isFocused ? 0 : 0,
         "&:hover": { border: "1px solid #186F3D" },
       }),
@@ -86,7 +86,7 @@ const SelectDropdown = forwardRef(
                   )
             );
             handleChange?.(multiple ? val : val?.label);
-            handleSelectedYear(val?.value);
+            handleSelectedYear?.(val?.value);
           }}
           className={`${className} basic-multi-select`}
         />
