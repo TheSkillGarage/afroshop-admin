@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
@@ -15,16 +15,13 @@ import PropTypes from 'prop-types';
 import { ProductInfo } from "./productInfo";
 import Button from "../shared/button";
 import { useForm } from "react-hook-form";
-import SelectDropdown from "../shared/dropdownInput/dropdown";
+import { isEqual } from 'lodash';
+import InputComponent from "../shared/inputComponent";
 
 const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit }) => {
 
   const [isProductInfoOpen, setIsProductInfoOpen] = useState(false);
   const [isProductImageOpen, setIsProductImageOpen] = useState(false);
-
-
-  const [initialProductInfo] = useState(() => ({ ...productInfo }));
-
 
   const handleProductInfoOpen = () => {
     setIsProductInfoOpen((prev) => !prev);
@@ -50,20 +47,17 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
     handleProductInfo("images", newFiles);
   };
 
-  useEffect(() => {
-    console.log("product info here: ", productInfo);
-    console.log("intial product info here: ", initialProductInfo);
-
-    console.log("is equal? ", JSON.stringify(initialProductInfo) === JSON.stringify(productInfo))
-  }, [productInfo, initialProductInfo])
-
   const {
     control,
-    formState: { errors },
+    formState: { errors, isDirty },
     register,
   } = useForm({ mode: "all" });
 
-  const navigate = useNavigate()
+  const initialProductInfo = useRef(productInfo);
+  const hasErrors = Object.keys(errors).length > 0;
+  const dirty = isEqual(initialProductInfo, productInfo);
+
+  const navigate = useNavigate();
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
@@ -87,17 +81,19 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
           <div>
             <section className="p-[24px]">
               <div className="md:w-[327px] w-[50%]">
-                <div className="text-[13px] font-normal text-[#B3B3B3]">
-                  Category
-                </div>
-                <div className="mb-4 text-start w-[327px]">
-                  <SelectDropdown
-                    name="category-data"
-                    handleSelectedYear={handleSelectCategory}
+                <div className="mb-8 text-start w-[327px]">
+                <InputComponent
+                    inputType="select"
+                    label="Category"
+                    fieldName="category"
+                    defaultValue={productInfo.category}
+                    value={productInfo.category}
+                    handleChange={handleSelectCategory}
+                    register={register}
+                    control={control}
                     errors={errors}
                     options={CATEGORY_DATA}
-                    placeholder="Select"
-                    height="53px"
+                    placeholder={(productInfo.category !== "") ? productInfo.category : "Select"}
                     className="w-full"
                   />
                 </div>
@@ -192,7 +188,7 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
                 variant="primary"
                 type="button"
                 className="w-[133px] h-[40px]"
-                disabled={JSON.stringify(initialProductInfo) === JSON.stringify(productInfo)}
+                disabled={!isDirty && !hasErrors}
                 onClick={() => { name === "edit" ? handleFormSubmit() : navigate("/products") }}
               >
                 Submit

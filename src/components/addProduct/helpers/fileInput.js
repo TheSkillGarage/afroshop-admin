@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dot, Framer } from "../../../images";
 import { Controller } from "react-hook-form";
+import InputComponent from "../../shared/inputComponent";
 
 
 export const FileInput = ({ onFilesSelect, register, control, errors }) => {
@@ -39,7 +40,7 @@ export const FileInput = ({ onFilesSelect, register, control, errors }) => {
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
     >
-      <Controller
+      {/* <Controller
         control={control}
         name={"productImage"}
         rules={{ required: "File is Required" }}
@@ -59,6 +60,17 @@ export const FileInput = ({ onFilesSelect, register, control, errors }) => {
             </div>
           );
         }}
+      /> */}
+
+      <InputComponent
+        type="file"
+        name="file-upload"
+        fieldName="file-upload"
+        register={register}
+        control={control}
+        errors={errors}
+        handleChange={handleFileChange}
+        id="productImage"
       />
 
       <label htmlFor="productImage">
@@ -68,7 +80,7 @@ export const FileInput = ({ onFilesSelect, register, control, errors }) => {
           alt="Upload"
         />
       </label>
-      
+
       {showUpload && (
         <div className="flex pt4  items-center justify-between py-[24px]">
           <div>

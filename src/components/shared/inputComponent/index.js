@@ -27,6 +27,7 @@ const InputComponent = forwardRef(
       min,
       max,
       className,
+      id,
       fieldName,
       inputType,
       maxLength,
@@ -108,14 +109,14 @@ const InputComponent = forwardRef(
             loading={loading}
             success={success}
             readOnly={isReadOnly}
-            className={`${className} ${
-              errors[fieldName] &&
+            className={`${className} ${type === "file" ? "hidden" : "flex"} ${errors[fieldName] &&
               (fieldName === "currentPassword" ? null : "input_error")
-            }`}
+              }`}
           >
             {leftIcon ? <img src={leftIcon} alt="leftIcon" /> : null}
             <input
-              className="bg-inherit w-full border-none focus:outline-none text-[16px] font-normal placeholder-[#333333]"
+              id={id}
+              className={`bg-inherit w-full border-none focus:outline-none text-[16px] font-normal placeholder-[#333333] ${className}`}
               type={type}
               min={min}
               max={max}
@@ -131,9 +132,9 @@ const InputComponent = forwardRef(
                 onChange: handleChange,
                 pattern: patternValue
                   ? {
-                      value: patternValue,
-                      message: patternMessage,
-                    }
+                    value: patternValue,
+                    message: patternMessage,
+                  }
                   : null,
               })}
               readOnly={isReadOnly}

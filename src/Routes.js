@@ -26,6 +26,7 @@ const MyRoutes = () => {
         <Route exact path="/" element={<OverviewPage />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/products/new" element={<AddProducts />} />
+        <Route exact path="/products/edit/:sku" element={<EditProducts />} />
         <Route exact path="/orders" element={<Orders />} />
         <Route exact path="/view-order/:orderID" element={<ViewOrdersPage />} />
         <Route
@@ -37,7 +38,6 @@ const MyRoutes = () => {
         <Route exact path="/support" element={<SupportPage />} />
         <Route exact path="/roles-and-permissions/add-new-role" element={<AddNewRole />} />
         <Route exact path="/profile" element={<ProfilePage />} />
-        <Route exact path="/products/edit/:sku" element={<EditProducts />} />
         <Route exact path="/reset-successful" element={<PasswordSucess />} />
         <Route exact path="/store-created" element={<StoreCreated />} />
         <Route exact path="/reset-password" element={<PasswordReset />} />

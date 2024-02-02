@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const InputBox = styled.div`
-  display: flex;
   align-items: center;
   gap: 10px;
   padding: 8px 20px;

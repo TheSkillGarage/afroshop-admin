@@ -13,7 +13,7 @@ export const ImageDisplay = ({ selectedFiles, onDelete }) => {
               />
             </div>
             <div>
-              <img src={Delete} alt="delete" onClick={() => onDelete(index)} />
+              <img src={Delete} alt="delete" onClick={() => onDelete(index)} className="cursor-pointer"/>
             </div>
           </div>
         ))}

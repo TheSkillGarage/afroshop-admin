@@ -78,9 +78,20 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         isSidebarToggled: !action.toggle,
       }
     case "EDIT_PRODUCT":
+      const updatedProductData = previousState.productsData.map(product => {
+
+        if (product.SKU === action.sku) {
+          // Updating the product keys with values from productInfo
+          return {
+            ...product,
+            ...action.productInfos
+          };
+        }
+        return product;
+      });
       return {
         ...previousState,
-        productsData: action.productsData,
+        productsData: updatedProductData,
       }
     default:
       return previousState;

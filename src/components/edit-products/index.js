@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import ProductChanges from "../products-changes";
@@ -13,14 +13,14 @@ const EditSingleProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const PRODUCT_DATA = useSelector((state) => state.productsData);
-  const product = PRODUCT_DATA.find((product) => product.SKU === sku);
+  const productData = useSelector((state) => state.productsData);
+  const product = productData.find((product) => product.SKU === sku);
   
   const [productInfo, setProductInfo] = useState({
     category: product.category,
-    name: product.productName,
+    productName: product.productName,
     availabilty: product.availabilty,
-    price: product.salesPrice,
+    salesPrice: product.salesPrice,
     discount: product.discount,
     description: product.description,
     images: product.images
@@ -28,7 +28,7 @@ const EditSingleProduct = () => {
 
 
   const handleEditFormSubmit = () => {
-    dispatch(editProduct(sku, productInfo, PRODUCT_DATA));
+    dispatch(editProduct({sku: sku, productInfos: productInfo}));
     navigate("/products");
   }
 
@@ -38,12 +38,8 @@ const EditSingleProduct = () => {
       ...prevProductInfo,
       [key]: val,
     }))
-
   }
   
-  useEffect(() => {
-    console.log("product info: ", productInfo)
-  }, [productInfo])
 
   return (
     <ProductChanges

@@ -31,9 +31,9 @@ export const ProductInfo = ({ name, productInfo, isProductInfoOpen, handleProduc
             control={control}
             errors={errors}
             register={register}
-            value={productInfo.name}
+            value={productInfo.productName}
             handleChange={(e) => {
-              handleProductInfo("name", e.target.value);
+              handleProductInfo("productName", e.target.value);
             }}
           />
         </div>
@@ -87,9 +87,9 @@ export const ProductInfo = ({ name, productInfo, isProductInfoOpen, handleProduc
             control={control}
             errors={errors}
             register={register}
-            value={productInfo.price}
+            value={productInfo.salesPrice}
             handleChange={(e) => {
-              handleProductInfo("price", sanitizeNumbers(e.target.value));
+              handleProductInfo("salesPrice", sanitizeNumbers(e.target.value));
             }}
           />
 
