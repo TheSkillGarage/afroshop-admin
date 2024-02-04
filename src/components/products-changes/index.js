@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { isEqual } from 'lodash';
 import InputComponent from "../shared/inputComponent";
 
-const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit }) => {
+const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleFormSubmit, handleProductDraft }) => {
 
   const [isProductInfoOpen, setIsProductInfoOpen] = useState(false);
   const [isProductImageOpen, setIsProductImageOpen] = useState(false);
@@ -113,7 +113,6 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
                 </div>
 
                 <ProductInfo
-                  name="edit"
                   productInfo={productInfo}
                   isProductInfoOpen={isProductInfoOpen}
                   handleProductInfo={handleProductInfo}
@@ -169,6 +168,7 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
               size="big"
               type="button"
               className=""
+              onClick={() => handleProductDraft()}
             >
               Save as Draft
             </Button>
@@ -188,7 +188,7 @@ const ProductChanges = ({ name, productInfo, handleProductInfo, handleFormSubmit
                 variant="primary"
                 type="button"
                 className="w-[133px] h-[40px]"
-                disabled={!isDirty && !hasErrors}
+                disabled={(!isDirty || hasErrors) && !drafted}
                 onClick={() => { name === "edit" ? handleFormSubmit() : navigate("/products") }}
               >
                 Submit

@@ -18,6 +18,7 @@ const INITIAL_STATE = {
   users: ROLES_DATA,
   isSidebarToggled: false,
   productsData: PRODUCT_DATA,
+  draftProductInfo: [],
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
@@ -79,9 +80,7 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
       }
     case "EDIT_PRODUCT":
       const updatedProductData = previousState.productsData.map(product => {
-
         if (product.SKU === action.sku) {
-          // Updating the product keys with values from productInfo
           return {
             ...product,
             ...action.productInfos
@@ -93,6 +92,31 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         productsData: updatedProductData,
       }
+    case "DRAFT_PRODUCT_INFO":
+      const { sku, productInfo } = action;
+      const draftProductIndex = previousState.draftProductInfo.findIndex(product => product.sku === sku);
+
+      if (draftProductIndex !== -1) {
+        const updatedDrafts = [...previousState.draftProductInfo];
+        updatedDrafts[draftProductIndex] = { sku, ...productInfo };
+
+        return {
+          ...previousState,
+          draftProductInfo: updatedDrafts,
+        };
+      } else {
+        const newDraft = { sku, ...productInfo };
+        return {
+          ...previousState,
+          draftProductInfo: [...previousState.draftProductInfo, newDraft],
+        };
+      }
+    case "DELETE_DRAFT_PRODUCT_INFO":
+      const updatedDrafts = previousState.draftProductInfo.filter(product => product.sku !== action.sku);
+      return {
+          ...previousState,
+          draftProductInfo: updatedDrafts,
+        };
     default:
       return previousState;
   }

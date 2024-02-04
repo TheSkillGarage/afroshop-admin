@@ -51,10 +51,10 @@ export const updateUserRole = (hash) => (dispatch) => {
   });
 };
 
-export const sidebarToggle = (bool) => dispatch => {
+export const sidebarToggle = (hash) => dispatch => {
   dispatch({
     type: 'SIDEBAR_TOGGLE',
-    toggle: bool
+    ...hash,
   });
 };
 
@@ -64,6 +64,18 @@ export const editProduct = (hash) => dispatch => {
     ...hash,
   });
 };
+export const draftProductInfo = (hash) => dispatch => {
+  dispatch({
+    type: 'DRAFT_PRODUCT_INFO',
+    ...hash,
+  });
+};
+export const deleteDraftProductInfo = (hash) => dispatch => {
+  dispatch({
+    type: 'DELETE_DRAFT_PRODUCT_INFO',
+    ...hash,
+  })
+}
 
 
 export const postRequest = (url, data) => {

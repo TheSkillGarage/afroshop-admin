@@ -4,7 +4,7 @@ import "react-quill/dist/quill.snow.css";
 import InputComponent from "../shared/inputComponent";
 import { Controller } from "react-hook-form";
 
-export const ProductInfo = ({ name, productInfo, isProductInfoOpen, handleProductInfo, register, control, errors }) => {
+export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo, register, control, errors }) => {
   const modules = {
     toolbar: [
       ["bold", "italic"],
@@ -25,6 +25,7 @@ export const ProductInfo = ({ name, productInfo, isProductInfoOpen, handleProduc
       <div className="flex justify-between items-center pb-[25px]">
         <div className=" w-[48%]">
           <InputComponent
+            inputType="input"
             type="text"
             label="Name"
             fieldName="name"
@@ -41,6 +42,7 @@ export const ProductInfo = ({ name, productInfo, isProductInfoOpen, handleProduc
 
         <div className="w-[48%]">
           <InputComponent
+            inputType="input"
             type="text"
             label="Availability"
             fieldName="availability"
@@ -81,6 +83,7 @@ export const ProductInfo = ({ name, productInfo, isProductInfoOpen, handleProduc
       <div className="flex justify-between items-center pt-[25px] pb-4 mt-10">
         <div className=" w-[48%]">
           <InputComponent
+            inputType="input"
             type="text"
             label="Price ($)"
             fieldName="price_usd"
@@ -96,6 +99,7 @@ export const ProductInfo = ({ name, productInfo, isProductInfoOpen, handleProduc
         </div>
         <div className="w-[48%]">
           <InputComponent
+            inputType="input"
             type="text"
             label="Discount % (If Applicable)"
             fieldName="discount"

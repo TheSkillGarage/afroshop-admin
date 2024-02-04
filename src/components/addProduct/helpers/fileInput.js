@@ -63,6 +63,7 @@ export const FileInput = ({ onFilesSelect, register, control, errors }) => {
       /> */}
 
       <InputComponent
+        inputType="file"
         type="file"
         name="file-upload"
         fieldName="file-upload"
