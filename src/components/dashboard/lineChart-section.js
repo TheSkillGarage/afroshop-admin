@@ -45,6 +45,7 @@ const LineChartComponent = () => {
                 <p className="font-semibold text-base">Summary</p>
                 <SelectDropdown
                     name="line-chart"
+                    color="green"
                     handleSelectedYear={handleSelectedYear}
                     options={SELECT_OPTIONS}
                     placeholder="Last 7 Days"
