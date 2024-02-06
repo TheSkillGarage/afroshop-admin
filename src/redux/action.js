@@ -58,6 +58,13 @@ export const sidebarToggle = (hash) => dispatch => {
   });
 };
 
+export const addProduct = (hash) => dispatch => {
+  dispatch({
+    type: 'ADD_PRODUCT',
+    ...hash,
+  })
+}
+
 export const editProduct = (hash) => dispatch => {
   dispatch({
     type: 'EDIT_PRODUCT',
@@ -76,8 +83,6 @@ export const deleteDraftProductInfo = (hash) => dispatch => {
     ...hash,
   })
 }
-
-
 export const postRequest = (url, data) => {
   return fetch(renderValidUrl(url), {
     method: "POST",

@@ -1,6 +1,5 @@
 import { React, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "react-quill/dist/quill.snow.css";
 import ProductChanges from "../products-changes";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteDraftProductInfo, draftProductInfo, editProduct } from "../../redux/action";
@@ -21,7 +20,7 @@ const EditSingleProduct = () => {
     salesPrice: "",
     discount: "",
     description: "",
-    images: ""
+    images: []
   })
 
 const productData = useSelector((state) => state.productsData);
@@ -61,8 +60,6 @@ const useProductInfo = {
     dispatch(draftProductInfo({sku: sku, productInfo: productInfo}))
     navigate("/products");
   }
-
-
 
 
   const handleProductInfo = (key, val) => {

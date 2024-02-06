@@ -51,7 +51,17 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
     control,
     formState: { errors, isDirty },
     register,
+    handleSubmit,
   } = useForm({ mode: "all" });
+
+  const onSubmit = (data) => {
+    handleFormSubmit()
+    console.log(data);
+  };
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors])
 
   const initialProductInfo = useRef(productInfo);
   const hasErrors = Object.keys(errors).length > 0;
@@ -76,24 +86,26 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
           )}
         </div>
       </div>
-      <form className="bg-white p-[24px] mx-[12px]">
+      <form className="bg-white p-[24px] mx-[12px]" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col justify-between h-[100%]">
           <div>
             <section className="p-[24px]">
               <div className="md:w-[327px] w-[50%]">
                 <div className="mb-8 text-start w-[327px]">
-                <InputComponent
+                  <InputComponent
                     inputType="select"
                     label="Category"
                     fieldName="category"
-                    defaultValue={productInfo.category}
-                    value={productInfo.category}
+                    defaultValue={productInfo?.category}
+                    value={productInfo?.category}
                     handleChange={handleSelectCategory}
                     register={register}
                     control={control}
                     errors={errors}
+                    required={true}
+                    requiredMessage={'This field is required'}
                     options={CATEGORY_DATA}
-                    placeholder={(productInfo.category !== "") ? productInfo.category : "Select"}
+                    placeholder={(productInfo?.category !== "") ? productInfo?.category : "Select"}
                     className="w-full"
                   />
                 </div>
@@ -153,7 +165,7 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
                     </div>
 
                     <ImageDisplay
-                      selectedFiles={productInfo.images}
+                      selectedFiles={productInfo?.images}
                       onDelete={handleDelete}
                     />
                   </div>
@@ -186,10 +198,9 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
 
               <Button
                 variant="primary"
-                type="button"
+                type="submit"
                 className="w-[133px] h-[40px]"
-                disabled={(!isDirty || hasErrors) && !drafted}
-                onClick={() => { name === "edit" ? handleFormSubmit() : navigate("/products") }}
+                disabled={((!isDirty || drafted) && hasErrors)}
               >
                 Submit
               </Button>

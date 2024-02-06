@@ -3,6 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import InputComponent from "../shared/inputComponent";
 import { Controller } from "react-hook-form";
+import { ErrorIcon } from "../../images";
 
 export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo, register, control, errors }) => {
   const modules = {
@@ -32,7 +33,9 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             control={control}
             errors={errors}
             register={register}
-            value={productInfo.productName}
+            required={true}
+            requiredMessage={'This field is required'}
+            value={productInfo?.productName}
             handleChange={(e) => {
               handleProductInfo("productName", e.target.value);
             }}
@@ -49,7 +52,9 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             control={control}
             errors={errors}
             register={register}
-            value={productInfo.availabilty}
+            required={true}
+            requiredMessage={'This field is required'}
+            value={productInfo?.availabilty}
             handleChange={(e) => {
               let val = e.target.value.replace(/[^0-9]/g, '')
               handleProductInfo("availabilty", val);
@@ -62,23 +67,32 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
         <div className="h-[200px] pb-[40px]">
           <Controller
             name="quillContent"
+            fieldName="quillContent"
             control={control}
-            defaultValue=""
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <ReactQuill
                 {...field}
                 theme="snow"
                 modules={modules}
-                value={productInfo.description}
+                value={productInfo?.description}
                 className="h-[100%] w-[100%]"
                 onChange={(value) => {
+                  field.onChange(productInfo?.description);
                   handleProductInfo("description", value);
                 }}
               />
             )}
           />
         </div>
+        {errors["quillContent"] && (
+          <div className="flex flex-row gap-2 mt-2 ">
+            <img src={ErrorIcon} alt="errorIcon" />
+            <span className="text-[#FF3B30] text-[10px]">
+              {errors["quillContent"].message}
+            </span>
+          </div>
+        )}
       </div>
       <div className="flex justify-between items-center pt-[25px] pb-4 mt-10">
         <div className=" w-[48%]">
@@ -90,7 +104,9 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             control={control}
             errors={errors}
             register={register}
-            value={productInfo.salesPrice}
+            required={true}
+            requiredMessage={'This field is required'}
+            value={productInfo?.salesPrice}
             handleChange={(e) => {
               handleProductInfo("salesPrice", sanitizeNumbers(e.target.value));
             }}
@@ -106,7 +122,9 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             control={control}
             errors={errors}
             register={register}
-            value={productInfo.discount}
+            required={true}
+            requiredMessage={'This field is required'}
+            value={productInfo?.discount}
             handleChange={(e) => {
               handleProductInfo("discount", (sanitizeNumbers(e.target.value)));
             }}

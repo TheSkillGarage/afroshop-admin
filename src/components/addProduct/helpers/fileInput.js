@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Dot, Framer } from "../../../images";
-import { Controller } from "react-hook-form";
+import { Dot, ErrorIcon, Framer } from "../../../images";
 import InputComponent from "../../shared/inputComponent";
 
 
@@ -40,36 +39,17 @@ export const FileInput = ({ onFilesSelect, register, control, errors }) => {
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
     >
-      {/* <Controller
-        control={control}
-        name={"productImage"}
-        rules={{ required: "File is Required" }}
-        render={({ field }) => {
-          return (
-            <div >
-              <input
-                {...register(field.name)}
-                type="file"
-                className="hidden"
-                id="productImage"
-                multiple
-                field={field}
-                onChange={handleFileChange}
-                accept=".jpeg, .jpg, .png"
-              />
-            </div>
-          );
-        }}
-      /> */}
 
       <InputComponent
         inputType="file"
         type="file"
-        name="file-upload"
-        fieldName="file-upload"
+        name="file_upload"
+        fieldName="file_upload"
         register={register}
         control={control}
         errors={errors}
+        required={true}
+        requiredMessage={"File is Required"}
         handleChange={handleFileChange}
         id="productImage"
       />
@@ -81,6 +61,17 @@ export const FileInput = ({ onFilesSelect, register, control, errors }) => {
           alt="Upload"
         />
       </label>
+
+      {
+        errors["file_upload"] && (
+          <div className="flex flex-row gap-2 mt-2 ">
+            <img src={ErrorIcon} alt="errorIcon" />
+            <span className="text-[#FF3B30] text-[10px]">
+              {errors["file_upload"].message}
+            </span>
+          </div>
+        )
+      }
 
       {showUpload && (
         <div className="flex pt4  items-center justify-between py-[24px]">

@@ -78,6 +78,27 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         isSidebarToggled: !action.toggle,
       }
+    case 'ADD_PRODUCT':
+      const id = (Math.floor(Math.random() * 900000) + 100000).toString();
+      const currentDate = new Date();
+      const day = String(currentDate.getDate()).padStart(2, '0');
+      const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+      const year = String(currentDate.getFullYear()).slice(2);
+
+      const newProductObj = {
+        id: id,
+        SKU: id,
+        dateAdded: `${day}/${month}/${year}`,
+        status: action.status,
+        ...action.productInfo,
+      }
+
+      const updatedProductsArray = [newProductObj, ...previousState.productsData];
+
+      return {
+        ...previousState,
+        productsData: updatedProductsArray,
+      }
     case "EDIT_PRODUCT":
       const updatedProductData = previousState.productsData.map(product => {
         if (product.SKU === action.sku) {
@@ -114,9 +135,9 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
     case "DELETE_DRAFT_PRODUCT_INFO":
       const updatedDrafts = previousState.draftProductInfo.filter(product => product.sku !== action.sku);
       return {
-          ...previousState,
-          draftProductInfo: updatedDrafts,
-        };
+        ...previousState,
+        draftProductInfo: updatedDrafts,
+      };
     default:
       return previousState;
   }
