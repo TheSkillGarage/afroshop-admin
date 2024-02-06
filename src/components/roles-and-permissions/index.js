@@ -61,7 +61,9 @@ const RolesAndPermissions = () => {
     "status",
     "detail",
   ];
-  const tableData = useTableData("roles", headersArray, pagination.currentData, ()=>{})
+  const tableData = useTableData("roles", headersArray, pagination.currentData, (user)=>{
+    navigate(`/roles-and-permissions/edit-role/${user.id}`)
+  })
 
   return (
     <div className="bg-[#F2F2F2] w-full py-6 px-4">

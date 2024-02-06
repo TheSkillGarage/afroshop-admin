@@ -18,6 +18,7 @@ import {
   LogInPage,
   NewPasswordPage,
 } from "./pages";
+import EditRole from "./components/roles-and-permissions/edit-role";
 
 const MyRoutes = () => {
   return (
@@ -36,6 +37,7 @@ const MyRoutes = () => {
         <Route exact path="/add-new-role" element={<AddNewRole />} />
         <Route exact path="/support" element={<SupportPage />} />
         <Route exact path="/roles-and-permissions/add-new-role" element={<AddNewRole />} />
+        <Route exact path="/roles-and-permissions/edit-role/:id" element={<EditRole />} />
         <Route exact path="/profile" element={<ProfilePage />} />
         <Route exact path="/products/edit/:sku" element={<EditProducts />} />
         <Route exact path="/reset-successful" element={<PasswordSucess />} />

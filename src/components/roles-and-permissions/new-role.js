@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import RoleActionCard from "../shared/cardDropdown/role-action-card";
 import Button from "../shared/button";
 import { useDispatch, useSelector } from "react-redux";
-import sectionData from "../../data/roles-section-data";
+import sectionData, { roleOptions } from "../../data/roles-section-data";
 import { updateUserRole } from "../../redux/action";
 import RoleActionComponent from "./components/role-action-component";
 import { getPermissionCount } from "../../utils/roles";
@@ -34,7 +34,7 @@ const NewRole = () => {
     event.preventDefault();
     const values = getValues();
     const newUser = USER_DATA.find((user) => user.email === values.email);
-    console.log(newUser);
+
     if (newUser) {
       dispatch(
         updateUserRole({
@@ -53,17 +53,6 @@ const NewRole = () => {
       navigate("/roles-and-permissions");
     }
   };
-
-  const options = [
-    {
-      value: "Admin",
-      label: "Admin",
-    },
-    {
-      value: "Super Admin",
-      label: "Super Admin",
-    },
-  ];
 
   return (
     <div>
@@ -100,7 +89,7 @@ const NewRole = () => {
             />
             <InputComponent
               inputType="select"
-              options={options}
+              options={roleOptions}
               label="Role"
               fieldName={"role"}
               placeholder="Select"
@@ -113,17 +102,16 @@ const NewRole = () => {
           {sections.map((section, index) => (
             <RoleActionCard
               section={section}
-              component={
-                <RoleActionComponent
-                  sections={sections}
-                  section={section}
-                  saveSections={handleSections}
-                />
-              }
               saveSections={handleSections}
               sections={sections}
               index={index}
-            />
+            >
+              <RoleActionComponent
+                sections={sections}
+                section={section}
+                saveSections={handleSections}
+              />
+            </RoleActionCard>
           ))}
 
           <div className="flex justify-end gap-6 mt-8">

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import RoleActionCard from "../shared/cardDropdown/role-action-card";
 import Button from "../shared/button";
 import { useDispatch, useSelector } from "react-redux";
-import sectionData from "../../data/roles-section-data";
+import sectionData, { roleOptions } from "../../data/roles-section-data";
 import { updateUserRole } from "../../redux/action";
 import RoleActionComponent from "./components/role-action-component";
 import { getPermissionCount } from "../../utils/roles";
@@ -14,16 +14,12 @@ import USER_DATA from "../../data/user";
 
 const EditRole = () => {
   const { id } = useParams();
-  console.log(id);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const roles = useSelector((s) => s.roles);
-  const user = roles.filter((r) => r.id === id);
+  const user = roles.find((r) => r.id === id);
+  const [sections, setSections] = useState(user?.actions);
 
-  const [sections, setSections] = useState(sectionData);
-
-  console.log(roles, user);
-  
   const {
     control,
     formState: { errors },
@@ -42,36 +38,24 @@ const EditRole = () => {
   const handleActionSubmit = (event) => {
     event.preventDefault();
     const values = getValues();
-    const newUser = USER_DATA.find((user) => user.email === values.email);
-    if (newUser) {
-      dispatch(
-        updateUserRole({
-          roles: [
-            ...roles,
-            {
-              ...newUser,
-              role: values.role,
-              permissions: getPermissionCount(sections),
-              updated_at: new Date(),
-              actions: sections,
-            },
-          ],
-        })
-      );
-      navigate("/roles-and-permissions");
-    }
-  };
+    const newRoles = roles.map((user) =>
+      user.email === values.email
+        ? {
+            ...user,
+            actions: sections,
+            permissions: getPermissionCount(sections),
+            updated_at: new Date(),
+          }
+        : user
+    );
 
-  const options = [
-    {
-      value: "Admin",
-      label: "Admin",
-    },
-    {
-      value: "Super Admin",
-      label: "Super Admin",
-    },
-  ];
+    dispatch(
+      updateUserRole({
+        roles: newRoles,
+      })
+    );
+    navigate("/roles-and-permissions");
+  };
 
   return (
     <div>
@@ -105,10 +89,11 @@ const EditRole = () => {
               control={control}
               errors={errors}
               register={register}
+              isReadOnly
             />
             <InputComponent
               inputType="select"
-              options={options}
+              options={roleOptions}
               label="Role"
               fieldName={"role"}
               placeholder="Select"
@@ -116,6 +101,7 @@ const EditRole = () => {
               control={control}
               errors={errors}
               register={register}
+              isDisabled
             />
           </div>
           {sections.map((section, index) => (
