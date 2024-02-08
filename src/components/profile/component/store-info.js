@@ -8,7 +8,7 @@ import {
   deliverySlots,
   deliveryStartTimes,
 } from "../../../data/profile";
-import { DeleteIcon, DefaultImage, GreenCamera, UserAvatar } from "../../../images";
+import { DeleteIcon, GreenCamera, UserAvatar } from "../../../images";
 
 const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
   const {

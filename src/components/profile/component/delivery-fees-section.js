@@ -1,6 +1,5 @@
 import React from "react";
 import DeliveryCard from "./delivery-holiday-card";
-
 import InputComponent from "../../shared/inputComponent";
 import Button from "../../shared/button";
 import { destinationOptions } from "../../../data/profile";

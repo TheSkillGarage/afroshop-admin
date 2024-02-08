@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ToggleSwitch from "../../toggle-switch";
 import Checkbox from "../../shared/checkbox";
 
