@@ -76,7 +76,7 @@ export const useTableData = (name, headersArray, data, func) => {
                 onClick={() => func(data.orderID)}
             />
         ) : (
-            <Detail name={name} goToEdit={func} param={data.SKU} />
+            <Detail name={name} goToEdit={func} param={data.SKU} user={data} />
         ),
     }));
 

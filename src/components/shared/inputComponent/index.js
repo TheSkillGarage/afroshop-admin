@@ -108,6 +108,7 @@ const InputComponent = forwardRef(
             loading={loading}
             success={success}
             readOnly={isReadOnly}
+            error={errors[fieldName]}
             className={`${className} ${
               errors[fieldName] &&
               (fieldName === "currentPassword" ? null : "input_error")

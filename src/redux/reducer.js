@@ -10,11 +10,10 @@ import ROLES_DATA from "../data/rolesAndPermissions";
 const INITIAL_STATE = {
   isFetching: false,
   sections: sectionData,
-  roles: ROLES_DATA,
+  roles: [],
   delivery: deliveryData,
   holidays: holidayMockData,
   profile: profileInitialState,
-  users: ROLES_DATA,
   isSidebarToggled: false,
 };
 

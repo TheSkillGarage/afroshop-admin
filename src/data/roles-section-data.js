@@ -43,4 +43,14 @@ const sectionData = [
   },
 ];
 
+export const roleOptions = [
+  {
+    value: "Admin",
+    label: "Admin",
+  },
+  {
+    value: "Super Admin",
+    label: "Super Admin",
+  },
+];
 export default sectionData;
