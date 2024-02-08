@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { GreenRightArrow } from "../../images";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import InputComponent from "../shared/inputComponent";
 import { useForm } from "react-hook-form";
 import RoleActionCard from "../shared/cardDropdown/role-action-card";
 import Button from "../shared/button";
 import { useDispatch, useSelector } from "react-redux";
-import sectionData, { roleOptions } from "../../data/roles-section-data";
+import { roleOptions } from "../../data/roles-section-data";
 import { updateUserRole } from "../../redux/action";
 import RoleActionComponent from "./components/role-action-component";
 import { getPermissionCount } from "../../utils/roles";
-import USER_DATA from "../../data/user";
 
 const EditRole = () => {
   const { id } = useParams();

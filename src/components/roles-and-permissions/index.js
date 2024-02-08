@@ -1,18 +1,13 @@
 import React, { useState } from "react";
-import { FilterIcon, NextIcon, PrevIcon, SearchIcon } from "../../images";
-import StatusPills from "../status-pills";
 import usePagination from "../../hooks/usePagination";
-import Detail from "../products/details";
 import ROLES_DATA from "../../data/rolesAndPermissions";
 import { useNavigate } from "react-router-dom";
-import Checkbox from "../shared/checkbox";
 import useTableSelect from "../../hooks/useTableSelect";
 import BaseTable from "../shared/table";
 import useFilter from "../../hooks/useFilter";
 import Search from "../search";
 import TableFooter from "../table-footer/table-footer";
 import { useSelector } from "react-redux";
-import { getPermissionCount, getRoles } from "../../utils/roles";
 import useTableData from "../../hooks/useTableData";
 
 const RolesAndPermissions = () => {
