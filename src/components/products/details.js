@@ -35,7 +35,7 @@ const Detail = ({ name, goToEdit, param, user }) => {
         <div className="absolute top-[30px] right-[20px] bg-[#ffffff] rounded flex flex-col space-around py-3 px-2 z-[5] shadow-md">
           <div
             className="px-1 flex items-center cursor-pointer mb-2 gap-2"
-            onClick={() => goToEdit?.(user)}
+            onClick={() => goToEdit?.(param)}
           >
             <EditIcon className="w-4 h-4" />
             <p>Edit</p>
