@@ -109,11 +109,14 @@ const InputComponent = forwardRef(
             loading={loading}
             success={success}
             readOnly={isReadOnly}
-            className={`${className} ${type === "file" ? "hidden" : "flex"} ${errors[fieldName] &&
+            error={errors[fieldName]}
+            className={`${className} 
+            ${type === "file" ? "hidden" : "flex"}
+            ${errors[fieldName] &&
               (fieldName === "currentPassword" ? null : "input_error")
               }`}
           >
-            {leftIcon ? <img src={leftIcon} alt="leftIcon" /> : null}
+          
             <input
               id={id}
               className={`bg-inherit w-full border-none focus:outline-none text-[16px] font-normal placeholder-[#333333] ${className}`}

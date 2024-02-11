@@ -17,7 +17,7 @@ const SelectDropdown = forwardRef(
       isDisabled,
       handleChange,
       closeMenuOnSelect,
-      handleSelectedYear
+      handleSelectedYear,
     },
     ref
   ) => {
@@ -26,21 +26,23 @@ const SelectDropdown = forwardRef(
     const selectStyles = {
       control: (baseStyles, state) => ({
         ...baseStyles,
-        background: errors?.[field?.name]
-          ? "#FF3B300D"
-          : color === "green"
-            ? "#FFFFFF"
-            : "#F2F2F2",
+        background: errors
+          ? errors[field?.name]
+            ? "#FF3B300D"
+            : "#FFFFFF"
+          : "#F2F2F2",
         fontWeight: 400,
         fontSize: color === "green" ? "13px" : "16px",
         lineHeight: color === "green" ? "23px" : "24px",
         height: color === "green" ? "40px" : "53px",
         color: "#186F3D",
-        border: errors?.[field?.name]
-          ? "1px solid #FF3B30"
-          : color === "green"
-            ? "1px solid #186F3D"
-            : "1px solid #F2F2F2",
+        border: errors
+          ? errors[field?.name]
+            ? "1px solid #FF3B30"
+            : isDisabled
+            ? ""
+            : "1px solid #186F3D"
+          : "1px solid #F2F2F2",
         boxShadow: state.isFocused ? 0 : 0,
         "&:hover": { border: color === "green" ? "1px solid #186F3D" : "1px solid #cccccc" },
       }),

@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import { GreenRightArrow } from "../../images";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import InputComponent from "../shared/inputComponent";
 import { useForm } from "react-hook-form";
 import RoleActionCard from "../shared/cardDropdown/role-action-card";
 import Button from "../shared/button";
 import { useDispatch, useSelector } from "react-redux";
-import sectionData, { roleOptions } from "../../data/roles-section-data";
+import { roleOptions } from "../../data/roles-section-data";
 import { updateUserRole } from "../../redux/action";
 import RoleActionComponent from "./components/role-action-component";
 import { getPermissionCount } from "../../utils/roles";
-import USER_DATA from "../../data/user";
 
-const NewRole = () => {
+const EditRole = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const roles = useSelector((s) => s.roles);
-  const [sections, setSections] = useState(sectionData);
+  const user = roles.find((r) => r.id === id);
+  const [sections, setSections] = useState(user?.actions);
 
   const {
     control,
@@ -24,7 +25,10 @@ const NewRole = () => {
     register,
     handleSubmit,
     getValues,
-  } = useForm({ defaultValues: { email: "", role: "" }, mode: "all" });
+  } = useForm({
+    defaultValues: { email: user?.email, role: user?.role },
+    mode: "all",
+  });
 
   const handleSections = (data) => {
     setSections(data);
@@ -33,25 +37,23 @@ const NewRole = () => {
   const handleActionSubmit = (event) => {
     event.preventDefault();
     const values = getValues();
-    const newUser = USER_DATA.find((user) => user.email === values.email);
+    const newRoles = roles.map((user) =>
+      user.email === values.email
+        ? {
+            ...user,
+            actions: sections,
+            permissions: getPermissionCount(sections),
+            updated_at: new Date(),
+          }
+        : user
+    );
 
-    if (newUser) {
-      dispatch(
-        updateUserRole({
-          roles: [
-            ...roles,
-            {
-              ...newUser,
-              role: values.role,
-              permissions: getPermissionCount(sections),
-              updated_at: new Date(),
-              actions: sections,
-            },
-          ],
-        })
-      );
-      navigate("/roles-and-permissions");
-    }
+    dispatch(
+      updateUserRole({
+        roles: newRoles,
+      })
+    );
+    navigate("/roles-and-permissions");
   };
 
   return (
@@ -86,6 +88,7 @@ const NewRole = () => {
               control={control}
               errors={errors}
               register={register}
+              isReadOnly
             />
             <InputComponent
               inputType="select"
@@ -93,10 +96,11 @@ const NewRole = () => {
               label="Role"
               fieldName={"role"}
               placeholder="Select"
-              className="bg-[#F2F2F2]"
+              className="bg-[#F2F2F2] h-full"
               control={control}
               errors={errors}
               register={register}
+              isDisabled
             />
           </div>
           {sections.map((section, index) => (
@@ -130,4 +134,4 @@ const NewRole = () => {
   );
 };
 
-export default NewRole;
+export default EditRole;
