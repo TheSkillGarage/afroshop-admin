@@ -8,7 +8,7 @@ import DetectMobile from "./components/detect-mobile";
 
 const Root = () => {
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 868);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
   useEffect(() => {
     const handleResize = () => {
