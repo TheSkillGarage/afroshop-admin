@@ -115,6 +115,7 @@ import BlackUserIcon from "./user-black.svg"
 import BlackEmailIcon from "./sms-black.svg"
 
 import UserAvatar from "./avatar.svg";
+import CautionImage from "./caution-img.svg";
 
 export {
   UserAvatar,
@@ -221,4 +222,5 @@ export {
   GoogleLogo,
   BlackEmailIcon,
   BlackUserIcon,
+  CautionImage,
 };
