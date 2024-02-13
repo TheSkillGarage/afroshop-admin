@@ -17,7 +17,6 @@ import {
   SignUpPage,
   LogInPage,
   NewPasswordPage,
-  DetectMobilePage,
 } from "./pages";
 
 const MyRoutes = () => {
@@ -46,7 +45,6 @@ const MyRoutes = () => {
         <Route exact path="/sign-up" element={<SignUpPage />} />
         <Route exact path="/login" element={<LogInPage />} />
         <Route exact path="/new-password" element={<NewPasswordPage />} />
-        <Route exact path="/mobile-detected" element={<DetectMobilePage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -16,4 +16,3 @@ export {default as EmailVerification} from './verify-email';
 export { default as SignUpPage} from './sign-up';
 export { default as LogInPage} from './login';
 export { default as NewPasswordPage} from './new-password';
-export {default as DetectMobilePage} from './detect-mobile';
