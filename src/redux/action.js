@@ -83,6 +83,11 @@ export const deleteDraftProductInfo = (hash) => dispatch => {
     ...hash,
   })
 }
+export const resetStore = () => dispatch => {
+  dispatch({
+    type: 'RESET_STORE',
+  })
+}
 export const postRequest = (url, data) => {
   return fetch(renderValidUrl(url), {
     method: "POST",

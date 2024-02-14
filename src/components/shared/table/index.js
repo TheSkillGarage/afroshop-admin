@@ -11,6 +11,19 @@ const Price = ({ values }) => {
   );
 };
 
+const DateCol = ({ value }) => {
+  const date = new Date(value)
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = String(date.getFullYear()).slice(2);
+
+  return (
+    <>
+      {`${day}/${month}/${year}`}
+    </>
+  )
+}
+
 const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
   return (
     <div className="w-full">
@@ -21,7 +34,14 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
               {tableHeaders.map((header, index) => (
                 <th
                   key={header.id}
-                  className={`${(header.id === "selection" || header.id === "detail") ? "w-[6.5%]" : "w-[14.5%]"}  text-left ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
+                  className={`
+                  ${(header.id === "selection" || header.id === "detail")
+                      ? "w-[6.5%]"
+                      : header.id === "productName"
+                        ? "w-[16.5%]"
+                        : header.id === "availabilty"
+                          ? "w-[12.5%]"
+                          : "w-[14.5%]"}  text-left ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
                 >
                   {header.name}
                 </th>
@@ -41,11 +61,19 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
                       className={`py-2 ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
                       key={index}
                     >
-                      {header.id !== "price" ? (
-                        row[header.id]
-                      ) : (
-                        <Price values={row[header.id]} />
-                      )}
+                      {
+                        header.id === "price" ? (
+                          <Price values={row[header.id]} />
+                        )
+                          :
+                          (header.id === "dateAdded")
+                            ? (
+                              <DateCol value={row[header.id]} />
+                            )
+                            : (
+                              row[header.id]
+                            )
+                      }
                     </td>
                   );
                 })}

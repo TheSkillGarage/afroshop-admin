@@ -71,6 +71,7 @@ const InputComponent = forwardRef(
           <Controller
             control={control}
             name={fieldName}
+            defaultValue={defaultValue}
             rules={{ required: requiredMessage }}
             render={({ field }) => {
               return (
@@ -90,7 +91,6 @@ const InputComponent = forwardRef(
                     options={options}
                     handleChange={handleChange}
                     closeMenuOnSelect={closeMenuOnSelect}
-                    defaultValue={defaultValue}
                     value={
                       field.value
                         ? !multiple

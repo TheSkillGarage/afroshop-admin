@@ -17,27 +17,44 @@ import Button from "../shared/button";
 import { useForm } from "react-hook-form";
 import { isEqual } from 'lodash';
 import InputComponent from "../shared/inputComponent";
+import { useDispatch } from "react-redux";
+import { addProduct, deleteDraftProductInfo, draftProductInfo, editProduct } from "../../redux/action";
 
-const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleFormSubmit, handleProductDraft }) => {
+const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
 
-  const [isProductInfoOpen, setIsProductInfoOpen] = useState(false);
-  const [isProductImageOpen, setIsProductImageOpen] = useState(false);
+  const [tab, setTab] = useState("");
 
-  const handleProductInfoOpen = () => {
-    setIsProductInfoOpen((prev) => !prev);
-    setIsProductImageOpen(false);
-  };
-  const handleProductImageOpen = () => {
-    setIsProductImageOpen((prev) => !prev);
-    setIsProductInfoOpen(false);
-  };
+  const [productInfo, setProductInfo] = useState(initialProductInfo);
+
+  const [changes, setChanges] = useState(false);
+
+  useEffect(() => {
+    if (productInfo.images.length !== initialProductInfo.images.length) {
+      setChanges(true)
+    }
+  }, [productInfo])
+
+
+  const handleProductInfo = (key, val) => {
+
+    setProductInfo((prevProductInfo) => ({
+      ...prevProductInfo,
+      [key]: val,
+    }))
+  }
+
 
   const handleSelectCategory = (val) => {
     handleProductInfo("category", val);
   };
 
   const handleFilesSelect = (files) => {
-    const newFiles = [...productInfo.images, ...files];
+    const newImageObj = {
+      url: URL.createObjectURL(files[0]),
+      data: files[0],
+    }
+    const newFiles = [...productInfo.images, newImageObj];
+
     handleProductInfo("images", newFiles);
   };
 
@@ -52,22 +69,47 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
     formState: { errors, isDirty },
     register,
     handleSubmit,
-  } = useForm({ mode: "all" });
+  } = useForm({
+    mode: "all",
+    defaultValues: productInfo
+  });
+
+
+  useEffect(() => {
+    setProductInfo(initialProductInfo)
+  }, [initialProductInfo])
+
+  useEffect(() => {
+    console.log("errors", errors)
+  }, [errors])
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const handleFormSubmit = () => {
+    if (isEdit) {
+      dispatch(editProduct({ sku: param, productInfos: productInfo }));
+      dispatch(deleteDraftProductInfo({ sku: param }))
+    } else {
+      dispatch(addProduct({ productInfo: productInfo, status: "active" }));
+    }
+    navigate("/products");
+  }
+
+  const handleProductDraft = () => {
+    if (isEdit) {
+      dispatch(draftProductInfo({ sku: param, productInfo: productInfo }))
+    } else {
+      dispatch(addProduct({ productInfo: productInfo, status: "draft" }));
+    }
+    navigate("/products");
+  }
 
   const onSubmit = (data) => {
     handleFormSubmit()
     console.log(data);
   };
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors])
-
-  const initialProductInfo = useRef(productInfo);
-  const hasErrors = Object.keys(errors).length > 0;
-  const dirty = isEqual(initialProductInfo, productInfo);
-
-  const navigate = useNavigate();
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
@@ -79,7 +121,7 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
           <span className="px-[5px]">
             <img src={ColorArrowRight} alt="arrow-right" />
           </span>
-          {name !== "edit" ? (
+          {!isEdit ? (
             <span className="text-green"> Add New Products</span>
           ) : (
             <span className="text-green"> Edit Product</span>
@@ -110,13 +152,13 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
                   />
                 </div>
               </div>
-              <div className="px-4 rounded-[8px] border border-[#B3B3B3]" onClick={handleProductInfoOpen}>
+              <div className="px-4 rounded-[8px] border border-[#B3B3B3]" onClick={() => setTab("productInfo")}>
                 <div className="flex justify-between items-center py-4 cursor-pointer">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Info
                   </div>
                   <div>
-                    {isProductInfoOpen ? (
+                    {tab === "productInfo" ? (
                       <img src={ArrowDown} alt="arrow-down" />
                     ) : (
                       <img src={ArrowRight} alt="arrow-right" />
@@ -126,7 +168,7 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
 
                 <ProductInfo
                   productInfo={productInfo}
-                  isProductInfoOpen={isProductInfoOpen}
+                  isProductInfoOpen={tab === "productInfo"}
                   handleProductInfo={handleProductInfo}
                   register={register}
                   control={control}
@@ -138,20 +180,20 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
                 <img className="w-[100%]" src={DottedLine} alt="dotted-line" />
               </div>
 
-              <div className="px-[16px] border border-[#B3B3B3] rounded-[8px]" onClick={handleProductImageOpen}>
+              <div className="px-[16px] border border-[#B3B3B3] rounded-[8px]" onClick={() => setTab("productImage")}>
                 <div className="flex justify-between items-center py-4 cursor-pointer">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Images
                   </div>
                   <div >
-                    {isProductImageOpen ? (
+                    {tab === "productImage" ? (
                       <img src={ArrowDown} alt="arrow-down" />
                     ) : (
                       <img src={ArrowRight} alt="arrow-right" />
                     )}
                   </div>
                 </div>
-                {isProductImageOpen && (
+                {tab === "productImage" && (
                   <div className="pb-4" onClick={(e) => e.stopPropagation()}>
                     <div>
                       <FileInput
@@ -180,6 +222,7 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
               size="big"
               type="button"
               className=""
+              disabled={!isDirty}
               onClick={() => handleProductDraft()}
             >
               Save as Draft
@@ -200,7 +243,7 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
                 variant="primary"
                 type="submit"
                 className="w-[133px] h-[40px]"
-                disabled={((!isDirty || drafted) && hasErrors)}
+                disabled={(!isDirty || !changes || !drafted)}
               >
                 Submit
               </Button>
@@ -214,7 +257,7 @@ const ProductChanges = ({ name, productInfo, drafted, handleProductInfo, handleF
 
 
 ProductChanges.propTypes = {
-  name: PropTypes.string.isRequired,
+  isEdit: PropTypes.string.isRequired,
   productInfo: PropTypes.object,
 }
 

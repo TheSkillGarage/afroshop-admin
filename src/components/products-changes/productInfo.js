@@ -23,13 +23,14 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
 
   return (
     <div className={`${isProductInfoOpen ? "" : "hidden"} pt-4`} onClick={(e) => e.stopPropagation()}>
-      <div className="flex justify-between items-center pb-[25px]">
+      <div className="flex justify-between items-start pb-[25px]">
         <div className=" w-[48%]">
           <InputComponent
             inputType="input"
             type="text"
             label="Name"
-            fieldName="name"
+            fieldName="productName"
+            placeholder="Enter"
             control={control}
             errors={errors}
             register={register}
@@ -48,7 +49,8 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             inputType="input"
             type="text"
             label="Availability"
-            fieldName="availability"
+            fieldName="availabilty"
+            placeholder="Enter"
             control={control}
             errors={errors}
             register={register}
@@ -66,8 +68,8 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
         <div className="text-[13px] text-[#B3B3B3] pb-2">Description</div>
         <div className="h-[200px] pb-[40px]">
           <Controller
-            name="quillContent"
-            fieldName="quillContent"
+            name="description"
+            fieldName="description"
             control={control}
             rules={{ required: "This field is required" }}
             render={({ field }) => (
@@ -85,26 +87,29 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             )}
           />
         </div>
-        {errors["quillContent"] && (
+        {errors["description"] && (
           <div className="flex flex-row gap-2 mt-2 ">
             <img src={ErrorIcon} alt="errorIcon" />
             <span className="text-[#FF3B30] text-[10px]">
-              {errors["quillContent"].message}
+              {errors["description"].message}
             </span>
           </div>
         )}
       </div>
-      <div className="flex justify-between items-center pt-[25px] pb-4 mt-10">
+      <div className="flex justify-between items-start pt-[25px] pb-4 mt-10">
         <div className=" w-[48%]">
           <InputComponent
             inputType="input"
             type="text"
             label="Price ($)"
-            fieldName="price_usd"
+            fieldName="salesPrice"
+            placeholder="Enter"
             control={control}
             errors={errors}
             register={register}
             required={true}
+            patternValue={/^\d+(\.\d{1,2})?$/}
+            patternMessage="Please enter a valid price"
             requiredMessage={'This field is required'}
             value={productInfo?.salesPrice}
             handleChange={(e) => {
@@ -119,9 +124,12 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             type="text"
             label="Discount % (If Applicable)"
             fieldName="discount"
+            placeholder="Enter"
             control={control}
             errors={errors}
             register={register}
+            patternValue={/^(100(\.0{1,2})?|\d{1,2}(\.\d{1,2})?|0(\.\d{1,2})?)$/}
+            patternMessage={"Please enter a valid discount"}
             required={true}
             requiredMessage={'This field is required'}
             value={productInfo?.discount}

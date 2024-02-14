@@ -1,16 +1,12 @@
 import { React, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ProductChanges from "../products-changes";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteDraftProductInfo, draftProductInfo, editProduct } from "../../redux/action";
-
+import { useSelector } from "react-redux";
 
 
 const EditSingleProduct = () => {
 
   const { sku } = useParams();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [isDraft, setIsDraft] = useState(false);
   const [productInfo, setProductInfo] = useState({
@@ -50,34 +46,13 @@ const useProductInfo = {
     }
   }, [])
 
-  const handleEditFormSubmit = () => {
-    dispatch(editProduct({sku: sku, productInfos: productInfo}));
-    dispatch(deleteDraftProductInfo({sku: sku}))
-    navigate("/products");
-  }
-
-  const handleProductDraft = () => {
-    dispatch(draftProductInfo({sku: sku, productInfo: productInfo}))
-    navigate("/products");
-  }
-
-
-  const handleProductInfo = (key, val) => {
-    setProductInfo((prevProductInfo) => ({
-      ...prevProductInfo,
-      [key]: val,
-    }))
-  }
-  
 
   return (
     <ProductChanges
-      name="edit"
-      productInfo={productInfo}
+      isEdit={true}
+      initialProductInfo={productInfo}
       drafted={isDraft}
-      handleProductInfo={handleProductInfo}
-      handleFormSubmit={handleEditFormSubmit}
-      handleProductDraft={handleProductDraft}
+      param={sku}
     />
   );
 };

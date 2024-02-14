@@ -7,7 +7,10 @@ import CustomScrollbar from "./filter.styles";
 
 const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA }) => {
 
-    const filters = name === "orders" ? Object.keys(DATA[0]).slice(1, -2) : name === "view-orders" ?  Object.keys(DATA[0]) : name==="products" ? Object.keys(DATA[0]).slice(1, -4) : Object.keys(DATA[0]).slice(1) // sets DATA keys as filter criterias 
+    const orderKeys = ["orderID", "orderDate", "customer", "price", "items", "status"]
+    const productKeys = ["productName", "SKU", "dateAdded", "salesPrice", "availabilty", "status"]
+
+    const filters = name === "orders" ? orderKeys : name === "view-orders" ?  Object.keys(DATA[0]) : name==="products" ? productKeys : Object.keys(DATA[0]).slice(1) // sets DATA keys as filter criterias 
 
     const [toggleFilters, setToggleFilters] = useState({});
     const [formData, setFormData] = useState({});

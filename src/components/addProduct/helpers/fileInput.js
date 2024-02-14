@@ -3,7 +3,7 @@ import { Dot, ErrorIcon, Framer } from "../../../images";
 import InputComponent from "../../shared/inputComponent";
 
 
-export const FileInput = ({ onFilesSelect, register, control, errors }) => {
+export const FileInput = ({ onFilesSelect, register, control, errors}) => {
   const [isUploading, setIsUploading] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const [activeUpload, setActiveUpload] = useState(false);

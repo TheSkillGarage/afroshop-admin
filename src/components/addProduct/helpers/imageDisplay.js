@@ -7,7 +7,7 @@ export const ImageDisplay = ({ selectedFiles, onDelete }) => {
           <div className="flex gap-[12px]" key={index}>
             <div key={index} className="mb-4 relative">
               <img
-                src={(file instanceof File) ? URL.createObjectURL(file) : file}
+                src={file.url}
                 alt={`Selected ${index + 1}`}
                 className="w-[120px] h-[120px]"
               />

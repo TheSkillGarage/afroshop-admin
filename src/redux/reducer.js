@@ -79,15 +79,11 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
       }
     case 'ADD_PRODUCT':
       const id = (Math.floor(Math.random() * 900000) + 100000).toString();
-      const currentDate = new Date();
-      const day = String(currentDate.getDate()).padStart(2, '0');
-      const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-      const year = String(currentDate.getFullYear()).slice(2);
 
       const newProductObj = {
         id: id,
         SKU: id,
-        dateAdded: `${day}/${month}/${year}`,
+        dateAdded: new Date(),
         status: action.status,
         ...action.productInfo,
       }
@@ -103,7 +99,8 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         if (product.SKU === action.sku) {
           return {
             ...product,
-            ...action.productInfos
+            ...action.productInfos,
+            lastEdited: new Date()
           };
         }
         return product;
@@ -137,6 +134,8 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         draftProductInfo: updatedDrafts,
       };
+    case 'RESET_STORE':
+      return INITIAL_STATE;
     default:
       return previousState;
   }
