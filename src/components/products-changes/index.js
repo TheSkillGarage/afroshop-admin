@@ -28,12 +28,6 @@ const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
 
   const [changes, setChanges] = useState(false);
 
-  useEffect(() => {
-    if (productInfo.images.length !== initialProductInfo.images.length) {
-      setChanges(true)
-    }
-  }, [productInfo])
-
 
   const handleProductInfo = (key, val) => {
 
@@ -62,6 +56,7 @@ const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
     const newFiles = [...productInfo.images];
     newFiles.splice(index, 1);
     handleProductInfo("images", newFiles);
+    setChanges(true)
   };
 
   const {
@@ -243,7 +238,7 @@ const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
                 variant="primary"
                 type="submit"
                 className="w-[133px] h-[40px]"
-                disabled={(!isDirty || !changes || !drafted)}
+                disabled={!isDirty}
               >
                 Submit
               </Button>
