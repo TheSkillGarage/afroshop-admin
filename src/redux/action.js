@@ -51,13 +51,43 @@ export const updateUserRole = (hash) => (dispatch) => {
   });
 };
 
-export const sidebarToggle = (bool) => dispatch => {
+export const sidebarToggle = (hash) => dispatch => {
   dispatch({
     type: 'SIDEBAR_TOGGLE',
-    toggle: bool
+    ...hash,
   });
 };
 
+export const addProduct = (hash) => dispatch => {
+  dispatch({
+    type: 'ADD_PRODUCT',
+    ...hash,
+  })
+}
+
+export const editProduct = (hash) => dispatch => {
+  dispatch({
+    type: 'EDIT_PRODUCT',
+    ...hash,
+  });
+};
+export const draftProductInfo = (hash) => dispatch => {
+  dispatch({
+    type: 'DRAFT_PRODUCT_INFO',
+    ...hash,
+  });
+};
+export const deleteDraftProductInfo = (hash) => dispatch => {
+  dispatch({
+    type: 'DELETE_DRAFT_PRODUCT_INFO',
+    ...hash,
+  })
+}
+export const resetStore = () => dispatch => {
+  dispatch({
+    type: 'RESET_STORE',
+  })
+}
 export const postRequest = (url, data) => {
   return fetch(renderValidUrl(url), {
     method: "POST",

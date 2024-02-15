@@ -27,6 +27,7 @@ const InputComponent = forwardRef(
       min,
       max,
       className,
+      id,
       fieldName,
       inputType,
       maxLength,
@@ -70,6 +71,7 @@ const InputComponent = forwardRef(
           <Controller
             control={control}
             name={fieldName}
+            defaultValue={defaultValue}
             rules={{ required: requiredMessage }}
             render={({ field }) => {
               return (
@@ -89,7 +91,6 @@ const InputComponent = forwardRef(
                     options={options}
                     handleChange={handleChange}
                     closeMenuOnSelect={closeMenuOnSelect}
-                    defaultValue={defaultValue}
                     value={
                       field.value
                         ? !multiple
@@ -109,14 +110,16 @@ const InputComponent = forwardRef(
             success={success}
             readOnly={isReadOnly}
             error={errors[fieldName]}
-            className={`${className} ${
-              errors[fieldName] &&
+            className={`${className} 
+            ${type === "file" ? "hidden" : "flex"}
+            ${errors[fieldName] &&
               (fieldName === "currentPassword" ? null : "input_error")
-            }`}
+              }`}
           >
-            {leftIcon ? <img src={leftIcon} alt="leftIcon" /> : null}
+          
             <input
-              className="bg-inherit w-full border-none focus:outline-none text-[16px] font-normal placeholder-[#333333]"
+              id={id}
+              className={`bg-inherit w-full border-none focus:outline-none text-[16px] font-normal placeholder-[#333333] ${className}`}
               type={type}
               min={min}
               max={max}
@@ -132,9 +135,9 @@ const InputComponent = forwardRef(
                 onChange: handleChange,
                 pattern: patternValue
                   ? {
-                      value: patternValue,
-                      message: patternMessage,
-                    }
+                    value: patternValue,
+                    message: patternMessage,
+                  }
                   : null,
               })}
               readOnly={isReadOnly}

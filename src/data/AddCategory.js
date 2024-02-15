@@ -1,10 +1,10 @@
 export const CATEGORY_DATA = [
-    { cat: "Beverages" },
-    { cat: "Fruit Drinks" },
-    { cat: "Wine" },
-    { cat: "Snacks" },
-    { cat: "Spices" },
-    { cat: "Spirit" },
-    { cat: "Cakes" },
-    { cat: "Candy" },
+    { value: "Beverages", label: "Beverages"},
+    { value: "Fruit Drinks", label: "Fruit Drinks" },
+    { value: "Wine", label: "Wine"},
+    { value: "Snacks", label: "Snacks"},
+    { value: "Spices", label: "Spices" },
+    { value: "Spirit", label: "Spirit" },
+    { value: "Cakes", label: "Cakes" },
+    { value: "Candy", label: "Candy" },
   ];

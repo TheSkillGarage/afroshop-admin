@@ -5,7 +5,7 @@ const AddProducts = () => {
   return (
     <>
       <AdminNavbar name={"AddProducts"} />
-      <AddProduct name="new"/>
+      <AddProduct/>
     </>
   );
 };

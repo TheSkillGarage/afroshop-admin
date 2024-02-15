@@ -5,6 +5,19 @@ import CustomScrollbar from "./filter.styles";
 
 const Filter = ({ toggleFilters, index, filter, handleToggleFilters, handleChange, filtersObject, searchUniqueValues }) => {
 
+    const DateCol = ({ value }) => {
+        const date = new Date(value)
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = String(date.getFullYear()).slice(2);
+      
+        return (
+          <>
+            {`${day}/${month}/${year}`}
+          </>
+        )
+      }
+
     return (
         <div className="mt-6">
             <div className="flex justify-between mb-6 cursor-pointer" onClick={() => handleToggleFilters(index)}>
@@ -25,7 +38,7 @@ const Filter = ({ toggleFilters, index, filter, handleToggleFilters, handleChang
                                         <div>
                                             <input type="checkbox" name={val} id={val} className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" onChange={(e) => handleChange(e, filter)}/>
                                         </div>
-                                        <label htmlFor={val} className="text-4 leading-6 text-[#000000] capitalize">{val}</label>
+                                        <label htmlFor={val} className="text-4 leading-6 text-[#000000] capitalize">{val instanceof Date ? <DateCol value={val} /> : val}</label>
                                     </div>
                                 )
                             })}

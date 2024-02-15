@@ -1,3 +1,4 @@
+import PRODUCT_DATA from "../data/products";
 import {
   deliveryData,
   holidayMockData,
@@ -15,6 +16,8 @@ const INITIAL_STATE = {
   holidays: holidayMockData,
   profile: profileInitialState,
   isSidebarToggled: false,
+  productsData: PRODUCT_DATA,
+  draftProductInfo: [],
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
@@ -74,6 +77,65 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         isSidebarToggled: !action.toggle,
       }
+    case 'ADD_PRODUCT':
+      const id = (Math.floor(Math.random() * 900000) + 100000).toString();
+
+      const newProductObj = {
+        id: id,
+        SKU: id,
+        dateAdded: new Date(),
+        status: action.status,
+        ...action.productInfo,
+      }
+
+      const updatedProductsArray = [newProductObj, ...previousState.productsData];
+
+      return {
+        ...previousState,
+        productsData: updatedProductsArray,
+      }
+    case "EDIT_PRODUCT":
+      const updatedProductData = previousState.productsData.map(product => {
+        if (product.SKU === action.sku) {
+          return {
+            ...product,
+            ...action.productInfos,
+            lastEdited: new Date()
+          };
+        }
+        return product;
+      });
+      return {
+        ...previousState,
+        productsData: updatedProductData,
+      }
+    case "DRAFT_PRODUCT_INFO":
+      const { sku, productInfo } = action;
+      const draftProductIndex = previousState.draftProductInfo.findIndex(product => product.sku === sku);
+
+      if (draftProductIndex !== -1) {
+        const updatedDrafts = [...previousState.draftProductInfo];
+        updatedDrafts[draftProductIndex] = { sku, ...productInfo };
+
+        return {
+          ...previousState,
+          draftProductInfo: updatedDrafts,
+        };
+      } else {
+        const newDraft = { sku, ...productInfo };
+        return {
+          ...previousState,
+          draftProductInfo: [...previousState.draftProductInfo, newDraft],
+        };
+      }
+    case "DELETE_DRAFT_PRODUCT_INFO":
+      const updatedDrafts = previousState.draftProductInfo.filter(product => product.sku !== action.sku);
+      return {
+        ...previousState,
+        draftProductInfo: updatedDrafts,
+      };
+    case 'RESET_STORE':
+      return INITIAL_STATE;
     default:
       return previousState;
   }
