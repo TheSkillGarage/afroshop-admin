@@ -17,7 +17,6 @@ const INITIAL_STATE = {
   profile: profileInitialState,
   isSidebarToggled: false,
   productsData: PRODUCT_DATA,
-  draftProductInfo: [],
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
@@ -97,43 +96,43 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
     case "EDIT_PRODUCT":
       const updatedProductData = previousState.productsData.map(product => {
         if (product.SKU === action.sku) {
-          return {
-            ...product,
-            ...action.productInfos,
-            lastEdited: new Date()
-          };
-        }
+          switch (action.option) {
+            case "draft":
+              return {
+                ...product,
+                draft: action.productInfos,
+                lastEdited: new Date()
+              }
+            default:
+              return {
+                ...product,
+                ...action.productInfos,
+                draft: {},
+                lastEdited: new Date()
+              };
+            }
+          }  
         return product;
       });
       return {
         ...previousState,
         productsData: updatedProductData,
       }
-    case "DRAFT_PRODUCT_INFO":
-      const { sku, productInfo } = action;
-      const draftProductIndex = previousState.draftProductInfo.findIndex(product => product.sku === sku);
-
-      if (draftProductIndex !== -1) {
-        const updatedDrafts = [...previousState.draftProductInfo];
-        updatedDrafts[draftProductIndex] = { sku, ...productInfo };
-
-        return {
-          ...previousState,
-          draftProductInfo: updatedDrafts,
-        };
-      } else {
-        const newDraft = { sku, ...productInfo };
-        return {
-          ...previousState,
-          draftProductInfo: [...previousState.draftProductInfo, newDraft],
-        };
-      }
-    case "DELETE_DRAFT_PRODUCT_INFO":
-      const updatedDrafts = previousState.draftProductInfo.filter(product => product.sku !== action.sku);
+    case 'DISCARD_DRAFT':
+      const updateProductDraft = previousState.productsData.map((product) => {
+        if (product.SKU === action.sku) {
+          return {
+            ...product,
+            draft: {},
+            lastEdited: new Date()
+          }
+        }
+        return product;
+      });
       return {
         ...previousState,
-        draftProductInfo: updatedDrafts,
-      };
+        productsData: updateProductDraft,
+      }
     case 'RESET_STORE':
       return INITIAL_STATE;
     default:
