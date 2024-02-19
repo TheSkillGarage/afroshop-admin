@@ -9,23 +9,12 @@ const EditSingleProduct = () => {
 
   const { sku } = useParams();
 
-  const [isDraft, setIsDraft] = useState(false);
-
-  const [productInfo, setProductInfo] = useState({
-    category: "",
-    productName: "",
-    availabilty: "",
-    salesPrice: "",
-    discount: "",
-    description: "",
-    images: []
-  })
-
-
+  
   const productData = useSelector((state) => state.productsData);
 
   const product = productData.find((product) => product.SKU === sku);
-  const useProductInfo = {
+
+  const initialProductInfo = {
     category: product.category,
     productName: product.productName,
     availabilty: product.availabilty,
@@ -35,13 +24,13 @@ const EditSingleProduct = () => {
     images: product.images
   }
 
+  const [isDraft, setIsDraft] = useState(false);
+  const [productInfo, setProductInfo] = useState(initialProductInfo);
 
   useEffect(() => {
     if (Object.keys(product.draft).length > 0) {
       setIsDraft(true);
       setProductInfo(product.draft);
-    } else {
-      setProductInfo(useProductInfo);
     }
   }, [])
 
@@ -78,7 +67,7 @@ const EditSingleProduct = () => {
       isEdit={true}
       isDraft={isDraft}
       productInfo={productInfo}
-      initialProductInfo={useProductInfo}
+      initialProductInfo={initialProductInfo}
       handleProductInfo={handleProductInfo}
       handleFormSubmit={handleFormSubmit}
       handleProductDraft={handleProductDraft}
