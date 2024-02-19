@@ -182,7 +182,6 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
                 size="big"
                 type="button"
                 className=""
-                disabled={_.isEqual(initialProductInfo, productInfo)}
                 onClick={() => handleProductDraft("discard")}
               >
                 Discard Draft
