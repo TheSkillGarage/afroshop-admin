@@ -15,11 +15,18 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
     ],
   };
 
-  const sanitizeNumbers = (val) => {
+  const sanitizeNumbers = (val, key) => {
+    // Remove all characters that are not digits or periods
     let newVal = val.replace(/[^0-9.]/g, '');
+
+    // If there are more than one period, keep only the first one
+    if (newVal.indexOf('.') !== newVal.lastIndexOf('.')) {
+      newVal = newVal.slice(0, newVal.lastIndexOf('.'));
+    }
 
     return newVal;
   }
+
 
   return (
     <div className={`${isProductInfoOpen ? "" : "hidden"} pt-4`} onClick={(e) => e.stopPropagation()}>
@@ -131,7 +138,7 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             errors={errors}
             register={register}
             patternValue={/^(?!0\d)(100(\.0{1,2})?|\d{1,2}(\.\d{1,2})?|0(\.\d{1,2})?)$/}
-            patternMessage={"Please enter a valid discount"}
+            patternMessage={"Please enter a valid discount (0 - 100)"}
             required={true}
             requiredMessage={'This field is required'}
             value={productInfo?.discount}

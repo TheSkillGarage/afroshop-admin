@@ -63,17 +63,6 @@ export const FileInput = ({ onFilesSelect, productInfo, register, control, error
         />
       </label>
 
-      {
-        errors["file_upload"] && (
-          <div className="flex flex-row gap-2 mt-2 ">
-            <img src={ErrorIcon} alt="errorIcon" />
-            <span className="text-[#FF3B30] text-[10px]">
-              {errors["file_upload"].message}
-            </span>
-          </div>
-        )
-      }
-
       {showUpload && (
         <div className="flex pt-4 items-center justify-between py-[24px]">
           <div>
