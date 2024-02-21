@@ -3,7 +3,7 @@ import { Dot, ErrorIcon, Framer } from "../../../images";
 import InputComponent from "../../shared/inputComponent";
 
 
-export const FileInput = ({ onFilesSelect, register, control, errors}) => {
+export const FileInput = ({ onFilesSelect, productInfo, register, control, errors }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const [activeUpload, setActiveUpload] = useState(false);
@@ -42,13 +42,14 @@ export const FileInput = ({ onFilesSelect, register, control, errors}) => {
 
       <InputComponent
         inputType="file"
+        accept="image/*"
         type="file"
         name="file_upload"
         fieldName="file_upload"
         register={register}
         control={control}
         errors={errors}
-        required={true}
+        required={productInfo.images.length === 0}
         requiredMessage={"File is Required"}
         handleChange={handleFileChange}
         id="productImage"
@@ -74,7 +75,7 @@ export const FileInput = ({ onFilesSelect, register, control, errors}) => {
       }
 
       {showUpload && (
-        <div className="flex pt4  items-center justify-between py-[24px]">
+        <div className="flex pt-4 items-center justify-between py-[24px]">
           <div>
             <p className="text-[10px] text-[#186F3D] font-semibold">
               Uploading

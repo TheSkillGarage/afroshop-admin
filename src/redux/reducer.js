@@ -85,6 +85,7 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         dateAdded: new Date(),
         status: action.status,
         ...action.productInfo,
+        draft: {},
       }
 
       const updatedProductsArray = [newProductObj, ...previousState.productsData];

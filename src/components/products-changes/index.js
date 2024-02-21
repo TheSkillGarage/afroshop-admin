@@ -50,7 +50,7 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
     register,
     handleSubmit,
   } = useForm({
-    mode: "onBlur",
+    mode: "all",
     defaultValues: productInfo
   });
 
@@ -100,7 +100,7 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
                   />
                 </div>
               </div>
-              <div className="px-4 rounded-[8px] border border-[#B3B3B3]" onClick={() => setTab("productInfo")}>
+              <div className="px-4 rounded-[8px] border border-[#B3B3B3]" onClick={() => setTab(tab === "productInfo" ? "" : "productInfo")}>
                 <div className="flex justify-between items-center py-4 cursor-pointer">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Info
@@ -128,7 +128,7 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
                 <img className="w-[100%]" src={DottedLine} alt="dotted-line" />
               </div>
 
-              <div className="px-[16px] border border-[#B3B3B3] rounded-[8px]" onClick={() => setTab("productImage")}>
+              <div className="px-[16px] border border-[#B3B3B3] rounded-[8px]" onClick={() => setTab(tab === "productImage" ? "" : "productImage")}>
                 <div className="flex justify-between items-center py-4 cursor-pointer">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Images
@@ -141,12 +141,13 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
                     )}
                   </div>
                 </div>
-                {tab === "productImage" && (
-                  <div className="pb-4" onClick={(e) => e.stopPropagation()}>
+                
+                  <div className={`${tab === "productImage" ? "" : "hidden"}`} onClick={(e) => e.stopPropagation()}>
                     <div>
                       <FileInput
                         className="hidden"
                         id="productImage"
+                        productInfo={productInfo}
                         onFilesSelect={handleFilesSelect}
                         register={register}
                         control={control}
@@ -159,7 +160,7 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
                       onDelete={handleDelete}
                     />
                   </div>
-                )}
+                
               </div>
             </section>
           </div>

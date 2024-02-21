@@ -66,16 +66,18 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
                           <Price values={row[header.id]} />
                         )
                           : (header.id === "dateAdded")
-                          ? (
+                            ? (
                               <DateCol value={row[header.id]} />
                             )
-                          : (header.id === "salesPrice")
-                          ?(
-                            parseFloat(row[header.id]).toFixed(2)
-                          )
-                          : (
-                              row[header.id]
-                            )
+                            : (header.id === "salesPrice")
+                              ? (
+                                row[header.id] === "" ? "---" : parseFloat(row[header.id]).toFixed(2)
+                              )
+                              : row[header.id] === ""
+                                ? "---"
+                                : (
+                                  row[header.id]
+                                )
                       }
                     </td>
                   );
