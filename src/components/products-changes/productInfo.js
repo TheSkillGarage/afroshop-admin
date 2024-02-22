@@ -15,11 +15,18 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
     ],
   };
 
-  const sanitizeNumbers = (val) => {
+  const sanitizeNumbers = (val, key) => {
+    // Remove all characters that are not digits or periods
     let newVal = val.replace(/[^0-9.]/g, '');
+
+    // If there are more than one period, keep only the first one
+    if (newVal.indexOf('.') !== newVal.lastIndexOf('.')) {
+      newVal = newVal.slice(0, newVal.lastIndexOf('.'));
+    }
 
     return newVal;
   }
+
 
   return (
     <div className={`${isProductInfoOpen ? "" : "hidden"} pt-4`} onClick={(e) => e.stopPropagation()}>
@@ -56,6 +63,8 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             register={register}
             required={true}
             requiredMessage={'This field is required'}
+            patternValue={/^(?!0\d)/}
+            patternMessage="Please enter a valid number"
             value={productInfo?.availabilty}
             handleChange={(e) => {
               let val = e.target.value.replace(/[^0-9]/g, '')
@@ -108,7 +117,7 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             errors={errors}
             register={register}
             required={true}
-            patternValue={/^\d+(\.\d{1,2})?$/}
+            patternValue={/^(?!0\d)\d+(\.\d{1,2})?$/}
             patternMessage="Please enter a valid price"
             requiredMessage={'This field is required'}
             value={productInfo?.salesPrice}
@@ -128,8 +137,8 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             control={control}
             errors={errors}
             register={register}
-            patternValue={/^(100(\.0{1,2})?|\d{1,2}(\.\d{1,2})?|0(\.\d{1,2})?)$/}
-            patternMessage={"Please enter a valid discount"}
+            patternValue={/^(?!0\d)(100(\.0{1,2})?|\d{1,2}(\.\d{1,2})?|0(\.\d{1,2})?)$/}
+            patternMessage={"Please enter a valid discount (0 - 100)"}
             required={true}
             requiredMessage={'This field is required'}
             value={productInfo?.discount}

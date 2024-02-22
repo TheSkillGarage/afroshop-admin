@@ -1,4 +1,4 @@
-import { React, useEffect, useRef, useState } from "react";
+import { React, useEffect, useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
@@ -15,28 +15,14 @@ import PropTypes from 'prop-types';
 import { ProductInfo } from "./productInfo";
 import Button from "../shared/button";
 import { useForm } from "react-hook-form";
-import { isEqual } from 'lodash';
 import InputComponent from "../shared/inputComponent";
-import { useDispatch } from "react-redux";
-import { addProduct, deleteDraftProductInfo, draftProductInfo, editProduct } from "../../redux/action";
+import _ from 'lodash'
 
-const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
 
+const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, handleProductInfo, handleFormSubmit, handleProductDraft }) => {
+
+  const navigate = useNavigate();
   const [tab, setTab] = useState("");
-
-  const [productInfo, setProductInfo] = useState(initialProductInfo);
-
-  const [changes, setChanges] = useState(false);
-
-
-  const handleProductInfo = (key, val) => {
-
-    setProductInfo((prevProductInfo) => ({
-      ...prevProductInfo,
-      [key]: val,
-    }))
-  }
-
 
   const handleSelectCategory = (val) => {
     handleProductInfo("category", val);
@@ -56,50 +42,17 @@ const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
     const newFiles = [...productInfo.images];
     newFiles.splice(index, 1);
     handleProductInfo("images", newFiles);
-    setChanges(true)
   };
 
   const {
     control,
-    formState: { errors, isDirty },
+    formState: { errors },
     register,
     handleSubmit,
   } = useForm({
     mode: "all",
     defaultValues: productInfo
   });
-
-
-  useEffect(() => {
-    setProductInfo(initialProductInfo)
-  }, [initialProductInfo])
-
-  useEffect(() => {
-    console.log("errors", errors)
-  }, [errors])
-
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
-
-  const handleFormSubmit = () => {
-    if (isEdit) {
-      dispatch(editProduct({ sku: param, productInfos: productInfo }));
-      dispatch(deleteDraftProductInfo({ sku: param }))
-    } else {
-      dispatch(addProduct({ productInfo: productInfo, status: "active" }));
-    }
-    navigate("/products");
-  }
-
-  const handleProductDraft = () => {
-    if (isEdit) {
-      dispatch(draftProductInfo({ sku: param, productInfo: productInfo }))
-    } else {
-      dispatch(addProduct({ productInfo: productInfo, status: "draft" }));
-    }
-    navigate("/products");
-  }
 
   const onSubmit = (data) => {
     handleFormSubmit()
@@ -147,7 +100,7 @@ const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
                   />
                 </div>
               </div>
-              <div className="px-4 rounded-[8px] border border-[#B3B3B3]" onClick={() => setTab("productInfo")}>
+              <div className="px-4 rounded-[8px] border border-[#B3B3B3]" onClick={() => setTab(tab === "productInfo" ? "" : "productInfo")}>
                 <div className="flex justify-between items-center py-4 cursor-pointer">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Info
@@ -175,7 +128,7 @@ const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
                 <img className="w-[100%]" src={DottedLine} alt="dotted-line" />
               </div>
 
-              <div className="px-[16px] border border-[#B3B3B3] rounded-[8px]" onClick={() => setTab("productImage")}>
+              <div className="px-[16px] border border-[#B3B3B3] rounded-[8px]" onClick={() => setTab(tab === "productImage" ? "" : "productImage")}>
                 <div className="flex justify-between items-center py-4 cursor-pointer">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Images
@@ -188,12 +141,13 @@ const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
                     )}
                   </div>
                 </div>
-                {tab === "productImage" && (
-                  <div className="pb-4" onClick={(e) => e.stopPropagation()}>
+                
+                  <div className={`${tab === "productImage" ? "" : "hidden"}`} onClick={(e) => e.stopPropagation()}>
                     <div>
                       <FileInput
                         className="hidden"
                         id="productImage"
+                        productInfo={productInfo}
                         onFilesSelect={handleFilesSelect}
                         register={register}
                         control={control}
@@ -206,22 +160,34 @@ const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
                       onDelete={handleDelete}
                     />
                   </div>
-                )}
+                
               </div>
             </section>
           </div>
 
           <section className="flex items-center justify-between pt-[7%]">
-            <Button
-              variant="tertiary"
-              size="big"
-              type="button"
-              className=""
-              disabled={!isDirty}
-              onClick={() => handleProductDraft()}
-            >
-              Save as Draft
-            </Button>
+            <div className="flex gap-6">
+              <Button
+                variant="tertiary"
+                size="big"
+                type="button"
+                className=""
+                disabled={_.isEqual(initialProductInfo, productInfo)}
+                onClick={() => handleProductDraft("draft")}
+              >
+                Save as Draft
+              </Button>
+
+              {isDraft && <Button
+                variant="tertiary"
+                size="big"
+                type="button"
+                className=""
+                onClick={() => handleProductDraft("discard")}
+              >
+                Discard Draft
+              </Button>}
+            </div>
 
             <div className="flex justify-between items-center gap-[24px]">
 
@@ -238,7 +204,7 @@ const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
                 variant="primary"
                 type="submit"
                 className="w-[133px] h-[40px]"
-                disabled={!isDirty}
+                disabled={_.isEqual(initialProductInfo, productInfo)}
               >
                 Submit
               </Button>
@@ -252,7 +218,7 @@ const ProductChanges = ({ isEdit, initialProductInfo, drafted, param }) => {
 
 
 ProductChanges.propTypes = {
-  isEdit: PropTypes.string.isRequired,
+  isEdit: PropTypes.bool.isRequired,
   productInfo: PropTypes.object,
 }
 

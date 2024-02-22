@@ -36,7 +36,7 @@ const TableFooter = ({
         </p>
 
         <p>
-          Showing {pagination.count.start} to {pagination.count.stop} of{" "}
+          Showing {pagination.count.start + 1} to {pagination.count.stop} of{" "}
           {data.length} orders
         </p>
       </div>

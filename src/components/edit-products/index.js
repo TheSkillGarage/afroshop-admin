@@ -1,28 +1,20 @@
 import { React, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ProductChanges from "../products-changes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { discardDraft, editProduct } from "../../redux/action";
 
 
 const EditSingleProduct = () => {
 
   const { sku } = useParams();
 
-  const [isDraft, setIsDraft] = useState(false);
-  const [productInfo, setProductInfo] = useState({
-    category: "",
-    productName: "",
-    availabilty: "",
-    salesPrice: "",
-    discount: "",
-    description: "",
-    images: []
-  })
+  
+  const productData = useSelector((state) => state.productsData);
 
-const productData = useSelector((state) => state.productsData);
+  const product = productData.find((product) => product.SKU === sku);
 
-const product = productData.find((product) => product.SKU === sku);
-const useProductInfo = {
+  const initialProductInfo = {
     category: product.category,
     productName: product.productName,
     availabilty: product.availabilty,
@@ -32,27 +24,53 @@ const useProductInfo = {
     images: product.images
   }
 
-  const draftedProduct = useSelector((state) => state.draftProductInfo);
+  const [isDraft, setIsDraft] = useState(false);
+  const [productInfo, setProductInfo] = useState(initialProductInfo);
 
   useEffect(() => {
-    const isEditDrafted = draftedProduct.find((product) => product.sku === sku);
-
-    if (isEditDrafted){
-      setProductInfo(isEditDrafted);
+    if (Object.keys(product.draft).length > 0) {
       setIsDraft(true);
-    }else{
-      setProductInfo(useProductInfo);
-      setIsDraft(false);
+      setProductInfo(product.draft);
     }
   }, [])
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const handleProductInfo = (key, val) => {
+    setProductInfo((prevProductInfo) => ({
+      ...prevProductInfo,
+      [key]: val,
+    }))
+  }
+
+  const handleFormSubmit = () => {
+    dispatch(editProduct({ sku: sku, productInfos: productInfo, option: "save" }));
+
+    navigate("/products");
+  }
+
+  const handleProductDraft = (option) => {
+    if (option === "draft") {
+      dispatch(editProduct({ sku: sku, productInfos: productInfo, option: "draft" }));
+    }else if (option === "discard"){
+      dispatch(discardDraft({sku: sku}))
+    }
+
+    navigate("/products");
+  }
 
 
   return (
     <ProductChanges
       isEdit={true}
-      initialProductInfo={productInfo}
-      drafted={isDraft}
-      param={sku}
+      isDraft={isDraft}
+      productInfo={productInfo}
+      initialProductInfo={initialProductInfo}
+      handleProductInfo={handleProductInfo}
+      handleFormSubmit={handleFormSubmit}
+      handleProductDraft={handleProductDraft}
     />
   );
 };

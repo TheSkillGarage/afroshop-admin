@@ -71,18 +71,14 @@ export const editProduct = (hash) => dispatch => {
     ...hash,
   });
 };
-export const draftProductInfo = (hash) => dispatch => {
+
+export const discardDraft = (hash) => dispatch => {
   dispatch({
-    type: 'DRAFT_PRODUCT_INFO',
-    ...hash,
-  });
-};
-export const deleteDraftProductInfo = (hash) => dispatch => {
-  dispatch({
-    type: 'DELETE_DRAFT_PRODUCT_INFO',
+    type: 'DISCARD_DRAFT',
     ...hash,
   })
 }
+
 export const resetStore = () => dispatch => {
   dispatch({
     type: 'RESET_STORE',
