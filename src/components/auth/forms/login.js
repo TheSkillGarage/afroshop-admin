@@ -53,7 +53,7 @@ const LogInForm = () => {
               register={register}
             />
 
-            <Link to="/reset-password text-[10px] leading-[15px] text-[#333333] text-right mt-2">
+            <Link to="/reset-password">
               <p className="text-[10px] leading-[15px] text-[#333333] text-right mt-2">
                 Forgot Password?
               </p>
