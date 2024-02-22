@@ -117,7 +117,14 @@ const InputComponent = forwardRef(
               (fieldName === "currentPassword" ? null : "input_error")
               }`}
           >
-          
+            {leftIcon ? (
+              <img
+                src={leftIcon}
+                alt="leftIcon"
+                onClick={onIconClick}
+                className={`cursor-pointer ${iconClassName}`}
+              />
+            ) : null}
             <input
               id={id}
               className={`bg-inherit w-full border-none focus:outline-none text-[16px] font-normal placeholder-[#333333] ${className}`}
