@@ -113,11 +113,12 @@ import DefaultImage from "./camera_icon.jpg"
 import GoogleLogo from "./google-logo.svg"
 import BlackUserIcon from "./user-black.svg"
 import BlackEmailIcon from "./sms-black.svg"
-
+import { ReactComponent as NotFoundImage } from "./notFoundImage.svg";
 import UserAvatar from "./avatar.svg";
 import CautionImage from "./caution-img.svg";
 
 export {
+  NotFoundImage,
   UserAvatar,
   DefaultImage,
   EyeSlash,

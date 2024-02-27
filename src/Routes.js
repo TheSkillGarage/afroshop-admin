@@ -19,6 +19,7 @@ import {
   NewPasswordPage,
 } from "./pages";
 import EditRole from "./components/roles-and-permissions/edit-role";
+import { PageNotFoundComponent } from "./components";
 
 const MyRoutes = () => {
   return (
@@ -47,6 +48,8 @@ const MyRoutes = () => {
         <Route exact path="/sign-up" element={<SignUpPage />} />
         <Route exact path="/login" element={<LogInPage />} />
         <Route exact path="/new-password" element={<NewPasswordPage />} />
+        <Route exact path="/404" element={<PageNotFoundComponent />} />
+        <Route exact path="/*" element={<PageNotFoundComponent />} />
       </Routes>
     </BrowserRouter>
   );
