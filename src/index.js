@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import "./index.css";
 import MyRoutes from "./Routes";
 import { store } from './redux/store';
 import DetectMobile from "./components/detect-mobile";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Root = () => {
 
@@ -25,6 +27,7 @@ const Root = () => {
   return (
     <Provider store={store}>
       <React.StrictMode>
+        <ToastContainer/>
         {!isMobile ? <MyRoutes /> : <DetectMobile />}
       </React.StrictMode>
     </Provider>

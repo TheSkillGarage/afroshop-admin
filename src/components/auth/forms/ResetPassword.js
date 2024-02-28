@@ -11,6 +11,33 @@ const ResetPassword = () => {
     register,
   } = useForm({ mode: "all" });
 
+  const onSubmit = async () => {
+    const value = getValues();
+    setLoading(true);
+    try {
+      const [success, responseData] = await postRequest(
+        "/api/auth/forgot-password",
+        {
+          email: value.email,
+        }
+      );
+
+      if (!success || responseData?.error) {
+        toast.error(
+          responseData.error.message || "An error occured resetting password"
+        );
+      } else {
+        reset();
+        toast.success("Reset password link sent to your email.");
+        dispatch(activeModal(""));
+      }
+    } catch (error) {
+      toast.error(`An error occured resetting password`, { autoClose: 2000 });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center">
       <h2 className="text-center font-bold pt-[40px]">Reset Password</h2>
