@@ -35,7 +35,7 @@ const NewPassword = () => {
         "/api/auth/reset-password",
         {
           code,
-          password: value.newPassword,
+          password: value.password,
           passwordConfirmation: value.confirmPassword,
         }
       );
@@ -47,7 +47,7 @@ const NewPassword = () => {
       } else {
         reset();
         toast.success("Your password has been reset.");
-        navigate("/reset-password-success");
+        navigate("/reset-successful");
       }
     } catch (error) {
       toast.error(`An error occured updating your password`, {
@@ -73,29 +73,29 @@ const NewPassword = () => {
           leftIcon={PasswordLock}
           rightIcon={showPassword ? ViewPassword : PasswordEye}
           onIconClick={() => setShowPassword(!showPassword)}
-          className="mb-[20px]"
           control={control}
           errors={errors}
           register={register}
           requiredMessage="Password required"
           required
         />
+        <div className="mt-[20px]">
         <InputComponent
           type={confirmPassword ? "text" : "password"}
           label="Password"
-          fieldName={"comfirmPassword"}
+          fieldName={"confirmPassword"}
           placeholder="Enter new password"
           leftIcon={PasswordLock}
           rightIcon={confirmPassword ? ViewPassword : PasswordEye}
           onIconClick={() => setConfirmPassword(!confirmPassword)}
-          className="mb-[20px]"
           control={control}
           errors={errors}
           register={register}
           requiredMessage="Password required"
           required
         />
-        <Button icon="white" className="w-[400px]" loading={loading} type="submit">
+        </div>
+        <Button icon="white" className="w-[400px] mt-[20px]" loading={loading} type="submit">
           Submit
         </Button>
       </form>

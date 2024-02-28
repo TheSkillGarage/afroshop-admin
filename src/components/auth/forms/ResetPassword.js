@@ -61,7 +61,6 @@ const ResetPassword = () => {
           fieldName={"email"}
           placeholder="Enter email"
           leftIcon={IconMessage}
-          className="mb-[20px]"
           control={control}
           errors={errors}
           register={register}
@@ -70,7 +69,7 @@ const ResetPassword = () => {
           patternMessage="Invalid email address"
           required
         />
-        <Button icon="white" className="w-[400px]" loading={loading} type="submit">
+        <Button icon="white" className="w-[400px] mt-[20px]" loading={loading} type="submit">
           Reset
         </Button>
       </form>
