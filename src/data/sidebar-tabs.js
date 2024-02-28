@@ -1,7 +1,7 @@
 const SIDEBAR_TABS = [
     {
         name: "overview",
-        path: "/",
+        path: "/dashboard",
     },
     {
         name: "orders",
