@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import InputComponent from "../../shared/inputComponent";
 import {
   BlackEmailIcon,
@@ -6,18 +11,69 @@ import {
   PasswordLock,
   ViewPassword,
 } from "../../../images";
-import { useForm } from "react-hook-form";
+import { postRequest, userLogin } from "../../../redux/action";
 import Button from "../../shared/button";
-import { Link } from "react-router-dom";
+import { AFROADMIN_TOKEN } from "../../../utils/constants";
+import { expirationDate } from "../../../utils";
+import { fetchUserRole } from "./utils";
 
 const LogInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     control,
     formState: { errors },
     register,
+    getValues,
+    reset,
+    handleSubmit,
   } = useForm({ mode: "all" });
+
+
+  const onSubmit = async () => {
+    const value = getValues();
+  
+    setLoading(true);
+    try {
+      const [success, responseData] = await postRequest("/api/auth/local", {
+        identifier: value.email,
+        password: value.password,
+      });
+      if (!success || responseData?.error) {
+        console.error(responseData?.error?.message);
+        toast.error(
+          `${
+            responseData?.error?.message || "An Error occured while logging in"
+          }`,
+          { autoClose: 2000 }
+        );
+      } else {
+        const userData = await fetchUserRole("/users/me?populate=*", responseData);
+
+        if (userData?.role?.name === "admin") {
+          dispatch(userLogin(responseData?.user));
+          Cookies.set(AFROADMIN_TOKEN, responseData?.jwt, {
+            expires: expirationDate,
+          });
+          reset();
+          navigate("/dashboard");
+        } else {
+          toast.error(`You are not authorize to access this page`, {
+            autoClose: 2000,
+          });
+        }
+      }
+    } catch (error) {
+      console.log('error', error)
+      toast.error(`An error occured while logging ${error}`, { autoClose: 2000 });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="mt-8 w-full flex justify-center">
@@ -30,7 +86,10 @@ const LogInForm = () => {
         </div>
 
         <div className="w-[400px]">
-          <form action="" className="flex flex-col gap-6">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-6"
+          >
             <InputComponent
               type="email"
               label="Store Email"
@@ -39,6 +98,10 @@ const LogInForm = () => {
               control={control}
               errors={errors}
               register={register}
+              requiredMessage="Enter valid email"
+              patternValue={/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/}
+              patternMessage="Invalid email address"
+              required
             />
 
             <InputComponent
@@ -51,6 +114,8 @@ const LogInForm = () => {
               control={control}
               errors={errors}
               register={register}
+              requiredMessage="Password required"
+              required
             />
 
             <Link to="/reset-password">
@@ -59,16 +124,16 @@ const LogInForm = () => {
               </p>
             </Link>
 
-              <Button icon="white" className="w-full mt-2">
-                Log In
-              </Button>
+            <Button icon="white" className="w-full mt-2" loading={loading} type="submit">
+              Log In
+            </Button>
 
-              <p className="text-[16px] leading-[24px] text-[#CCCCCC] font-normal text-center mt-2">
-                Don't have an account?{" "}
-                <Link to="/sign-up">
-                  <span className="text-[#186F3D]">Sign Up</span>
-                </Link>
-              </p>
+            <p className="text-[16px] leading-[24px] text-[#CCCCCC] font-normal text-center mt-2">
+              Don't have an account?{" "}
+              <Link to="/sign-up">
+                <span className="text-[#186F3D]">Sign Up</span>
+              </Link>
+            </p>
           </form>
         </div>
       </div>

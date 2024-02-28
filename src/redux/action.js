@@ -1,6 +1,19 @@
 import axios from "axios";
 import { renderValidUrl } from "../utils/constants";
 
+export const userLogin = (user) => dispatch => {
+  dispatch({
+    type: 'LOGIN_USER',
+    payload: user,
+  });
+};
+
+export const logOutUser = () => dispatch => {
+  dispatch({
+    type: 'LOG_OUT',
+  });
+};
+
 export const fetchData = async (dispatch, url, type) => {
   dispatch({ type: "SET_IS_FETCHING", isFetching: true });
 
@@ -100,4 +113,22 @@ export const postRequest = (url, data) => {
       console.error("Error:", error);
       return [false, error];
     });
+};
+
+export const putRequest = async (url, data, token) => {
+  try {
+    const response = await fetch(renderValidUrl(url), {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      },
+      body: JSON.stringify(data),
+    });
+    const responseData = await response.json();
+    return [true, responseData];
+  } catch (error) {
+    console.error('Error:', error);
+    return [false, error];
+  }
 };
