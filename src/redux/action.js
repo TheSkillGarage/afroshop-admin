@@ -114,3 +114,21 @@ export const postRequest = (url, data) => {
       return [false, error];
     });
 };
+
+export const putRequest = async (url, data, token) => {
+  try {
+    const response = await fetch(renderValidUrl(url), {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      },
+      body: JSON.stringify(data),
+    });
+    const responseData = await response.json();
+    return [true, responseData];
+  } catch (error) {
+    console.error('Error:', error);
+    return [false, error];
+  }
+};

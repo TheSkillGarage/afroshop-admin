@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 import { IconMessage } from "../../../images";
 import InputComponent from "../../shared/inputComponent";
-import { useForm } from "react-hook-form";
 import Button from "../../shared/button";
+import { postRequest } from "../../../redux/action";
 
 const ResetPassword = () => {
+  const [loading, setLoading] = useState(false);
   const {
     control,
     formState: { errors },
     register,
+    getValues,
+    handleSubmit,
+    reset,
   } = useForm({ mode: "all" });
+
+  const navigate = useNavigate();
 
   const onSubmit = async () => {
     const value = getValues();
@@ -29,7 +39,7 @@ const ResetPassword = () => {
       } else {
         reset();
         toast.success("Reset password link sent to your email.");
-        dispatch(activeModal(""));
+        navigate("/new-password");
       }
     } catch (error) {
       toast.error(`An error occured resetting password`, { autoClose: 2000 });
@@ -44,7 +54,7 @@ const ResetPassword = () => {
       <p className="text-center text-[16px] text-[#ccc] pb-[24px]">
         We’ll email you a password reset link
       </p>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <InputComponent
           inputType="email"
           label="Email"
@@ -55,8 +65,12 @@ const ResetPassword = () => {
           control={control}
           errors={errors}
           register={register}
+          requiredMessage="Enter valid email"
+          patternValue={/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/}
+          patternMessage="Invalid email address"
+          required
         />
-        <Button icon="white" className="w-[400px]">
+        <Button icon="white" className="w-[400px]" loading={loading} type="submit">
           Reset
         </Button>
       </form>

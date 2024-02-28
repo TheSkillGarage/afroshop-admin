@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { MessageIcon } from "../../../images";
 import Button from "../../shared/button";
@@ -14,16 +14,16 @@ const VerifyEmail = () => {
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
-   const { handleSubmit } = useForm({ mode: "all" });
+  const { handleSubmit } = useForm({ mode: "all" });
 
   const handleOtp = (element, index) => {
     if (isNaN(element.value)) return false;
     setOtp([
       ...otp.map((value, idx) => (index === idx ? element.value : value)),
     ]);
-    
+
     if (element.value === "" && index > 0) {
       element.previousSibling.focus();
     } else if (element.value !== "" && element.nextSibling) {
@@ -56,7 +56,6 @@ const VerifyEmail = () => {
           { autoClose: 2000 }
         );
       } else {
-        console.log('rsllt', responseData)
         dispatch(userLogin(responseData));
       }
     } catch (error) {
@@ -83,7 +82,7 @@ const VerifyEmail = () => {
           { autoClose: 2000 }
         );
       } else {
-        toast.success("otp sent to your email adress", { autoClose: 2000 });;
+        toast.success("otp sent to your email adress", { autoClose: 2000 });
       }
     } catch (error) {
       toast.error(`An error occured while sending your otp`, {
@@ -113,7 +112,7 @@ const VerifyEmail = () => {
         );
       } else {
         await updateUserConfirmation();
-       navigate('')
+        navigate("/store-created");
       }
     } catch (error) {
       toast.error(`An error occured while verifying your otp`, {
@@ -130,7 +129,7 @@ const VerifyEmail = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <p className="text-center font-bold py-[24px]">Verify your email</p>
         <p className="text-center text-[16px] text-[#ccc] pb-[24px]">
-          Please enter the 4 digit code sent to <br /> greenranger@gmail.com
+          Please enter the 4 digit code sent to <br /> {user?.email}
         </p>
         <div className="flex flex-row justify-between sm:gap-[10px] w-[380]">
           {otp.map((data, index) => {
@@ -148,10 +147,21 @@ const VerifyEmail = () => {
             );
           })}
         </div>
-        <p className="text-center text-[16px] text-green py-[24px] cursor-pointer"  onClick={async () => await sendUserOtp(user)}>Resend Code</p>
-          <Button icon="white" className="w-[400px]" loading={loading} disabled={!allOtpsNotEmpty}>
-            Verify
-          </Button>
+        <p
+          className="text-center text-[16px] text-green py-[24px] cursor-pointer"
+          onClick={async () => await sendUserOtp(user)}
+        >
+          Resend Code
+        </p>
+        <Button
+          icon="white"
+          className="w-[400px]"
+          loading={loading}
+          disabled={!allOtpsNotEmpty}
+          type="submit"
+        >
+          Verify
+        </Button>
       </form>
     </div>
   );

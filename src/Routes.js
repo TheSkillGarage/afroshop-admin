@@ -25,7 +25,8 @@ const MyRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<OverviewPage />} />
+        <Route exact path="/" element={<LogInPage />} />
+        <Route exact path="/dashboard" element={<OverviewPage />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/products/new" element={<AddProducts />} />
         <Route exact path="/products/edit/:sku" element={<EditProducts />} />

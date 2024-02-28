@@ -1,4 +1,4 @@
-import Cookies from 'js-cookies'
+import Cookies from 'js-cookie'
 import { AFROADMIN_TOKEN } from './constants';
 
   // Set a cookie that expires in 3 hours
