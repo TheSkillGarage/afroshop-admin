@@ -64,8 +64,8 @@ const SignUpForm = () => {
           username: value.email,
           email: value.email,
           password: value.password,
-          firstname: value.firstname,
-          lastname: value.lastname,
+          firstName: value.firstname,
+          lastName: value.lastname,
         }
       );
 

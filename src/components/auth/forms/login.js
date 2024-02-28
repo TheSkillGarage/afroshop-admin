@@ -62,7 +62,7 @@ const LogInForm = () => {
           reset();
           navigate("/dashboard");
         } else {
-          toast.error(`You are not an authorize to access this page`, {
+          toast.error(`You are not authorize to access this page`, {
             autoClose: 2000,
           });
         }
