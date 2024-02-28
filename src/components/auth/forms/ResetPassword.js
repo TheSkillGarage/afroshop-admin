@@ -39,7 +39,7 @@ const ResetPassword = () => {
       } else {
         reset();
         toast.success("Reset password link sent to your email.");
-        navigate("/new-password");
+        navigate("/newpassword");
       }
     } catch (error) {
       toast.error(`An error occured resetting password`, { autoClose: 2000 });
