@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import ConnectButton from "../../../googleLoginButton";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import InputComponent from "../../shared/inputComponent";
@@ -84,6 +85,12 @@ const LogInForm = () => {
             Log In to manage your store
           </p>
         </div>
+
+        <ConnectButton provider="google"/>
+
+        <p className="text-[13px] leading-[23px] text-center my-6 text-[#CCCCCC]">
+          or
+        </p>
 
         <div className="w-[400px]">
           <form
