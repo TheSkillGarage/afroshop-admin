@@ -7,6 +7,7 @@ import ORDERS_DATA from "../../data/orders";
 import useFilter from "../../hooks/useFilter";
 import Search from "../search";
 import Button from "../shared/button";
+import { useSelector } from "react-redux";
 
 const ViewOrders = () => {
 
@@ -14,8 +15,11 @@ const ViewOrders = () => {
 
     const navigate = useNavigate();
 
-    const order = ORDERS_DATA.find((order) => order.orderID === orderID);
-    const shopperInfo = order.shopperInfo;
+    const orderData = useSelector((state) => state.ordersData);
+
+    const order = orderData.find((order) => order.orderID === orderID);
+   
+    const date = new Date(order.createdAt)
 
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -26,7 +30,7 @@ const ViewOrders = () => {
 
 
     // using custom  hooks
-    const data = useFilter("products", "all", order.order, searchTerm, filterObject).filteredData;
+    const data = useFilter("products", "all", order["products"], searchTerm, filterObject).filteredData;
 
     return (
         <div>
@@ -58,9 +62,9 @@ const ViewOrders = () => {
 
                                     <div className="text-[13px] leading-[23px] text-[#7F7F7F] w-[70%]">
                                         <p>{order.orderID}</p>
-                                        <p>{order.orderDate}</p>
-                                        <p>{order.items}</p>
-                                        <p>{order.price.price}</p>
+                                        <p>{date.toLocaleDateString('en-GB')}</p>
+                                        <p>{order.products.length}</p>
+                                        <p>{parseFloat(order.grandTotal).toFixed(2)}</p>
                                     </div>
                                 </div>
                             </div>
@@ -77,10 +81,10 @@ const ViewOrders = () => {
                                     </div>
 
                                     <div className="text-[13px] leading-[23px] text-[#7F7F7F] w-[70%]">
-                                        <p>{order.customer}</p>
-                                        <p>{shopperInfo.deliveryAddress}</p>
-                                        <p>{shopperInfo.phone}</p>
-                                        <p>{shopperInfo.email}</p>
+                                        <p>{`${order.firstName} ${order.lastName}`}</p>
+                                        <p>{`${order.address.streetAddress}, ${order.address.city}, ${order.address.state}, ${order.address.country} `}</p>
+                                        <p>{order.phoneNumber}</p>
+                                        <p>{order.email}</p>
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +94,7 @@ const ViewOrders = () => {
 
                         {/**************************************************************** * table section ***************************************************************/}
 
-                        <Search handleSearch={handleSearch} name="view-orders" DATA={order.order} handleFilterObject={handleFilterObject} />
+                        {/* <Search handleSearch={handleSearch} name="view-orders" DATA={order.products} handleFilterObject={handleFilterObject} /> */}
 
                         <div className="w-full">
                             <table className="w-full border-collapse">
@@ -107,13 +111,13 @@ const ViewOrders = () => {
 
                                 <tbody>
                                     {
-                                        data.map(({ productName, productID, price }, key) => {
+                                        data.map(({ name, productID, price }, key) => {
                                             return (
                                                 <tr key={key} className="border-b border-1 border-[#E6E6E6] text-[13px] leading-[23px] text-[#333333]">
                                                     <td className="py-2 pr-8"></td>
-                                                    <td className="py-2 pr-8" >{productName}</td>
+                                                    <td className="py-2 pr-8" >{name}</td>
                                                     <td className="py-2 pr-8">{productID}</td>
-                                                    <td className="py-2 pr-8">{price}</td>
+                                                    <td className="py-2 pr-8">{parseFloat(price).toFixed(2)}</td>
                                                     <td className="py-4 pr-8 capitalize">
                                                         <StatusPills status={order.status} />
                                                     </td>

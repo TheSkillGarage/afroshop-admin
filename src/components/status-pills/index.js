@@ -9,7 +9,7 @@ const StatusPills = ({ name, status }) => {
 
 
     const colorOfPills = (status) => {
-        switch (status) {
+        switch (status.toLowerCase()) {
             case "pending":
                 return "text-[#FF9500] bg-[rgba(255,149,0,0.1)]"
             case "shipped":

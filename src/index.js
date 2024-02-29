@@ -5,6 +5,9 @@ import "./index.css";
 import MyRoutes from "./Routes";
 import { store } from './redux/store';
 import DetectMobile from "./components/detect-mobile";
+import axios from "axios";
+
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const Root = () => {
 

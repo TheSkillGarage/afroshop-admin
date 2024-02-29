@@ -1,11 +1,11 @@
 import React from "react";
 
-const Price = ({ values }) => {
+const Price = ({ value }) => {
   return (
     <>
-      <p>${values.price}</p>
+      <p>${parseFloat(value).toFixed(2)}</p>
       <p className="text-[#186F3D] text-[10px] leading-[15px]">
-        {values.paymentMethod}
+        Stripe
       </p>
     </>
   );
@@ -24,7 +24,7 @@ const DateCol = ({ value }) => {
   )
 }
 
-const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
+const BaseTable = ({ tableHeaders, data, loading, emptyState, name }) => {
   return (
     <div className="w-full">
       {data && data.length !== 0 && !loading ? (
@@ -63,21 +63,33 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
                     >
                       {
                         header.id === "price" ? (
-                          <Price values={row[header.id]} />
+                          `$${parseFloat(row["grandTotal"]).toFixed(2)}`
                         )
                           : (header.id === "dateAdded")
                             ? (
                               <DateCol value={row[header.id]} />
                             )
-                            : (header.id === "salesPrice")
+                            : ((header.id === "orderDate" && name === "orders"))
                               ? (
-                                row[header.id] === "" ? "---" : parseFloat(row[header.id]).toFixed(2)
+                                <DateCol value={row["payment"].createdAt} />
                               )
-                              : row[header.id] === ""
-                                ? "---"
-                                : (
-                                  row[header.id]
+                              : (header.id === "customer" && name === "orders")
+                                ? (
+                                  `${row["firstName"]} ${row["lastName"]}`
                                 )
+                                : (header.id === "items" && name === "orders")
+                                  ? (
+                                    `${row["products"].length}`
+                                  )
+                                  : (header.id === "salesPrice")
+                                    ? (
+                                      row[header.id] === "" ? "---" : parseFloat(row[header.id]).toFixed(2)
+                                    )
+                                    : row[header.id] === ""
+                                      ? "---"
+                                      : (
+                                        row[header.id]
+                                      )
                       }
                     </td>
                   );

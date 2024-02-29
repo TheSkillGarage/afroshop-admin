@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ORDERS_DATA from "../../data/orders";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 import usePagination from "../../hooks/usePagination";
 import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";
@@ -8,6 +9,8 @@ import TableFooter from "../table-footer/table-footer";
 import Search from "../search";
 import BaseTable from "../shared/table";
 import useTableData from "../../hooks/useTableData";
+import { useDispatch, useSelector } from "react-redux";
+import { getOrdersData } from "../../redux/action";
 
 const OrdersDashboard = () => {
 
@@ -25,9 +28,17 @@ const OrdersDashboard = () => {
   const handleSearch = (searchWord) => setSearchTerm(searchWord)
   const handleFilterObject = (filterObject) => setFilterObject(filterObject)
 
+  const dispatch = useDispatch()
+  const location = useLocation()
+
+  useEffect(() => {
+    dispatch(getOrdersData())
+  }, [])
+
+  const ordersData = useSelector((state) => state.ordersData);
 
   // using custom  hooks
-  const data = useFilter("orders", activeTab, ORDERS_DATA, searchTerm, filterObject).filteredData;
+  const data = useFilter("orders", activeTab, ordersData, searchTerm, filterObject).filteredData;
   const pagination = usePagination(page, itemsPerPage, data);
   const totalPages = pagination.totalPages; // sets total 
 
@@ -76,12 +87,12 @@ const OrdersDashboard = () => {
             <p className="text-[20px] leading-[32px] text-[#186F3D] font-bold h-[64px] flex items-center">Orders</p>
           </div>
 
-          <Search handleSearch={handleSearch} name="orders" DATA={ORDERS_DATA} handleFilterObject={handleFilterObject} />
+          <Search handleSearch={handleSearch} name="orders" DATA={ordersData} handleFilterObject={handleFilterObject} />
 
         </div>
 
         {/**************************************************************  table section *****************************************************/}
-        <BaseTable tableHeaders={headers} data={results} />
+        <BaseTable tableHeaders={headers} data={results} name="orders"/>
 
 
 
