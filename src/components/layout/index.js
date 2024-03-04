@@ -55,7 +55,6 @@ const PageLayout = ({ children }) => {
       }
     }, [isAuthenticated]);
 
-    console.log('user', isAuthenticated)
 
   return (
     <section className="bg-[#F2F2F2]">
