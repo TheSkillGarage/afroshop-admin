@@ -19,6 +19,7 @@ import {
   NewPasswordPage,
 } from "./pages";
 import EditRole from "./components/roles-and-permissions/edit-role";
+import RedirectHandler from "./components/redirectHandler";
 import { PageNotFoundComponent } from "./components";
 
 const MyRoutes = () => {
@@ -27,6 +28,7 @@ const MyRoutes = () => {
       <Routes>
         <Route exact path="/" element={<LogInPage />} />
         <Route exact path="/dashboard" element={<OverviewPage />} />
+        <Route path="/connect/:provider/redirect" element={<RedirectHandler />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/products/new" element={<AddProducts />} />
         <Route exact path="/products/edit/:sku" element={<EditProducts />} />

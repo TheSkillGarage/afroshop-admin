@@ -11,6 +11,7 @@ import InputComponent from "../../shared/inputComponent";
 import { postRequest, userLogin } from "../../../redux/action";
 import { AFROADMIN_TOKEN } from "../../../utils/constants";
 import { expirationDate } from "../../../utils";
+import ConnectButton from "../../../googleLoginButton";
 
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -113,12 +114,7 @@ const SignUpForm = () => {
           </p>
         </div>
 
-        <div className="mt-6 w-[400px]">
-          <button className="flex gap-2 justify-center items-center border border-1 border-[#CCCCCC] rounded w-full h-[53px]">
-            <img src={GoogleLogo} alt="google-logo" />
-            Continue with Google
-          </button>
-        </div>
+        <ConnectButton provider="google"/>
 
         <p className="text-[13px] leading-[23px] text-center my-6 text-[#CCCCCC]">
           or
