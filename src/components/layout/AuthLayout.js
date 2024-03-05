@@ -1,16 +1,13 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 import { Store, AfroshopLogo } from "../../images";
-import { useSelector } from "react-redux";
 
 const AuthLayout = ({ children }) => {
-  const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
   const backgroundImageStyle = {
     backgroundImage: `url(${Store})`,
   };
 
-  return !isAuthenticated ? (
+  return (
     <div className="w-[100%] bg-[#FFFFFF]">
       <div className="flex w-full">
         <div
@@ -36,8 +33,6 @@ const AuthLayout = ({ children }) => {
         </div>
       </div>
     </div>
-  ) : (
-    <Navigate replace to="/dashboard" />
   );
 };
 
