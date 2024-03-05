@@ -133,6 +133,7 @@ const SignUpForm = () => {
                       <InputComponent
                         type={type}
                         label={label}
+                        placeholder={`Enter ${label}`}
                         fieldName={label.replace(" ", "").toLowerCase()}
                         leftIcon={icons[0]}
                         control={control}
@@ -154,6 +155,7 @@ const SignUpForm = () => {
                       <InputComponent
                         type={showPassword ? "text" : type}
                         label={label}
+                        placeholder={`Enter ${label}`}
                         fieldName={label.toLowerCase()}
                         leftIcon={icons[0]}
                         rightIcon={showPassword ? icons[2] : icons[1]}

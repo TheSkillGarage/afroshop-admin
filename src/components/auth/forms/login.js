@@ -63,7 +63,7 @@ const LogInForm = () => {
           reset();
           navigate("/dashboard");
         } else {
-          toast.error(`You are not authorize to access this page`, {
+          toast.error(`You are not authorized to access this page`, {
             autoClose: 2000,
           });
         }
@@ -101,6 +101,7 @@ const LogInForm = () => {
               type="email"
               label="Store Email"
               fieldName="email"
+              placeholder="Enter Email"
               leftIcon={BlackEmailIcon}
               control={control}
               errors={errors}
@@ -115,6 +116,7 @@ const LogInForm = () => {
               type={showPassword ? "text" : "password"}
               label="Password"
               fieldName="password"
+              placeholder="Enter Password"
               leftIcon={PasswordLock}
               rightIcon={showPassword ? ViewPassword : PasswordEye}
               onIconClick={() => setShowPassword(!showPassword)}

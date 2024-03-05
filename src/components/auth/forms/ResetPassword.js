@@ -19,14 +19,13 @@ const ResetPassword = () => {
     reset,
   } = useForm({ mode: "all" });
 
-  const navigate = useNavigate();
 
   const onSubmit = async () => {
     const value = getValues();
     setLoading(true);
     try {
       const [success, responseData] = await postRequest(
-        "/api/auth/forgot-password",
+        "/api/password-resets",
         {
           email: value.email,
         }
