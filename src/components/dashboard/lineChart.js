@@ -106,34 +106,66 @@ export function LineChart({ DATA }) {
     },
   };
 
-  const formattedDates = DATA.map((data) => {
-    const dateObject = new Date(data.date);
-    const formattedDate = dateObject.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-    });
-    return formattedDate;
-  });
+  // Grouping the data by date and summing up the grandTotal for each date
+const incomePerDate = {};
 
-  const data = {
-    labels: formattedDates,
+const formattedDates = DATA.map(data => {
+    return new Date(data.createdAt).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+    });
+});
+
+// Extracting unique formatted dates using a Set
+const uniqueFormattedDatesSet = new Set(formattedDates);
+const uniqueFormattedDates = [...uniqueFormattedDatesSet];
+
+DATA.forEach(data => {
+    const date = new Date(data.createdAt).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+    });
+    if (!incomePerDate[date]) {
+        incomePerDate[date] = 0;
+    }
+    incomePerDate[date] += data.grandTotal;
+});
+
+// Converting the grouped data into arrays for labels and data
+const incomeData = uniqueFormattedDates.map(date => incomePerDate[date] || 0);
+
+// Calculating order counts per date
+const orderCountsPerDate = uniqueFormattedDates.map(date => {
+    return DATA.filter(data => {
+        const dataDate = new Date(data.createdAt).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+        });
+        return dataDate === date;
+    }).length;
+});
+
+// Creating the data object
+const data = {
+    labels: uniqueFormattedDates,
     datasets: [
-      {
-        label: 'Income',
-        data: DATA.map((data) => data.income),
-        borderColor: '#186F3D',
-        backgroundColor: '#186F3D',
-        lineTension: 0.5,
-      },
-      {
-        label: 'Orders',
-        data: DATA.map((data) => data.orders),
-        borderColor: '#FCAE17',
-        backgroundColor: '#FCAE17',
-        lineTension: 0.5,
-      },
+        {
+            label: 'Income',
+            data: incomeData,
+            borderColor: '#186F3D',
+            backgroundColor: '#186F3D',
+            lineTension: 0.5,
+        },
+        {
+            label: 'Orders',
+            data: orderCountsPerDate,
+            borderColor: '#FCAE17',
+            backgroundColor: '#FCAE17',
+            lineTension: 0.5,
+        },
     ],
-  };
+};
+
 
   return <Line options={options} data={data} />;
 }

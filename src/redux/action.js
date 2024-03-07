@@ -119,7 +119,7 @@ export const resetStore = () => dispatch => {
   })
 }
 
-export const getOrdersData = () => async (dispatch) => {
-  await fetchData(dispatch, 'orders?storeID=1', 'ordersData')
+export const getOrdersData = (storeID) => async (dispatch) => {
+  await fetchData(dispatch, `orders?storeID=${storeID}`, 'ordersData')
 }
 

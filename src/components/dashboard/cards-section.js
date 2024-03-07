@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectDropdown from "../shared/dropdownInput/dropdown";
 import Button from "../shared/button";
 import SummaryCards from "./summaryCards";
 import SELECT_OPTIONS from "../../data/dashboardTimeOptions";
 import { OVERVIEW_DATA } from "../../data";
+import { useSelector } from "react-redux";
 
 const BusinessSummary = () => {
 
-    const [selectedYear, setSelectedYear] = useState(2023);
+    // const [selectedYear, setSelectedYear] = useState(2024);
+
+    const ordersData = useSelector((state) => state.ordersData);
 
     const calculateTotals = (property, year) => {
         return OVERVIEW_DATA.reduce((total, data) => {
@@ -18,13 +21,47 @@ const BusinessSummary = () => {
         }, 0);
     };
 
-    const totalSales = calculateTotals('income', parseInt(selectedYear));
-    const totalCustomers = calculateTotals('customers', parseInt(selectedYear));
-    const totalOrders = calculateTotals('orders', parseInt(selectedYear));
-    const totalProducts = calculateTotals('products', parseInt(selectedYear));
+
+    const [selectedYear, setSelectedYear] = useState(2024);
+    const [totalSales, setTotalSales] = useState(0);
+    const [totalCustomers, setTotalCustomers] = useState(0);
+    const [totalOrders, setTotalOrders] = useState(0);
+    const [totalProducts, setTotalProducts] = useState(0);
+  
+    useEffect(() => {
+        const calculateTotals = () => {
+          let sales = 0;
+          let customers = new Set();
+          let orders = 0;
+          let products = new Set();
+    
+          ordersData.forEach(order => {
+            const orderYear = new Date(order.createdAt).getFullYear();
+    
+            if (selectedYear === "all" || orderYear === selectedYear) {
+              sales += order.grandTotal;
+              customers.add(order.customerId);
+              orders++;
+              order.products.forEach(product => {
+                products.add(product.productID);
+              });
+            }
+          });
+    
+          setTotalSales(sales);
+          setTotalCustomers(customers.size);
+          setTotalOrders(orders);
+          setTotalProducts(products.size);
+        };
+    
+        calculateTotals();
+      }, [selectedYear, ordersData]);
+  
+
 
     const percentChangeInMetric = (metric, param) => {
-        const uniqueYears = [...new Set(OVERVIEW_DATA.map(item => new Date(item.date).getFullYear()))];
+        
+        const uniqueYears = [...new Set(ordersData.map(item => new Date(item.createdAt).getFullYear()))];
 
         const startYear = Math.min(...uniqueYears);
         const currentYear = Math.max(...uniqueYears);
@@ -32,15 +69,15 @@ const BusinessSummary = () => {
 
         if (selectedYear === "all") {
 
-            let leastYearTotal = OVERVIEW_DATA.reduce((total, data) => {
-                if (new Date(data.date).getFullYear() === parseInt(startYear)) {
+            let leastYearTotal = ordersData.reduce((total, data) => {
+                if (new Date(data.createdAt).getFullYear() === parseInt(startYear)) {
                     total += data[param];
                 }
                 return total;
             }, 0);
 
-            let greaterYearTotal = OVERVIEW_DATA.reduce((total, data) => {
-                if (new Date(data.date).getFullYear() === parseInt(currentYear)) {
+            let greaterYearTotal = ordersData.reduce((total, data) => {
+                if (new Date(data.createdAt).getFullYear() === parseInt(currentYear)) {
                     total += data[param];
                 }
                 return total;
@@ -65,7 +102,7 @@ const BusinessSummary = () => {
     }
 
 
-    const percentChangeInSales = percentChangeInMetric(totalSales, 'income');
+    const percentChangeInSales = percentChangeInMetric(totalSales, 'grandTotal');
     const percentChangeInCustomers = percentChangeInMetric(totalCustomers, 'customers');
     const percentChangeInOrders = percentChangeInMetric(totalOrders, 'orders');
     const percentChangeInProducts = percentChangeInMetric(totalProducts, 'products');
@@ -87,7 +124,7 @@ const BusinessSummary = () => {
                 </div>
 
                 <div className="flex gap-4 items-center">
-                    <SelectDropdown name="summary" options={SELECT_OPTIONS.slice(1)} placeholder="2023" handleSelectedYear={handleSelectedYear} color="green"/>
+                    <SelectDropdown name="summary" options={SELECT_OPTIONS.slice(1)} placeholder="2023" handleSelectedYear={handleSelectedYear} color="green" />
                     <Button variant="primary" className="text-[13px] w-[118px] h-[40px]" onClick={() => setSelectedYear("all")}>
                         View All Time
                     </Button>
@@ -98,26 +135,26 @@ const BusinessSummary = () => {
             <div className="flex gap-4">
                 <SummaryCards
                     cardTitle="Total Sales"
-                    cardNumber={totalSales}
+                    cardNumber={totalSales.toFixed(2)}
                     percentage={percentChangeInSales}
                     backgroundColor="#FF950026"
                 />
                 <SummaryCards
                     cardTitle="Customers"
                     cardNumber={totalCustomers}
-                    percentage={percentChangeInCustomers}
+                    percentage={"5"}
                     backgroundColor="#007AFF26"
                 />
                 <SummaryCards
                     cardTitle="Total Orders"
                     cardNumber={totalOrders}
-                    percentage={percentChangeInOrders}
+                    percentage={"2"}
                     backgroundColor="#FFD60A26"
                 />
                 <SummaryCards
                     cardTitle="Total Products"
                     cardNumber={totalProducts}
-                    percentage={percentChangeInProducts}
+                    percentage={"2"}
                     backgroundColor="#34C75926"
                 />
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductCard from './productCard';
 import CustomerCard from './customerCard';
 import BaseTable from '../shared/table';
@@ -11,10 +11,16 @@ import { useNavigate } from 'react-router-dom';
 
 import BusinessSummary from './cards-section';
 import LineChartComponent from './lineChart-section';
-import ORDERS_DATA from '../../data/orders';
+import { getOrdersData } from '../../redux/action';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Dashboard = () => {
-  const results = ORDERS_DATA.slice(-3).map((data) => ({
+
+  const ordersData = useSelector((state) => state.ordersData);
+  const [topCustomers, setTopCustomers] = useState([]);
+  const [topProducts, setTopProducts] = useState([]);
+
+  const results = ordersData.slice(0, 3).map((data) => ({
     ...data,
     id: data.id,
     status: (
@@ -24,7 +30,88 @@ const Dashboard = () => {
     ),
   }));
 
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getOrdersData(1))
+  }, [])
+
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+
+    // Function for aggregating top products
+    const getTopProducts = () => {
+      const productSalesMap = {};
+
+      // Loop through each object in the array and aggregate product sales
+      ordersData.forEach(data => {
+        const { products } = data;
+        products.forEach(product => {
+          const { productID, name, image, price, amount } = product;
+
+          if (!productSalesMap[productID]) {
+            productSalesMap[productID] = {
+              productID,
+              productName: name,
+              productImage: image,
+              totalSales: amount
+            };
+          } else {
+            productSalesMap[productID].totalSales += amount;
+          }
+        });
+      });
+
+      // Converting the aggregated product sales into a sorted array of objects
+      const topProductsArray = Object.values(productSalesMap).sort((a, b) => b.totalSales - a.totalSales);
+
+      setTopProducts(topProductsArray)
+    }
+
+    // Function to filter and aggregate customer data
+    const getTopCustomers = () => {
+
+      const currentDate = new Date();
+      const sevenDaysAgo = new Date(currentDate);
+      sevenDaysAgo.setDate(currentDate.getDate() - 7);
+
+      // Filter ordersData to include only orders within the last 7 days
+      const weeklyData = ordersData.filter(data => {
+        const orderDate = new Date(data.createdAt);
+        return orderDate >= sevenDaysAgo && orderDate <= currentDate;
+      });
+
+      // Creating an array of top customers
+      const customerDetails = {};
+
+      weeklyData.forEach(data => {
+
+        const { customer, firstName, lastName, email, customerProfileURL } = data;
+
+        if (!customerDetails[customer]) {
+          customerDetails[customer] = {
+            customerID: customer,
+            name: `${firstName} ${lastName}`,
+            email: email,
+            image: customerProfileURL,
+            orders: 1
+          };
+        } else {
+          customerDetails[customer].orders++;
+        }
+      });
+
+      // Converting the aggregated customer data into an array of objects
+      const customerArray = Object.values(customerDetails).sort((a, b) => b.orders - a.orders);
+
+      setTopCustomers(customerArray);
+    };
+
+    getTopProducts();
+    getTopCustomers();
+  }, [ordersData]);
 
   return (
     <div className="bg-[#F2F2F2] w-full pt-6 pb-8 px-4">
@@ -37,18 +124,18 @@ const Dashboard = () => {
 
       <div className="bg-[rgb(255,255,255)] h-[1100px] border rounded-md py-8 px-5 ">
         <div className=" w-[98%] flex flex-col gap-8 ">
-         
-         <BusinessSummary />
+
+          <BusinessSummary />
 
           {/* --------------Line chart and Top products-------------- */}
           <div className="flex justify-between h-[332px]">
-            
-           <LineChartComponent />
+
+            <LineChartComponent />
 
             <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-4 ">
               <p className="font-semibold text-base">Top Selling Products</p>
-              {DASHBOARD_PRODUCT_CARD.map((data, key) =>
-                <ProductCard productImage={data.productImage} productName={data.productName} salesData={data.salesData} key={key}/>)}
+              {topProducts.slice(0, 3).map((data, key) =>
+                <ProductCard data={data} key={key} />)}
             </div>
           </div>
 
@@ -63,6 +150,7 @@ const Dashboard = () => {
               </div>
 
               <BaseTable
+                name="orders"
                 tableHeaders={DASHBOARD_ORDERS_HEADERS}
                 data={results}
               />
@@ -70,14 +158,8 @@ const Dashboard = () => {
 
             <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-4 ">
               <p className="font-semibold text-base">Weekly Top Customers</p>
-              {DASHBOARD_CUSTOMER_CARD.map((data, key) =>
-                <CustomerCard key={key}
-                  customerImage={data.customerImage}
-                  customerName={data.customerName}
-                  customerEmail={data.customerEmail}
-                  numberOrders={data.numberOrders}
-                />)}
-
+              {topCustomers.slice(0, 3).map((data, key) =>
+                <CustomerCard key={key} data={data} />)}
             </div>
           </div>
         </div>

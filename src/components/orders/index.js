@@ -32,7 +32,7 @@ const OrdersDashboard = () => {
   const location = useLocation()
 
   useEffect(() => {
-    dispatch(getOrdersData())
+    dispatch(getOrdersData(1))
   }, [])
 
   const ordersData = useSelector((state) => state.ordersData);
