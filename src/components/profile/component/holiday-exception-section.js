@@ -3,7 +3,6 @@ import DeliveryCard from "./delivery-holiday-card";
 import InputComponent from "../../shared/inputComponent";
 import Button from "../../shared/button";
 import { DateIcon } from "../../../images";
-import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 
 const HolidayException = ({

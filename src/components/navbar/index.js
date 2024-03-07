@@ -17,7 +17,7 @@ const AdminNavbar = ({ name }) => {
   const isSidebarToggled = useSelector((state) => state.isSidebarToggled)
 
   const toggleSidebar = () => {
-    dispatch(sidebarToggle(isSidebarToggled))
+    dispatch(sidebarToggle({toggle: isSidebarToggled}))
   }
 
   const navigate = useNavigate();

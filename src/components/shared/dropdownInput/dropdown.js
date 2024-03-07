@@ -5,6 +5,7 @@ import makeAnimated from "react-select/animated";
 const SelectDropdown = forwardRef(
   (
     {
+      color,
       className,
       options,
       field,
@@ -16,7 +17,7 @@ const SelectDropdown = forwardRef(
       isDisabled,
       handleChange,
       closeMenuOnSelect,
-      handleSelectedYear
+      handleSelectedYear,
     },
     ref
   ) => {
@@ -25,17 +26,25 @@ const SelectDropdown = forwardRef(
     const selectStyles = {
       control: (baseStyles, state) => ({
         ...baseStyles,
-        background: errors?.errors[field?.name] ? "#FF3B300D" : "#FFFFFF",
+        background: errors
+          ? errors[field?.name]
+            ? "#FF3B300D"
+            : "#FFFFFF"
+          : "#F2F2F2",
         fontWeight: 400,
-        fontSize: "13px",
-        lineHeight: "23px",
-        height: "40px",
+        fontSize: color === "green" ? "13px" : "16px",
+        lineHeight: color === "green" ? "23px" : "24px",
+        height: color === "green" ? "40px" : "53px",
         color: "#186F3D",
-        border: errors?.errors[field?.name]
-          ? "1px solid #FF3B30"
-          : "1px solid #186F3D",
+        border: errors
+          ? errors[field?.name]
+            ? "1px solid #FF3B30"
+            : isDisabled
+            ? ""
+            : "1px solid #186F3D"
+          : "1px solid #F2F2F2",
         boxShadow: state.isFocused ? 0 : 0,
-        "&:hover": { border: "1px solid #186F3D" },
+        "&:hover": { border: color === "green" ? "1px solid #186F3D" : "1px solid #cccccc" },
       }),
       placeholder: (baseStyles) => ({
         ...baseStyles,
@@ -44,7 +53,7 @@ const SelectDropdown = forwardRef(
       }),
       dropdownIndicator: (selectProps, state, baseStyles) => ({
         ...baseStyles,
-        color: "#186F3D",
+        color: color === "green" ? "#186F3D" : "#292D32",
         width: "34px",
         transition: "all .1s ease",
         transform: state.selectProps.menuIsOpen ? "rotate(180deg)" : null,
@@ -78,15 +87,15 @@ const SelectDropdown = forwardRef(
               !multiple
                 ? val?.label
                 : setSelectedOptions((prev) =>
-                    val?.map((v) =>
-                      v?.value !== prev?.value
-                        ? { label: v?.label, value: v?.value }
-                        : prev
-                    )
+                  val?.map((v) =>
+                    v?.value !== prev?.value
+                      ? { label: v?.label, value: v?.value }
+                      : prev
                   )
+                )
             );
             handleChange?.(multiple ? val : val?.label);
-            handleSelectedYear(val?.value);
+            handleSelectedYear?.(val?.value);
           }}
           className={`${className} basic-multi-select`}
         />

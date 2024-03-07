@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PRODUCT_DATA from "../../data/products";
 import usePagination from "../../hooks/usePagination";
 import { Link, useNavigate } from "react-router-dom";
 import Filters from "../filters";
@@ -8,6 +7,7 @@ import TableFooter from "../table-footer/table-footer";
 import Search from "../search";
 import BaseTable from "../shared/table";
 import useTableData from "../../hooks/useTableData";
+import { useSelector } from "react-redux";
 
 const ProductsDashboard = () => {
 
@@ -19,6 +19,8 @@ const ProductsDashboard = () => {
 
     const [filterObject, setFilterObject] = useState({});
 
+
+    const PRODUCT_DATA = useSelector((state) => state.productsData);
 
     // from usePagination hook
     let data = useFilter("products", activeTab, PRODUCT_DATA, searchTerm, filterObject).filteredData;

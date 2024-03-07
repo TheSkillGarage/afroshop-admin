@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import InputComponent from "../shared/inputComponent";
 import { Lock } from "../../images";
 import { PasswordEye, ViewPassword } from "../../images";
@@ -28,21 +28,22 @@ const EditPassword = ({ editProfile, form }) => {
     <div className="max-w-[500px] space-y-6 m-auto py-8 items-center">
       <InputComponent
         inputType=""
-        type={viewPassword["current"] ? "text" : "password"}
+        type={"password"}
         label="Current Password"
         name="currentPassword"
         fieldName="currentPassword"
         required={true}
         requiredMessage={"This field is required"}
-        placeholder="Enter"
+        placeholder="*******"
         className="bg-[#F2F2F2]"
         isReadOnly={!editProfile}
         control={control}
         errors={errors}
         register={register}
         leftIcon={Lock}
-        rightIcon={viewPassword["current"] ? ViewPassword : PasswordEye}
+        rightIcon={PasswordEye}
         onIconClick={() => handleViewPassword("current")}
+        disabled={true}
       />
       {editProfile && (
         <>

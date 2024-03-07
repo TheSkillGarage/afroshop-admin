@@ -87,7 +87,7 @@ const BusinessSummary = () => {
                 </div>
 
                 <div className="flex gap-4 items-center">
-                    <SelectDropdown name="summary" options={SELECT_OPTIONS.slice(1)} placeholder="2023" handleSelectedYear={handleSelectedYear} />
+                    <SelectDropdown name="summary" options={SELECT_OPTIONS.slice(1)} placeholder="2023" handleSelectedYear={handleSelectedYear} color="green"/>
                     <Button variant="primary" className="text-[13px] w-[118px] h-[40px]" onClick={() => setSelectedYear("all")}>
                         View All Time
                     </Button>
