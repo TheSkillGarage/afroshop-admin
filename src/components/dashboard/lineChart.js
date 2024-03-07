@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-export function LineChart({ DATA }) {
+export function LineChart({ DATA, selectedYear }) {
   const options = {
     bezierCurve: true,
     hitRadius: 5,
@@ -88,83 +88,92 @@ export function LineChart({ DATA }) {
           title: (tooltipItems, data) => {
             return '';
           },
-          label: function(context) {
-              let label = '';
+          label: function (context) {
+            let label = '';
 
-              if (context.parsed.y !== null) {
-                  if (context.dataset.label !== "Orders"){
-                    label = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
-                  }else{
-                    label = context.parsed.y;
-                  }
+            if (context.parsed.y !== null) {
+              if (context.dataset.label !== "Orders") {
+                label = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+              } else {
+                label = context.parsed.y;
               }
-              return label;
+            }
+            return label;
           }
-      }
+        }
       },
 
     },
   };
 
-  // Grouping the data by date and summing up the grandTotal for each date
-const incomePerDate = {};
+  const [incomeData, setIncomeData] = useState(0);
+  const [ordersData, setOrdersData] = useState(0);
+  const [uniqueFormattedDates, setuniqueFormattedDates] = useState([])
+  const incomePerDate = {};
 
-const formattedDates = DATA.map(data => {
-    return new Date(data.createdAt).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
+  useEffect(() => {
+    // Function to format date based on selected year
+    const formatDate = (date, selectedYear) => {
+      if (selectedYear === "week") {
+        return date.toLocaleString('default', { month: 'short', day: 'numeric' });
+      } else {
+        return date.toLocaleString('default', { month: 'short' }) + ' 01';
+      }
+    };
+  
+    // Initialize objects for income and order counts
+    const incomePerDate = {};
+    const orderCountsPerDate = {};
+  
+    // Iterate over DATA to calculate income and order counts
+    DATA.forEach(data => {
+      const date = new Date(data.createdAt);
+      const formattedDate = formatDate(date, selectedYear);
+      
+      // Calculate income
+      incomePerDate[formattedDate] = (incomePerDate[formattedDate] || 0) + data.grandTotal;
+      
+      // Calculate order counts
+      orderCountsPerDate[formattedDate] = (orderCountsPerDate[formattedDate] || 0) + 1;
     });
-});
+  
+    // Extract unique formatted dates
+    const uniqueFormattedDate = Object.keys(incomePerDate);
+  
+    // Extract income data
+    const incomeData = uniqueFormattedDate.map(date => incomePerDate[date] || 0);
+  
+    // Extract order counts data
+    const orderCountsData = uniqueFormattedDate.map(date => orderCountsPerDate[date] || 0);
+  
+    // Update state variables
+    setuniqueFormattedDates(uniqueFormattedDate);
+    setIncomeData(incomeData);
+    setOrdersData(orderCountsData);
+  }, [DATA, selectedYear]);
+  
 
-// Extracting unique formatted dates using a Set
-const uniqueFormattedDatesSet = new Set(formattedDates);
-const uniqueFormattedDates = [...uniqueFormattedDatesSet];
 
-DATA.forEach(data => {
-    const date = new Date(data.createdAt).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-    });
-    if (!incomePerDate[date]) {
-        incomePerDate[date] = 0;
-    }
-    incomePerDate[date] += data.grandTotal;
-});
-
-// Converting the grouped data into arrays for labels and data
-const incomeData = uniqueFormattedDates.map(date => incomePerDate[date] || 0);
-
-// Calculating order counts per date
-const orderCountsPerDate = uniqueFormattedDates.map(date => {
-    return DATA.filter(data => {
-        const dataDate = new Date(data.createdAt).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-        });
-        return dataDate === date;
-    }).length;
-});
-
-// Creating the data object
-const data = {
+  // Creating the data object
+  const data = {
     labels: uniqueFormattedDates,
     datasets: [
-        {
-            label: 'Income',
-            data: incomeData,
-            borderColor: '#186F3D',
-            backgroundColor: '#186F3D',
-            lineTension: 0.5,
-        },
-        {
-            label: 'Orders',
-            data: orderCountsPerDate,
-            borderColor: '#FCAE17',
-            backgroundColor: '#FCAE17',
-            lineTension: 0.5,
-        },
+      {
+        label: 'Income',
+        data: incomeData,
+        borderColor: '#186F3D',
+        backgroundColor: '#186F3D',
+        lineTension: 0.5,
+      },
+      {
+        label: 'Orders',
+        data: ordersData,
+        borderColor: '#FCAE17',
+        backgroundColor: '#FCAE17',
+        lineTension: 0.5,
+      },
     ],
-};
+  };
 
 
   return <Line options={options} data={data} />;

@@ -56,7 +56,7 @@ const LineChartComponent = () => {
                 />
             </div>
             <div className="h-[250px]">
-                <LineChart DATA={dataFilter} />
+                <LineChart DATA={dataFilter} selectedYear={selectedYear}/>
             </div>
         </div>
     )

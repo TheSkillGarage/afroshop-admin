@@ -5,8 +5,6 @@ import BaseTable from '../shared/table';
 import StatusPills from '../status-pills';
 import Button from '../shared/button';
 import DASHBOARD_ORDERS_HEADERS from '../../data/dashboardHeaders';
-import DASHBOARD_PRODUCT_CARD from '../../data/dashboardProductCard';
-import DASHBOARD_CUSTOMER_CARD from '../../data/dashboardCustomerCard';
 import { useNavigate } from 'react-router-dom';
 
 import BusinessSummary from './cards-section';
@@ -19,6 +17,8 @@ const Dashboard = () => {
   const ordersData = useSelector((state) => state.ordersData);
   const [topCustomers, setTopCustomers] = useState([]);
   const [topProducts, setTopProducts] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const results = ordersData.slice(0, 3).map((data) => ({
     ...data,
@@ -30,15 +30,12 @@ const Dashboard = () => {
     ),
   }));
 
-  const dispatch = useDispatch()
-
+  
   useEffect(() => {
     dispatch(getOrdersData(1))
   }, [])
 
-  const navigate = useNavigate();
-
-
+  
   useEffect(() => {
 
     // Function for aggregating top products
@@ -49,7 +46,7 @@ const Dashboard = () => {
       ordersData.forEach(data => {
         const { products } = data;
         products.forEach(product => {
-          const { productID, name, image, price, amount } = product;
+          const { productID, name, image, amount } = product;
 
           if (!productSalesMap[productID]) {
             productSalesMap[productID] = {
