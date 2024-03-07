@@ -19,12 +19,16 @@ import {
   NewPasswordPage,
 } from "./pages";
 import EditRole from "./components/roles-and-permissions/edit-role";
+import RedirectHandler from "./components/redirectHandler";
+import { PageNotFoundComponent } from "./components";
 
 const MyRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<OverviewPage />} />
+        <Route exact path="/" element={<LogInPage />} />
+        <Route exact path="/dashboard" element={<OverviewPage />} />
+        <Route path="/connect/:provider/redirect" element={<RedirectHandler />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/products/new" element={<AddProducts />} />
         <Route exact path="/products/edit/:sku" element={<EditProducts />} />
@@ -46,7 +50,9 @@ const MyRoutes = () => {
         <Route exact path="/verify-email" element={<EmailVerification />} />
         <Route exact path="/sign-up" element={<SignUpPage />} />
         <Route exact path="/login" element={<LogInPage />} />
-        <Route exact path="/new-password" element={<NewPasswordPage />} />
+        <Route exact path="/newpassword" element={<NewPasswordPage />} />
+        <Route exact path="/404" element={<PageNotFoundComponent />} />
+        <Route exact path="/*" element={<PageNotFoundComponent />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,35 +1,6 @@
 import axios from "axios";
 import { renderValidUrl } from "../utils/constants";
 
-// export const fetchData = async (dispatch, url, type) => {
-//   dispatch({ type: "SET_IS_FETCHING", isFetching: true });
-
-//   try {
-//     const { data } = await axios.get(url);
-//     dispatch({ type: "GET_API_REQUEST", hash: { [type]: data } });
-//   } catch (error) {
-//     dispatch({ type: "SET_ERROR", error });
-//   }
-// };
-
-export const postRequest = (url, data) => {
-  return fetch(renderValidUrl(url), {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => response.json())
-    .then((responseData) => {
-      return [true, responseData];
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      return [false, error];
-    });
-};
-
 export const fetchData = async (dispatch, url, type, token) => {
   dispatch({ type: 'SET_IS_FETCHING', isFetching: true });
 
@@ -44,6 +15,19 @@ export const fetchData = async (dispatch, url, type, token) => {
   } catch (error) {
     dispatch({ type: 'SET_ERROR', error });
   }
+};
+
+export const userLogin = (user) => dispatch => {
+  dispatch({
+    type: 'LOGIN_USER',
+    payload: user,
+  });
+};
+
+export const logOutUser = () => dispatch => {
+  dispatch({
+    type: 'LOG_OUT',
+  });
 };
 
 export const addActionRole = (hash) => (dispatch) => {
@@ -123,3 +107,38 @@ export const getOrdersData = (storeID) => async (dispatch) => {
   await fetchData(dispatch, `orders?storeID=${storeID}`, 'ordersData')
 }
 
+export const postRequest = (url, data) => {
+  return fetch(renderValidUrl(url), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((responseData) => {
+      return [true, responseData];
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      return [false, error];
+    });
+};
+
+export const putRequest = async (url, data, token) => {
+  try {
+    const response = await fetch(renderValidUrl(url), {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      },
+      body: JSON.stringify(data),
+    });
+    const responseData = await response.json();
+    return [true, responseData];
+  } catch (error) {
+    console.error('Error:', error);
+    return [false, error];
+  }
+};

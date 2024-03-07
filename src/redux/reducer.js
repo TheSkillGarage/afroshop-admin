@@ -10,6 +10,8 @@ import ROLES_DATA from "../data/rolesAndPermissions";
 
 const INITIAL_STATE = {
   isFetching: false,
+  isAuthenticated: false,
+  user: null,
   sections: sectionData,
   roles: [],
   delivery: deliveryData,
@@ -39,6 +41,18 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...action.hash,
         isFetching: false,
       };
+      case "LOGIN_USER":
+        return {
+          ...previousState,
+          isAuthenticated: true,
+          user: action.payload,
+        };
+      case "LOG_OUT":
+        return {
+          ...previousState,
+          isAuthenticated: false,
+          user: null,
+        };
     case "UPDATE_PROFILE_INFO":
       return {
         ...previousState,
