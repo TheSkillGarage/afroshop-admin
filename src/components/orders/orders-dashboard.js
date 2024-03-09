@@ -7,8 +7,7 @@ import TableFooter from "../table-footer/table-footer";
 import Search from "../search";
 import BaseTable from "../shared/table";
 import useTableData from "../../hooks/useTableData";
-import { useDispatch, useSelector } from "react-redux";
-import { getOrdersData } from "../../redux/action";
+import { useSelector } from "react-redux";
 
 const OrdersDashboard = () => {
 
@@ -26,12 +25,8 @@ const OrdersDashboard = () => {
   const handleSearch = (searchWord) => setSearchTerm(searchWord)
   const handleFilterObject = (filterObject) => setFilterObject(filterObject)
 
-  const dispatch = useDispatch()
-  const location = useLocation()
 
-  useEffect(() => {
-    dispatch(getOrdersData(1))
-  }, [])
+  const location = useLocation()
 
   const ordersData = useSelector((state) => state.ordersData);
 
