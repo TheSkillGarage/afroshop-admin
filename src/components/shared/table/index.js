@@ -71,7 +71,7 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState, name }) => {
                             )
                             : ((header.id === "orderDate" && name === "orders"))
                               ? (
-                                <DateCol value={row["payment"].createdAt} />
+                                <DateCol value={row["payment"]?.createdAt} />
                               )
                               : (header.id === "customer" && name === "orders")
                                 ? (

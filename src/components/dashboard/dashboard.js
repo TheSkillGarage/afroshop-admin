@@ -14,10 +14,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Dashboard = () => {
 
-  const ordersData = useSelector((state) => state.ordersData);
+  const ordersData = [useSelector((state) => state.ordersData)];
   const [topCustomers, setTopCustomers] = useState([]);
   const [topProducts, setTopProducts] = useState([]);
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const results = ordersData.slice(0, 3).map((data) => ({
@@ -29,11 +29,6 @@ const Dashboard = () => {
       </div>
     ),
   }));
-
-  
-  useEffect(() => {
-    dispatch(getOrdersData(1))
-  }, [])
 
   
   useEffect(() => {

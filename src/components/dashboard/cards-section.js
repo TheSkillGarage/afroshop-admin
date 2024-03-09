@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import SelectDropdown from "../shared/dropdownInput/dropdown";
 import Button from "../shared/button";
 import SummaryCards from "./summaryCards";
-import SELECT_OPTIONS from "../../data/dashboardTimeOptions";
-import { OVERVIEW_DATA } from "../../data";
 import { useSelector } from "react-redux";
 
 const BusinessSummary = () => {
 
     const ordersData = useSelector((state) => state.ordersData);
-
+    const user = useSelector((state) => state.user);
+;
     const [selectedYear, setSelectedYear] = useState(2024);
     const [totalSales, setTotalSales] = useState(0);
     const [totalCustomers, setTotalCustomers] = useState(0);
@@ -114,7 +113,7 @@ const BusinessSummary = () => {
         <div>
             <div className="flex justify-between items-center mb-8">
                 <div className="flex flex-col gap-1 w-[343px]">
-                    <h5 className="text-xl font-bold leading-8">Welcome, Ini!</h5>
+                    <h5 className="text-xl font-bold leading-8">{`Welcome, ${user?.firstName}!`}</h5>
                     <p className="text-base text-[#7F7F7F]">
                         Here’s what’s happening in your store today
                     </p>
