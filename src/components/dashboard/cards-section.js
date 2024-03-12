@@ -30,7 +30,7 @@ const BusinessSummary = () => {
 
             if (selectedYear === "all" || orderYear === selectedYear) {
                 sales += order.grandTotal;
-                customers.add(order.customerId);
+                customers.add(order.email);
                 orders++;
                 order.products.forEach(product => {
                     products.add(product.productID);
@@ -89,8 +89,8 @@ const BusinessSummary = () => {
                     ordersForPreviousYear.reduce((sum, order) => sum + order.grandTotal, 0)
                 ),
                 customers: calculatePercentageChange(
-                    new Set(ordersForSelectedYear.map(order => order.customer)).size,
-                    new Set(ordersForPreviousYear.map(order => order.customer)).size
+                    new Set(ordersForSelectedYear.map(order => order.email)).size,
+                    new Set(ordersForPreviousYear.map(order => order.email)).size
                 ),
                 orders: calculatePercentageChange(
                     ordersForSelectedYear.length,
