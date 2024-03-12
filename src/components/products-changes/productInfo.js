@@ -139,8 +139,6 @@ export const ProductInfo = ({ productInfo, isProductInfoOpen, handleProductInfo,
             register={register}
             patternValue={/^(?!0\d)(100(\.0{1,2})?|\d{1,2}(\.\d{1,2})?|0(\.\d{1,2})?)$/}
             patternMessage={"Please enter a valid discount (0 - 100)"}
-            required={true}
-            requiredMessage={'This field is required'}
             value={productInfo?.discount}
             handleChange={(e) => {
               handleProductInfo("discount", (sanitizeNumbers(e.target.value)));
