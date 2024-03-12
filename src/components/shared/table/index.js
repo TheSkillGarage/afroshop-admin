@@ -79,7 +79,7 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState, name }) => {
                                 )
                                 : (header.id === "items" && name === "orders")
                                   ? (
-                                    `${row["products"].length}`
+                                    `${row["products"]?.length}`
                                   )
                                   : (header.id === "salesPrice")
                                     ? (

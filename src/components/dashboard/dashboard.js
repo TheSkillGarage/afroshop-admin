@@ -9,12 +9,11 @@ import { useNavigate } from 'react-router-dom';
 
 import BusinessSummary from './cards-section';
 import LineChartComponent from './lineChart-section';
-import { getOrdersData } from '../../redux/action';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 
 const Dashboard = () => {
 
-  const ordersData = [useSelector((state) => state.ordersData)];
+  const ordersData = useSelector((state) => state.ordersData);
   const [topCustomers, setTopCustomers] = useState([]);
   const [topProducts, setTopProducts] = useState([]);
 
@@ -39,7 +38,8 @@ const Dashboard = () => {
 
       // Loop through each object in the array and aggregate product sales
       ordersData.forEach(data => {
-        const { products } = data;
+        const products = data.products;
+
         products.forEach(product => {
           const { productID, name, image, amount } = product;
 
@@ -82,16 +82,20 @@ const Dashboard = () => {
 
         const { customer, firstName, lastName, email, customerProfileURL } = data;
 
-        if (!customerDetails[customer]) {
-          customerDetails[customer] = {
-            customerID: customer,
+        if (!customerDetails[email]) {
+          customerDetails[email] = {
+            customerID: customer ? customer : null,
             name: `${firstName} ${lastName}`,
             email: email,
             image: customerProfileURL,
             orders: 1
           };
-        } else {
-          customerDetails[customer].orders++;
+        } else if (customerDetails[email].customerID === null) {
+          customerDetails[email].image = customerProfileURL;
+          customerDetails[email].orders++;
+        }
+         else {
+          customerDetails[email].orders++;
         }
       });
 
