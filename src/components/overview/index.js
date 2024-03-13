@@ -12,7 +12,7 @@ const Overview = () => {
         dispatch(getOrdersData(1))
     }, [])
 
-    const ordersData = [useSelector((state) => state.ordersData)];
+    const ordersData = useSelector((state) => state.ordersData);
     
     return (
         <div >
