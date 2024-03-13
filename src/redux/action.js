@@ -97,11 +97,13 @@ export const resetStore = () => dispatch => {
     type: 'RESET_STORE',
   })
 }
-export const postRequest = (url, data) => {
+export const postRequest = (url, data, token) => {
   return fetch(renderValidUrl(url), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+
+      ...(token && { 'Authorization': `Bearer ${token}` })
     },
     body: JSON.stringify(data),
   })
@@ -132,3 +134,4 @@ export const putRequest = async (url, data, token) => {
     return [false, error];
   }
 };
+

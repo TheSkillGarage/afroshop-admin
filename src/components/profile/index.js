@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { EditIcon2, EditIconGrey } from "../../images";
 import Button from "../shared/button";
 import ProfileTab from "./profileTab";
 import { useSelector, useDispatch } from "react-redux";
-import { updateProfile } from "../../redux/action";
+import { postRequest, updateProfile } from "../../redux/action";
 import EditPassword from "./edit-password";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { AFROADMIN_TOKEN } from "../../utils/constants";
+import { expirationDate } from "../../utils";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -31,9 +35,55 @@ const Profile = () => {
     mode: "all",
   });
 
+  // Accessing the form state
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    getValues,
+  } = passwordForm;
+
   const [currentTab, setCurrentTab] = useState("Profile");
   const [editProfile, setEditProfile] = useState(false);
-
+  
+  const token = Cookies.get(AFROADMIN_TOKEN);
+  
+  const onSubmit = async (data) => {
+    setEditProfile(true);
+    try {
+      const [success, responseData] = await postRequest(
+        "/api/auth/change-password",
+        {
+          currentPassword: data.currentPassword,
+          password: data.newPassword,
+          passwordConfirmation: data.confirmPassword,
+        },
+        token
+      );
+      if (!success || responseData?.error) {
+        toast.error(
+          `${
+            responseData?.error?.message ||
+            "An error occured while changing your password"
+          }`,
+          { autoClose: 2000 }
+        );
+      } else {
+        reset();
+        Cookies.set(AFROADMIN_TOKEN, responseData?.jwt, {
+          expires: expirationDate,
+        });
+        toast.success(`Password updated successfully`, { autoClose: 2000 });
+      }
+    } catch (error) {
+      toast.error(`An error occured while changing your password`, {
+        autoClose: 2000,
+      });
+    } finally {
+      setEditProfile(false);
+    }
+  };
   const handleProfileFormSubmit = () => {
     dispatch(updateProfile({ profile: { ...profileData } }));
     setEditProfile(false);
@@ -54,7 +104,6 @@ const Profile = () => {
     passwordForm?.reset();
     profileForm?.reset();
   };
-
   const disableButton =
     (Object.keys(profileForm?.formState?.errors).length === 0 &&
       currentTab === "Profile") ||
@@ -77,10 +126,11 @@ const Profile = () => {
             <p
               key={index}
               onClick={() => handleTabClick(t)}
-              className={`cursor-pointer w-[380px] flex items-center justify-center ${t === currentTab
-                ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
-                : "text-[#4F4F4F] font-normal"
-                }`}
+              className={`cursor-pointer w-[380px] flex items-center justify-center ${
+                t === currentTab
+                  ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
+                  : "text-[#4F4F4F] font-normal"
+              }`}
             >
               {t}
             </p>
@@ -92,8 +142,9 @@ const Profile = () => {
         <div className="py-4 px-4 border-b-[2px] text-[#186F3D] border-[#E6E6E6] flex items-center justify-between">
           <p className="text-xl font-bold">{currentTab}</p>
           <p
-            className={`flex gap-2 items-center font-semibold cursor-pointer ${editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
-              }`}
+            className={`flex gap-2 items-center font-semibold cursor-pointer ${
+              editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
+            }`}
             onClick={() => setEditProfile(true)}
           >
             {editProfile ? (
@@ -104,7 +155,7 @@ const Profile = () => {
             Edit
           </p>
         </div>
-        <form>
+        <form onSubmit={ currentTab !== "Profile" ? handleSubmit(onSubmit) : null}>
           {currentTab === "Profile" ? (
             <ProfileTab
               editProfile={editProfile}
@@ -129,13 +180,13 @@ const Profile = () => {
               <Button
                 className="w-[133px]"
                 type="submit"
-                onClick={(event) => {
-                  event.preventDefault();
-                  currentTab === "Profile"
-                    ? profileForm?.handleSubmit(handleProfileFormSubmit)()
-                    : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
-                }}
-                variant={disableButton ? "primary" : "disabled"}
+                // onClick={(event) => {
+                //   event.preventDefault();
+                //   currentTab === "Profile"
+                //     ? profileForm?.handleSubmit(handleProfileFormSubmit)()
+                //     : handleSubmit(onSubmit);
+                // }}
+                variant={"primary"}
               >
                 Save
               </Button>

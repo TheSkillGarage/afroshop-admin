@@ -28,23 +28,23 @@ const EditPassword = ({ editProfile, form }) => {
     <div className="max-w-[500px] space-y-6 m-auto py-8 items-center">
       <InputComponent
         inputType=""
-        type={"password"}
+        type={viewPassword["current"] ? "text" : "password"}
         label="Current Password"
         name="currentPassword"
         fieldName="currentPassword"
         required={true}
         requiredMessage={"This field is required"}
-        placeholder="*******"
+        placeholder="Enter"
         className="bg-[#F2F2F2]"
         isReadOnly={!editProfile}
         control={control}
         errors={errors}
         register={register}
         leftIcon={Lock}
-        rightIcon={PasswordEye}
+        rightIcon={viewPassword["current"] ? ViewPassword : PasswordEye}
         onIconClick={() => handleViewPassword("current")}
-        disabled={true}
       />
+
       {editProfile && (
         <>
           <InputComponent
@@ -55,7 +55,9 @@ const EditPassword = ({ editProfile, form }) => {
             fieldName="newPassword"
             required={true}
             requiredMessage={"This field is required"}
-            patternValue={/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/}
+            patternValue={
+              /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/
+            }
             patternMessage={
               "Password must contain at least one letter, one number, and be at least 8 characters long"
             }
