@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   GreenRangerPic,
   LeftArrow,
@@ -10,16 +10,18 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { sidebarToggle } from "../../redux/action";
+import { renderValidUrl } from "../../utils/constants";
 
 const AdminNavbar = ({ name }) => {
 
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user);
+  const store = useSelector((state) =>state.userStore);
   const isSidebarToggled = useSelector((state) => state.isSidebarToggled)
 
   const toggleSidebar = () => {
     dispatch(sidebarToggle({toggle: isSidebarToggled}))
   }
-
   const navigate = useNavigate();
 
   return (
@@ -28,9 +30,9 @@ const AdminNavbar = ({ name }) => {
         <div className="flex items-center gap-6">
           <MenuIcon alt="menu" className="w-[20px] h-[20px] cursor-pointer" onClick={() => toggleSidebar()}/>
           <div className="flex">
-                <img src={GreenRangerPic} className="h-[32px] w-[32px]"/>
+              {store && <img src={renderValidUrl(store?.image)} className="rounded-full h-[36px] w-[36px]"/>}
               <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
-                Green Ranger
+                 {store?.name ?? "--"}
               </p>
               </div>
         </div>
@@ -74,7 +76,7 @@ const AdminNavbar = ({ name }) => {
             <SettingsIcon className="w-[20px] h-[20px]" />
             <ProfilePic className="w-[24px] h-[24px]" />
             <p className="font-semibold text-[13px] leading-[23px] text-[#186F3D]">
-              Ini James
+              {`${user?.firstName} ${user?.lastName}` ?? " Ini James"}
             </p>
           </div>
       </div>

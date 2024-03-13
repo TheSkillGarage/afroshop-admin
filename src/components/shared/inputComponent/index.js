@@ -130,6 +130,7 @@ const InputComponent = forwardRef(
               className={`bg-inherit w-full border-none focus:outline-none text-[16px] font-normal placeholder-[#333333] ${className}`}
               type={type}
               accept={accept}
+              ref={ref}
               min={min}
               max={max}
               name={name}

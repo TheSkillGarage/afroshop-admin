@@ -9,8 +9,28 @@ import { useForm } from "react-hook-form";
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const store = useSelector((d) => d.userStore);
+  const user = useSelector((state) => state.user);
+  const address = useSelector((state) => state.addresses);
+  const [deliveryOpenTimeHour, deliveryOpenTimeMinute] =
+    store?.deliveryTime?.from?.split(":");
+  const [deliveryCloseTimeHour, deliveryCloseTimeMinute] =
+    store?.deliveryTime?.to?.split(":");
   const data = useSelector((d) => d.profile);
-  const [profileData, setProfileData] = useState({ ...data });
+  const [profileData, setProfileData] = useState({
+    ...data,
+    store: {
+      ...data.store,
+      days: store?.openDays?.map((day) => day?.openDays) || "",
+      email: user?.email || "",
+      store_name: store?.name || "",
+      address: address[0]?.streetAddress || "",
+      deliveryStartTime: `${deliveryOpenTimeHour}:${deliveryOpenTimeMinute}`,
+      deliveryEndTime: `${deliveryCloseTimeHour}:${deliveryCloseTimeMinute}`,
+      profile_image: store?.image
+    },
+  });
+
   const profileForm = useForm({
     defaultValues: {
       ...profileData?.store,
@@ -33,10 +53,17 @@ const Profile = () => {
 
   const [currentTab, setCurrentTab] = useState("Profile");
   const [editProfile, setEditProfile] = useState(false);
-
+  console.log(JSON.stringify(profileData?.store) === JSON.stringify(store))
   const handleProfileFormSubmit = () => {
-    dispatch(updateProfile({ profile: { ...profileData } }));
-    setEditProfile(false);
+   
+    if(profileForm.formState.isDirty){
+      console.log('hi i was modifiedl')
+      dispatch(updateProfile({ profile: { ...profileData } }));
+      setEditProfile(false);
+    } else {
+      console.log('not modified')
+    }
+ 
   };
 
   const handlePasswordFormSubmit = () => {
@@ -77,10 +104,11 @@ const Profile = () => {
             <p
               key={index}
               onClick={() => handleTabClick(t)}
-              className={`cursor-pointer w-[380px] flex items-center justify-center ${t === currentTab
-                ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
-                : "text-[#4F4F4F] font-normal"
-                }`}
+              className={`cursor-pointer w-[380px] flex items-center justify-center ${
+                t === currentTab
+                  ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
+                  : "text-[#4F4F4F] font-normal"
+              }`}
             >
               {t}
             </p>
@@ -92,8 +120,9 @@ const Profile = () => {
         <div className="py-4 px-4 border-b-[2px] text-[#186F3D] border-[#E6E6E6] flex items-center justify-between">
           <p className="text-xl font-bold">{currentTab}</p>
           <p
-            className={`flex gap-2 items-center font-semibold cursor-pointer ${editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
-              }`}
+            className={`flex gap-2 items-center font-semibold cursor-pointer ${
+              editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
+            }`}
             onClick={() => setEditProfile(true)}
           >
             {editProfile ? (

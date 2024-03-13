@@ -9,6 +9,7 @@ import {
   deliveryStartTimes,
 } from "../../../data/profile";
 import { DeleteIcon, GreenCamera, UserAvatar } from "../../../images";
+import { renderValidUrl } from "../../../utils/constants";
 
 const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
   const {
@@ -18,6 +19,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     setValue,
     trigger,
   } = form;
+  console.log(profileData);
 
   const handleFileUpload = (e) => {
     if (e.target.files.length > 0) {
@@ -71,7 +73,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
               <div className="relative h-full w-full">
                 <img
                   className="h-full w-full object-cover rounded-full"
-                  src={profileData?.store?.profile_image}
+                  src={renderValidUrl(profileData?.store?.profile_image)}
                   alt="Profile"
                 />
                 {editProfile && (
@@ -204,32 +206,36 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           }}
         />
         <InputComponent
-          inputType="select"
-          options={deliveryStartTimes}
+          inputType="time"
+          type="time"
+          // options={deliveryStartTimes}
           label="Delivery Start Time"
           fieldName={"deliveryStartTime"}
           placeholder="Enter"
           requiredMessage={"Delivery Start Time is required"}
-          className="bg-[#F2F2F2]"
+          className="bg-[#F2F2F2] cursor-pointer w-full"
           control={control}
           errors={errors}
           register={register}
-          isDisabled={!editProfile}
-          handleChange={(value) => handleData("deliveryStartTime", value)}
+          isReadOnly={!editProfile}
+          handleChange={(e) => {
+            handleData("deliveryStartTime", e.target.value);
+          }}
         />
         <InputComponent
-          inputType="select"
-          options={deliveryEndTimes}
+          inputType="time"
+          type="time"
+          // options={deliveryEndTimes}
           label="Delivery End Time"
           fieldName={"deliveryEndTime"}
           placeholder="Enter"
           requiredMessage={"Delivery End Time is required"}
-          className="bg-[#F2F2F2]"
+          className="bg-[#F2F2F2] cursor-pointer"
           control={control}
           errors={errors}
           register={register}
-          isDisabled={!editProfile}
-          handleChange={(value) => handleData("deliveryEndTime", value)}
+          isReadOnly={!editProfile}
+          handleChange={(e) => handleData("deliveryEndTime", e.target.value)}
         />
         <InputComponent
           inputType="select"
