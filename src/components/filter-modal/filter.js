@@ -38,7 +38,7 @@ const Filter = ({ toggleFilters, index, filter, handleToggleFilters, handleChang
                                         <div>
                                             <input type="checkbox" name={val} id={val} className=" w-[24px] h-[24px] rounded border border-1 border-[#CCCCCC] mt-2 accent-[#186F3D]" onChange={(e) => handleChange(e, filter)}/>
                                         </div>
-                                        <label htmlFor={val} className="text-4 leading-6 text-[#000000] capitalize">{val instanceof Date ? <DateCol value={val} /> : val}</label>
+                                        <label htmlFor={val} className="text-4 leading-6 text-[#000000] capitalize">{filter === "dateAdded" ? <DateCol value={val} /> : val}</label>
                                     </div>
                                 )
                             })}
