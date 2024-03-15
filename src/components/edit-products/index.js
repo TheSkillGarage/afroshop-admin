@@ -7,32 +7,33 @@ import { discardDraft, editProduct } from "../../redux/action";
 
 const EditSingleProduct = () => {
 
-  const { sku } = useParams();
+  const { id } = useParams();
 
   
   const productData = useSelector((state) => state.productsData);
 
-  const product = productData.find((product) => product.SKU === sku);
+  const product = productData.find((product) => product.id == id);
+
 
   const initialProductInfo = {
-    category: product.category,
-    productName: product.productName,
-    availabilty: product.availabilty,
-    salesPrice: product.salesPrice,
-    discount: product.discount,
-    description: product.description,
-    images: product.images
+    category: product?.productCategory,
+    productName: product?.name,
+    availabilty: product?.availability,
+    salesPrice: product?.price,
+    discount: product?.percentDiscount,
+    description: product?.description,
+    images: product?.images
   }
 
   const [isDraft, setIsDraft] = useState(false);
   const [productInfo, setProductInfo] = useState(initialProductInfo);
 
-  useEffect(() => {
-    if (Object.keys(product.draft).length > 0) {
-      setIsDraft(true);
-      setProductInfo(product.draft);
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (Object.keys(product.draft).length > 0) {
+  //     setIsDraft(true);
+  //     setProductInfo(product.draft);
+  //   }
+  // }, [])
 
   const navigate = useNavigate();
 
@@ -46,16 +47,16 @@ const EditSingleProduct = () => {
   }
 
   const handleFormSubmit = () => {
-    dispatch(editProduct({ sku: sku, productInfos: productInfo, option: "save" }));
+    dispatch(editProduct({ id: id, productInfos: productInfo, option: "save" }));
 
     navigate("/products");
   }
 
   const handleProductDraft = (option) => {
     if (option === "draft") {
-      dispatch(editProduct({ sku: sku, productInfos: productInfo, option: "draft" }));
+      dispatch(editProduct({ id: id, productInfos: productInfo, option: "draft" }));
     }else if (option === "discard"){
-      dispatch(discardDraft({sku: sku}))
+      dispatch(discardDraft({id: id}))
     }
 
     navigate("/products");

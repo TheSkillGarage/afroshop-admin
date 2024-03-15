@@ -18,7 +18,8 @@ const INITIAL_STATE = {
   holidays: holidayMockData,
   profile: profileInitialState,
   isSidebarToggled: false,
-  productsData: PRODUCT_DATA,
+  productsData: [],
+  storeData: {},
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
@@ -110,7 +111,7 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
       }
     case "EDIT_PRODUCT":
       const updatedProductData = previousState.productsData.map(product => {
-        if (product.SKU === action.sku) {
+        if (product.id === action.id) {
           switch (action.option) {
             case "draft":
               return {
@@ -133,9 +134,15 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         productsData: updatedProductData,
       }
+    case "DELETE_PRODUCT":
+      const updatedProducts = previousState.productsData.filter(product => product.id !== action.productID);
+      return {
+        ...previousState,
+        productsData: updatedProducts,
+      }
     case 'DISCARD_DRAFT':
       const updateProductDraft = previousState.productsData.map((product) => {
-        if (product.SKU === action.sku) {
+        if (product.id === action.id) {
           return {
             ...product,
             draft: {},

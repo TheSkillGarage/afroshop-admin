@@ -65,19 +65,23 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
                         header.id === "price" ? (
                           <Price values={row[header.id]} />
                         )
-                          : (header.id === "dateAdded")
-                            ? (
-                              <DateCol value={row[header.id]} />
+                          : header.id === "productName" ?
+                            (
+                              row["name"]
                             )
-                            : (header.id === "salesPrice")
+                            : (header.id === "dateAdded")
                               ? (
-                                row[header.id] === "" ? "---" : parseFloat(row[header.id]).toFixed(2)
+                                <DateCol value={row[header.id]} />
                               )
-                              : row[header.id] === ""
-                                ? "---"
-                                : (
-                                  row[header.id]
+                              : (header.id === "salesPrice")
+                                ? (
+                                  row["price"] === "" ? "---" : parseFloat(row["price"]).toFixed(2)
                                 )
+                                : row[header.id] === ""
+                                  ? "---"
+                                  : (
+                                    row[header.id]
+                                  )
                       }
                     </td>
                   );

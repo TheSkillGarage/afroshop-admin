@@ -5,6 +5,11 @@ export const useFilter = (name, activeTab, DATA, searchTerm, filterObject) => {
     const [filteredData, setFilteredData] = useState(DATA);
 
     useEffect(() => {
+        setFilteredData(DATA)
+    }, [DATA])
+
+
+    useEffect(() => {
         let updatedData = DATA;
 
         if (searchTerm !== '') {
@@ -12,7 +17,7 @@ export const useFilter = (name, activeTab, DATA, searchTerm, filterObject) => {
                 updatedData = DATA.filter(product => product.productName?.toLowerCase().includes(searchTerm?.toLowerCase()));
             } else if (name === "orders") {
                 updatedData = DATA.filter(order => order.orderID?.toLowerCase().includes(searchTerm?.toLowerCase()));
-            }else if (name === "roles"){
+            } else if (name === "roles") {
                 updatedData = DATA.filter(role => role.name?.toLowerCase().includes(searchTerm?.toLowerCase()));
             }
         }
@@ -28,16 +33,16 @@ export const useFilter = (name, activeTab, DATA, searchTerm, filterObject) => {
                 return Object.entries(filterObject).every(([key, values]) => {
                     if (key === 'price') {
                         return values.includes(obj.price.price?.toString());
-                      } else {
+                    } else {
                         return values.includes(obj[key]?.toString());
-                      }
+                    }
                 });
             });
         }
 
-        if (updatedData.length !== 0) {setFilteredData(updatedData)};
+        if (updatedData.length !== 0) { setFilteredData(updatedData) };
 
-    }, [name, activeTab, searchTerm, filterObject]);
+    }, [name, activeTab, searchTerm, filterObject, DATA]);
 
 
     return {
