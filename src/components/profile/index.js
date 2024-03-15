@@ -7,9 +7,7 @@ import { postRequest, updateProfile } from "../../redux/action";
 import EditPassword from "./edit-password";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import Cookies from "js-cookie";
-import { AFROADMIN_TOKEN } from "../../utils/constants";
-import { expirationDate } from "../../utils";
+import { expirationDate,  getTokenFromCookie, setCookieWithExpiry } from "../../utils";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -46,11 +44,12 @@ const Profile = () => {
 
   const [currentTab, setCurrentTab] = useState("Profile");
   const [editProfile, setEditProfile] = useState(false);
+  const [loading, setLoading] = useState(false);
   
-  const token = Cookies.get(AFROADMIN_TOKEN);
+  const token =  getTokenFromCookie();
   
   const onSubmit = async (data) => {
-    setEditProfile(true);
+    setLoading(true);
     try {
       const [success, responseData] = await postRequest(
         "/api/auth/change-password",
@@ -62,26 +61,19 @@ const Profile = () => {
         token
       );
       if (!success || responseData?.error) {
-        toast.error(
-          `${
-            responseData?.error?.message ||
-            "An error occured while changing your password"
-          }`,
-          { autoClose: 2000 }
-        );
+        throw new Error(responseData?.error?.message || "Password updated successfully");
       } else {
         reset();
-        Cookies.set(AFROADMIN_TOKEN, responseData?.jwt, {
-          expires: expirationDate,
-        });
+        setCookieWithExpiry( responseData?.jwt)
         toast.success(`Password updated successfully`, { autoClose: 2000 });
       }
     } catch (error) {
-      toast.error(`An error occured while changing your password`, {
+      
+      toast.error(`${error}`, {
         autoClose: 2000,
       });
     } finally {
-      setEditProfile(false);
+      setLoading(false);
     }
   };
   const handleProfileFormSubmit = () => {
@@ -155,7 +147,7 @@ const Profile = () => {
             Edit
           </p>
         </div>
-        <form onSubmit={ currentTab !== "Profile" ? handleSubmit(onSubmit) : null}>
+        <form onSubmit={currentTab !== "Profile" ? handleSubmit(onSubmit) : profileForm?.handleSubmit(handleProfileFormSubmit)}>
           {currentTab === "Profile" ? (
             <ProfileTab
               editProfile={editProfile}
@@ -180,13 +172,14 @@ const Profile = () => {
               <Button
                 className="w-[133px]"
                 type="submit"
+                loading={loading}
                 // onClick={(event) => {
                 //   event.preventDefault();
                 //   currentTab === "Profile"
                 //     ? profileForm?.handleSubmit(handleProfileFormSubmit)()
                 //     : handleSubmit(onSubmit);
                 // }}
-                variant={"primary"}
+                variant={disableButton ? "primary" : 'disabled'}
               >
                 Save
               </Button>
