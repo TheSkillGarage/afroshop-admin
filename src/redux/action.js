@@ -97,7 +97,7 @@ export const resetStore = () => dispatch => {
     type: 'RESET_STORE',
   })
 }
-export const postRequest = (url, data, token) => {
+export const postRequest = (url, data, token = null) => {
   return fetch(renderValidUrl(url), {
     method: "POST",
     headers: {
