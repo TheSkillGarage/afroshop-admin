@@ -14,16 +14,39 @@ export const logOutUser = () => dispatch => {
   });
 };
 
-export const fetchData = async (dispatch, url, type) => {
-  dispatch({ type: "SET_IS_FETCHING", isFetching: true });
+export const fetchData = async (dispatch, url, type, token) => {
+  dispatch({ type: 'SET_IS_FETCHING', isFetching: true });
 
   try {
-    const { data } = await axios.get(url);
-    dispatch({ type: "GET_API_REQUEST", hash: { [type]: data } });
+    const { data } = await axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      },
+    });
+    dispatch({ type: 'GET_API_REQUEST', hash: { [type]: data } });
   } catch (error) {
-    dispatch({ type: "SET_ERROR", error });
+    dispatch({ type: 'SET_ERROR', error });
   }
 };
+
+export const deleteRequest = async (url, token) => {
+  try {
+    const response = await fetch(renderValidUrl(url), {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const responseData = await response.json();
+    return [true, responseData];
+  } catch (error) {
+    console.error('Error:', error);
+    return [false, error];
+  }
+};
+
 
 export const addActionRole = (hash) => (dispatch) => {
   dispatch({
@@ -91,6 +114,25 @@ export const discardDraft = (hash) => dispatch => {
     ...hash,
   })
 }
+export const deleteProductByID = (hash) => dispatch => {
+  dispatch({
+    type: 'DELETE_PRODUCT',
+    ...hash,
+  })
+}
+
+export const getStoreData = (userID, token) => async (dispatch) => {
+  await fetchData(dispatch, `stores/${userID}`, 'storeData', token);
+}
+
+export const getProductData = (storeID, token) => async (dispatch) => {
+  await fetchData(dispatch, `products?storeID=${storeID}`, 'productsData', token);
+}
+
+export const deleteProduct = (productID, token) => async () => {
+  await deleteRequest(`/api/products/${productID}`, token);
+}
+
 
 export const resetStore = () => dispatch => {
   dispatch({

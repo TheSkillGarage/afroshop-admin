@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "../shared/button";
 
-const DeleteUser = ({ name, handleClose, handleDelete }) => {
+const DeleteUser = ({ name, handleClose, handleDelete, handleDeleteProduct }) => {
   return (
     <div className="flex flex-col gap-4 bg-white h-fit m-auto rounded-md max-w-[400px] p-4">
       <p className="text-[#186F3D] text-xl font-bold">
@@ -15,7 +15,7 @@ const DeleteUser = ({ name, handleClose, handleDelete }) => {
         <Button variant="secondary" onClick={handleClose}>
           No, cancel
         </Button>
-        <Button onClick={handleDelete}>Yes, delete</Button>
+        <Button onClick={handleDeleteProduct}>Yes, delete</Button>
       </div>
     </div>
   );

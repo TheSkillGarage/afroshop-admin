@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import usePagination from "../../hooks/usePagination";
 import { Link, useNavigate } from "react-router-dom";
 import Filters from "../filters";
@@ -7,7 +7,9 @@ import TableFooter from "../table-footer/table-footer";
 import Search from "../search";
 import BaseTable from "../shared/table";
 import useTableData from "../../hooks/useTableData";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getTokenFromCookie } from "../../utils";
+import { getProductData, getStoreData } from "../../redux/action";
 
 const ProductsDashboard = () => {
 
@@ -20,10 +22,23 @@ const ProductsDashboard = () => {
     const [filterObject, setFilterObject] = useState({});
 
 
-    const PRODUCT_DATA = useSelector((state) => state.productsData);
+    const dispatch = useDispatch();
+
+    const token = getTokenFromCookie();
+    const user = useSelector((state) => state.user);
+    const storeData = useSelector((state) => state.storeData);
+    const productsData = useSelector((state) => state.productsData);
+
+    useEffect(() => {
+
+        dispatch(getStoreData(user.id, token));
+        dispatch(getProductData(storeData.id, token));
+
+    }, [])
+
 
     // from usePagination hook
-    let data = useFilter("products", activeTab, PRODUCT_DATA, searchTerm, filterObject).filteredData;
+    let data = useFilter("products", activeTab, productsData, searchTerm, filterObject).filteredData;
 
     const pagination = usePagination(page, itemsPerPage, data);
 
@@ -42,9 +57,9 @@ const ProductsDashboard = () => {
     //search and filter modal
     const handleSearch = (searchWord) => setSearchTerm(searchWord)
     const handleFilterObject = (filterObject) => setFilterObject(filterObject)
-    const goToEdit = (sku) => navigate(`/products/edit/${sku}`)
 
-
+    const goToEdit = (productID) => navigate(`/products/edit/${productID}`)
+  
     // generating table values with tableData Hook
     let headersArray = [
         "selection",
@@ -52,7 +67,7 @@ const ProductsDashboard = () => {
         "SKU",
         "date Added",
         "sales Price",
-        "availabilty",
+        "availability",
         "status",
         "detail"]
 
@@ -84,7 +99,7 @@ const ProductsDashboard = () => {
                         <Link to='/products/new'><button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button></Link>
                     </div>
 
-                    <Search handleSearch={handleSearch} name="products" DATA={PRODUCT_DATA} handleFilterObject={handleFilterObject} />
+                    <Search handleSearch={handleSearch} name="products" DATA={productsData} handleFilterObject={handleFilterObject} />
                 </div>
 
                 {/******************************************************* * table section  **************************************************************/}

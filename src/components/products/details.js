@@ -3,7 +3,8 @@ import { DeleteIcon, DetailsIcon, EditIcon } from "../../images";
 import DeleteUser from "../pop-ups/deleteModal";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserRole } from "../../redux/action";
+import { deleteProduct, deleteProductByID, updateUserRole } from "../../redux/action";
+import { getTokenFromCookie } from "../../utils";
 
 const Detail = ({ name, goToEdit, param, user }) => {
   const dispatch = useDispatch();
@@ -27,6 +28,13 @@ const Detail = ({ name, goToEdit, param, user }) => {
     setOpenDeleteModal(false);
     setShowDetails(false);
   };
+
+  const token = getTokenFromCookie()
+
+  const handleDeleteProduct = () => {
+    dispatch(deleteProductByID({productID: param}))
+    dispatch(deleteProduct(param, token))
+  }
 
   return (
     <div className="relative flex flex-col items-center">
@@ -63,6 +71,7 @@ const Detail = ({ name, goToEdit, param, user }) => {
             <DeleteUser
               name={name}
               handleDelete={(e) => deleteUser(e)}
+              handleDeleteProduct={() => handleDeleteProduct()}
               handleClose={(e) => closeDeleteModal(e)}
             />
           ) : null}
@@ -75,7 +84,7 @@ const Detail = ({ name, goToEdit, param, user }) => {
 Detail.propTypes = {
   name: PropTypes.string.isRequired,
   goToEdit: PropTypes.func.isRequired,
-  param: PropTypes.string.isRequired,
+  param: PropTypes.number,
 };
 
 export default Detail;
