@@ -69,7 +69,7 @@ const Profile = () => {
       }
     } catch (error) {
       
-      toast.error(`${error}`, {
+      toast.error(`${error.message}`, {
         autoClose: 2000,
       });
     } finally {

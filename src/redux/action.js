@@ -112,12 +112,12 @@ export const postRequest = (url, data, token) => {
       return [true, responseData];
     })
     .catch((error) => {
-      console.error("Error:", error);
+      //console.error("Error:", error);
       return [false, error];
     });
 };
 
-export const putRequest = async (url, data, token) => {
+export const putRequest = async (url, data, token = null) => {
   try {
     const response = await fetch(renderValidUrl(url), {
       method: 'PUT',
