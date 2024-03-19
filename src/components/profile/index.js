@@ -63,12 +63,6 @@ const Profile = () => {
         token
       );
       if (!success || responseData?.error) {
-        // toast.error(
-        //   `${
-        //     responseData?.error?.message || "An Error occured while logging in"
-        //   }`,
-        //   { autoClose: 2000 }
-        // );
         throw new Error(responseData?.error?.message);
       } else {
         passwordForm.reset();
