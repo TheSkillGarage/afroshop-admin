@@ -9,8 +9,8 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
 
     const orderKeys = ["orderID", "orderDate", "customer", "price", "items", "status"]
     const productKeys = ["productName", "SKU", "dateAdded", "salesPrice", "availabilty", "status"]
-
-    const filters = name === "orders" ? orderKeys : name === "view-orders" ?  Object.keys(DATA[0]) : name==="products" ? productKeys : Object.keys(DATA[0]).slice(1) // sets DATA keys as filter criterias 
+    const viewOrdersKeys = ["name", "categoryName", "price"]
+    const filters = name === "orders" ? orderKeys : name === "view-orders" ? viewOrdersKeys : name === "products" ? productKeys : Object.keys(DATA[0]).slice(1) // sets DATA keys as filter criterias 
 
     const [toggleFilters, setToggleFilters] = useState({});
     const [formData, setFormData] = useState({});

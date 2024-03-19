@@ -62,7 +62,7 @@ const ViewOrders = () => {
 
                                     <div className="text-[13px] leading-[23px] text-[#7F7F7F] w-[70%]">
                                         <p>{order.orderID}</p>
-                                        <p>{date.toLocaleDateString('en-GB')}</p>
+                                        <p>{date. date.toLocaleDateString('en-CA')}</p>
                                         <p>{order.products.length}</p>
                                         <p>{parseFloat(order.grandTotal).toFixed(2)}</p>
                                     </div>
@@ -94,7 +94,7 @@ const ViewOrders = () => {
 
                         {/**************************************************************** * table section ***************************************************************/}
 
-                        {/* <Search handleSearch={handleSearch} name="view-orders" DATA={order.products} handleFilterObject={handleFilterObject} /> */}
+                        <Search handleSearch={handleSearch} name="view-orders" DATA={order.products} handleFilterObject={handleFilterObject} />
 
                         <div className="w-full">
                             <table className="w-full border-collapse">

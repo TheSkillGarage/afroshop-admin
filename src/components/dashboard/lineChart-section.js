@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import SelectDropdown from "../shared/dropdownInput/dropdown";
-import SELECT_OPTIONS from "../../data/dashboardTimeOptions";
 import { LineChart } from "./lineChart";
-import { OVERVIEW_DATA } from "../../data";
 import { useSelector } from "react-redux";
+import { extractYears } from "../../utils/extract-years";
 
 const LineChartComponent = () => {
 
     const ordersData = useSelector(state => state.ordersData);
 
     const [selectedYear, setSelectedYear] = useState("week");
+    const [years] = useState(extractYears(ordersData))
     const [dataFilter, setDataFilter] = useState([]);
 
     const handleSelectedYear = (val) => {
@@ -50,7 +50,7 @@ const LineChartComponent = () => {
                     name="line-chart"
                     color="green"
                     handleSelectedYear={handleSelectedYear}
-                    options={SELECT_OPTIONS}
+                    options={[{value: "week", label: "Last 7 days"}, ...years]}
                     placeholder="Last 7 Days"
                     className="w-[127px]"
                 />
