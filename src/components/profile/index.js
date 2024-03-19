@@ -7,7 +7,11 @@ import { postRequest, updateProfile } from "../../redux/action";
 import EditPassword from "./edit-password";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { expirationDate, getTokenFromCookie, setCookieWithExpiry } from "../../utils";
+import {
+  expirationDate,
+  getTokenFromCookie,
+  setCookieWithExpiry,
+} from "../../utils";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -59,16 +63,22 @@ const Profile = () => {
         token
       );
       if (!success || responseData?.error) {
+        // toast.error(
+        //   `${
+        //     responseData?.error?.message || "An Error occured while logging in"
+        //   }`,
+        //   { autoClose: 2000 }
+        // );
         throw new Error(responseData?.error?.message);
+      } else {
+        passwordForm.reset();
+        setCookieWithExpiry(responseData?.jwt);
+        toast.success(`Password updated successfully`, { autoClose: 2000 });
+        setEditProfile(false);
       }
-
-      passwordForm.reset();
-      setCookieWithExpiry(responseData?.jwt)
-      toast.success(`Password updated successfully`, { autoClose: 2000 });
-
     } catch (error) {
       console.error(error.message)
-      toast.error(`${"We couldn't change your password. Please try again later."}`, {
+      toast.error(`${error.message}`, {
         autoClose: 2000,
       });
     } finally {
@@ -108,10 +118,11 @@ const Profile = () => {
             <p
               key={index}
               onClick={() => handleTabClick(t)}
-              className={`cursor-pointer w-[380px] flex items-center justify-center ${t === currentTab
-                ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
-                : "text-[#4F4F4F] font-normal"
-                }`}
+              className={`cursor-pointer w-[380px] flex items-center justify-center ${
+                t === currentTab
+                  ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
+                  : "text-[#4F4F4F] font-normal"
+              }`}
             >
               {t}
             </p>
@@ -123,8 +134,9 @@ const Profile = () => {
         <div className="py-4 px-4 border-b-[2px] text-[#186F3D] border-[#E6E6E6] flex items-center justify-between">
           <p className="text-xl font-bold">{currentTab}</p>
           <p
-            className={`flex gap-2 items-center font-semibold cursor-pointer ${editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
-              }`}
+            className={`flex gap-2 items-center font-semibold cursor-pointer ${
+              editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
+            }`}
             onClick={() => setEditProfile(true)}
           >
             {editProfile ? (
@@ -166,7 +178,7 @@ const Profile = () => {
                   ? profileForm?.handleSubmit(handleProfileFormSubmit)()
                   : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
               }}
-              variant={disableButton ? "primary" : 'disabled'}
+              variant={disableButton ? "primary" : "disabled"}
             >
               Save
             </Button>
