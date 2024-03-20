@@ -8,6 +8,7 @@ import useFilter from "../../hooks/useFilter";
 import Search from "../search";
 import Button from "../shared/button";
 import { useSelector } from "react-redux";
+import { formatPrice } from "../../utils/formatPrice";
 
 const ViewOrders = () => {
 
@@ -62,9 +63,9 @@ const ViewOrders = () => {
 
                                     <div className="text-[13px] leading-[23px] text-[#7F7F7F] w-[70%]">
                                         <p>{order.orderID}</p>
-                                        <p>{date. date.toLocaleDateString('en-CA')}</p>
+                                        <p>{date.toLocaleDateString('en-CA')}</p>
                                         <p>{order.products.length}</p>
-                                        <p>{parseFloat(order.grandTotal).toFixed(2)}</p>
+                                        <p>{formatPrice(order.grandTotal)}</p>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +118,7 @@ const ViewOrders = () => {
                                                     <td className="py-2 pr-8"></td>
                                                     <td className="py-2 pr-8" >{name}</td>
                                                     <td className="py-2 pr-8">{productID}</td>
-                                                    <td className="py-2 pr-8">{parseFloat(price).toFixed(2)}</td>
+                                                    <td className="py-2 pr-8">{formatPrice(price)}</td>
                                                     <td className="py-4 pr-8 capitalize">
                                                         <StatusPills status={order.status} />
                                                     </td>

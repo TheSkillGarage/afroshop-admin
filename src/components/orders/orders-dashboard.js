@@ -85,7 +85,7 @@ const OrdersDashboard = () => {
         </div>
 
         {/**************************************************************  table section *****************************************************/}
-        <BaseTable tableHeaders={headers} data={results} name="orders"/>
+        <BaseTable tableHeaders={headers} data={results} name="orders" />
 
 
 

@@ -51,8 +51,14 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
             const uniqueArray = Array.from(
                 new Set(
                     DATA.map((obj) => {
-                        if (filter === 'price' && obj[filter] && typeof obj[filter] === 'object') {
-                            return obj[filter].price;
+                        if (filter === 'price' ) {
+                            return `$${obj["grandTotal"]}`;
+                        }else if(filter === "orderDate"){
+                            return obj["createdAt"];
+                        }else if(filter === "customer"){
+                            return `${obj["firstName"]} ${obj["lastName"]}`
+                        }else if(filter === "items") {
+                            return obj["products"].length
                         }
                         return obj[filter];
                     }).filter((value) => value !== undefined)
@@ -152,6 +158,7 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
         handleFilterObject({});
         closeFilter();
         setFiltersObject(filterSet);
+        setFormData({});
     }
 
 

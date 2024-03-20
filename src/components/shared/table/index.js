@@ -1,15 +1,6 @@
 import React from "react";
+import { formatPrice } from "../../../utils/formatPrice";
 
-const Price = ({ value }) => {
-  return (
-    <>
-      <p>${parseFloat(value).toFixed(2)}</p>
-      <p className="text-[#186F3D] text-[10px] leading-[15px]">
-        Stripe
-      </p>
-    </>
-  );
-};
 
 const DateCol = ({ value }) => {
   const date = new Date(value)
@@ -43,7 +34,7 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState, name }) => {
                           ? "w-[12.5%]"
                           : "w-[14.5%]"}  text-left ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
                 >
-                  {header.name}
+                  {(header.id === "price" || header.id === "salesPrice") ? `${header.name} ($)` : header.name}
                 </th>
               ))}
             </tr>
@@ -63,7 +54,7 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState, name }) => {
                     >
                       {
                         header.id === "price" ? (
-                          `$${parseFloat(row["grandTotal"]).toFixed(2)}`
+                          formatPrice(row["grandTotal"])
                         )
                           : (header.id === "dateAdded")
                             ? (
@@ -83,7 +74,7 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState, name }) => {
                                   )
                                   : (header.id === "salesPrice")
                                     ? (
-                                      row[header.id] === "" ? "---" : parseFloat(row[header.id]).toFixed(2)
+                                      row[header.id] === "" ? "---" : formatPrice(row[header.id])
                                     )
                                     : row[header.id] === ""
                                       ? "---"
