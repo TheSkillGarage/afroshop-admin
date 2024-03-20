@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { EditIcon2, EditIconGrey } from "../../images";
 import Button from "../shared/button";
 import ProfileTab from "./profileTab";
 import { useSelector, useDispatch } from "react-redux";
-import { updateProfile } from "../../redux/action";
+import { postRequest, updateProfile } from "../../redux/action";
 import EditPassword from "./edit-password";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import {
+  expirationDate,
+  getTokenFromCookie,
+  setCookieWithExpiry,
+} from "../../utils";
 
 const Profile = () => {
   const dispatch = useDispatch();
+
   const data = useSelector((d) => d.profile);
+
+  const token = getTokenFromCookie();
+
+  const [currentTab, setCurrentTab] = useState("Profile");
+  const [editProfile, setEditProfile] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({ ...data });
+
   const profileForm = useForm({
     defaultValues: {
       ...profileData?.store,
@@ -31,17 +45,39 @@ const Profile = () => {
     mode: "all",
   });
 
-  const [currentTab, setCurrentTab] = useState("Profile");
-  const [editProfile, setEditProfile] = useState(false);
-
   const handleProfileFormSubmit = () => {
     dispatch(updateProfile({ profile: { ...profileData } }));
     setEditProfile(false);
   };
 
-  const handlePasswordFormSubmit = () => {
-    passwordForm?.reset();
-    setEditProfile(false);
+  const handlePasswordFormSubmit = async (data) => {
+    setLoading(true);
+    try {
+      const [success, responseData] = await postRequest(
+        "/api/auth/change-password",
+        {
+          currentPassword: data.currentPassword,
+          password: data.newPassword,
+          passwordConfirmation: data.confirmPassword,
+        },
+        token
+      );
+      if (!success || responseData?.error) {
+        throw new Error(responseData?.error?.message);
+      } else {
+        passwordForm.reset();
+        setCookieWithExpiry(responseData?.jwt);
+        toast.success(`Password updated successfully`, { autoClose: 2000 });
+        setEditProfile(false);
+      }
+    } catch (error) {
+      console.error(error.message)
+      toast.error(`${error.message}`, {
+        autoClose: 2000,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleTabClick = (label) => {
@@ -54,7 +90,6 @@ const Profile = () => {
     passwordForm?.reset();
     profileForm?.reset();
   };
-
   const disableButton =
     (Object.keys(profileForm?.formState?.errors).length === 0 &&
       currentTab === "Profile") ||
@@ -77,10 +112,11 @@ const Profile = () => {
             <p
               key={index}
               onClick={() => handleTabClick(t)}
-              className={`cursor-pointer w-[380px] flex items-center justify-center ${t === currentTab
-                ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
-                : "text-[#4F4F4F] font-normal"
-                }`}
+              className={`cursor-pointer w-[380px] flex items-center justify-center ${
+                t === currentTab
+                  ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
+                  : "text-[#4F4F4F] font-normal"
+              }`}
             >
               {t}
             </p>
@@ -92,8 +128,9 @@ const Profile = () => {
         <div className="py-4 px-4 border-b-[2px] text-[#186F3D] border-[#E6E6E6] flex items-center justify-between">
           <p className="text-xl font-bold">{currentTab}</p>
           <p
-            className={`flex gap-2 items-center font-semibold cursor-pointer ${editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
-              }`}
+            className={`flex gap-2 items-center font-semibold cursor-pointer ${
+              editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
+            }`}
             onClick={() => setEditProfile(true)}
           >
             {editProfile ? (
@@ -104,44 +141,43 @@ const Profile = () => {
             Edit
           </p>
         </div>
-        <form>
-          {currentTab === "Profile" ? (
-            <ProfileTab
-              editProfile={editProfile}
-              profileData={profileData}
-              setProfileData={setProfileData}
-              form={profileForm}
-            />
-          ) : (
-            <EditPassword editProfile={editProfile} form={passwordForm} />
-          )}
+        {currentTab === "Profile" ? (
+          <ProfileTab
+            editProfile={editProfile}
+            profileData={profileData}
+            setProfileData={setProfileData}
+            form={profileForm}
+          />
+        ) : (
+          <EditPassword editProfile={editProfile} form={passwordForm} />
+        )}
 
-          {editProfile && (
-            <div className="flex justify-end gap-6 mt-8">
-              <Button
-                variant="secondary"
-                type="button"
-                className="w-[133px]"
-                onClick={() => handleCancelClick()}
-              >
-                Cancel
-              </Button>
-              <Button
-                className="w-[133px]"
-                type="submit"
-                onClick={(event) => {
-                  event.preventDefault();
-                  currentTab === "Profile"
-                    ? profileForm?.handleSubmit(handleProfileFormSubmit)()
-                    : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
-                }}
-                variant={disableButton ? "primary" : "disabled"}
-              >
-                Save
-              </Button>
-            </div>
-          )}
-        </form>
+        {editProfile && (
+          <div className="flex justify-end gap-6 mt-8">
+            <Button
+              variant="secondary"
+              type="button"
+              className="w-[133px]"
+              onClick={() => handleCancelClick()}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="w-[133px]"
+              type="submit"
+              loading={loading}
+              onClick={(event) => {
+                event.preventDefault();
+                currentTab === "Profile"
+                  ? profileForm?.handleSubmit(handleProfileFormSubmit)()
+                  : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
+              }}
+              variant={disableButton ? "primary" : "disabled"}
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

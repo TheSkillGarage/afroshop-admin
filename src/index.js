@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios'
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import "./index.css";
