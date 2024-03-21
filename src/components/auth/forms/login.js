@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
@@ -15,7 +15,7 @@ import {
 import { postRequest, userLogin } from "../../../redux/action";
 import Button from "../../shared/button";
 import { AFROADMIN_TOKEN } from "../../../utils/constants";
-import { expirationDate } from "../../../utils";
+import { expirationDate, getTokenFromCookie } from "../../../utils";
 import { fetchUserRole } from "./utils";
 
 const LogInForm = () => {
@@ -34,10 +34,15 @@ const LogInForm = () => {
     handleSubmit,
   } = useForm({ mode: "all" });
 
+  const token = getTokenFromCookie()
+
+  useEffect(() => {
+    if (token) navigate("/dashboard")
+  }, [])
 
   const onSubmit = async () => {
     const value = getValues();
-  
+
     setLoading(true);
     try {
       const [success, responseData] = await postRequest("/api/auth/local", {
@@ -47,8 +52,7 @@ const LogInForm = () => {
       if (!success || responseData?.error) {
         console.error(responseData?.error?.message);
         toast.error(
-          `${
-            responseData?.error?.message || "An Error occured while logging in"
+          `${responseData?.error?.message || "An Error occured while logging in"
           }`,
           { autoClose: 2000 }
         );
@@ -86,7 +90,7 @@ const LogInForm = () => {
           </p>
         </div>
 
-        <ConnectButton provider="google"/>
+        <ConnectButton provider="google" />
 
         <p className="text-[13px] leading-[23px] text-center my-6 text-[#CCCCCC]">
           or
