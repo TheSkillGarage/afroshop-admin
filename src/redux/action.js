@@ -139,11 +139,13 @@ export const resetStore = () => dispatch => {
     type: 'RESET_STORE',
   })
 }
-export const postRequest = (url, data) => {
+export const postRequest = (url, data, token = null) => {
   return fetch(renderValidUrl(url), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+
+      ...(token && { 'Authorization': `Bearer ${token}` })
     },
     body: JSON.stringify(data),
   })
@@ -152,12 +154,12 @@ export const postRequest = (url, data) => {
       return [true, responseData];
     })
     .catch((error) => {
-      console.error("Error:", error);
+      //console.error("Error:", error);
       return [false, error];
     });
 };
 
-export const putRequest = async (url, data, token) => {
+export const putRequest = async (url, data, token = null) => {
   try {
     const response = await fetch(renderValidUrl(url), {
       method: 'PUT',
@@ -174,3 +176,4 @@ export const putRequest = async (url, data, token) => {
     return [false, error];
   }
 };
+
