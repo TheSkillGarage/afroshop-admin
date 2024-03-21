@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminNavbar from "../navbar";
 import { GreenRightArrow } from "../../images";
 import StatusPills from "../status-pills";
 import { useNavigate, useParams } from "react-router-dom";
-import ORDERS_DATA from "../../data/orders";
 import useFilter from "../../hooks/useFilter";
 import Search from "../search";
 import Button from "../shared/button";
@@ -19,9 +18,6 @@ const ViewOrders = () => {
     const orderData = useSelector((state) => state.ordersData);
 
     const order = orderData.find((order) => order.orderID === orderID);
-   
-    const date = new Date(order.createdAt)
-
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filterObject, setFilterObject] = useState({});
@@ -31,7 +27,19 @@ const ViewOrders = () => {
 
 
     // using custom  hooks
-    const data = useFilter("products", "all", order["products"], searchTerm, filterObject).filteredData;
+    const data = useFilter("products", "all", order?.["products"], searchTerm, filterObject).filteredData;
+    const date = new Date(order?.createdAt);
+
+
+    useEffect(() => {
+        if (!order) {
+            navigate('/404');
+        }
+    }, [order, navigate]);
+
+    if (!order) {
+        return null;
+    }
 
     return (
         <div>
@@ -62,10 +70,10 @@ const ViewOrders = () => {
                                     </div>
 
                                     <div className="text-[13px] leading-[23px] text-[#7F7F7F] w-[70%]">
-                                        <p>{order.orderID}</p>
+                                        <p>{order?.orderID}</p>
                                         <p>{date.toLocaleDateString('en-CA')}</p>
-                                        <p>{order.products.length}</p>
-                                        <p>{formatPrice(order.grandTotal)}</p>
+                                        <p>{order?.products.length}</p>
+                                        <p>{formatPrice(order?.grandTotal)}</p>
                                     </div>
                                 </div>
                             </div>
@@ -82,10 +90,10 @@ const ViewOrders = () => {
                                     </div>
 
                                     <div className="text-[13px] leading-[23px] text-[#7F7F7F] w-[70%]">
-                                        <p>{`${order.firstName} ${order.lastName}`}</p>
-                                        <p>{`${order.address.streetAddress}, ${order.address.city}, ${order.address.state}, ${order.address.country} `}</p>
-                                        <p>{order.phoneNumber}</p>
-                                        <p>{order.email}</p>
+                                        <p>{`${order?.firstName} ${order?.lastName}`}</p>
+                                        <p>{`${order?.address.streetAddress}, ${order?.address.city}, ${order?.address.state}, ${order?.address.country} `}</p>
+                                        <p>{order?.phoneNumber}</p>
+                                        <p>{order?.email}</p>
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +103,7 @@ const ViewOrders = () => {
 
                         {/**************************************************************** * table section ***************************************************************/}
 
-                        <Search handleSearch={handleSearch} name="view-orders" DATA={order.products} handleFilterObject={handleFilterObject} />
+                        <Search handleSearch={handleSearch} name="view-orders" DATA={order?.products} handleFilterObject={handleFilterObject} />
 
                         <div className="w-full">
                             <table className="w-full border-collapse">
@@ -120,7 +128,7 @@ const ViewOrders = () => {
                                                     <td className="py-2 pr-8">{productID}</td>
                                                     <td className="py-2 pr-8">{formatPrice(price)}</td>
                                                     <td className="py-4 pr-8 capitalize">
-                                                        <StatusPills status={order.status} />
+                                                        <StatusPills status={order?.status} />
                                                     </td>
                                                     <td className="py-2 pr-8"></td>
                                                 </tr>
