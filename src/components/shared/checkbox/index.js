@@ -15,7 +15,7 @@ import { CheckboxDisplay, CheckboxInput } from "./checkbox.styles";
 
 const Checkbox = ({ name, handleChange, isChecked, isDisabled, children, valueOnChecked, value }) => {
   return (
-    <label htmlFor={name} className="flex justify-center items-center">
+    <label htmlFor={name} className="flex justify-center text-xs items-center">
       <CheckboxInput
         id={name}
         type="checkbox"

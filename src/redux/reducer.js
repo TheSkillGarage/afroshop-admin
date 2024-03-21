@@ -20,6 +20,7 @@ const INITIAL_STATE = {
   isSidebarToggled: false,
   productsData: PRODUCT_DATA,
   userStore: {},
+  store: {},
   addresses: []
 };
 
@@ -59,6 +60,16 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         profile: action.profile,
       };
+    case "UPDATE_STORE":
+      return {
+        ...previousState,
+        store: action.payload
+      }
+    case  "UPDATE_STORE_1":
+      return {
+        ...previousState,
+        store: action.payload
+      }
     case "ADD_DELIVERY_DATA":
       return {
         ...previousState,

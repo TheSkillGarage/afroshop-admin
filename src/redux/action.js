@@ -7,7 +7,12 @@ export const userLogin = (user) => (dispatch) => {
     payload: user,
   });
 };
-
+export const updateStore = (store) => (dispatch) => {
+  dispatch({
+    type: "UPDATE_STORE",
+    payload: store
+  })
+}
 export const logOutUser = () => (dispatch) => {
   dispatch({
     type: "LOG_OUT",
@@ -30,11 +35,12 @@ export const fetchData = async (dispatch, url, type, token) => {
   }
 };
 
+
 export const getUserById = (id) => async (dispatch) => {
   return fetchData(dispatch, `users/${id}`, "user");
 };
 export const getStoreByUser = (id, token) => async (dispatch) => {
-  return fetchData(dispatch, `stores/${id}`, "userStore", token);
+  return fetchData(dispatch, `stores/${id}`, "store", token);
 };
 export const getUserAddress = (token) => async (dispatch) => {
   await fetchData(dispatch, '/addresses', 'addresses', token)

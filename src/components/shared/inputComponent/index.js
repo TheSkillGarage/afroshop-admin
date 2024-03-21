@@ -132,6 +132,7 @@ const InputComponent = forwardRef(
               accept={accept}
               ref={ref}
               min={min}
+              step={type === "time" ? 2 : 0}
               max={max}
               name={name}
               placeholder={placeholder}

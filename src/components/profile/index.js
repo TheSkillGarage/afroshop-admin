@@ -3,10 +3,17 @@ import { EditIcon2, EditIconGrey } from "../../images";
 import Button from "../shared/button";
 import ProfileTab from "./profileTab";
 import { useSelector, useDispatch } from "react-redux";
-import { postRequest, updateProfile } from "../../redux/action";
+import {
+  getStoreByUser,
+  postRequest,
+  putRequest,
+  updateProfile,
+  updateStore,
+} from "../../redux/action";
 import EditPassword from "./edit-password";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { renderValidUrl } from "../../utils/constants";
 import {
   expirationDate,
   getTokenFromCookie,
@@ -15,25 +22,28 @@ import {
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const store = useSelector((d) => d.userStore);
-  const user = useSelector((state) => state.user);
-  const address = useSelector((state) => state.addresses);
-  const [deliveryOpenTimeHour, deliveryOpenTimeMinute] =
-    store?.deliveryTime?.from?.split(":");
-  const [deliveryCloseTimeHour, deliveryCloseTimeMinute] =
-    store?.deliveryTime?.to?.split(":");
+  const token = getTokenFromCookie();
   const data = useSelector((d) => d.profile);
+  const store = useSelector((d) => d.store);
+  const user = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
+
   const [profileData, setProfileData] = useState({
     ...data,
+    holidays: store?.holidays,
     store: {
       ...data.store,
       days: store?.openDays?.map((day) => day?.openDays) || "",
       email: user?.email || "",
       store_name: store?.name || "",
-      address: address[0]?.streetAddress || "",
-      deliveryStartTime: `${deliveryOpenTimeHour}:${deliveryOpenTimeMinute}`,
-      deliveryEndTime: `${deliveryCloseTimeHour}:${deliveryCloseTimeMinute}`,
-      profile_image: store?.image
+      address: store?.address?.streetAddress,
+      city: store?.address?.city,
+      state: store?.address?.state,
+      postal_code: store?.address?.postalCode,
+      country: store?.address?.country,
+      deliveryStartTime: store?.deliveryTime?.from,
+      deliveryEndTime: store?.deliveryTime?.to,
+      profile_image: renderValidUrl(store?.image),
     },
   });
 
@@ -59,17 +69,73 @@ const Profile = () => {
 
   const [currentTab, setCurrentTab] = useState("Profile");
   const [editProfile, setEditProfile] = useState(false);
-  console.log(JSON.stringify(profileData?.store) === JSON.stringify(store))
-  const handleProfileFormSubmit = () => {
-   
-    if(profileForm.formState.isDirty){
-      console.log('hi i was modifiedl')
-      dispatch(updateProfile({ profile: { ...profileData } }));
-      setEditProfile(false);
-    } else {
-      console.log('not modified')
+
+  const handleProfileFormSubmit = async () => {
+    await updateStoreInfo();
+  };
+
+  const updateStoreInfo = async () => {
+    setLoading(true);
+
+    const updatedStore = {
+      name: profileData?.store?.store_name,
+      address: {
+        streetAddress: profileData?.store?.address,
+        state: profileData?.store?.state,
+        city: profileData?.store?.city,
+        postalCode: profileData?.store?.postal_code,
+        country: profileData?.store?.country,
+      },
+      openDays: profileData?.store?.days?.map((day) => {
+        return { openDays: day };
+      }),
+      deliveryTimes: {
+        from: profileData?.store?.deliveryStartTime,
+        to: profileData?.store?.deliveryEndTime,
+      },
+      holidays: profileData?.holidays,
+    };
+
+    if (profileData?.store?.profile_image_data) {
+      updatedStore.image = profileData?.store?.profile_image_data;
     }
- 
+
+    setProfileData((prev) => {
+      return {
+        ...prev,
+        store: {
+          ...prev.store,
+          profile_image: renderValidUrl(store?.image),
+        },
+      };
+    });
+
+    try {
+      if (!store || !store?.id || !user?.id) {
+        throw new Error("Store information is missing or incomplete");
+      }
+      const [success, responseData] = await putRequest(
+        `/api/stores/${store?.id}`,
+        updatedStore,
+        token
+      );
+      if (!success || responseData?.error) {
+        console.error(
+          responseData?.error?.message || "An error occurred, please try again"
+        );
+      } else {
+        dispatch(getStoreByUser(user?.id, token));
+        dispatch(updateProfile({ profile: { ...profileData } }));
+        toast.success(`Store details updated successfully`, {
+          autoClose: 2000,
+        });
+        setEditProfile(false);
+      }
+    } catch (error) {
+      console.error("Error updating store information:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePasswordFormSubmit = async (data) => {
@@ -93,7 +159,7 @@ const Profile = () => {
         setEditProfile(false);
       }
     } catch (error) {
-      console.error(error.message)
+      console.error(error.message);
       toast.error(`${error.message}`, {
         autoClose: 2000,
       });

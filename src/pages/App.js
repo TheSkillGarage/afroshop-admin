@@ -10,10 +10,9 @@ function OverviewPage() {
   const user = useSelector((state) => state.user)
   const dispatch = useDispatch();
   const token = getTokenFromCookie();
-  console.log(token)
 
   useEffect(() => {
-    dispatch(getStoreByUser(user?.id, token))
+    dispatch(getStoreByUser(user?.id, token));
     dispatch(getUserAddress(token))
   }, []);
   

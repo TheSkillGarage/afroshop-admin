@@ -13,28 +13,37 @@ import { sidebarToggle } from "../../redux/action";
 import { renderValidUrl } from "../../utils/constants";
 
 const AdminNavbar = ({ name }) => {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const store = useSelector((state) =>state.userStore);
-  const isSidebarToggled = useSelector((state) => state.isSidebarToggled)
+  const store = useSelector((state) => state.store);
+  const isSidebarToggled = useSelector((state) => state.isSidebarToggled);
 
   const toggleSidebar = () => {
-    dispatch(sidebarToggle({toggle: isSidebarToggled}))
-  }
-  const navigate = useNavigate();
+    dispatch(sidebarToggle({ toggle: isSidebarToggled }));
+  };
+
 
   return (
     <nav className="flex justify-between p-6 border-b border-1 border-[#E6E6E6] min-h-[69px] max-h-[69px] bg-[#ffffff]">
       {name === "layout" ? (
         <div className="flex items-center gap-6">
-          <MenuIcon alt="menu" className="w-[20px] h-[20px] cursor-pointer" onClick={() => toggleSidebar()}/>
+          <MenuIcon
+            alt="menu"
+            className="w-[20px] h-[20px] cursor-pointer"
+            onClick={() => toggleSidebar()}
+          />
           <div className="flex">
-              {store && <img src={renderValidUrl(store?.image)} className="rounded-full h-[36px] w-[36px]"/>}
-              <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
-                 {store?.name ?? "--"}
-              </p>
-              </div>
+            {store && (
+              <img
+                src={store ? renderValidUrl(store?.image) : ""}
+                className="rounded-full h-[36px] w-[36px]"
+              />
+            )}
+            <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
+              {store?.name ?? "--"}
+            </p>
+          </div>
         </div>
       ) : (
         <div className="flex items-center">
@@ -46,10 +55,10 @@ const AdminNavbar = ({ name }) => {
                 onClick={() => navigate("/orders")}
               />
               <div className="flex">
-                <img src={GreenRangerPic} className="h-[32px] w-[32px]"/>
-              <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
-                All Stores
-              </p>
+                <img src={GreenRangerPic} className="h-[32px] w-[32px]" />
+                <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
+                  All Stores
+                </p>
               </div>
             </div>
           ) : (
@@ -59,11 +68,11 @@ const AdminNavbar = ({ name }) => {
                 className="w-[20px] h-[20px] cursor-pointer"
                 onClick={() => navigate("/products")}
               />
-             <div className="flex">
-                <img src={GreenRangerPic} className="h-[32px] w-[32px]"/>
-              <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
-                Green Ranger
-              </p>
+              <div className="flex">
+                <img src={GreenRangerPic} className="h-[32px] w-[32px]" />
+                <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
+                  Green Ranger
+                </p>
               </div>
             </div>
           )}
@@ -72,13 +81,13 @@ const AdminNavbar = ({ name }) => {
 
       <div className="flex gap-4 items-center">
         <NotificationIcon className="w-[20px] h-[20px]" />
-          <div  className="flex gap-4 items-center">
-            <SettingsIcon className="w-[20px] h-[20px]" />
-            <ProfilePic className="w-[24px] h-[24px]" />
-            <p className="font-semibold text-[13px] leading-[23px] text-[#186F3D]">
-              {`${user?.firstName} ${user?.lastName}` ?? " Ini James"}
-            </p>
-          </div>
+        <div className="flex gap-4 items-center">
+          <SettingsIcon className="w-[20px] h-[20px]" />
+          <ProfilePic className="w-[24px] h-[24px]" />
+          <p className="font-semibold text-[13px] leading-[23px] text-[#186F3D]">
+            {`${user?.firstName} ${user?.lastName}` ?? " Ini James"}
+          </p>
+        </div>
       </div>
     </nav>
   );

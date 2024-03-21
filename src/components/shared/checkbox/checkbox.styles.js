@@ -14,7 +14,7 @@ const CheckboxInput = styled.input`
     background-color: #ffffff;
     border-radius: 4px;
     box-sizing: border-box;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
   }
 
   &:hover + ${CheckboxDisplay} {
@@ -35,7 +35,7 @@ const CheckboxInput = styled.input`
 
   &:checked + ${CheckboxDisplay} {
     background-color: #186f3d;
-    border: 1px solid #186f3d;
+
     background-image: url("${whiteMarkIcon}");
     background-repeat: no-repeat;
     background-position: center;

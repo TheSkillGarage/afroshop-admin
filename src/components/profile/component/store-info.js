@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Checkbox from "../../shared/checkbox";
 import InputComponent from "../../shared/inputComponent";
 import {
   daysOfTheWeek,
-  deliveryEndTimes,
   deliveryOptions,
   deliverySlots,
-  deliveryStartTimes,
 } from "../../../data/profile";
 import { DeleteIcon, GreenCamera, UserAvatar } from "../../../images";
+import { handleAvatarSubmit } from "../../../utils";
+import { useSelector } from "react-redux";
 import { renderValidUrl } from "../../../utils/constants";
 
 const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
@@ -19,13 +19,15 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     setValue,
     trigger,
   } = form;
-  console.log(profileData);
+  const store = useSelector((state) => state.store);
+  const [imageUploaded, setImageUploaded] = useState();
 
   const handleFileUpload = (e) => {
+    setImageUploaded(e.target.files[0]);
     if (e.target.files.length > 0) {
-      handleData("profile_image_data", e.target.files[0]);
+    //   handleData("profile_image_data", e.target.files[0]);
       handleData("profile_image", URL.createObjectURL(e.target.files[0]));
-      return;
+    //   return;
     }
   };
 
@@ -60,6 +62,15 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     });
   };
 
+  const handleAvatarUpload = async () => {
+    if (imageUploaded) {
+      const image = await handleAvatarSubmit(imageUploaded, store?.id);
+      handleData("profile_image_data", image[0]?.id);
+      setImageUploaded(null);
+      return;
+    } 
+  };
+
   return (
     <div className="flex flex-col mt-6 gap-6">
       <div className="flex items-center gap-3 mb-3">
@@ -73,7 +84,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
               <div className="relative h-full w-full">
                 <img
                   className="h-full w-full object-cover rounded-full"
-                  src={renderValidUrl(profileData?.store?.profile_image)}
+                  src={profileData?.store?.profile_image}
                   alt="Profile"
                 />
                 {editProfile && (
@@ -104,37 +115,27 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
         </label>
 
         {editProfile && profileData?.store?.profile_image.length > 0 && (
-          <p
-            className="bg-[#FF3B301A] rounded p-2 cursor-pointer"
-            onClick={() => {
-              handleData("profile_image", "");
-              handleData("profile_image_Data", null);
-            }}
-          >
-            <DeleteIcon />
-          </p>
-        )}
-      </div>
-
-      <p className="text-[13px] text-[#B3B3B3]">Open Day(s)</p>
-      <div className="flex w-full justify-between">
-        {daysOfTheWeek.map((day, index) => (
-          <div key={index} className="flex">
-            <Checkbox
-              name={day.label}
-              handleChange={() => {
-                handleData("day", day?.value);
-              }}
-              isDisabled={!editProfile}
-              value={
-                profileData?.store?.days?.includes(day?.value) ? day?.value : ""
-              }
-              valueOnChecked={day.value}
+          <>
+            {imageUploaded && (
+            <p
+              className="text-[#186F3D] cursor-pointer"
+              onClick={handleAvatarUpload}
             >
-              {day.label}
-            </Checkbox>
-          </div>
-        ))}
+              Upload
+            </p>
+            )}
+            <p
+              className="bg-[#FF3B301A] rounded p-2 cursor-pointer"
+              onClick={() => {
+                setImageUploaded(null);
+                handleData("profile_image", renderValidUrl(store?.image));
+                handleData("profile_image_data", null);
+              }}
+            >
+              <DeleteIcon />
+            </p>
+          </>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-8 my-4">
@@ -149,8 +150,6 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           register={register}
           required={true}
           requiredMessage={"Store name is required"}
-          patternValue={/^[A-Za-z -]+$/}
-          patternMessage={"Enter a valid store Name"}
           isReadOnly={!editProfile}
           handleChange={(e) => handleData("store_name", e.target.value)}
         />
@@ -163,6 +162,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           control={control}
           errors={errors}
           required={true}
+          patternValue={/^\w{1,64}(?:[, \t]+\w{1,64}){0,15}$/}
+          patternMessage={"Ensure address is separated by commas and space"}
           requiredMessage={"Store address is required"}
           register={register}
           isReadOnly={!editProfile}
@@ -170,20 +171,85 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
         />
         <InputComponent
           inputType="text"
-          label="Email"
-          fieldName={"email"}
+          label="City"
+          fieldName={"city"}
           placeholder="Enter"
           className="bg-[#F2F2F2]"
-          required={true}
-          requiredMessage={"Email address is required"}
-          patternValue={/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/}
-          patternMessage={"Enter a valid email address"}
           control={control}
           errors={errors}
           register={register}
+          required={true}
+          requiredMessage={"City is required"}
           isReadOnly={!editProfile}
-          handleChange={(e) => handleData("email", e.target.value)}
+          handleChange={(e) => handleData("city", e.target.value)}
         />
+        <InputComponent
+          inputType="text"
+          label="Province/State"
+          fieldName={"state"}
+          placeholder="Enter"
+          className="bg-[#F2F2F2]"
+          control={control}
+          errors={errors}
+          register={register}
+          required={true}
+          requiredMessage={"Province is required"}
+          isReadOnly={!editProfile}
+          handleChange={(e) => handleData("state", e.target.value)}
+        />
+
+        <InputComponent
+          inputType="text"
+          label="Postal Code"
+          fieldName={"postal_code"}
+          placeholder="Enter"
+          className="bg-[#F2F2F2]"
+          control={control}
+          errors={errors}
+          register={register}
+          required={true}
+          requiredMessage={"Postal Code is required"}
+          isReadOnly={!editProfile}
+          handleChange={(e) => handleData("postal_code", e.target.value)}
+        />
+        <InputComponent
+          inputType="country"
+          label="Country"
+          fieldName={"country"}
+          placeholder="Enter"
+          className="bg-[#F2F2F2]"
+          control={control}
+          errors={errors}
+          register={register}
+          required={true}
+          requiredMessage={"Country is required"}
+          isReadOnly={!editProfile}
+          handleChange={(e) => handleData("country", e.target.value)}
+        />
+        <div className="space-y-5">
+          <p className="text-[13px] text-[#B3B3B3]">Open Day(s)</p>
+          <div className="flex w-full justify-between">
+            {daysOfTheWeek.map((day, index) => (
+              <div key={index} className="flex">
+                <Checkbox
+                  name={day.label}
+                  handleChange={() => {
+                    handleData("day", day?.value);
+                  }}
+                  isDisabled={!editProfile}
+                  value={
+                    profileData?.store?.days?.includes(day?.value)
+                      ? day?.value
+                      : ""
+                  }
+                  valueOnChecked={day.value}
+                >
+                  {day.label}
+                </Checkbox>
+              </div>
+            ))}
+          </div>
+        </div>
         <InputComponent
           inputType="select"
           multiple={true}
@@ -205,6 +271,24 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
             handleData("deliveryOption", value);
           }}
         />
+
+        {/* <InputComponent
+          inputType="text"
+          label="Email"
+          fieldName={"email"}
+          placeholder="Enter"
+          className="bg-[#F2F2F2]"
+          required={true}
+          requiredMessage={"Email address is required"}
+          patternValue={/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/}
+          patternMessage={"Enter a valid email address"}
+          control={control}
+          errors={errors}
+          register={register}
+          isReadOnly={!editProfile}
+          handleChange={(e) => handleData("email", e.target.value)}
+        /> */}
+
         <InputComponent
           inputType="time"
           type="time"

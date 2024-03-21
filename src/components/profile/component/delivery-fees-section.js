@@ -17,7 +17,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
           label: destination,
           value: `$${fee}`,
         };
-       
+
         setProfileData((prev) => {
           //checks if the value exists in the current array of deliverys objects and overrides it if true
           const updatedArray = prev?.delivery?.map((d) =>
@@ -68,8 +68,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               label="Shipping Destination"
               name="destination"
               fieldName={`destination`}
-              required={true}
-              requiredMessage={"This field is required"}
+              // required={true}
+              // requiredMessage={"This field is required"}
               placeholder="Select"
               className="bg-[#F2F2F2]"
               control={control}
@@ -85,8 +85,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               label="Shipping Fee ($)"
               name="fee"
               fieldName="fee"
-              required={true}
-              requiredMessage={"This field is required"}
+              // required={true}
+              // requiredMessage={"This field is required"}
               placeholder="Enter"
               className="bg-[#F2F2F2]"
               control={control}
@@ -114,7 +114,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
       )}
       <div className="py-4 grid grid-cols-3 gap-4">
         {profileData &&
-          profileData.delivery.map((d, index) => (
+          profileData?.delivery.map((d, index) => (
             <div key={index}>
               <DeliveryCard
                 card={d}

@@ -153,6 +153,10 @@ const storeInitialState = {
   deliveryEndTime: "9:00PM",
   deliverySlot: "2 Hours",
   restPeriod: "1 Hours",
+  country: "Ghana",
+  postal_code: "101401",
+  state: "Benin",
+  city: "Ikorodu",
 };
 const profileInitialState = {
   store: storeInitialState,
