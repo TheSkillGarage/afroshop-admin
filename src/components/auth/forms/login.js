@@ -56,7 +56,7 @@ const LogInForm = () => {
         const userData = await fetchUserRole("/users/me?populate=*", responseData);
         console.log(userData)
 
-        if (userData?.role?.name === "admin") {
+        if (userData?.role?.name === 'admin') {
           dispatch(userLogin(responseData?.user));
           Cookies.set(AFROADMIN_TOKEN, responseData?.jwt, {
             expires: expirationDate,

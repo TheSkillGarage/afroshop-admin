@@ -4,7 +4,7 @@ export const BACKEND_URL = process.env.REACT_APP_API_URL.replace('/api', '')
 export const AFROADMIN_TOKEN = 'afroadmin-auth-token'
 
 export const renderValidUrl = (url) => {
-  if (url?.startsWith('http://') || url?.startsWith('https://')) {
+  if (url?.startsWith('http://') || url?.startsWith('https://') ||  url?.includes('http://')) {
     // Absolute URL, return as is
     return url;
   } else {
