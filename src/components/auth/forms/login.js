@@ -45,7 +45,7 @@ const LogInForm = () => {
         password: value.password,
       });
       if (!success || responseData?.error) {
-        console.error(responseData?.error?.message);
+      
         toast.error(
           `${
             responseData?.error?.message || "An Error occured while logging in"
@@ -54,8 +54,7 @@ const LogInForm = () => {
         );
       } else {
         const userData = await fetchUserRole("/users/me?populate=*", responseData);
-        console.log(userData)
-
+      
         if (userData?.role?.name === 'admin') {
           dispatch(userLogin(responseData?.user));
           Cookies.set(AFROADMIN_TOKEN, responseData?.jwt, {
@@ -70,7 +69,6 @@ const LogInForm = () => {
         }
       }
     } catch (error) {
-      console.log('error', error)
       toast.error(`An error occured while logging ${error}`, { autoClose: 2000 });
     } finally {
       setLoading(false);
