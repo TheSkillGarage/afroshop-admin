@@ -5,13 +5,26 @@ import AdminNavbar from "../navbar";
 import AdminSidebar from "../sidebar";
 import { getTokenFromCookie, removeTokenFromCookie } from "../../utils";
 import useIdleActivityTimer from "../../hooks/useIdleTimer";
-import { logOutUser } from "../../redux/action";
+import { getOrdersData, getStoreData, logOutUser } from "../../redux/action";
 
 const PageLayout = ({ children }) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  //  handling API calls
+  const token = getTokenFromCookie();
+  const user = useSelector((state) => state.user);
+  const storeData = useSelector((state) => state.storeData);
+
+  useEffect(() => {
+
+      dispatch(getStoreData(user?.id, token));
+      dispatch(getOrdersData(storeData?.id, token));
+  }, [])
+
+  
   /*
 
     This section handles user Inactivity after 20mins

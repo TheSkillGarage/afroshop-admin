@@ -1,6 +1,22 @@
 import axios from "axios";
 import { renderValidUrl } from "../utils/constants";
 
+export const fetchData = async (dispatch, url, type, token) => {
+  dispatch({ type: 'SET_IS_FETCHING', isFetching: true });
+
+  try {
+    const { data } = await axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      },
+    });
+    dispatch({ type: 'GET_API_REQUEST', hash: { [type]: data } });
+  } catch (error) {
+    dispatch({ type: 'SET_ERROR', error });
+  }
+};
+
 export const userLogin = (user) => dispatch => {
   dispatch({
     type: 'LOGIN_USER',
@@ -12,17 +28,6 @@ export const logOutUser = () => dispatch => {
   dispatch({
     type: 'LOG_OUT',
   });
-};
-
-export const fetchData = async (dispatch, url, type) => {
-  dispatch({ type: "SET_IS_FETCHING", isFetching: true });
-
-  try {
-    const { data } = await axios.get(url);
-    dispatch({ type: "GET_API_REQUEST", hash: { [type]: data } });
-  } catch (error) {
-    dispatch({ type: "SET_ERROR", error });
-  }
 };
 
 export const addActionRole = (hash) => (dispatch) => {
@@ -97,6 +102,15 @@ export const resetStore = () => dispatch => {
     type: 'RESET_STORE',
   })
 }
+
+export const getOrdersData = (storeID, token) => async (dispatch) => {
+  await fetchData(dispatch, `orders?storeID=${storeID}`, 'ordersData', token);
+}
+
+export const getStoreData = (userID, token) => async (dispatch) => {
+  await fetchData(dispatch, `stores/${userID}`, 'storeData', token);
+}
+
 export const postRequest = (url, data, token = null) => {
   return fetch(renderValidUrl(url), {
     method: "POST",
@@ -134,4 +148,3 @@ export const putRequest = async (url, data, token = null) => {
     return [false, error];
   }
 };
-

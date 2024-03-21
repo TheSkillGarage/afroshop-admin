@@ -10,6 +10,7 @@ import DetectMobile from "./components/detect-mobile";
 import 'react-toastify/dist/ReactToastify.css';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
 const Root = () => {
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);

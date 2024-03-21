@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 const Welcome = () => {
   const navigate = useNavigate();
   const handleBtnClick = () =>{
-    navigate("/dashboard")
+    navigate("/profile");
   }
   return (
     <div className="bg-[#F2F2F2] w-full pt-6 pb-8 px-4">

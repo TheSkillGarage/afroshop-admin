@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductCard from './productCard';
 import CustomerCard from './customerCard';
 import BaseTable from '../shared/table';
 import StatusPills from '../status-pills';
 import Button from '../shared/button';
 import DASHBOARD_ORDERS_HEADERS from '../../data/dashboardHeaders';
-import DASHBOARD_PRODUCT_CARD from '../../data/dashboardProductCard';
-import DASHBOARD_CUSTOMER_CARD from '../../data/dashboardCustomerCard';
 import { useNavigate } from 'react-router-dom';
 
 import BusinessSummary from './cards-section';
 import LineChartComponent from './lineChart-section';
-import ORDERS_DATA from '../../data/orders';
+import { useSelector } from 'react-redux';
+import { getTopCustomers, getTopProducts } from '../../utils/top-products_customers';
 
 const Dashboard = () => {
-  const results = ORDERS_DATA.slice(-3).map((data) => ({
+
+  const ordersData = useSelector((state) => state.ordersData);
+  const [topCustomers, setTopCustomers] = useState([]);
+  const [topProducts, setTopProducts] = useState([]);
+
+  const navigate = useNavigate();
+
+  const results = ordersData.slice(0, 3).map((data) => ({
     ...data,
     id: data.id,
     status: (
@@ -24,7 +30,11 @@ const Dashboard = () => {
     ),
   }));
 
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    setTopProducts(getTopProducts(ordersData));
+    setTopCustomers(getTopCustomers(ordersData));
+  }, [ordersData]);
 
   return (
     <div className="bg-[#F2F2F2] w-full pt-6 pb-8 px-4">
@@ -37,18 +47,18 @@ const Dashboard = () => {
 
       <div className="bg-[rgb(255,255,255)] h-[1100px] border rounded-md py-8 px-5 ">
         <div className=" w-[98%] flex flex-col gap-8 ">
-         
-         <BusinessSummary />
+
+          <BusinessSummary />
 
           {/* --------------Line chart and Top products-------------- */}
           <div className="flex justify-between h-[332px]">
-            
-           <LineChartComponent />
+
+            <LineChartComponent />
 
             <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-4 ">
               <p className="font-semibold text-base">Top Selling Products</p>
-              {DASHBOARD_PRODUCT_CARD.map((data, key) =>
-                <ProductCard productImage={data.productImage} productName={data.productName} salesData={data.salesData} key={key}/>)}
+              {topProducts.slice(0, 3).map((data, key) =>
+                <ProductCard data={data} key={key} />)}
             </div>
           </div>
 
@@ -63,6 +73,7 @@ const Dashboard = () => {
               </div>
 
               <BaseTable
+                name="orders"
                 tableHeaders={DASHBOARD_ORDERS_HEADERS}
                 data={results}
               />
@@ -70,14 +81,8 @@ const Dashboard = () => {
 
             <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-4 ">
               <p className="font-semibold text-base">Weekly Top Customers</p>
-              {DASHBOARD_CUSTOMER_CARD.map((data, key) =>
-                <CustomerCard key={key}
-                  customerImage={data.customerImage}
-                  customerName={data.customerName}
-                  customerEmail={data.customerEmail}
-                  numberOrders={data.numberOrders}
-                />)}
-
+              {topCustomers.slice(0, 3).map((data, key) =>
+                <CustomerCard key={key} data={data} />)}
             </div>
           </div>
         </div>
