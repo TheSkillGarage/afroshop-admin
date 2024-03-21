@@ -50,7 +50,7 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
         filters.forEach((filter) => {
             const uniqueArray = Array.from(
                 new Set(
-                    DATA.map((obj) => {
+                    DATA?.map((obj) => {
                         if (filter === 'price' ) {
                             return `$${obj["grandTotal"]}`;
                         }else if(filter === "orderDate"){
