@@ -28,12 +28,11 @@ export const handleAvatarSubmit = async (image, id) => {
     });
     return;
   }
-  toast.info(`⏳ uploading image.....`, { autoClose: 2000 });
   try {
     const files = new FormData();
     files.append("files", image);
     files.append("storeId", `${id}`);
-
+    toast.info(`⏳ uploading image.....`, { autoClose: 2000 });
     const {
       data,
     } = await axios.post(`/upload`, files, {

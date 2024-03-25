@@ -30,7 +30,7 @@ const ResetPassword = () => {
           email: value.email,
         }
       );
-console.log(success, responseData)
+
       if (!success || responseData?.error) {
         toast.error(
           responseData.error.message || "An error occured resetting password"

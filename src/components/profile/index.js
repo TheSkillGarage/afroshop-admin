@@ -17,6 +17,7 @@ import { renderValidUrl } from "../../utils/constants";
 import {
   expirationDate,
   getTokenFromCookie,
+  handleAvatarSubmit,
   setCookieWithExpiry,
 } from "../../utils";
 
@@ -71,12 +72,9 @@ const Profile = () => {
   const [editProfile, setEditProfile] = useState(false);
 
   const handleProfileFormSubmit = async () => {
-    await updateStoreInfo();
-  };
-
-  const updateStoreInfo = async () => {
     setLoading(true);
 
+    //new details of store to be updated
     const updatedStore = {
       name: profileData?.store?.store_name,
       address: {
@@ -96,19 +94,23 @@ const Profile = () => {
       holidays: profileData?.holidays,
     };
 
-    if (profileData?.store?.profile_image_data) {
-      updatedStore.image = profileData?.store?.profile_image_data;
+    //upload image first if it exists before other store updates
+    if (
+      profileData?.store?.profile_image_data &&
+      profileData?.store?.profile_image
+    ) {
+      try {
+        const image_url = await handleAvatarSubmit(
+          profileData?.store?.profile_image_data,
+          store?.id
+        );
+        updatedStore.image = image_url[0]?.id;
+      } catch (error) {
+        setLoading(false);
+        toast.error(error?.message, { autoClose: 2000 });
+        return;
+      }
     }
-
-    setProfileData((prev) => {
-      return {
-        ...prev,
-        store: {
-          ...prev.store,
-          profile_image: renderValidUrl(store?.image),
-        },
-      };
-    });
 
     try {
       if (!store || !store?.id || !user?.id) {

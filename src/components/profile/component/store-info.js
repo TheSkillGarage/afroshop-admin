@@ -20,14 +20,12 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     trigger,
   } = form;
   const store = useSelector((state) => state.store);
-  const [imageUploaded, setImageUploaded] = useState();
 
   const handleFileUpload = (e) => {
-    setImageUploaded(e.target.files[0]);
     if (e.target.files.length > 0) {
-    //   handleData("profile_image_data", e.target.files[0]);
+      handleData("profile_image_data", e.target.files[0]);
       handleData("profile_image", URL.createObjectURL(e.target.files[0]));
-    //   return;
+      return;
     }
   };
 
@@ -60,15 +58,6 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           };
       }
     });
-  };
-
-  const handleAvatarUpload = async () => {
-    if (imageUploaded) {
-      const image = await handleAvatarSubmit(imageUploaded, store?.id);
-      handleData("profile_image_data", image[0]?.id);
-      setImageUploaded(null);
-      return;
-    } 
   };
 
   return (
@@ -115,26 +104,15 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
         </label>
 
         {editProfile && profileData?.store?.profile_image.length > 0 && (
-          <>
-            {imageUploaded && (
-            <p
-              className="text-[#186F3D] cursor-pointer"
-              onClick={handleAvatarUpload}
-            >
-              Upload
-            </p>
-            )}
-            <p
-              className="bg-[#FF3B301A] rounded p-2 cursor-pointer"
-              onClick={() => {
-                setImageUploaded(null);
-                handleData("profile_image", renderValidUrl(store?.image));
-                handleData("profile_image_data", null);
-              }}
-            >
-              <DeleteIcon />
-            </p>
-          </>
+          <p
+            className="bg-[#FF3B301A] rounded p-2 cursor-pointer"
+            onClick={() => {
+              handleData("profile_image", renderValidUrl(store?.image));
+              handleData("profile_image_data", null);
+            }}
+          >
+            <DeleteIcon />
+          </p>
         )}
       </div>
 
