@@ -32,18 +32,17 @@ export const handleAvatarSubmit = async (image, id) => {
     const files = new FormData();
     files.append("files", image);
     files.append("storeId", `${id}`);
-    toast.info(`⏳ uploading image.....`, { autoClose: 2000 });
-    const {
-      data,
-    } = await axios.post(`/upload`, files, {
+    const { data } = await axios.post(`/upload`, files, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getTokenFromCookie()}`,
       },
     });
+    if (!data) {
+      throw new Error("error uploading image");
+    }
     return data;
   } catch (error) {
-    throw new Error("error uploading image")
-    console.log({ error });
+    console.log(error);
   }
 };

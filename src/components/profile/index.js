@@ -74,7 +74,12 @@ const Profile = () => {
   const handleProfileFormSubmit = async () => {
     setLoading(true);
 
-    //new details of store to be updated
+    //checks if the store exists and user(storeKeeper) is found
+    if (!store || !store?.id || !user?.id) {
+      throw new Error("Store information is missing or incomplete");
+    }
+
+    //restructuring of new details of store to be updated
     const updatedStore = {
       name: profileData?.store?.store_name,
       address: {
@@ -99,30 +104,22 @@ const Profile = () => {
       profileData?.store?.profile_image_data &&
       profileData?.store?.profile_image
     ) {
-      try {
-        const image_url = await handleAvatarSubmit(
-          profileData?.store?.profile_image_data,
-          store?.id
-        );
-        updatedStore.image = image_url[0]?.id;
-      } catch (error) {
-        setLoading(false);
-        toast.error(error?.message, { autoClose: 2000 });
-        return;
-      }
+      const uploaded_img = await handleAvatarSubmit(
+        profileData?.store?.profile_image_data,
+        store?.id
+      );
+      updatedStore.image = uploaded_img[0]?.id;
     }
 
+    //api call to update store details
     try {
-      if (!store || !store?.id || !user?.id) {
-        throw new Error("Store information is missing or incomplete");
-      }
       const [success, responseData] = await putRequest(
         `/api/stores/${store?.id}`,
         updatedStore,
         token
       );
       if (!success || responseData?.error) {
-        console.error(
+        throw new Error(
           responseData?.error?.message || "An error occurred, please try again"
         );
       } else {
@@ -181,7 +178,7 @@ const Profile = () => {
     profileForm?.reset();
   };
   const disableButton =
-    (Object.keys(profileForm?.formState?.errors).length === 0 &&
+    (Object.keys(profileForm?.formState?.errors).length === 0 &&  !!(profileData?.store?.profile_image && profileData?.store?.profile_image_data) &&
       currentTab === "Profile") ||
     (Object.keys(passwordForm?.formState?.errors).length === 0 &&
       currentTab === "Password");

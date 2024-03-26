@@ -7,9 +7,6 @@ import {
   deliverySlots,
 } from "../../../data/profile";
 import { DeleteIcon, GreenCamera, UserAvatar } from "../../../images";
-import { handleAvatarSubmit } from "../../../utils";
-import { useSelector } from "react-redux";
-import { renderValidUrl } from "../../../utils/constants";
 
 const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
   const {
@@ -19,8 +16,6 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     setValue,
     trigger,
   } = form;
-  const store = useSelector((state) => state.store);
-
   const handleFileUpload = (e) => {
     if (e.target.files.length > 0) {
       handleData("profile_image_data", e.target.files[0]);
@@ -103,11 +98,11 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           )}
         </label>
 
-        {editProfile && profileData?.store?.profile_image.length > 0 && (
+        {editProfile && profileData?.store?.profile_image?.length > 0 && (
           <p
             className="bg-[#FF3B301A] rounded p-2 cursor-pointer"
             onClick={() => {
-              handleData("profile_image", renderValidUrl(store?.image));
+              handleData("profile_image", null);
               handleData("profile_image_data", null);
             }}
           >
