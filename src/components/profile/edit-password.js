@@ -41,6 +41,7 @@ const EditPassword = ({ editProfile, form }) => {
         errors={errors}
         register={register}
         leftIcon={Lock}
+        // rightIcon={viewPassword["current"] ? ViewPassword : PasswordEye}
         rightIcon={
           editProfile ?
             viewPassword["current"] ? ViewPassword : PasswordEye

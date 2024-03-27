@@ -12,28 +12,27 @@ const HolidayException = ({
   form
 }) => {
   const { control, formState: errors, register, resetField, watch } = form;
- 
-  const handleAddCard = () => {
-    const description = watch("description");
-    const date = watch("date");
+  const description = watch("description");
+  const date = watch("date");
 
+  const handleAddCard = () => {
     try {
       if (description !== "" && date !== "") {
         const holidayFormData = {
-          label: description,
-          value: format(date, "EEE, MMM dd, yyyy"),
+          description: description,
+          date: format(date, "yyyy-ee-d"),
         };
 
         setProfileData((prev) => {
            //checks if the value exists in the current array of holiday objects and overrides it if true
           const updatedArray = prev?.holidays?.map((d) =>
-            d.label === holidayFormData.label
+            d.description?.toLowerCase() === holidayFormData.description?.toLowerCase()
               ? { ...d, ...holidayFormData }
               : d
           );
 
           //adds a new holiday object to the array if it doesn't exist
-          if (!updatedArray.some((obj) => obj.label === holidayFormData.label)) {
+          if (!updatedArray?.some((obj) => obj.description === holidayFormData.description)) {
             updatedArray.push(holidayFormData);
           }
 
@@ -42,7 +41,7 @@ const HolidayException = ({
             holidays: updatedArray,
           };
         });
-      }
+      } 
       //resets the fields
       resetField("description");
       resetField("date");
@@ -73,8 +72,8 @@ const HolidayException = ({
               fieldName="date"
               placeholder="Select"
               name={`date`}
-              required={true}
-              requiredMessage={"This field is required"}
+              // required={true}
+              // requiredMessage={"This field is required"}
               className="bg-[#F2F2F2] text-blue"
               control={control}
               errors={errors}
@@ -85,8 +84,8 @@ const HolidayException = ({
               label="Description"
               fieldName="description"
               name={`description`}
-              required={true}
-              requiredMessage={"This field is required"}
+              // required={true}
+              // requiredMessage={"This field is required"}
               placeholder="Enter"
               className="bg-[#F2F2F2]"
               control={control}
@@ -98,7 +97,7 @@ const HolidayException = ({
           <div className="mt-6 mb-8">
             <Button
               className="w-[144px]"
-              variant="tertiary"
+              variant={!(description && date) ? "disabled" : "tertiary"}
               icon="add"
               direction="reverse"
               type="submit"
@@ -117,7 +116,11 @@ const HolidayException = ({
           profileData?.holidays?.map((d, index) => (
             <div key={index}>
               <DeliveryCard
-                card={d}
+                card={{
+                  label: d?.description,
+                  value: d?.date
+                }}
+                type="holiday"
                 icon={<DateIcon />}
                 handleDelete={() => deleteHolidayCard(index)}
                 editProfile={editProfile}

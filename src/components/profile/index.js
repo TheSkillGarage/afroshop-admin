@@ -1,29 +1,57 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { EditIcon2, EditIconGrey } from "../../images";
 import Button from "../shared/button";
 import ProfileTab from "./profileTab";
 import { useSelector, useDispatch } from "react-redux";
-import { postRequest, updateProfile } from "../../redux/action";
+import {
+  getStoreByUser,
+  postRequest,
+  putRequest,
+  updateProfile,
+  updateStore,
+} from "../../redux/action";
 import EditPassword from "./edit-password";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { renderValidUrl } from "../../utils/constants";
 import {
   expirationDate,
   getTokenFromCookie,
+  handleAvatarSubmit,
   setCookieWithExpiry,
 } from "../../utils";
+import { deliverySlots, restPeriods } from "../../data/profile";
 
 const Profile = () => {
   const dispatch = useDispatch();
-
-  const data = useSelector((d) => d.profile);
-
   const token = getTokenFromCookie();
-
-  const [currentTab, setCurrentTab] = useState("Profile");
-  const [editProfile, setEditProfile] = useState(false);
+  const data = useSelector((d) => d.profile);
+  const store = useSelector((d) => d.store);
+  const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-  const [profileData, setProfileData] = useState({ ...data });
+
+  const [profileData, setProfileData] = useState({
+    ...data,
+    holidays: store?.holidays,
+    store: {
+      ...data.store,
+      days: store?.openDays?.map((day) => day?.openDays) || "",
+      email: user?.email || "",
+      store_name: store?.name || "",
+      address: store?.address?.streetAddress || "",
+      city: store?.address?.city || "",
+      state: store?.address?.state || "",
+      postal_code: store?.address?.postalCode || "",
+      country: store?.address?.country || "",
+      deliveryStartTime: store?.deliveryTime?.from || "",
+      deliveryEndTime: store?.deliveryTime?.to || "",
+      profile_image: renderValidUrl(store?.image) || "",
+      openingTime: store?.openingTimes?.from || "",
+      closingTime: store?.openingTimes?.to || "",
+      deliverySlot: deliverySlots.filter((option) => option?.value === data?.store?.deliverySlot)?.[0]?.label || "", 
+      restPeriod: restPeriods.filter((option) => option?.value === data?.store?.restPeriod)?.[0]?.label || "",
+    },
+  });
 
   const profileForm = useForm({
     defaultValues: {
@@ -45,9 +73,89 @@ const Profile = () => {
     mode: "all",
   });
 
-  const handleProfileFormSubmit = () => {
-    dispatch(updateProfile({ profile: { ...profileData } }));
-    setEditProfile(false);
+  const [currentTab, setCurrentTab] = useState("Profile");
+  const [editProfile, setEditProfile] = useState(false);
+
+  const handleProfileFormSubmit = async () => {
+    setLoading(true);
+
+    //checks if the store exists and user(storeKeeper) is found
+    if (!store || !store?.id || !user?.id) {
+      throw new Error("Store information is missing or incomplete");
+    }
+
+    //restructuring of new details of store to be updated
+    const updatedStore = {
+      name: profileData?.store?.store_name,
+      address: {
+        streetAddress: profileData?.store?.address,
+        state: profileData?.store?.state,
+        city: profileData?.store?.city,
+        postalCode: profileData?.store?.postal_code,
+        country: profileData?.store?.country,
+      },
+      openDays: profileData?.store?.days?.map((day) => {
+        return { openDays: day };
+      }),
+      deliverySlot: profileData?.store?.deliverySlot,
+      restPeriod: profileData?.store?.restPeriod,
+      deliveryTimes: {
+        from: profileData?.store?.deliveryStartTime,
+        to: profileData?.store?.deliveryEndTime,
+      },
+      openingTimes: {
+        from: profileData?.store?.openingTime,
+        to: profileData?.store?.closingTime,
+      },
+      delivery: profileData?.store?.deliveryOption
+        ?.map((option) => option?.value)
+        .includes("delivery")
+        ? true
+        : false,
+      pickup: profileData?.store?.deliveryOption
+        ?.map((option) => option?.value)
+        .includes("pickup")
+        ? true
+        : false,
+      holidays: profileData?.holidays,
+    };
+
+    //upload image first if it exists before other store updates
+    if (
+      profileData?.store?.profile_image_data &&
+      profileData?.store?.profile_image
+    ) {
+      const uploaded_img = await handleAvatarSubmit(
+        profileData?.store?.profile_image_data,
+        store?.id
+      );
+      updatedStore.image = uploaded_img?.[0]?.id;
+    }
+
+    //api call to update store details
+    try {
+      const [success, responseData] = await putRequest(
+        `/api/stores/${store?.id}`,
+        updatedStore,
+        token
+      );
+      if (!success || responseData?.error) {
+        throw new Error(
+          responseData?.error?.message || "An error occurred, please try again"
+        );
+      } else {
+        dispatch(getStoreByUser(user?.id, token));
+        dispatch(updateProfile({ profile: { ...profileData } }));
+        toast.success(`Store details updated successfully`, {
+          autoClose: 2000,
+        });
+        setEditProfile(false);
+      }
+    } catch (error) {
+      console.error("Error updating store information:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePasswordFormSubmit = async (data) => {
@@ -71,7 +179,7 @@ const Profile = () => {
         setEditProfile(false);
       }
     } catch (error) {
-      console.error(error.message)
+      console.error(error.message);
       toast.error(`${error.message}`, {
         autoClose: 2000,
       });
@@ -90,8 +198,13 @@ const Profile = () => {
     passwordForm?.reset();
     profileForm?.reset();
   };
+
   const disableButton =
     (Object.keys(profileForm?.formState?.errors).length === 0 &&
+      !(
+        profileData?.store?.profile_image === null &&
+        profileData?.store?.profile_image_data === null
+      ) &&
       currentTab === "Profile") ||
     (Object.keys(passwordForm?.formState?.errors).length === 0 &&
       currentTab === "Password");

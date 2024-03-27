@@ -25,7 +25,7 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
   const [tab, setTab] = useState("");
 
   const handleSelectCategory = (val) => {
-    handleProductInfo("category", val);
+    handleProductInfo("category", val?.label);
   };
 
   const handleFilesSelect = (files) => {
@@ -56,7 +56,6 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
 
   const onSubmit = (data) => {
     handleFormSubmit()
-    console.log(data);
   };
 
   return (
