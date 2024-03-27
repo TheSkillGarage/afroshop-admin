@@ -94,7 +94,7 @@ const SelectDropdown = forwardRef(
                   )
                 )
             );
-            handleChange?.(multiple ? val : val?.label);
+            handleChange?.(val);
             handleSelectedYear?.(val?.value);
           }}
           className={`${className} basic-multi-select`}

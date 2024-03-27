@@ -5,6 +5,7 @@ import {
   daysOfTheWeek,
   deliveryOptions,
   deliverySlots,
+  restPeriods,
 } from "../../../data/profile";
 import { DeleteIcon, GreenCamera, UserAvatar } from "../../../images";
 
@@ -238,10 +239,10 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isDisabled={!editProfile}
-          handleChange={(value) => {
-            setValue("deliveryOption", value);
+          handleChange={(data) => {
+            setValue("deliveryOption", data);
             trigger("deliveryOption"); // triggers the input field after a change to re-trigger validation
-            handleData("deliveryOption", value);
+            handleData("deliveryOption", data);
           }}
         />
 
@@ -275,9 +276,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!editProfile}
-          handleChange={(e) => {
-            handleData("deliveryStartTime", e.target.value);
-          }}
+          handleChange={(e) => handleData("deliveryStartTime", e.target.value)}
         />
         <InputComponent
           inputType="time"
@@ -294,6 +293,39 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           isReadOnly={!editProfile}
           handleChange={(e) => handleData("deliveryEndTime", e.target.value)}
         />
+
+        <InputComponent
+          inputType="time"
+          type="time"
+          // options={deliveryStartTimes}
+          label="Opening Time"
+          fieldName={"openingTime"}
+          placeholder="Enter"
+          requiredMessage={"Opening Time is required"}
+          className="bg-[#F2F2F2] cursor-pointer w-full"
+          control={control}
+          errors={errors}
+          register={register}
+          isReadOnly={!editProfile}
+          handleChange={(e) => {
+            handleData("openingTime", e.target.value);
+          }}
+        />
+        <InputComponent
+          inputType="time"
+          type="time"
+          // options={deliveryEndTimes}
+          label="Closing Time"
+          fieldName={"closingTime"}
+          placeholder="Enter"
+          requiredMessage={"Delivery End Time is required"}
+          className="bg-[#F2F2F2] cursor-pointer"
+          control={control}
+          errors={errors}
+          register={register}
+          isReadOnly={!editProfile}
+          handleChange={(e) => handleData("closingTime", e.target.value)}
+        />
         <InputComponent
           inputType="select"
           options={deliverySlots}
@@ -306,11 +338,11 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isDisabled={!editProfile}
-          handleChange={(value) => handleData("deliverySlot", value)}
+          handleChange={(data) => handleData("deliverySlot", data?.value)}
         />
         <InputComponent
           inputType="select"
-          options={deliverySlots}
+          options={restPeriods}
           label="Rest Period"
           fieldName={"restPeriod"}
           placeholder="Enter"
@@ -320,7 +352,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isDisabled={!editProfile}
-          handleChange={(value) => handleData("restPeriod", value)}
+          handleChange={(data) => handleData("restPeriod", data?.value)}
         />
       </div>
     </div>

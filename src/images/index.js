@@ -14,6 +14,7 @@ import { ReactComponent as DeleteIcon } from "./icon-delete.svg";
 import { ReactComponent as EyeIcon } from "./eye.svg";
 import { ReactComponent as GreenRightArrow } from "./green-right-icon.svg";
 import { ReactComponent as LeftArrow } from "./icon-left-arrow.svg";
+import { ReactComponent as LogoutIcon } from "./logout.svg";
 import Eye from "./eye.svg";
 import ErrorIcon from "./ErrorIcon.svg";
 import successIcon from "./SuccessIcon.png";
@@ -136,6 +137,7 @@ export {
   RightGreenArrow,
   RightGreyIcon,
   RightWhiteArrow,
+  LogoutIcon,
   successIcon,
   LoadingIcon,
   ErrorIcon,

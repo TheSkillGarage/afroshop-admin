@@ -36,32 +36,32 @@ const destinationOptions = [
   },
 ];
 const deliveryData = [
-  {
-    label: "Within 5 km",
-    value: "$15",
-  },
-  {
-    label: "Between 5 to 10 km",
-    value: "$20",
-  },
-  {
-    label: "Between 10 to 15 km",
-    value: "$25",
-  },
+  // {
+  //   label: "Within 5 km",
+  //   value: "$15",
+  // },
+  // {
+  //   label: "Between 5 to 10 km",
+  //   value: "$20",
+  // },
+  // {
+  //   label: "Between 10 to 15 km",
+  //   value: "$25",
+  // },
 ];
 const holidayMockData = [
-  {
-    label: "New Year",
-    value: "Sun, Jan 1, 2023",
-  },
-  {
-    label: "Good Friday",
-    value: "Fri, Apr 7, 2023",
-  },
-  {
-    label: "Easter Monday",
-    value: "Mon, Apr 10, 2023",
-  },
+  // {
+  //   label: "New Year",
+  //   value: "Sun, Jan 1, 2023",
+  // },
+  // {
+  //   label: "Good Friday",
+  //   value: "Fri, Apr 7, 2023",
+  // },
+  // {
+  //   label: "Easter Monday",
+  //   value: "Mon, Apr 10, 2023",
+  // },
 ];
 
 const holidayOptions = [
@@ -136,27 +136,35 @@ const deliveryEndTimes = [
   },
 ];
 const deliverySlots = [
-  { label: "1 Hours", value: "1 Hours" },
-  { label: "2 Hours", value: "2 Hours" },
-  { label: "3 Hours", value: "3 Hours" },
-  { label: "4 Hours", value: "4 Hours" },
+  { label: "1 Hours", value: 1 },
+  { label: "2 Hours", value: 2 },
+  { label: "3 Hours", value: 3 },
+  { label: "4 Hours", value: 4 },
+];
+const restPeriods = [
+  { label: "1 Hours", value: 1 },
+  { label: "2 Hours", value: 2 },
+  { label: "3 Hours", value: 3 },
+  { label: "4 Hours", value: 4 },
 ];
 const storeInitialState = {
   days: [],
   profile_image: ProfileImage,
   profile_image_data: null,
-  store_name: "Green Ranger",
-  address: "No 3 Crimson Drive, CA",
-  email: "greenranger@gmail.com",
-  deliveryOption: [deliveryOptions[0], deliveryOptions[1]],
-  deliveryStartTime: "10:00AM",
-  deliveryEndTime: "9:00PM",
-  deliverySlot: "2 Hours",
-  restPeriod: "1 Hours",
-  country: "Ghana",
-  postal_code: "101401",
-  state: "Benin",
-  city: "Ikorodu",
+  store_name: "",
+  address: "",
+  email: "",
+  deliveryOption: [],
+  openingTime: "",
+  closingTime: "",
+  deliveryStartTime: "",
+  deliveryEndTime: "",
+  deliverySlot: "",
+  restPeriod: "",
+  country: "",
+  postal_code: "",
+  state: "",
+  city: "",
 };
 const profileInitialState = {
   store: storeInitialState,
@@ -176,4 +184,5 @@ export {
   holidayOptions,
   storeInitialState,
   profileInitialState,
+  restPeriods
 };

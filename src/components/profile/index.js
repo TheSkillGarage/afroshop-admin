@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { EditIcon2, EditIconGrey } from "../../images";
 import Button from "../shared/button";
 import ProfileTab from "./profileTab";
@@ -20,6 +20,7 @@ import {
   handleAvatarSubmit,
   setCookieWithExpiry,
 } from "../../utils";
+import { deliverySlots, restPeriods } from "../../data/profile";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -37,14 +38,18 @@ const Profile = () => {
       days: store?.openDays?.map((day) => day?.openDays) || "",
       email: user?.email || "",
       store_name: store?.name || "",
-      address: store?.address?.streetAddress,
-      city: store?.address?.city,
-      state: store?.address?.state,
-      postal_code: store?.address?.postalCode,
-      country: store?.address?.country,
-      deliveryStartTime: store?.deliveryTime?.from,
-      deliveryEndTime: store?.deliveryTime?.to,
-      profile_image: renderValidUrl(store?.image),
+      address: store?.address?.streetAddress || "",
+      city: store?.address?.city || "",
+      state: store?.address?.state || "",
+      postal_code: store?.address?.postalCode || "",
+      country: store?.address?.country || "",
+      deliveryStartTime: store?.deliveryTime?.from || "",
+      deliveryEndTime: store?.deliveryTime?.to || "",
+      profile_image: renderValidUrl(store?.image) || "",
+      openingTime: store?.openingTimes?.from || "",
+      closingTime: store?.openingTimes?.to || "",
+      deliverySlot: deliverySlots.filter((option) => option?.value === data?.store?.deliverySlot)?.[0]?.label || "", 
+      restPeriod: restPeriods.filter((option) => option?.value === data?.store?.restPeriod)?.[0]?.label || "",
     },
   });
 
@@ -92,10 +97,26 @@ const Profile = () => {
       openDays: profileData?.store?.days?.map((day) => {
         return { openDays: day };
       }),
+      deliverySlot: profileData?.store?.deliverySlot,
+      restPeriod: profileData?.store?.restPeriod,
       deliveryTimes: {
         from: profileData?.store?.deliveryStartTime,
         to: profileData?.store?.deliveryEndTime,
       },
+      openingTimes: {
+        from: profileData?.store?.openingTime,
+        to: profileData?.store?.closingTime,
+      },
+      delivery: profileData?.store?.deliveryOption
+        ?.map((option) => option?.value)
+        .includes("delivery")
+        ? true
+        : false,
+      pickup: profileData?.store?.deliveryOption
+        ?.map((option) => option?.value)
+        .includes("pickup")
+        ? true
+        : false,
       holidays: profileData?.holidays,
     };
 
@@ -108,7 +129,7 @@ const Profile = () => {
         profileData?.store?.profile_image_data,
         store?.id
       );
-      updatedStore.image = uploaded_img[0]?.id;
+      updatedStore.image = uploaded_img?.[0]?.id;
     }
 
     //api call to update store details
@@ -177,8 +198,13 @@ const Profile = () => {
     passwordForm?.reset();
     profileForm?.reset();
   };
+
   const disableButton =
-    (Object.keys(profileForm?.formState?.errors).length === 0 &&  !!(profileData?.store?.profile_image && profileData?.store?.profile_image_data) &&
+    (Object.keys(profileForm?.formState?.errors).length === 0 &&
+      !(
+        profileData?.store?.profile_image === null &&
+        profileData?.store?.profile_image_data === null
+      ) &&
       currentTab === "Profile") ||
     (Object.keys(passwordForm?.formState?.errors).length === 0 &&
       currentTab === "Password");
