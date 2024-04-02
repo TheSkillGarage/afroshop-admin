@@ -18,28 +18,28 @@ const DateCol = ({ value }) => {
 const BaseTable = ({ tableHeaders, data, loading, emptyState, name }) => {
   return (
     <div className="w-full">
-      {data && data.length !== 0 && !loading ? (
-        <table className="w-full border-collapse">
-          <thead className="h-[56px] uppercase text-[13px] leading-[23px] text-[#186F3D] font-semibold bg-[#F2F2F2]">
-            <tr>
-              {tableHeaders.map((header, index) => (
-                <th
-                  key={header.id}
-                  className={`
+      <table className="w-full border-collapse">
+        <thead className="h-[56px] uppercase text-[13px] leading-[23px] text-[#186F3D] font-semibold bg-[#F2F2F2]">
+          <tr>
+            {tableHeaders.map((header, index) => (
+              <th
+                key={header.id}
+                className={`
                   ${(header.id === "selection" || header.id === "detail")
-                      ? "w-[6.5%]"
-                      : header.id === "productName"
-                        ? "w-[16.5%]"
-                        : header.id === "availabilty"
-                          ? "w-[12.5%]"
-                          : "w-[14.5%]"}  text-left ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
-                >
-                  {(header.id === "price" || header.id === "salesPrice") ? `${header.name} ($)` : header.name}
-                </th>
-              ))}
-            </tr>
-          </thead>
+                    ? "w-[6.5%]"
+                    : header.id === "productName"
+                      ? "w-[16.5%]"
+                      : header.id === "availabilty"
+                        ? "w-[12.5%]"
+                        : "w-[14.5%]"}  text-left ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
+              >
+                {(header.id === "price" || header.id === "salesPrice") ? `${header.name} ($)` : header.name}
+              </th>
+            ))}
+          </tr>
+        </thead>
 
+        {data && data.length !== 0 && !loading && (
           <tbody className="bg-[#ffffff]">
             {data.map((row, index) => (
               <tr
@@ -88,10 +88,9 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState, name }) => {
               </tr>
             ))}
           </tbody>
-        </table>
-      ) : (
-        emptyState
-      )}
+        )}
+      </table>
+
     </div>
   );
 };
