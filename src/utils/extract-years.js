@@ -1,6 +1,14 @@
-export const extractYears = data => {
-    const years = data?.map(order => new Date(order.createdAt).getFullYear());
-    const uniqueYears = [...new Set(years)].sort((a, b) => b - a);
-    const result = uniqueYears?.map(year => ({ value: year, label: year }));
-    return result;
-  };
+export const extractYears = (createdAt) => {
+  const createdAtDate = new Date(createdAt);
+  const currentYear = new Date().getFullYear();
+  const createdYear = createdAtDate.getFullYear();
+  
+  const yearsSinceCreation = [];
+
+  for (let year = createdYear; year <= currentYear; year++) {
+      yearsSinceCreation.push({value: year, label: year});
+  }
+
+  return yearsSinceCreation;
+}
+

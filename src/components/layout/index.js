@@ -19,11 +19,17 @@ const PageLayout = ({ children }) => {
   const storeData = useSelector((state) => state.storeData);
 
   useEffect(() => {
+      if (user && user.id) {
+          dispatch(getStoreData(user?.id, token));
+      }
+  }, [user]);
 
-      dispatch(getStoreData(user?.id, token));
-      dispatch(getOrdersData(storeData?.id, token));
-  }, [])
-
+  useEffect(() => {
+      if (storeData && storeData.id) {
+          dispatch(getOrdersData(storeData.id, token));
+      }
+  }, [storeData])
+  
   
   /*
 

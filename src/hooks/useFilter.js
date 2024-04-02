@@ -9,7 +9,7 @@ export const useFilter = (name, activeTab, DATA, searchTerm, filterObject) => {
 
         if (searchTerm !== '') {
             if (name === "products") {
-                updatedData = updatedData.filter(product => product.productName?.toLowerCase().includes(searchTerm?.toLowerCase()));
+                updatedData = updatedData.filter(product => product.name?.toLowerCase().includes(searchTerm?.toLowerCase()));
             } else if (name === "orders") {
                 updatedData = updatedData.filter(order => order.orderID?.toLowerCase().includes(searchTerm?.toLowerCase()));
             } else if (name === "roles") {
@@ -24,9 +24,12 @@ export const useFilter = (name, activeTab, DATA, searchTerm, filterObject) => {
         if (Object.keys(filterObject).length > 0) {
             updatedData = updatedData.filter(obj => {
                 return Object.entries(filterObject).every(([key, values]) => {
-                    if (key === 'price') {
+                    if (key === 'price' && name !== 'products') {
                         return values.includes(`$${obj?.['grandTotal']}`);
-                    } else if (key === 'orderDate') {
+                    }else if (key === 'price' && name === 'products') {
+                        return values.includes(`$${obj?.['price']}`);
+                    }
+                     else if (key === 'orderDate') {
                         return values.includes(obj?.['createdAt']?.toString());
                     } else if (key === 'customer') {
                         return values.includes(`${obj?.['firstName']?.toString()} ${obj?.['lastName']?.toString()}`);

@@ -1,34 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Welcome from "../dashboard/welcome";
 import Dashboard from "../dashboard/dashboard";
-import { useDispatch, useSelector } from "react-redux";
-import { getOrdersData, getStoreData } from "../../redux/action";
-import { getTokenFromCookie } from "../../utils";
+import { useSelector } from "react-redux";
+import EmptyState from "../dashboard/empty-state";
 
 
 const Overview = () => {
-    const dispatch = useDispatch();
 
-    const token = getTokenFromCookie();
-    const user = useSelector((state) => state.user);
-    const storeData = useSelector((state) => state.storeData);
+    const profileData = useSelector((state) => state.profile);
+    const orderData = useSelector((state) => state.ordersData);
 
-    useEffect(() => {
-        if (user && user.id) {
-            dispatch(getStoreData(user?.id, token));
-        }
-    }, [user]);
-
-    useEffect(() => {
-        if (storeData && storeData.id) {
-            dispatch(getOrdersData(storeData.id, token));
-        }
-    }, [storeData])
-
-    const ordersData = useSelector((state) => state.ordersData);
     return (
         <div >
-            {ordersData.length === 0 ?
+            {(profileData === null || Object.keys(profileData).length === 0) ?
                 <Welcome />
                 :
                 <Dashboard />

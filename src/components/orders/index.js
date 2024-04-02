@@ -7,7 +7,7 @@ const Orders = () => {
     const ordersData = useSelector((state) => state.ordersData);
     return (
         <div>
-            {ordersData.length > 0 ?
+            {ordersData === null || ordersData.length > 0 ?
                 <OrdersDashboard />
                 :
                 <EmptyOrders />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import usePagination from "../../hooks/usePagination";
 import Filters from "../filters";
@@ -22,11 +22,9 @@ const OrdersDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterObject, setFilterObject] = useState({});
 
-  const handleSearch = (searchWord) => setSearchTerm(searchWord)
-  const handleFilterObject = (filterObject) => setFilterObject(filterObject)
+  const handleSearch = (searchWord) => setSearchTerm(searchWord);
+  const handleFilterObject = (filterObject) => setFilterObject(filterObject);
 
-
-  const location = useLocation()
 
   const ordersData = useSelector((state) => state.ordersData);
 

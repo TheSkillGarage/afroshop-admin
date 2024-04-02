@@ -90,17 +90,17 @@ export function LineChart({ DATA, selectedYear }) {
           },
           label: function (context) {
             let label = '';
-
-            if (context.parsed.y !== null) {
-              if (context.dataset.label !== "Orders") {
-                label = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
-              } else {
-                label = context.parsed.y;
-              }
+        
+            if (context.dataset.label !== "Orders") {
+              label = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+            } else {
+              label = '' + context.parsed.y; // Append dataset label
             }
+            
             return label;
           }
         }
+        
       },
 
     },
@@ -109,7 +109,7 @@ export function LineChart({ DATA, selectedYear }) {
   const [incomeData, setIncomeData] = useState(0);
   const [ordersData, setOrdersData] = useState(0);
   const [uniqueFormattedDates, setuniqueFormattedDates] = useState([])
-  const incomePerDate = {};
+
 
   useEffect(() => {
     // Function to format date based on selected year
@@ -117,7 +117,7 @@ export function LineChart({ DATA, selectedYear }) {
       if (selectedYear === "week") {
         return date.toLocaleString('default', { month: 'short', day: 'numeric' });
       } else {
-        return date.toLocaleString('default', { month: 'short' }) + ' 01';
+        return date.toLocaleString('default', { month: 'short' });
       }
     };
   
@@ -126,7 +126,7 @@ export function LineChart({ DATA, selectedYear }) {
     const orderCountsPerDate = {};
   
     // Iterate over DATA to calculate income and order counts
-    DATA.forEach(data => {
+    DATA?.forEach(data => {
       const date = new Date(data.createdAt);
       const formattedDate = formatDate(date, selectedYear);
       
@@ -134,7 +134,11 @@ export function LineChart({ DATA, selectedYear }) {
       incomePerDate[formattedDate] = (incomePerDate[formattedDate] || 0) + data.grandTotal;
       
       // Calculate order counts
-      orderCountsPerDate[formattedDate] = (orderCountsPerDate[formattedDate] || 0) + 1;
+      if (data.grandTotal > 0 && data.id !== null){
+        orderCountsPerDate[formattedDate] = (orderCountsPerDate[formattedDate] || 0) + 1
+      }else{
+        orderCountsPerDate[formattedDate] = 0;
+      }
     });
   
     // Extract unique formatted dates
@@ -145,7 +149,7 @@ export function LineChart({ DATA, selectedYear }) {
   
     // Extract order counts data
     const orderCountsData = uniqueFormattedDate.map(date => orderCountsPerDate[date] || 0);
-  
+
     // Update state variables
     setuniqueFormattedDates(uniqueFormattedDate);
     setIncomeData(incomeData);
