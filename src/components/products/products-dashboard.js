@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import usePagination from "../../hooks/usePagination";
 import { Link, useNavigate } from "react-router-dom";
 import Filters from "../filters";
@@ -13,7 +13,7 @@ const ProductsDashboard = ({ productsData }) => {
 
     const [activeTab, setActiveTab] = useState('all');
     const [page, setPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(productsData.length >= 10 ? 10 : 5);
+    const [itemsPerPage, setItemsPerPage] = useState(productsData.length > 10 ? 10 : 5);
     const [loading, setLoading] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
