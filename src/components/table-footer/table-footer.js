@@ -13,7 +13,9 @@ const TableFooter = ({
   totalPages,
 }) => {
   return data && data.length !== 0 ? (
-    <div className="flex justify-between pt-4 pb-6 px-6 text-[13px] leading-[23px] items-center bg-[#ffffff] w-full ">
+    <div className=" pt-4 pb-6 px-6 text-[13px] leading-[23px] bg-[#ffffff] w-full ">
+     {data.length > 5 && 
+     <div className="flex justify-between items-center">
       <div className="flex gap-8 text-[#CCCCCC] items-center">
         <p className="flex gap-4 items-center">
           <span>Show</span>
@@ -76,6 +78,7 @@ const TableFooter = ({
           )}
         </p>
       </div>
+      </div>}
     </div>
   ) : (
     ""
