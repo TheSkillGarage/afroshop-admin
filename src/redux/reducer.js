@@ -19,7 +19,7 @@ const INITIAL_STATE = {
   profile: profileInitialState,
   isSidebarToggled: false,
   productsData: PRODUCT_DATA,
-  ordersData: null,
+  ordersData: [],
   storeData: null,
 };
 

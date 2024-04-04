@@ -9,14 +9,12 @@ import { useNavigate } from 'react-router-dom';
 
 import BusinessSummary from './cards-section';
 import LineChartComponent from './lineChart-section';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { extractYears } from '../../utils/extract-years';
 import EmptyState from './empty-state';
-import { resetStore } from '../../redux/action';
 import { getTopCustomers, getTopProducts } from '../../utils/OrderSummaryFunctions';
 
 const Dashboard = () => {
-
   const ordersData = useSelector((state) => state.ordersData);
   const storesData = useSelector((state) => state.storeData);
 
