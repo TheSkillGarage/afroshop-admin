@@ -6,10 +6,14 @@ import { PasswordEye, PasswordLock, ViewPassword } from "../../../images";
 import InputComponent from "../../shared/inputComponent";
 import Button from "../../shared/button";
 import { postRequest } from "../../../redux/action";
+import PasswordCriteria from "../../shared/passwordChecker";
+import { PasswordStrengthCheck } from "./utils";
 
 const NewPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState(false);
+  const [password, setPassword] = useState("");
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
@@ -23,7 +27,11 @@ const NewPassword = () => {
     getValues,
     handleSubmit,
     reset,
+    watch,
   } = useForm({ mode: "all" });
+
+  // Watch for changes in the password field
+  const watchPassword = watch("password");
 
   const code = searchParams.get("code");
 
@@ -58,6 +66,8 @@ const NewPassword = () => {
     }
   };
 
+  const {criteriaCount, passwordStrength} = PasswordStrengthCheck(password);
+
   return (
     <div className="flex flex-col justify-center items-center">
       <h2 className="text-center font-bold pt-[40px]">Enter a new password</h2>
@@ -77,25 +87,47 @@ const NewPassword = () => {
           errors={errors}
           register={register}
           requiredMessage="Password required"
+          handleChange={(e) => {
+            setPassword(e.target.value);
+          }}
+          onFocus={() => setIsPasswordFocused(true)}
+          onBlur={() => setIsPasswordFocused(false)}
           required
         />
-        <div className="mt-[20px]">
-        <InputComponent
-          type={confirmPassword ? "text" : "password"}
-          label="Password"
-          fieldName={"confirmPassword"}
-          placeholder="Enter new password"
-          leftIcon={PasswordLock}
-          rightIcon={confirmPassword ? ViewPassword : PasswordEye}
-          onIconClick={() => setConfirmPassword(!confirmPassword)}
-          control={control}
-          errors={errors}
-          register={register}
-          requiredMessage="Password required"
-          required
-        />
+        <div className="mt-4">
+          {isPasswordFocused && watchPassword && (
+            <PasswordCriteria criteriaCount={criteriaCount} passwordStrength={passwordStrength}/>
+          )}
         </div>
-        <Button icon="white" className="w-[400px] mt-[20px]" loading={loading} type="submit">
+
+        <div className="mt-[20px]">
+          <InputComponent
+            type={confirmPassword ? "text" : "password"}
+            label="New Password"
+            fieldName={"confirmPassword"}
+            placeholder="Enter new password"
+            leftIcon={PasswordLock}
+            rightIcon={confirmPassword ? ViewPassword : PasswordEye}
+            onIconClick={() => setConfirmPassword(!confirmPassword)}
+            control={control}
+            errors={errors}
+            register={register}
+            {...register("confirmPassword", {
+              validate: (value) =>
+                value === watchPassword ||
+                "The new password fields do not match. Please try again.",
+            })}
+            requiredMessage="Password required"
+            required
+          />
+        </div>
+        <Button
+          icon="white"
+          className="w-[400px] mt-[20px]"
+          loading={loading}
+          disabled={criteriaCount < 3}
+          type="submit"
+        >
           Submit
         </Button>
       </form>

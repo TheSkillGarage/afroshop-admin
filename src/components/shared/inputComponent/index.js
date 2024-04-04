@@ -62,6 +62,7 @@ const InputComponent = forwardRef(
       onBlur,
       defaultValue,
       closeMenuOnSelect,
+      onFocus,
     },
     ref
   ) => {
@@ -152,6 +153,7 @@ const InputComponent = forwardRef(
               readOnly={isReadOnly}
               onKeyDown={keyDown}
               onBlur={onBlur}
+              onFocus={onFocus}
             />
 
             {rightIcon ? (
