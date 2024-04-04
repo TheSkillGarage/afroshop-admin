@@ -114,12 +114,6 @@ export const discardDraft = (hash) => dispatch => {
     ...hash,
   })
 }
-export const deleteProductByID = (hash) => dispatch => {
-  dispatch({
-    type: 'DELETE_PRODUCT',
-    ...hash,
-  })
-}
 
 export const getStoreData = (userID, token) => async (dispatch) => {
   await fetchData(dispatch, `stores/${userID}`, 'storeData', token);

@@ -31,7 +31,7 @@ const MyRoutes = () => {
         <Route path="/connect/:provider/redirect" element={<RedirectHandler />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/products/new" element={<AddProducts />} />
-        <Route exact path="/products/edit/:id" element={<EditProducts />} />
+        <Route exact path="/products/edit/:sku" element={<EditProducts />} />
         <Route exact path="/orders" element={<Orders />} />
         <Route exact path="/view-order/:orderID" element={<ViewOrdersPage />} />
         <Route

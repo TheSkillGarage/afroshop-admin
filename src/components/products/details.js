@@ -3,10 +3,10 @@ import { DeleteIcon, DetailsIcon, EditIcon } from "../../images";
 import DeleteUser from "../pop-ups/deleteModal";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct, deleteProductByID, updateUserRole } from "../../redux/action";
+import { deleteProduct, deleteProductByID, getProductData, updateUserRole } from "../../redux/action";
 import { getTokenFromCookie } from "../../utils";
 
-const Detail = ({ name, goToEdit, param, user }) => {
+const Detail = ({ name, id, goToEdit, param, user }) => {
   const dispatch = useDispatch();
   const roles = useSelector((s) => s.roles);
   const [showDetails, setShowDetails] = useState(false);
@@ -21,20 +21,27 @@ const Detail = ({ name, goToEdit, param, user }) => {
     setOpenDeleteModal(false);
   };
 
-  const deleteUser = (e) => {
-    e?.stopPropagation();
-    const newUsers = roles.filter((r) => r.id !== user.id);
-    dispatch(updateUserRole({ roles: newUsers }));
-    setOpenDeleteModal(false);
-    setShowDetails(false);
-  };
+  const token = getTokenFromCookie();
+  const storeData = useSelector((state) => state.storeData);
 
-  const token = getTokenFromCookie()
+  const deleteItem = (e, name) => {
+    if (name === "products") {
+      console.log("products rock!")
+      dispatch(deleteProduct(id, token));
 
-  const handleDeleteProduct = () => {
-    dispatch(deleteProductByID({productID: param}))
-    dispatch(deleteProduct(param, token))
+      setTimeout(() => {
+        dispatch(getProductData(storeData.id, token));
+      }, [2000])
+    } else {
+      e?.stopPropagation();
+      const newUsers = roles.filter((r) => r.id !== user.id);
+      dispatch(updateUserRole({ roles: newUsers }));
+      setOpenDeleteModal(false);
+      setShowDetails(false);
+    }
   }
+
+
 
   return (
     <div className="relative flex flex-col items-center">
@@ -70,8 +77,7 @@ const Detail = ({ name, goToEdit, param, user }) => {
           {openDeleteModal ? (
             <DeleteUser
               name={name}
-              handleDelete={(e) => deleteUser(e)}
-              handleDeleteProduct={() => handleDeleteProduct()}
+              handleDelete={(e) => deleteItem(e, name)}
               handleClose={(e) => closeDeleteModal(e)}
             />
           ) : null}

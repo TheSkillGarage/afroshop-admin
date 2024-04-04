@@ -43,7 +43,7 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
                           ? "w-[12.5%]"
                           : "w-[14.5%]"}  text-left ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
                 >
-                  {header.name}
+                  {(header.id === "price" || header.id === "salesPrice") ? `${header.name} ($)` : header.name}
                 </th>
               ))}
             </tr>

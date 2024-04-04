@@ -7,12 +7,20 @@ import { discardDraft, editProduct } from "../../redux/action";
 
 const EditSingleProduct = () => {
 
-  const { id } = useParams();
+  const { sku } = useParams();
 
-  
+
   const productData = useSelector((state) => state.productsData);
 
-  const product = productData.find((product) => product.id == id);
+  const product = productData.find((product) => product.SKU == sku);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!product) {
+      navigate("/404");
+    }
+  }, [product])
 
 
   const initialProductInfo = {
@@ -35,7 +43,6 @@ const EditSingleProduct = () => {
   //   }
   // }, [])
 
-  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -47,21 +54,24 @@ const EditSingleProduct = () => {
   }
 
   const handleFormSubmit = () => {
-    dispatch(editProduct({ id: id, productInfos: productInfo, option: "save" }));
+    dispatch(editProduct({ sku: sku, productInfos: productInfo, option: "save" }));
 
     navigate("/products");
   }
 
   const handleProductDraft = (option) => {
     if (option === "draft") {
-      dispatch(editProduct({ id: id, productInfos: productInfo, option: "draft" }));
-    }else if (option === "discard"){
-      dispatch(discardDraft({id: id}))
+      dispatch(editProduct({ sku: sku, productInfos: productInfo, option: "draft" }));
+    } else if (option === "discard") {
+      dispatch(discardDraft({ sku: sku }))
     }
 
     navigate("/products");
   }
 
+  if (!product) {
+    return null;
+  }
 
   return (
     <ProductChanges

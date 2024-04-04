@@ -7,15 +7,14 @@ import TableFooter from "../table-footer/table-footer";
 import Search from "../search";
 import BaseTable from "../shared/table";
 import useTableData from "../../hooks/useTableData";
-import { useDispatch, useSelector } from "react-redux";
-import { getTokenFromCookie } from "../../utils";
-import { getProductData, getStoreData } from "../../redux/action";
+
 
 const ProductsDashboard = ({ productsData }) => {
 
     const [activeTab, setActiveTab] = useState('all');
     const [page, setPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [itemsPerPage, setItemsPerPage] = useState(productsData.length > 5 ? 10 : 5);
+    const [loading, setLoading] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -42,7 +41,7 @@ const ProductsDashboard = ({ productsData }) => {
     const handleSearch = (searchWord) => setSearchTerm(searchWord)
     const handleFilterObject = (filterObject) => setFilterObject(filterObject)
 
-    const goToEdit = (productID) => navigate(`/products/edit/${productID}`)
+    const goToEdit = (sku) => navigate(`/products/edit/${sku}`)
 
     // generating table values with tableData Hook
     let headersArray = [
@@ -88,7 +87,7 @@ const ProductsDashboard = ({ productsData }) => {
 
                 {/******************************************************* * table section  **************************************************************/}
 
-                <BaseTable tableHeaders={headers} data={results} />
+                <BaseTable tableHeaders={headers} data={results} loading={loading} />
 
 
                 <TableFooter

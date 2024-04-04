@@ -41,18 +41,18 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...action.hash,
         isFetching: false,
       };
-      case "LOGIN_USER":
-        return {
-          ...previousState,
-          isAuthenticated: true,
-          user: action.payload,
-        };
-      case "LOG_OUT":
-        return {
-          ...previousState,
-          isAuthenticated: false,
-          user: null,
-        };
+    case "LOGIN_USER":
+      return {
+        ...previousState,
+        isAuthenticated: true,
+        user: action.payload,
+      };
+    case "LOG_OUT":
+      return {
+        ...previousState,
+        isAuthenticated: false,
+        user: null,
+      };
     case "UPDATE_PROFILE_INFO":
       return {
         ...previousState,
@@ -111,7 +111,7 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
       }
     case "EDIT_PRODUCT":
       const updatedProductData = previousState.productsData.map(product => {
-        if (product.id === action.id) {
+        if (product.SKU === action.sku) {
           switch (action.option) {
             case "draft":
               return {
@@ -126,23 +126,17 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
                 draft: {},
                 lastEdited: new Date()
               };
-            }
-          }  
+          }
+        }
         return product;
       });
       return {
         ...previousState,
         productsData: updatedProductData,
       }
-    case "DELETE_PRODUCT":
-      const updatedProducts = previousState.productsData.filter(product => product.id !== action.productID);
-      return {
-        ...previousState,
-        productsData: updatedProducts,
-      }
     case 'DISCARD_DRAFT':
       const updateProductDraft = previousState.productsData.map((product) => {
-        if (product.id === action.id) {
+        if (product.SKU === action.sku) {
           return {
             ...product,
             draft: {},
