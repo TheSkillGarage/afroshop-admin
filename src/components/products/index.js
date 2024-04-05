@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import EmptyProducts from "./empty-products";
-import { getProductData, getStoreData } from "../../redux/action";
-import { getTokenFromCookie } from "../../utils";
 import ProductsDashboard from "./products-dashboard";
 
 

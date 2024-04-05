@@ -55,7 +55,6 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
 
   const onSubmit = (data) => {
     handleFormSubmit()
-    console.log(data);
   };
 
   return (

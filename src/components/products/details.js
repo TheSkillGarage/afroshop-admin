@@ -3,10 +3,12 @@ import { DeleteIcon, DetailsIcon, EditIcon } from "../../images";
 import DeleteUser from "../pop-ups/deleteModal";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct, deleteProductByID, getProductData, updateUserRole } from "../../redux/action";
+import { deleteRequest, getProductData, updateUserRole } from "../../redux/action";
 import { getTokenFromCookie } from "../../utils";
+import { toast } from "react-toastify";
 
 const Detail = ({ name, id, goToEdit, param, user }) => {
+
   const dispatch = useDispatch();
   const roles = useSelector((s) => s.roles);
   const [showDetails, setShowDetails] = useState(false);
@@ -24,23 +26,37 @@ const Detail = ({ name, id, goToEdit, param, user }) => {
   const token = getTokenFromCookie();
   const storeData = useSelector((state) => state.storeData);
 
-  const deleteItem = (e, name) => {
-    if (name === "products") {
-      console.log("products rock!")
-      dispatch(deleteProduct(id, token));
 
-      setTimeout(() => {
-        dispatch(getProductData(storeData.id, token));
-      }, [2000])
-    } else {
-      e?.stopPropagation();
-      const newUsers = roles.filter((r) => r.id !== user.id);
-      dispatch(updateUserRole({ roles: newUsers }));
-      setOpenDeleteModal(false);
-      setShowDetails(false);
+  const handleRoleDelete = (e) => {
+    e?.stopPropagation();
+    const newUsers = roles.filter((r) => r.id !== user.id);
+    dispatch(updateUserRole({ roles: newUsers }));
+    setOpenDeleteModal(false);
+    setShowDetails(false);
+  };
+
+  const handleProductDelete = async () => {
+    try {
+      const deleteProduct = await deleteRequest(`/api/products/${id}`, token);
+
+      if (deleteProduct[0]) {
+        toast.success(`Product deleted successfully`, { autoClose: 2000 });
+          dispatch(getProductData(storeData.id, token));
+      } else {
+        toast.error(`An error occurred while deleting product: ${deleteProduct[1]}`, { autoClose: 2000 });
+      }
+    } catch (error) {
+      toast.error(`An unexpected error occurred while deleting product. Please try again.`, { autoClose: 2000 });
     }
   }
 
+  const handleDelete = async (e, name) => {
+    if (name === "products") {
+      handleProductDelete();
+    } else {
+      handleRoleDelete(e);
+    }
+  };
 
 
   return (
@@ -77,7 +93,7 @@ const Detail = ({ name, id, goToEdit, param, user }) => {
           {openDeleteModal ? (
             <DeleteUser
               name={name}
-              handleDelete={(e) => deleteItem(e, name)}
+              handleDelete={(e) => handleDelete(e, name)}
               handleClose={(e) => closeDeleteModal(e)}
             />
           ) : null}
