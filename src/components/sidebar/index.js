@@ -10,7 +10,7 @@ const AdminSidebar = () => {
     const isSidebarToggled = useSelector((state) => state.isSidebarToggled)
 
     return (
-        <aside className={`px-6 flex flex-col ${isSidebarToggled ? "w-[92px]" : "w-[266px]"} min-h-screen max-h-screen border-r border-1 border-[#E6E6E6] justify-between bg-[#ffffff] sticky top-0 pb-4`}>
+        <aside className={`px-6 flex flex-col ${isSidebarToggled ? "w-[92px]" : "w-[266px]"} min-h-[640px] h-full border-r border-1 border-[#E6E6E6] justify-between bg-[#ffffff] pb-4`}>
             <div className="mt-10 flex flex-col gap-1">
                 {
                     SIDEBAR_TABS.map(({ name, path }, index) => {
