@@ -27,7 +27,6 @@ const MyRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<OverviewPage />} />
-        <Route exact path="/dashboard" element={<OverviewPage />} />
         <Route path="/connect/:provider/redirect" element={<RedirectHandler />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/products/new" element={<AddProducts />} />
@@ -48,9 +47,9 @@ const MyRoutes = () => {
         <Route exact path="/store-created" element={<StoreCreated />} />
         <Route exact path="/reset-password" element={<PasswordReset />} />
         <Route exact path="/verify-email" element={<EmailVerification />} />
-        <Route exact path="/sign-up" element={<SignUpPage />} />
+        <Route exact path="/signup" element={<SignUpPage />} />
         <Route exact path="/login" element={<LogInPage />} />
-        <Route exact path="/newpassword" element={<NewPasswordPage />} />
+        <Route exact path="/new-password" element={<NewPasswordPage />} />
         <Route exact path="/404" element={<PageNotFoundComponent />} />
         <Route exact path="/*" element={<PageNotFoundComponent />} />
       </Routes>

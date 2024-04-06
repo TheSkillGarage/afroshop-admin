@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
@@ -15,7 +15,7 @@ import {
 import { postRequest, userLogin } from "../../../redux/action";
 import Button from "../../shared/button";
 import { AFROADMIN_TOKEN } from "../../../utils/constants";
-import { expirationDate, getTokenFromCookie } from "../../../utils";
+import { expirationDate } from "../../../utils";
 import { fetchUserRole } from "./utils";
 
 const LogInForm = () => {
@@ -33,12 +33,6 @@ const LogInForm = () => {
     reset,
     handleSubmit,
   } = useForm({ mode: "all" });
-
-  const token = getTokenFromCookie()
-
-  useEffect(() => {
-    if (token) navigate("/dashboard")
-  }, [])
 
   const onSubmit = async () => {
     const value = getValues();
@@ -65,7 +59,7 @@ const LogInForm = () => {
             expires: expirationDate,
           });
           reset();
-          navigate("/dashboard");
+          navigate("/");
         } else {
           toast.error(`You are not authorized to access this page`, {
             autoClose: 2000,
@@ -143,7 +137,7 @@ const LogInForm = () => {
 
             <p className="text-[16px] leading-[24px] text-[#CCCCCC] font-normal text-center mt-2">
               Don't have an account?{" "}
-              <Link to="/sign-up">
+              <Link to="/signup">
                 <span className="text-[#186F3D]">Sign Up</span>
               </Link>
             </p>

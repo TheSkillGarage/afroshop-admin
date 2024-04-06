@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AdminNavbar from "../navbar";
@@ -31,34 +31,34 @@ const PageLayout = ({ children }) => {
 
   const idleTimer = useIdleActivityTimer(handleIdle, handleActive, 20);
 
-    /*
+  /*
 
-    This section handles Token expiry after 1hour
-    This section handles redirect for authenticated pages
+  This section handles Token expiry after 1hour
+  This section handles redirect for authenticated pages
 
-  */
-    useEffect(() => {
-      if (isAuthenticated) {
-        const intervalId = setInterval(() => {
-          const token = getTokenFromCookie();
-          const isCookieExpired = !token;
-          if (isCookieExpired) {
-            console.log('logged out because token expired')
-            dispatch(logOutUser()); // Dispatch the logout action when the cookie expires
-          }
-        }, 60000);
-        return () => {
-          clearInterval(intervalId); // Clear the interval on component unmount
-        };
-      } else {
-          navigate("/");
-      }
-    }, [isAuthenticated]);
+*/
+  useEffect(() => {
+    if (isAuthenticated) {
+      const intervalId = setInterval(() => {
+        const token = getTokenFromCookie();
+        const isCookieExpired = !token;
+        if (isCookieExpired) {
+          console.log('logged out because token expired')
+          dispatch(logOutUser()); // Dispatch the logout action when the cookie expires
+        }
+      }, 60000);
+      return () => {
+        clearInterval(intervalId); // Clear the interval on component unmount
+      };
+    } else {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
 
 
   return (
     <section className="bg-[#F2F2F2] min-height-[100vh] h-full">
-      <AdminNavbar name={"layout"}/>
+      <AdminNavbar name={"layout"} />
 
       <div className="flex h-[680px] min-h-full">
         <AdminSidebar />
