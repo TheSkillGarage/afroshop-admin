@@ -26,7 +26,7 @@ const MyRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<LogInPage />} />
+        <Route exact path="/" element={<OverviewPage />} />
         <Route exact path="/dashboard" element={<OverviewPage />} />
         <Route path="/connect/:provider/redirect" element={<RedirectHandler />} />
         <Route exact path="/products" element={<Products />} />

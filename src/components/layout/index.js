@@ -57,12 +57,12 @@ const PageLayout = ({ children }) => {
 
 
   return (
-    <section className="bg-[#F2F2F2]">
+    <section className="bg-[#F2F2F2] min-height-[100vh] h-full">
       <AdminNavbar name={"layout"}/>
 
-      <div className="flex">
+      <div className="flex h-[650px] min-h-full">
         <AdminSidebar />
-        <div className="bg-white w-full h-full flex flex-col gap-[60px] md:gap-[80px] large-screen">
+        <div className="bg-white w-full h-full overflow-auto no-scrollbar flex flex-col gap-[60px] md:gap-[80px] large-screen">
           {children}
         </div>
       </div>
