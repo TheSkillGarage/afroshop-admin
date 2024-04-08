@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import SelectDropdown from "../shared/dropdownInput/dropdown";
-import SELECT_OPTIONS from "../../data/dashboardTimeOptions";
 import { LineChart } from "./lineChart";
-import { OVERVIEW_DATA } from "../../data";
+import { useSelector } from "react-redux";
+import EmptyState from "./empty-state";
+import { getLineChartData } from "../../utils/OrderSummaryFunctions";
 
-const LineChartComponent = () => {
+
+const LineChartComponent = ({ years, ordersData }) => {
+
+    const storeData = useSelector(state => state.storeData);
 
     const [selectedYear, setSelectedYear] = useState("week");
+
     const [dataFilter, setDataFilter] = useState([]);
 
     const handleSelectedYear = (val) => {
@@ -14,46 +19,33 @@ const LineChartComponent = () => {
     }
 
     useEffect(() => {
-        if (selectedYear === "week") {
-            const currentDate = new Date();
-
-            // Calculating the date 7 days ago
-            const sevenDaysAgo = new Date(currentDate);
-            sevenDaysAgo.setDate(currentDate.getDate() - 7);
-
-            // Filtering the data for the last 7 days
-            const last7DaysData = OVERVIEW_DATA.filter(entry => {
-                const entryDate = new Date(entry.date);
-                return entryDate >= sevenDaysAgo && entryDate <= currentDate;
-            });
-
-            setDataFilter(last7DaysData);
-        } else {
-            let yearData = OVERVIEW_DATA.filter(entry => {
-                const entryYear = new Date(entry.date).getFullYear();
-                return entryYear === parseInt(selectedYear);
-            })
-
-            setDataFilter(yearData);
-        }
-    }, [selectedYear])
-
+        const lineData = getLineChartData(selectedYear, ordersData, storeData?.createdAt);
+        setDataFilter(lineData);
+      
+      }, [selectedYear, ordersData, storeData?.createdAt]);
+      
 
     return (
-        <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[68%] p-4 flex flex-col gap-4">
+        <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[68%] px-6 py-8 flex flex-col gap-4">
             <div className="flex justify-between h-10">
                 <p className="font-semibold text-base">Summary</p>
-                <SelectDropdown
+                  {dataFilter.length !== 0 && <SelectDropdown
                     name="line-chart"
                     color="green"
                     handleSelectedYear={handleSelectedYear}
-                    options={SELECT_OPTIONS}
+                    options={[{ value: "week", label: "Last 7 days" }, ...years]}
                     placeholder="Last 7 Days"
                     className="w-[127px]"
-                />
+                />}
             </div>
             <div className="h-[250px]">
-                <LineChart DATA={dataFilter} />
+                {
+                    dataFilter.length !== 0 ?
+
+                        <LineChart DATA={dataFilter} selectedYear={selectedYear} />
+                        :
+                        <EmptyState caps={"summary"}/>
+                }
             </div>
         </div>
     )

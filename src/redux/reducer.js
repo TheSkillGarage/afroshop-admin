@@ -19,6 +19,8 @@ const INITIAL_STATE = {
   profile: profileInitialState,
   isSidebarToggled: false,
   productsData: PRODUCT_DATA,
+  ordersData: [],
+  storeData: null,
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {

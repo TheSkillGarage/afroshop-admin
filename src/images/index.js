@@ -116,6 +116,7 @@ import UserAvatar from "./avatar.svg";
 import CautionImage from "./caution-img.svg";
 // import OrdersCart from "./orders-cart.svg";
 import DefaultUserImage from "./default-user-img.jpg"
+import EmptyStateImage from "./empty-state.svg";
 
 export {
   NotFoundImage,
@@ -222,6 +223,7 @@ export {
   BlackEmailIcon,
   BlackUserIcon,
   CautionImage,
+  EmptyStateImage,
   // OrdersCart,
   DefaultUserImage,
 };
