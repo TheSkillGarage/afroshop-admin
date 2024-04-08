@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Detail from "../../products/details";
+import { BeatLoader } from 'react-spinners';
 
 const Price = ({ values }) => {
   return (
@@ -24,10 +26,23 @@ const DateCol = ({ value }) => {
   )
 }
 
-const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
+const BaseTable = ({ tableHeaders, data, emptyState, name, goToEdit }) => {
+
+  const [loading, setLoading] = useState(false);
+
+  const handleLoading = (bool) => {
+    setLoading(bool)
+  };
+
   return (
     <div className="w-full">
-      {data && data.length !== 0 && !loading ? (
+      {loading &&
+        <div className="fixed inset-0 bg-[#D3D3D3] bg-opacity-25 z-[100] flex justify-center items-center h-screen">
+          <div className="mt-[250px] w-full flex justify-center items-center">
+            <BeatLoader color={'#186F3D'} loading={true} size={25} speedMultiplier={1} />
+          </div>
+        </div>}
+      {data && data.length !== 0 ?
         <table className="w-full border-collapse">
           <thead className="h-[56px] uppercase text-[13px] leading-[23px] text-[#186F3D] font-semibold bg-[#F2F2F2]">
             <tr>
@@ -86,13 +101,18 @@ const BaseTable = ({ tableHeaders, data, loading, emptyState }) => {
                     </td>
                   );
                 })}
+
+                {name === "products" &&
+                  <td className="py-2 pr-4">
+                    <Detail name={name} id={data[index].id} goToEdit={goToEdit} param={data[index].SKU} data={data} handleLoading={handleLoading} />
+                  </td>}
               </tr>
             ))}
           </tbody>
         </table>
-      ) : (
-        emptyState
-      )}
+        :
+        (emptyState)
+      }
     </div>
   );
 };

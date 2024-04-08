@@ -120,17 +120,6 @@ const BusinessSummary = () => {
                     percentage={percentChangeInProducts}
                     backgroundColor="#34C75926"
                 />
-
-
-                {/* {DASHBOARD_SUMMARY_CARDS.map((data) => (
-              <SummaryCards
-                cardTitle={data.cardTitle}
-                cardNumber={data.cardNumber}
-                arrowImage={data.arrowImage}
-                percentage={data.percentage}
-                backgroundColor={data.backgroundColor}
-              />
-            ))} */}
             </div>
         </div>
     )

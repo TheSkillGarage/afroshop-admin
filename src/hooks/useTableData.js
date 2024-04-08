@@ -75,9 +75,11 @@ export const useTableData = (name, headersArray, data, func) => {
                 className="ml-4 cursor-pointer"
                 onClick={() => func(data.orderID)}
             />
-        ) : (
+        ) 
+        : name === "roles" ? (
             <Detail name={name} id={data.id} goToEdit={func} param={name === "roles" ? data : data.SKU} user={data} />
-        ),
+        )
+        : null,
     }));
 
     return {

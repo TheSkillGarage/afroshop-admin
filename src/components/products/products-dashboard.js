@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import usePagination from "../../hooks/usePagination";
 import { Link, useNavigate } from "react-router-dom";
 import Filters from "../filters";
@@ -14,7 +14,6 @@ const ProductsDashboard = ({ productsData }) => {
     const [activeTab, setActiveTab] = useState('all');
     const [page, setPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(productsData.length > 10 ? 10 : 5);
-    const [loading, setLoading] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -36,6 +35,7 @@ const ProductsDashboard = ({ productsData }) => {
     const handlePage = (activePage) => setPage(activePage); // sets page when pagination button is clicked
     const prevPage = () => page > 1 ? setPage(page - 1) : null; // goes to previous page
     const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
+   
 
     //search and filter modal
     const handleSearch = (searchWord) => setSearchTerm(searchWord)
@@ -53,6 +53,7 @@ const ProductsDashboard = ({ productsData }) => {
         "availability",
         "status",
         "detail"]
+
 
     const tableData = useTableData("products", headersArray, pagination.currentData, goToEdit);
 
@@ -87,7 +88,19 @@ const ProductsDashboard = ({ productsData }) => {
 
                 {/******************************************************* * table section  **************************************************************/}
 
-                <BaseTable tableHeaders={headers} data={results} loading={loading} />
+                <BaseTable
+                    name={"products"}
+                    tableHeaders={headers}
+                    data={results}
+                    goToEdit={goToEdit}
+                    emptyState={
+                        <div className="bg-white border rounded-md min-h-[300px] flex items-center justify-center sticky bottom-0 left-0 mt-8">
+                            <p className="text-sm text-gray-400">
+                                There are no records to show for this table
+                            </p>
+                        </div>
+                    }
+                />
 
 
                 <TableFooter

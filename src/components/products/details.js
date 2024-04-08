@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DeleteIcon, DetailsIcon, EditIcon } from "../../images";
 import DeleteUser from "../pop-ups/deleteModal";
 import PropTypes from "prop-types";
@@ -7,7 +7,7 @@ import { deleteRequest, getProductData, updateUserRole } from "../../redux/actio
 import { getTokenFromCookie } from "../../utils";
 import { toast } from "react-toastify";
 
-const Detail = ({ name, id, goToEdit, param, user }) => {
+const Detail = ({ name, id, goToEdit, param, user, handleLoading, data }) => {
 
   const dispatch = useDispatch();
   const roles = useSelector((s) => s.roles);
@@ -36,19 +36,28 @@ const Detail = ({ name, id, goToEdit, param, user }) => {
   };
 
   const handleProductDelete = async () => {
+    handleLoading(true);
+    console.log("loading...")
+   
     try {
       const deleteProduct = await deleteRequest(`/api/products/${id}`, token);
 
       if (deleteProduct[0]) {
         toast.success(`Product deleted successfully`, { autoClose: 2000 });
-          dispatch(getProductData(storeData.id, token));
+
+        dispatch(getProductData(storeData.id, token));
       } else {
-        toast.error(`An error occurred while deleting product: ${deleteProduct[1]}`, { autoClose: 2000 });
+        toast.error(`An error occurred while deleting product`, { autoClose: 2000 });
+        throw new Error(deleteProduct[1])
       }
     } catch (error) {
-      toast.error(`An unexpected error occurred while deleting product. Please try again.`, { autoClose: 2000 });
+      console.log(error);
     }
   }
+
+  useEffect(() => {
+    handleLoading(false);
+  }, [data])
 
   const handleDelete = async (e, name) => {
     if (name === "products") {
