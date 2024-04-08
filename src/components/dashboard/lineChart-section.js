@@ -6,9 +6,8 @@ import EmptyState from "./empty-state";
 import { getLineChartData } from "../../utils/OrderSummaryFunctions";
 
 
-const LineChartComponent = ({ years }) => {
+const LineChartComponent = ({ years, ordersData }) => {
 
-    const ordersData = useSelector(state => state.ordersData);
     const storeData = useSelector(state => state.storeData);
 
     const [selectedYear, setSelectedYear] = useState("week");

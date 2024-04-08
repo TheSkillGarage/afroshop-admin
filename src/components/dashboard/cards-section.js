@@ -5,9 +5,8 @@ import SummaryCards from "./summaryCards";
 import { useSelector } from "react-redux";
 import { calculatePercentageChanges, calculateTotals } from "../../utils/OrderSummaryFunctions";
 
-const BusinessSummary = ({ years }) => {
+const BusinessSummary = ({ years, ordersData }) => {
 
-    const ordersData = useSelector((state) => state.ordersData);
     const user = useSelector((state) => state.user);
     ;
     const [totals, setTotals] = useState({
@@ -29,18 +28,22 @@ const BusinessSummary = ({ years }) => {
     const handleSelectedYear = val => setSelectedYear(val);
 
 
-    const calculateTotal = calculateTotals(selectedYear, ordersData);
-
     useEffect(() => {
-        setTotals(prev => ({ ...prev, sales: calculateTotal.sales }));
-        setTotals(prev => ({ ...prev, customers: calculateTotal.customers.size }));
-        setTotals(prev => ({ ...prev, orders: calculateTotal.orders }));
-        setTotals(prev => ({ ...prev, products: calculateTotal.products.size }));
-
-        setPercentageChanges(calculatePercentageChanges(ordersData, selectedYear));
-    }, [selectedYear, ordersData]);
-
-
+        const calculateTotal = calculateTotals(selectedYear, ordersData);
+        const percentageChanges = calculatePercentageChanges(ordersData, selectedYear);
+      
+        setTotals(prevTotals => ({
+          ...prevTotals,
+          sales: calculateTotal.sales,
+          customers: calculateTotal.customers.size,
+          orders: calculateTotal.orders,
+          products: calculateTotal.products.size,
+        }));
+      
+        setPercentageChanges(percentageChanges);
+      }, [selectedYear, ordersData]);
+   
+    
     return (
         <div>
             <div className="flex justify-between items-center mb-8">

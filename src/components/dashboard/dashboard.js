@@ -56,12 +56,12 @@ const Dashboard = () => {
       <div className="bg-[rgb(255,255,255)] h-[1100px] border rounded-md py-8 px-5 ">
         <div className=" w-[98%] flex flex-col gap-8 ">
 
-          <BusinessSummary years={years} />
+          <BusinessSummary years={years} ordersData={ordersData}/>
 
           {/* --------------Line chart and Top products-------------- */}
           <div className="flex justify-between h-[332px]">
 
-            <LineChartComponent years={years} />
+            <LineChartComponent years={years} ordersData={ordersData}/>
 
             <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-4 ">
               <p className="font-semibold text-base">Top Selling Products</p>
