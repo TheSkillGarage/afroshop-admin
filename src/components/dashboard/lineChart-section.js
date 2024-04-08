@@ -26,17 +26,17 @@ const LineChartComponent = ({ years, ordersData }) => {
       
 
     return (
-        <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[68%] p-4 flex flex-col gap-4">
+        <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[68%] px-6 py-8 flex flex-col gap-4">
             <div className="flex justify-between h-10">
                 <p className="font-semibold text-base">Summary</p>
-                    <SelectDropdown
+                  {dataFilter.length !== 0 && <SelectDropdown
                     name="line-chart"
                     color="green"
                     handleSelectedYear={handleSelectedYear}
                     options={[{ value: "week", label: "Last 7 days" }, ...years]}
                     placeholder="Last 7 Days"
                     className="w-[127px]"
-                />
+                />}
             </div>
             <div className="h-[250px]">
                 {

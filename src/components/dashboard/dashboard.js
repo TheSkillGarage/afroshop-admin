@@ -53,17 +53,17 @@ const Dashboard = () => {
         <p className="text-[13px] leading-[23px] text-[#186F3D]">Overview</p>
       </div>
 
-      <div className="bg-[rgb(255,255,255)] h-[1100px] border rounded-md py-8 px-5 ">
+      <div className="bg-[rgb(255,255,255)] border rounded-md py-8 px-5 ">
         <div className=" w-[98%] flex flex-col gap-8 ">
 
-          <BusinessSummary years={years} ordersData={ordersData}/>
+          <BusinessSummary years={years} ordersData={ordersData} />
 
           {/* --------------Line chart and Top products-------------- */}
-          <div className="flex justify-between h-[332px]">
+          <div className={`flex justify-between ${ordersData?.length > 0 ? "min-h-[332px]" : "min-h-[343px]"}`}>
 
-            <LineChartComponent years={years} ordersData={ordersData}/>
+            <LineChartComponent years={years} ordersData={ordersData} />
 
-            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-4 ">
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 px-6 py-8">
               <p className="font-semibold text-base">Top Selling Products</p>
               {topProducts.length !== 0 ? topProducts.slice(0, 3).map((data, key) =>
                 <ProductCard data={data} key={key} />)
@@ -74,8 +74,8 @@ const Dashboard = () => {
           </div>
 
           {/* --------------Table and Top customers---------------- */}
-          <div className="flex justify-between h-[332px]">
-            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[68%] py-6 px-4 flex flex-col gap-4">
+          <div className={`flex justify-between ${ordersData?.length > 0 ? "min-h-[332px]" : "min-h-[343px]"}`}>
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[68%] py-8 px-6 flex flex-col gap-4">
               <div className="flex justify-between h-10">
                 <p className="font-semibold text-base">Recent Orders</p>
                 {ordersData?.length > 0 &&
@@ -95,7 +95,7 @@ const Dashboard = () => {
               }
             </div>
 
-            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 p-4">
+            <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 px-6 py-8">
               <p className="font-semibold text-base">Weekly Top Customers</p>
               {topCustomers.length > 0 ? topCustomers.slice(0, 3).map((data, key) =>
                 <CustomerCard key={key} data={data} />)
