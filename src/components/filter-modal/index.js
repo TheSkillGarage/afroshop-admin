@@ -8,9 +8,9 @@ import CustomScrollbar from "./filter.styles";
 const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA }) => {
 
     const orderKeys = ["orderID", "orderDate", "customer", "price", "items", "status"]
-    const productKeys = ["name", "SKU", "dateAdded", "price", "availability", "status"]
-
-    const filters = name === "orders" ? orderKeys : name === "view-orders" ?  Object.keys(DATA[0]) : name==="products" ? productKeys : Object.keys(DATA[0]).slice(1) // sets DATA keys as filter criterias 
+    const productKeys = ["productName", "SKU", "dateAdded", "salesPrice", "availabilty", "status"]
+    const viewOrdersKeys = ["name", "categoryName", "price"]
+    const filters = name === "orders" ? orderKeys : name === "view-orders" ? viewOrdersKeys : name === "products" ? productKeys : Object.keys(DATA[0]).slice(1) // sets DATA keys as filter criterias 
 
     const [toggleFilters, setToggleFilters] = useState({});
     const [formData, setFormData] = useState({});
@@ -50,9 +50,18 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
         filters.forEach((filter) => {
             const uniqueArray = Array.from(
                 new Set(
-                    DATA.map((obj) => {
-                        if (filter === 'price' && obj[filter] && typeof obj[filter] === 'object') {
-                            return obj[filter].price;
+                    DATA?.map((obj) => {
+                        if (filter === 'price' && name !== 'view-orders') {
+                            return `$${obj["grandTotal"]}`;
+                        }else if(filter === 'price' && name === 'view-orders'){
+                            return `$${obj["price"]}`;
+                        }
+                        else if(filter === "orderDate"){
+                            return obj["createdAt"];
+                        }else if(filter === "customer"){
+                            return `${obj["firstName"]} ${obj["lastName"]}`
+                        }else if(filter === "items") {
+                            return obj["products"].length
                         }
                         return obj[filter];
                     }).filter((value) => value !== undefined)
@@ -152,6 +161,7 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
         handleFilterObject({});
         closeFilter();
         setFiltersObject(filterSet);
+        setFormData({});
     }
 
 

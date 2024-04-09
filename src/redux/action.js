@@ -1,19 +1,6 @@
 import axios from "axios";
 import { renderValidUrl } from "../utils/constants";
 
-export const userLogin = (user) => dispatch => {
-  dispatch({
-    type: 'LOGIN_USER',
-    payload: user,
-  });
-};
-
-export const logOutUser = () => dispatch => {
-  dispatch({
-    type: 'LOG_OUT',
-  });
-};
-
 export const fetchData = async (dispatch, url, type, token) => {
   dispatch({ type: 'SET_IS_FETCHING', isFetching: true });
 
@@ -47,6 +34,18 @@ export const deleteRequest = async (url, token) => {
   }
 };
 
+export const userLogin = (user) => dispatch => {
+  dispatch({
+    type: 'LOGIN_USER',
+    payload: user,
+  });
+};
+
+export const logOutUser = () => dispatch => {
+  dispatch({
+    type: 'LOG_OUT',
+  });
+};
 
 export const addActionRole = (hash) => (dispatch) => {
   dispatch({
@@ -123,6 +122,10 @@ export const getProductData = (storeID, token) => async (dispatch) => {
   await fetchData(dispatch, `products?storeID=${storeID}`, 'productsData', token);
 }
 
+export const getOrdersData = (storeID, token) => async (dispatch) => {
+  await fetchData(dispatch, `orders?storeID=${storeID}`, 'ordersData', token);
+}
+
 export const deleteProduct = (productID, token) => async () => {
   await deleteRequest(`/api/products/${productID}`, token);
 }
@@ -133,6 +136,8 @@ export const resetStore = () => dispatch => {
     type: 'RESET_STORE',
   })
 }
+
+
 export const postRequest = (url, data, token = null) => {
   return fetch(renderValidUrl(url), {
     method: "POST",
@@ -170,4 +175,3 @@ export const putRequest = async (url, data, token = null) => {
     return [false, error];
   }
 };
-

@@ -12,7 +12,8 @@ const TableFooter = ({
   nextPage,
   totalPages,
 }) => {
-  return data && data.length !== 0 ? (
+  return data && data.length !== 0 ? 
+  (
     <div className=" pt-4 pb-6 px-6 text-[13px] leading-[23px] bg-[#ffffff] w-full ">
      {data.length > 5 && 
      <div className="flex justify-between items-center">
@@ -38,7 +39,7 @@ const TableFooter = ({
         </p>
 
         <p>
-          Showing {pagination.count.start + 1} to {pagination.count.stop} of{" "}
+          Showing {data.length > 0 ? pagination.count.start + 1 : 0} {data.length > 0 ? `to ${pagination.count.stop}` : ""} of{" "}
           {data.length} orders
         </p>
       </div>
@@ -48,7 +49,10 @@ const TableFooter = ({
           className="h-[31px] w-[31px] rounded cursor-pointer flex justify-center items-center"
           onClick={prevPage}
         >
-          {page === 1 ? <PrevIcon /> : <NextIcon className="rotate-180" />}
+          {data.length > 0 &&
+            <div>
+              {page === 1 ? <PrevIcon /> : <NextIcon className="rotate-180" />}
+            </div>}
         </p>
 
         <div className="flex gap-1">
@@ -56,9 +60,8 @@ const TableFooter = ({
             return (
               <p
                 key={key}
-                className={`${page === number ? "bg-[#FFE0B2]" : null} ${
-                  number === "..." ? "text-[#CCCCCC]" : "text-[#333333]"
-                } text-[13px] leading-[23px] mr-1 flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer transition-all duration-200 ease-in`}
+                className={`${page === number ? "bg-[#FFE0B2]" : null} ${number === "..." ? "text-[#CCCCCC]" : "text-[#333333]"
+                  } text-[13px] leading-[23px] mr-1 flex justify-center items-center h-[31px] w-[31px] rounded cursor-pointer transition-all duration-200 ease-in`}
                 onClick={() => (number !== "..." ? handlePage(number) : null)}
               >
                 {number}
@@ -71,18 +74,21 @@ const TableFooter = ({
           className="h-[31px] w-[31px] rounded cursor-pointer flex justify-center items-center"
           onClick={nextPage}
         >
-          {page !== totalPages ? (
-            <NextIcon />
-          ) : (
-            <PrevIcon className="rotate-180" />
-          )}
+          {data.length > 0 &&
+            <div>
+              {page !== totalPages ? (
+                <NextIcon />
+              ) : (
+                <PrevIcon className="rotate-180" />
+              )}
+            </div>}
         </p>
       </div>
       </div>}
     </div>
-  ) : (
-    ""
-  );
+  )
+  :
+  null
 };
 
 export default TableFooter;

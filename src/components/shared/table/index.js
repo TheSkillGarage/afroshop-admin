@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Detail from "../../products/details";
 import { BeatLoader } from 'react-spinners';
+import { formatPrice } from "../../../utils/formatPrice";
 
-const Price = ({ values }) => {
-  return (
-    <>
-      <p>${values.price}</p>
-      <p className="text-[#186F3D] text-[10px] leading-[15px]">
-        {values.paymentMethod}
-      </p>
-    </>
-  );
-};
 
 const DateCol = ({ value }) => {
   const date = new Date(value)
@@ -64,51 +55,61 @@ const BaseTable = ({ tableHeaders, data, emptyState, name, goToEdit }) => {
             </tr>
           </thead>
 
-          <tbody className="bg-[#ffffff]">
-            {data.map((row, index) => (
-              <tr
-                key={index}
-                className="text-[13px] leading-[23px] text-[#333333] border-b border-1 border-[#E6E6E6] min-h-[47px]"
-              >
-                {tableHeaders.map((header, index) => {
-                  return (
-                    <td
-                      className={`py-2 ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
-                      key={index}
-                    >
-                      {
-                        header.id === "price" ? (
-                          <Price values={row[header.id]} />
-                        )
-                          : header.id === "productName" ?
-                            (
-                              row["name"]
-                            )
-                            : (header.id === "dateAdded")
-                              ? (
-                                <DateCol value={row[header.id]} />
+          {data && data.length !== 0 && !loading && (
+            <tbody className="bg-[#ffffff]">
+              {data.map((row, index) => (
+                <tr
+                  key={index}
+                  className="text-[13px] leading-[23px] text-[#333333] border-b border-1 border-[#E6E6E6] min-h-[47px]"
+                >
+                  {tableHeaders.map((header, index) => {
+                    return (
+                      <td
+                        className={`py-2 ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
+                        key={index}
+                      >
+                        {
+                          header.id === "price" ? (
+                            formatPrice(row["grandTotal"])
+                          )
+                            : header.id === "productName" ?
+                              (
+                                row["name"]
                               )
-                              : (header.id === "salesPrice")
+                              : ((header.id === "orderDate" && name === "orders"))
                                 ? (
-                                  row["price"] === "" ? "---" : parseFloat(row["price"]).toFixed(2)
+                                  <DateCol value={row["payment"]?.createdAt} />
                                 )
-                                : row[header.id] === ""
-                                  ? "---"
-                                  : (
-                                    row[header.id]
+                                : (header.id === "customer" && name === "orders")
+                                  ? (
+                                    `${row["firstName"]} ${row["lastName"]}`
                                   )
-                      }
-                    </td>
-                  );
-                })}
+                                  : (header.id === "items" && name === "orders")
+                                    ? (
+                                      `${row["products"]?.length}`
+                                    )
+                                    : (header.id === "salesPrice")
+                                      ? (
+                                        row["price"] === null ? "---" : formatPrice(row["price"])
+                                      )
+                                      : row[header.id] === ""
+                                        ? "---"
+                                        : (
+                                          row[header.id]
+                                        )
+                        }
+                      </td>
+                    );
+                  })}
 
-                {name === "products" &&
-                  <td className="py-2 pr-4">
-                    <Detail name={name} id={data[index].id} goToEdit={goToEdit} param={data[index].SKU} data={data} handleLoading={handleLoading} />
-                  </td>}
-              </tr>
-            ))}
-          </tbody>
+                  {name === "products" &&
+                    <td className="py-2 pr-4">
+                      <Detail name={name} id={data[index].id} goToEdit={goToEdit} param={data[index].SKU} data={data} handleLoading={handleLoading} />
+                    </td>}
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
         :
         (emptyState)

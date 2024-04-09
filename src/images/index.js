@@ -117,6 +117,8 @@ import { ReactComponent as NotFoundImage } from "./notFoundImage.svg";
 import UserAvatar from "./avatar.svg";
 import CautionImage from "./caution-img.svg";
 import EmptyProductsImage from "./empty-product.svg"
+import OrdersCart from "./orders-cart.svg";
+import EmptyStateImage from "./empty-state.svg";
 
 export {
   NotFoundImage,
@@ -226,4 +228,6 @@ export {
   BlackUserIcon,
   CautionImage,
   EmptyProductsImage,
+  OrdersCart,
+  EmptyStateImage,
 };

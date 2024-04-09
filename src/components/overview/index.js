@@ -1,14 +1,14 @@
 import React from "react";
 import Welcome from "../dashboard/welcome";
 import Dashboard from "../dashboard/dashboard";
-import { OVERVIEW_DATA } from "../../data";
-
+import { useSelector } from "react-redux";
 
 const Overview = () => {
+    const profileData = useSelector((state) => state.profile);
 
     return (
         <div >
-            {OVERVIEW_DATA.length < 0 ?
+            {(profileData === null || Object.keys(profileData).length === 0) ?
                 <Welcome />
                 :
                 <Dashboard />

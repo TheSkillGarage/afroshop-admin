@@ -7,15 +7,13 @@ export const useFilter = (name, activeTab, DATA, searchTerm, filterObject) => {
         let updatedData = DATA.slice(); // Create a shallow copy of DATA
 
         if (searchTerm !== '') {
-            updatedData = updatedData.filter(item => {
-                if (name === "products") {
-                    return item.name?.toLowerCase().includes(searchTerm.toLowerCase());
-                } else if (name === "orders") {
-                    return item.orderID?.toLowerCase().includes(searchTerm.toLowerCase());
-                } else if (name === "roles") {
-                    return item.name?.toLowerCase().includes(searchTerm.toLowerCase());
-                }
-            });
+            if (name === "products") {
+                updatedData = updatedData.filter(product => product.name?.toLowerCase().includes(searchTerm?.toLowerCase()));
+            } else if (name === "orders") {
+                updatedData = updatedData.filter(order => order.orderID?.toLowerCase().includes(searchTerm?.toLowerCase()));
+            } else if (name === "roles") {
+                updatedData = updatedData.filter(role => role.name?.toLowerCase().includes(searchTerm?.toLowerCase()));
+            }
         }
 
         if (activeTab !== "all") {
@@ -27,9 +25,10 @@ export const useFilter = (name, activeTab, DATA, searchTerm, filterObject) => {
                 return Object.entries(filterObject).every(([key, values]) => {
                     if (key === 'price' && name !== 'products') {
                         return values.includes(`$${obj?.['grandTotal']}`);
-                    } else if (key === 'price' && name === 'products') {
+                    }else if (key === 'price' && name === 'products') {
                         return values.includes(`$${obj?.['price']}`);
-                    } else if (key === 'orderDate') {
+                    }
+                     else if (key === 'orderDate') {
                         return values.includes(obj?.['createdAt']?.toString());
                     } else if (key === 'customer') {
                         return values.includes(`${obj?.['firstName']?.toString()} ${obj?.['lastName']?.toString()}`);
