@@ -8,7 +8,7 @@ import CustomScrollbar from "./filter.styles";
 const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA }) => {
 
     const orderKeys = ["orderID", "orderDate", "customer", "price", "items", "status"]
-    const productKeys = ["productName", "SKU", "dateAdded", "salesPrice", "availabilty", "status"]
+    const productKeys = ["productName", "SKU", "dateAdded", "salesPrice", "availability", "status"]
     const viewOrdersKeys = ["name", "categoryName", "price"]
     const filters = name === "orders" ? orderKeys : name === "view-orders" ? viewOrdersKeys : name === "products" ? productKeys : Object.keys(DATA[0]).slice(1) // sets DATA keys as filter criterias 
 
@@ -46,34 +46,43 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
     // functions for updating individual filters based on search
     const filterSet = useMemo(() => {
         const updatedUniqueValues = {};
-
+    
+        const getUniqueValues = (obj, filter, name) => {
+            switch (filter) {
+                case 'price':
+                    return name !== 'view-orders' ? `$${obj["grandTotal"]}` : `$${obj["price"]}`;
+                case 'orderDate':
+                    return new Date(obj["createdAt"]).toLocaleDateString();
+                case 'customer':
+                    return `${obj["firstName"]} ${obj["lastName"]}`;
+                case 'items':
+                    return obj["products"].length;
+                case 'productName':
+                    return obj["name"];
+                case 'dateAdded':
+                    return new Date(obj[filter]).toLocaleDateString();
+                case 'salesPrice':
+                    return `$${obj["price"]}`;
+                default:
+                    return obj[filter];
+            }
+        };
+    
         filters.forEach((filter) => {
             const uniqueArray = Array.from(
                 new Set(
-                    DATA?.map((obj) => {
-                        if (filter === 'price' && name !== 'view-orders') {
-                            return `$${obj["grandTotal"]}`;
-                        }else if(filter === 'price' && name === 'view-orders'){
-                            return `$${obj["price"]}`;
-                        }
-                        else if(filter === "orderDate"){
-                            return obj["createdAt"];
-                        }else if(filter === "customer"){
-                            return `${obj["firstName"]} ${obj["lastName"]}`
-                        }else if(filter === "items") {
-                            return obj["products"].length
-                        }
-                        return obj[filter];
-                    }).filter((value) => value !== undefined)
+                    DATA?.filter(obj => obj !== undefined) // Filter out undefined elements in DATA
+                        .map((obj) => getUniqueValues(obj, filter, name))
+                        .filter((value) => value !== undefined)
                 )
             );
-
+    
             updatedUniqueValues[filter] = uniqueArray;
         });
-
+    
         return updatedUniqueValues;
-    }, [DATA, filters]);
-
+    }, [DATA, filters, name]);
+    
     useEffect(() => {
         setFiltersObject(filterSet);
     }, []);

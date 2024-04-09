@@ -12,7 +12,7 @@ const TableFooter = ({
   nextPage,
   totalPages,
 }) => {
-  return data && data.length !== 0 ? 
+  return data && data.length !== 0 && totalPages > 1 ? 
   (
     <div className=" pt-4 pb-6 px-6 text-[13px] leading-[23px] bg-[#ffffff] w-full ">
      {data.length > 5 && 

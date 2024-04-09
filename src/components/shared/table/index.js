@@ -55,7 +55,7 @@ const BaseTable = ({ tableHeaders, data, emptyState, name, goToEdit }) => {
             </tr>
           </thead>
 
-          {data && data.length !== 0 && !loading && (
+          {data && data.length !== 0 && (
             <tbody className="bg-[#ffffff]">
               {data.map((row, index) => (
                 <tr
@@ -78,7 +78,7 @@ const BaseTable = ({ tableHeaders, data, emptyState, name, goToEdit }) => {
                               )
                               : ((header.id === "orderDate" && name === "orders"))
                                 ? (
-                                  <DateCol value={row["payment"]?.createdAt} />
+                                  <DateCol value={row["createdAt"]} />
                                 )
                                 : (header.id === "customer" && name === "orders")
                                   ? (
@@ -91,6 +91,10 @@ const BaseTable = ({ tableHeaders, data, emptyState, name, goToEdit }) => {
                                     : (header.id === "salesPrice")
                                       ? (
                                         row["price"] === null ? "---" : formatPrice(row["price"])
+                                      )
+                                      : (header.id === "dateAdded")
+                                      ? (
+                                        <DateCol value={row["dateAdded"]} />
                                       )
                                       : row[header.id] === ""
                                         ? "---"

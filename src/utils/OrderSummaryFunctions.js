@@ -142,64 +142,129 @@ export const getTopCustomers = (ordersData) => {
 };
 
 export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
+
+  // if there haven't been any orders yet, return [] 
   if (ordersData.length > 0) {
+
     const filteredData = [];
     const todaysDate = new Date();
+
     const yearData = ordersData.filter(entry => new Date(entry.createdAt).getFullYear() === Number(selectedYear));
 
     if (selectedYear === "week") {
-      const ordersMap = new Map();
-      ordersData.forEach(entry => {
-        const entryDate = new Date(entry.createdAt).toISOString().split('T')[0];
-        ordersMap.set(entryDate, entry);
-      });
-
       const sevenDaysAgo = new Date(todaysDate);
-      sevenDaysAgo.setDate(todaysDate.getDate() - 7);
-
+      sevenDaysAgo.setDate(todaysDate.getDate() - 6);
+    
+      // Filter ordersData for the last 7 days
+      const ordersForLast7Days = ordersData.filter(entry => {
+        const entryDate = new Date(entry.createdAt);
+        return entryDate >= sevenDaysAgo && entryDate <= todaysDate;
+      });
+    
+      // Generate data for the last 7 days
       for (let i = 0; i < 7; i++) {
         const date = new Date(sevenDaysAgo);
         date.setDate(sevenDaysAgo.getDate() + i);
-        const order = ordersMap.get(date.toISOString().split('T')[0]);
-        filteredData.push(order ? order : { id: null, createdAt: date, grandTotal: 0 });
+    
+        // Filter orders for the current date
+        const orders = ordersForLast7Days.filter(entry => {
+          const entryDate = new Date(entry.createdAt).toISOString().split('T')[0];
+          return entryDate === date.toISOString().split('T')[0];
+        });
+    
+        // Calculate total grandTotal for the current date's orders
+        const totalGrandTotal = orders.reduce((total, order) => total + order.grandTotal, 0);
+    
+        filteredData.push({
+          id: i,
+          createdAt: date,
+          grandTotal: totalGrandTotal,
+          orderCount: orders.length
+        });
       }
-    } else {
+
+      console.log("filteredData: ", filteredData);
+    }
+     else {
+
+      //when selectedYear is a year e.g 2024
       const startDate = new Date(storeCreateDate);
+
+      //use store start month if selected year equals store create year else use January
       const startMonth = startDate.getFullYear() === Number(selectedYear) ? startDate.getMonth() : 0;
       const isCurrentYear = Number(selectedYear) === todaysDate.getFullYear();
 
       if (isCurrentYear) {
-        const currentMonth = todaysDate.getMonth();
+        // If the selected year is the current year, retrieve data only until the current month
 
+        const currentMonth = todaysDate.getMonth();
+      
+        // Loop through each month from the start month to the current month
         for (let month = startMonth; month <= currentMonth; month++) {
+          // Filter data for the current month
           const monthOrders = yearData.filter(entry => new Date(entry.createdAt).getMonth() === month);
+          
+          // Get the number of days in the current month
           const daysInMonth = new Date(todaysDate.getFullYear(), month + 1, 0).getDate();
+          
+          // Determine the start and end days for filtering data
           const startDay = (month === startMonth) ? startDate.getDate() : 1;
           const endDay = (month === currentMonth) ? todaysDate.getDate() : daysInMonth;
-
+      
+          // Loop through each day in the current month
           for (let day = startDay; day <= endDay; day++) {
+            // Create a date object for the current day
             const currentDate = new Date(todaysDate.getFullYear(), month, day);
+            
+            // Filter orders for the current day ad calculate total
             const ordersForDate = monthOrders.filter(entry => new Date(entry.createdAt).getDate() === day);
+            const totalForDay = ordersForDate.reduce((total, order) => total + order.grandTotal, 0);
+            
+            // Push filtered data for the current day into the array
             filteredData.push({
-              id: null,
+              id: `${day}-${month}`, 
               createdAt: currentDate,
-              grandTotal: ordersForDate.reduce((total, order) => total + order.grandTotal, 0)
+              grandTotal: totalForDay,
+              orderCount: ordersForDate.length
             });
           }
         }
-      } else {
+      }
+      else {
+        // If the selected year is not the current year
+        
+        // if selected year is start year get day from date or 1
         const startDay = startDate.getFullYear() === Number(selectedYear) ? startDate.getDay() : 1;
+        
+        // Create a date object for the first day of the selected year
         const firstDay = new Date(Number(selectedYear), startMonth, startDay);
+        
+        // Create a date object for December 31st of the selected year
         const decThirtyFirst = new Date(Number(selectedYear), 11, 31);
+        
+        // Calculate the number of days between the first day and December 31st of the selected year
         const numberOfDays = Math.floor((decThirtyFirst - firstDay) / (1000 * 60 * 60 * 24)) + 1;
-
+      
+        // Loop through each day from the first day of the year to December 31st
         for (let i = 0; i < numberOfDays; i++) {
+          // Create a date object for the current day
           const currentDate = new Date(firstDay);
           currentDate.setDate(currentDate.getDate() + i);
+          
+          // Filter orders for the current date and calculate total
           const ordersForDate = yearData.filter(entry => new Date(entry.createdAt).toDateString() === currentDate.toDateString());
-          filteredData.push(ordersForDate.length > 0 ? ordersForDate : { id: null, createdAt: currentDate, grandTotal: 0 });
+          const totalForDay = ordersForDate.reduce((total, order) => total + order.grandTotal, 0);
+          
+          // Push filtered data for the current day into the array
+          filteredData.push({
+            id: i,
+            createdAt: currentDate,
+            grandTotal: totalForDay,
+            orderCount: ordersForDate.length
+          });
         }
       }
+      
     }
 
     return filteredData;

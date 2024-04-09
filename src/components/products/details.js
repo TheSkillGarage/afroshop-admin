@@ -37,7 +37,6 @@ const Detail = ({ name, id, goToEdit, param, user, handleLoading, data }) => {
 
   const handleProductDelete = async () => {
     handleLoading(true);
-    console.log("loading...")
    
     try {
       const deleteProduct = await deleteRequest(`/api/products/${id}`, token);

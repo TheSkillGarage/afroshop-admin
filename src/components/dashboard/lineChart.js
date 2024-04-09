@@ -134,11 +134,13 @@ export function LineChart({ DATA, selectedYear }) {
       incomePerDate[formattedDate] = (incomePerDate[formattedDate] || 0) + data.grandTotal;
       
       // Calculate order counts
-      if (data.grandTotal > 0 && data.id !== null){
-        orderCountsPerDate[formattedDate] = (orderCountsPerDate[formattedDate] || 0) + 1
-      }else{
-        orderCountsPerDate[formattedDate] = 0;
-      }
+      orderCountsPerDate[formattedDate] = (orderCountsPerDate[formattedDate] || 0) + data.orderCount;
+
+      // if (data.grandTotal > 0 && data.id !== null){
+      //   orderCountsPerDate[formattedDate] = (orderCountsPerDate[formattedDate] || 0) + 1
+      // }else{
+      //   orderCountsPerDate[formattedDate] = 0;
+      // }
     });
   
     // Extract unique formatted dates
