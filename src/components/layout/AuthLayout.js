@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { getTokenFromCookie } from "../../utils";
 import { Store, AfroshopLogo } from "../../images";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AuthLayout = ({ children }) => {
+  const navigate = useNavigate();
+  const token = getTokenFromCookie()
+  const isAuthenticated = useSelector(state => state.isAuthenticated)
+
+  useEffect(() => {
+    if (isAuthenticated && token) {
+      navigate("/")
+    }
+  }, [])
 
   const backgroundImageStyle = {
     backgroundImage: `url(${Store})`,

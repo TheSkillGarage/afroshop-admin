@@ -3,7 +3,6 @@ import AfroshopLogo from "./afroshop-logo.svg";
 import { ReactComponent as MenuIcon } from "./menu.svg";
 import { ReactComponent as NotificationIcon } from "./notification.svg";
 import { ReactComponent as SettingsIcon } from "./setting.svg";
-import { ReactComponent as ProfilePic } from "./profile-pic.svg";
 import { ReactComponent as SearchIcon } from "./icon-search.svg";
 import { ReactComponent as FilterIcon } from "./icon-filter.svg";
 import { ReactComponent as DetailsIcon } from "./icon-others.svg";
@@ -98,7 +97,6 @@ import SupportIllustration from "./support.svg"
 import EmailSupport from "./emailSupport.svg"
 import WhatsAppSupport from "./whatsAppSupport.svg"
 import PhoneSupport from "./phoneSupport.svg"
-import GreenRangerPic from "./green-ranger.svg"
 import SellerCenter from "./sellerCenter.svg"
 import Tick from "./tick.svg"
 import WhiteArrowRight from "./whiteArrowRight.svg"
@@ -117,6 +115,7 @@ import { ReactComponent as NotFoundImage } from "./notFoundImage.svg";
 import UserAvatar from "./avatar.svg";
 import CautionImage from "./caution-img.svg";
 import OrdersCart from "./orders-cart.svg";
+import DefaultUserImage from "./default-user-img.jpg"
 import EmptyStateImage from "./empty-state.svg";
 
 export {
@@ -147,7 +146,6 @@ export {
   MenuIcon,
   NotificationIcon,
   SettingsIcon,
-  ProfilePic,
   CardIcon,
   OrdersIcon,
   OverviewIcon,
@@ -200,7 +198,6 @@ export {
   DropdownOpen,
   EditIcon2,
   LocationIcon,
-  GreenRangerPic,
   WelcomeImage,
   ArrowDownTriangle,
   ArrowUp,
@@ -226,6 +223,7 @@ export {
   BlackEmailIcon,
   BlackUserIcon,
   CautionImage,
-  OrdersCart,
   EmptyStateImage,
+  OrdersCart,
+  DefaultUserImage,
 };
