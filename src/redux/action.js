@@ -126,11 +126,6 @@ export const getOrdersData = (storeID, token) => async (dispatch) => {
   await fetchData(dispatch, `orders?storeID=${storeID}`, 'ordersData', token);
 }
 
-export const deleteProduct = (productID, token) => async () => {
-  await deleteRequest(`/api/products/${productID}`, token);
-}
-
-
 export const resetStore = () => dispatch => {
   dispatch({
     type: 'RESET_STORE',
