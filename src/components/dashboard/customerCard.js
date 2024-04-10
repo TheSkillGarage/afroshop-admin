@@ -1,12 +1,13 @@
 import React from 'react';
 import { renderValidUrl } from '../../utils/constants';
+import { DefaultUserImage } from '../../images';
 
 const CustomerCard = ({ data }) => {
   const { name, email, image, orders } = data;
   return (
     <div className="flex gap-2">
       <img
-        src={renderValidUrl(image)}
+        src={image ? renderValidUrl(image) : DefaultUserImage}
         alt="Customer Profile Pic"
         className="w-[50px] h-[50px] rounded-[100%]"
       />
