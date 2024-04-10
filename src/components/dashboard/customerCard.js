@@ -21,7 +21,7 @@ const CustomerCard = ({ data }) => {
         </div>
 
         <p className="font-normal text-[13px] text-[#7F7F7F]">
-          {`${orders} Orders`}
+          {`${orders} Order${orders > 1 ? 's' : ''}`}
         </p>
       </div>
     </div>
