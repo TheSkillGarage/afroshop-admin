@@ -1,3 +1,5 @@
+import { object } from "prop-types";
+
 export const calculateTotals = (selectedYear, data) => {
   let sales = 0;
   let customers = new Set();
@@ -92,7 +94,7 @@ export const getTopProducts = (ordersData) => {
   });
 
   // Converting the aggregated product sales into a sorted array of objects
-  const topProductsArray = Object.values(productSalesMap).sort((a, b) => b.totalSales - a.totalSales);
+  const topProductsArray = Object.values(productSalesMap).sort((a, b) => b.totalSales - a.totalSales).filter((obj) => obj.productID !== undefined);
 
   return topProductsArray
 }
@@ -182,8 +184,6 @@ export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
           orderCount: orders.length
         });
       }
-
-      console.log("filteredData: ", filteredData);
     }
      else {
 
