@@ -20,6 +20,7 @@ const INITIAL_STATE = {
   isSidebarToggled: false,
   productsData: [],
   storeData: {},
+  ordersData: [],
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
