@@ -78,7 +78,8 @@ const SignUpForm = () => {
           lastName: value.lastname,
         }
       );
-
+      
+      console.log(success, responseData)
       if (!success || responseData?.error) {
         console.error(responseData.error.message);
         toast.error(

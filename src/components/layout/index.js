@@ -52,7 +52,10 @@ const PageLayout = ({ children }) => {
   const idleTimer = useIdleActivityTimer(handleIdle, handleActive, 20);
 
   /*
+  /*
 
+  This section handles Token expiry after 1hour
+  This section handles redirect for authenticated pages
   This section handles Token expiry after 1hour
   This section handles redirect for authenticated pages
 
@@ -71,7 +74,7 @@ const PageLayout = ({ children }) => {
         clearInterval(intervalId); // Clear the interval on component unmount
       };
     } else {
-      navigate("/");
+      navigate("/login");
     }
   }, [isAuthenticated]);
 
@@ -90,12 +93,12 @@ const PageLayout = ({ children }) => {
 
 
   return (
-    <section className="bg-[#F2F2F2]">
+    <section className="bg-[#F2F2F2] min-height-[100vh] h-full">
       <AdminNavbar name={"layout"} />
 
-      <div className="flex">
+      <div className="flex h-[680px] min-h-full">
         <AdminSidebar />
-        <div className="bg-white w-full h-full flex flex-col gap-[60px] md:gap-[80px] large-screen">
+        <div className="bg-white w-full h-full overflow-auto no-scrollbar flex flex-col gap-[60px] md:gap-[80px] large-screen">
           {children}
         </div>
       </div>
