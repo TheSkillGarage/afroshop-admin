@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import usePagination from "../../hooks/usePagination";
 import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";

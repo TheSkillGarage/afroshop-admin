@@ -1,11 +1,9 @@
-import PRODUCT_DATA from "../data/products";
 import {
   deliveryData,
   holidayMockData,
   profileInitialState,
 } from "../data/profile";
 import sectionData from "../data/roles-section-data";
-import ROLES_DATA from "../data/rolesAndPermissions";
 
 const PRIVATE_INITIAL_STATE = {
   productsData: [],

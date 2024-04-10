@@ -1,5 +1,3 @@
-import { object } from "prop-types";
-
 export const calculateTotals = (selectedYear, data) => {
   let sales = 0;
   let customers = new Set();
