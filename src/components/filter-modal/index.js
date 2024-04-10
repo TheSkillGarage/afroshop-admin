@@ -46,7 +46,7 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
     // functions for updating individual filters based on search
     const filterSet = useMemo(() => {
         const updatedUniqueValues = {};
-    
+
         const getUniqueValues = (obj, filter, name) => {
             switch (filter) {
                 case 'price':
@@ -67,7 +67,7 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
                     return obj[filter];
             }
         };
-    
+
         filters.forEach((filter) => {
             const uniqueArray = Array.from(
                 new Set(
@@ -76,16 +76,16 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
                         .filter((value) => value !== undefined)
                 )
             );
-    
+
             updatedUniqueValues[filter] = uniqueArray;
         });
-    
+
         return updatedUniqueValues;
     }, [DATA, filters, name]);
-    
+
     useEffect(() => {
         setFiltersObject(filterSet);
-    }, []);
+    }, [DATA, filters, name]);
 
 
 
