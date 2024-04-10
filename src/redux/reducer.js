@@ -7,20 +7,23 @@ import {
 import sectionData from "../data/roles-section-data";
 import ROLES_DATA from "../data/rolesAndPermissions";
 
-
-const INITIAL_STATE = {
-  isFetching: false,
+const PRIVATE_INITIAL_STATE = {
+  productsData: [],
+  storeData: {},
+  ordersData: [],
+  roles: [],
   isAuthenticated: false,
   user: null,
+};
+
+const INITIAL_STATE = {
+  ...PRIVATE_INITIAL_STATE,
+  isFetching: false,
   sections: sectionData,
-  roles: [],
   delivery: deliveryData,
   holidays: holidayMockData,
   profile: profileInitialState,
   isSidebarToggled: false,
-  productsData: [],
-  storeData: {},
-  ordersData: [],
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
@@ -51,8 +54,7 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
     case "LOG_OUT":
       return {
         ...previousState,
-        isAuthenticated: false,
-        user: null,
+        ...PRIVATE_INITIAL_STATE
       };
     case "UPDATE_PROFILE_INFO":
       return {
