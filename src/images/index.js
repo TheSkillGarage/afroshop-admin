@@ -118,6 +118,7 @@ import EmptyProductsImage from "./empty-product.svg"
 import OrdersCart from "./orders-cart.svg";
 import DefaultUserImage from "./default-user-img.jpg"
 import EmptyStateImage from "./empty-state.svg";
+import StoreDefaultImage from "./storeDefault.png"
 
 export {
   NotFoundImage,
@@ -228,4 +229,5 @@ export {
   EmptyStateImage,
   OrdersCart,
   DefaultUserImage,
+  StoreDefaultImage,
 };

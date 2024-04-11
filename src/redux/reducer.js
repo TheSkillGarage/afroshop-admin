@@ -6,8 +6,8 @@ import {
 import sectionData from "../data/roles-section-data";
 
 const PRIVATE_INITIAL_STATE = {
-  productsData: [],
-  storeData: {},
+  productsData: null,
+  storeData: null,
   ordersData: null,
   roles: [],
   isAuthenticated: false,

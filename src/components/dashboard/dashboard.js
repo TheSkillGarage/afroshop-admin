@@ -88,7 +88,7 @@ const Dashboard = () => {
 
                 <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 px-6 py-8">
                   <p className="font-semibold text-base">Top Selling Products</p>
-                  {topProducts.length !== 0 ? topProducts.slice(0, 3).map((data, key) =>
+                  {topProducts?.length !== 0 ? topProducts?.slice(0, 3).map((data, key) =>
                     <ProductCard data={data} key={key} />)
                     :
                     <EmptyState caps={"top selling products"} />
@@ -120,7 +120,7 @@ const Dashboard = () => {
 
                 <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 px-6 py-8">
                   <p className="font-semibold text-base">Weekly Top Customers</p>
-                  {topCustomers.length > 0 ? topCustomers.slice(0, 3).map((data, key) =>
+                  {topCustomers?.length > 0 ? topCustomers.slice(0, 3).map((data, key) =>
                     <CustomerCard key={key} data={data} />)
                     :
                     <EmptyState caps={"weekly top customers"} />

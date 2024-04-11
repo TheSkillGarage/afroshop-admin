@@ -5,16 +5,18 @@ import ProductsDashboard from "./products-dashboard";
 
 
 const Products = () => {
-
+    const storeData = useSelector((state) => state.storeData);
     const productsData = useSelector((state) => state.productsData);
 
     return (
         <>
             {
-                productsData.length > 0 ?
-                    <ProductsDashboard productsData={productsData} />
+                storeData === null || productsData === null || productsData?.length === 0 ?
+                    <EmptyProducts />
                     :
-                    <EmptyProducts />}
+                    <ProductsDashboard productsData={productsData} />
+
+            }
         </>
     )
 }
