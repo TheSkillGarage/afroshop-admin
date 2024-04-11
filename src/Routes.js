@@ -47,7 +47,7 @@ const MyRoutes = () => {
           <Route exact path="/login" element={<LogInPage />} />
           <Route path="/*" element={<Navigate to="/login" />} />
         </Route>
-        
+
         {/* Private Routes (Accessible Only to Authenticated Users) */}
         <Route element={<PrivateRoute />}>
           <Route exact path="/" element={<OverviewPage />} />
@@ -70,11 +70,12 @@ const MyRoutes = () => {
             path="/roles-and-permissions/add-new-role"
             element={<AddNewRole />}
           />
-          <Route exact path="/roles-and-permissions/edit-role/:id" element={<EditRole />} />          
+          <Route exact path="/roles-and-permissions/edit-role/:id" element={<EditRole />} />
           <Route exact path="/support" element={<SupportPage />} />
-          <Route exact path="/404" element={<PageNotFoundComponent />} />
-          <Route path="/*" element={<PageNotFoundComponent />} />
         </Route>
+        
+        <Route exact path="/404" element={<PageNotFoundComponent />} />
+        <Route path="/*" element={<PageNotFoundComponent />} />
       </Routes>
     </BrowserRouter>
   );
