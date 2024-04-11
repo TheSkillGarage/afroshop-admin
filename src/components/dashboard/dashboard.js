@@ -12,7 +12,7 @@ import LineChartComponent from './lineChart-section';
 import { useSelector } from 'react-redux';
 import { extractYears } from '../../utils/extract-years';
 import EmptyState from './empty-state';
-import { getTopCustomers, getTopProducts } from '../../utils/OrderSummaryFunctions';
+import { getLineChartData, getTopCustomers, getTopProducts } from '../../utils/OrderSummaryFunctions';
 import { BeatLoader } from 'react-spinners';
 
 const Dashboard = () => {
@@ -22,7 +22,13 @@ const Dashboard = () => {
   const [topCustomers, setTopCustomers] = useState(null);
   const [topProducts, setTopProducts] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [dataFilter, setDataFilter] = useState(null);
+  const [selectedYear, setSelectedYear] = useState("week");
 
+
+  const handleSelectedYear = (val) => {
+    setSelectedYear(val);
+  }
   const years = extractYears(storeData?.createdAt);
 
   const navigate = useNavigate();
@@ -47,10 +53,17 @@ const Dashboard = () => {
   }, [ordersData, storeData]);
 
   useEffect(() => {
-    if (topCustomers !== null && topProducts !== null && ordersData !== null) {
+    if (topCustomers !== null && topProducts !== null && ordersData !== null && dataFilter !== null) {
       setLoading(false);
     }
-  }, [topCustomers, topProducts, ordersData]); 
+  }, [topCustomers, topProducts, ordersData, dataFilter]);
+
+
+  useEffect(() => {
+    const lineData = getLineChartData(selectedYear, ordersData, storeData?.createdAt);
+    setDataFilter(lineData);
+
+  }, [selectedYear, ordersData, storeData?.createdAt]);
 
   return (
     <>
@@ -71,7 +84,7 @@ const Dashboard = () => {
               {/* --------------Line chart and Top products-------------- */}
               <div className={`flex justify-between ${ordersData?.length > 0 ? "min-h-[332px]" : "min-h-[343px]"}`}>
 
-                <LineChartComponent years={years} ordersData={ordersData} storeData={storeData}/>
+                <LineChartComponent years={years} ordersData={ordersData} storeData={storeData} selectedYear={selectedYear} handleSelectedYear={handleSelectedYear} dataFilter={dataFilter} />
 
                 <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[30%] flex flex-col gap-4 px-6 py-8">
                   <p className="font-semibold text-base">Top Selling Products</p>

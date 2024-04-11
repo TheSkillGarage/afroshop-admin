@@ -7,22 +7,7 @@ import { getLineChartData } from "../../utils/OrderSummaryFunctions";
 import { BeatLoader } from "react-spinners";
 
 
-const LineChartComponent = ({ years, ordersData, storeData }) => {
-
-    const [selectedYear, setSelectedYear] = useState("week");
-
-    const [dataFilter, setDataFilter] = useState(null);
-
-    const handleSelectedYear = (val) => {
-        setSelectedYear(val);
-    }
-
-    useEffect(() => {
-        const lineData = getLineChartData(selectedYear, ordersData, storeData?.createdAt);
-        setDataFilter(lineData);
-
-    }, [selectedYear, ordersData, storeData?.createdAt]);
-
+const LineChartComponent = ({ years, selectedYear, handleSelectedYear, dataFilter }) => {
 
     return (
         <div className="border-[0.5px] border-solid border-[#B3B3B3] rounded w-[68%] px-6 py-8 flex flex-col gap-4">
@@ -38,15 +23,6 @@ const LineChartComponent = ({ years, ordersData, storeData }) => {
                 />}
             </div>
             <div className="h-[250px]">
-                {
-                    dataFilter === null &&
-                    <div className="h-full">
-                        <div className="w-full h-full flex justify-center items-center">
-                            <BeatLoader color={'#186F3D'} loading={true} size={15} speedMultiplier={1} />
-                        </div>
-                    </div>
-                }
-
                 {
                     dataFilter && dataFilter.length !== 0 &&
 
