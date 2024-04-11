@@ -18,6 +18,7 @@ const INITIAL_STATE = {
   holidays: holidayMockData,
   profile: profileInitialState,
   isSidebarToggled: false,
+  ordersData: [],
   productsData: [],
   storeData: {},
 };
