@@ -24,7 +24,7 @@ const INITIAL_STATE = {
   isSidebarToggled: false,
 };
 
-export const reducer = (previousState = INITIAL_STATE, action) => {
+export const reducer = (previousState = INITIAL_STATE, action) => { 
   switch (action.type) {
     case "SET_IS_FETCHING":
       return {
