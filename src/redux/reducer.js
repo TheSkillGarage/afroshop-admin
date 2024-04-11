@@ -22,9 +22,6 @@ const INITIAL_STATE = {
   holidays: holidayMockData,
   profile: profileInitialState,
   isSidebarToggled: false,
-  ordersData: null,
-  productsData: [],
-  storeData: {},
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
