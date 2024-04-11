@@ -34,10 +34,9 @@ const LogInForm = () => {
     handleSubmit,
   } = useForm({ mode: "all" });
 
-
   const onSubmit = async () => {
     const value = getValues();
-  
+
     setLoading(true);
     try {
       const [success, responseData] = await postRequest("/api/auth/local", {
@@ -47,8 +46,7 @@ const LogInForm = () => {
       if (!success || responseData?.error) {
         console.error(responseData?.error?.message);
         toast.error(
-          `${
-            responseData?.error?.message || "An Error occured while logging in"
+          `${responseData?.error?.message || "An Error occured while logging in"
           }`,
           { autoClose: 2000 }
         );
@@ -61,7 +59,7 @@ const LogInForm = () => {
             expires: expirationDate,
           });
           reset();
-          navigate("/dashboard");
+          navigate("/");
         } else {
           toast.error(`You are not authorized to access this page`, {
             autoClose: 2000,
@@ -86,7 +84,7 @@ const LogInForm = () => {
           </p>
         </div>
 
-        <ConnectButton provider="google"/>
+        <ConnectButton provider="google" />
 
         <p className="text-[13px] leading-[23px] text-center my-6 text-[#CCCCCC]">
           or
@@ -139,7 +137,7 @@ const LogInForm = () => {
 
             <p className="text-[16px] leading-[24px] text-[#CCCCCC] font-normal text-center mt-2">
               Don't have an account?{" "}
-              <Link to="/sign-up">
+              <Link to="/signup">
                 <span className="text-[#186F3D]">Sign Up</span>
               </Link>
             </p>
