@@ -21,6 +21,22 @@ export const getTokenFromCookie = () => Cookies.get(AFROADMIN_TOKEN);
 export const removeTokenFromCookie = () =>
   Cookies.remove(AFROADMIN_TOKEN, { path: "/" });
 
+export const handleCreateAddress = async (address) => {
+  try {
+    const { data } = await axios.post(`/addresses`, address, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${getTokenFromCookie()}`,
+      },
+    });
+    if (!data) {
+      throw new Error("error creating address");
+    }
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const handleAvatarSubmit = async (image, id) => {
   if (image?.length === 0) {
     toast.error("File is required*", {

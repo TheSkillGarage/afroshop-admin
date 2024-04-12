@@ -8,7 +8,7 @@ const ProfileTab = (props) => {
   const [sections, setSections] = useState([
     {
       label: "Store Info",
-      value: false,
+      value: true,
     },
     {
       label: "Delivery Fees",

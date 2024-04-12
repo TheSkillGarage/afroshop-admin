@@ -10,29 +10,29 @@ const daysOfTheWeek = [
   { label: "Sat", value: "saturday" },
 ];
 const deliveryOptions = [
-  { value: "pickup", label: "Pick-Up" },
+  { value: "pickUp", label: "Pick-Up" },
   { value: "delivery", label: "Delivery" },
 ];
 const destinationOptions = [
   {
-    label: "Within 5 km",
-    value: "Within 5 km",
+    label: "Within 5km",
+    value: "Within 5km",
   },
   {
-    label: "Between 5 to 10 km",
-    value: "Between 5 to 10 km",
+    label: "Between 5 to 10km",
+    value: "Between 5 to 10km",
   },
   {
-    label: "Between 10 to 15 km",
-    value: "Between 10 to 15 km",
+    label: "Between 10 to 15km",
+    value: "Between 10 to 15km",
   },
   {
-    label: "Between 15 to 20 km",
-    value: "Between 15 to 20 km",
+    label: "Between 15 to 20km",
+    value: "Between 15 to 20km",
   },
   {
-    label: "Over 20 km",
-    value: "Over 20 km",
+    label: "Over 20km",
+    value: "Over 20km",
   },
 ];
 const deliveryData = [
@@ -149,7 +149,7 @@ const restPeriods = [
 ];
 const storeInitialState = {
   days: [],
-  profile_image: ProfileImage,
+  profile_image: null,
   profile_image_data: null,
   store_name: "",
   address: "",

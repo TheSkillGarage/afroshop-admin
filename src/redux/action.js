@@ -18,7 +18,12 @@ export const logOutUser = () => (dispatch) => {
     type: "LOG_OUT",
   });
 };
-
+export const setStoreExistStatus = (value) => (dispatch) => {
+  dispatch({
+    type: "SET_STORE_EXIST",
+    payload: value
+  });
+};
 export const fetchData = async (dispatch, url, type, token) => {
   dispatch({ type: "SET_IS_FETCHING", isFetching: true });
 

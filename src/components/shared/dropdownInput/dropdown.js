@@ -31,6 +31,7 @@ const SelectDropdown = forwardRef(
             ? "#FF3B300D"
             : "#FFFFFF"
           : "#F2F2F2",
+        cursor: "pointer",
         fontWeight: 400,
         fontSize: color === "green" ? "13px" : "16px",
         lineHeight: color === "green" ? "23px" : "24px",
@@ -41,7 +42,7 @@ const SelectDropdown = forwardRef(
             ? "1px solid #FF3B30"
             : isDisabled
             ? ""
-            : "1px solid #186F3D"
+            : ""
           : "1px solid #F2F2F2",
         boxShadow: state.isFocused ? 0 : 0,
         "&:hover": { border: color === "green" ? "1px solid #186F3D" : "1px solid #cccccc" },

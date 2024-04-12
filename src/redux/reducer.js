@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   isFetching: false,
   isAuthenticated: false,
   user: null,
+  storeExists: false,
   sections: sectionData,
   roles: [],
   profile: profileInitialState,
@@ -41,6 +42,11 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...action.hash,
         isFetching: false,
       };
+      case "SET_STORE_EXIST":
+        return {
+          ...previousState,
+          storeExists: action.payload,
+        };
     case "LOGIN_USER":
       return {
         ...previousState,

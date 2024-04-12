@@ -20,7 +20,7 @@ const HolidayException = ({
       if (description !== "" && date !== "") {
         const holidayFormData = {
           description: description,
-          date: format(date, "yyyy-ee-d"),
+          date: format(date, "yyyy-ee-dd"),
         };
 
         setProfileData((prev) => {

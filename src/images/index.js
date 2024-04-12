@@ -1,5 +1,5 @@
 import AfroshopLogo from "./afroshop-logo.svg";
-
+import radio from "./radio.svg";
 import { ReactComponent as MenuIcon } from "./menu.svg";
 import { ReactComponent as NotificationIcon } from "./notification.svg";
 import { ReactComponent as SettingsIcon } from "./setting.svg";
@@ -145,6 +145,7 @@ export {
   whiteMarkIcon,
   greyMarkIcon,
   AfroshopLogo,
+  radio,
   MenuIcon,
   NotificationIcon,
   SettingsIcon,

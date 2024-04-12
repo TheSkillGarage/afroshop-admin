@@ -16,7 +16,7 @@ const DeliveryCard = ({ card, icon, type, handleDelete, editProfile }) => {
           {card?.label ?? "Within 5 km"}
         </p>
         <p className="text-[#333333]">
-          {(type === "holiday" ? format(new Date(card?.value), 'EE, MMM d, yyyy') : card?.value) ?? "$15"}
+          {(type === "holiday" ? format(new Date(card?.value), 'EE, MMM d, yyyy') : `$${card?.value}`) ?? "$15"}
         </p>
       </div>
       {editProfile && (

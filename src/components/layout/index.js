@@ -5,11 +5,12 @@ import AdminNavbar from "../navbar";
 import AdminSidebar from "../sidebar";
 import { getTokenFromCookie, removeTokenFromCookie } from "../../utils";
 import useIdleActivityTimer from "../../hooks/useIdleTimer";
-import { getOrdersData, getStoreData, logOutUser } from "../../redux/action";
+import { getOrdersData, getStoreData, logOutUser, setStoreExistStatus} from "../../redux/action";
+// import { logOutUser, setStoreExistStatus } from "../../redux/action";
 
 const PageLayout = ({ children }) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
-
+  const store = useSelector((state) => state.store);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,6 +32,14 @@ const PageLayout = ({ children }) => {
   }, [storeData])
   
   
+  
+  useEffect(() => {
+    if (Object.keys(store).length > 0) {
+      dispatch(setStoreExistStatus(true));
+    } else {
+      dispatch(setStoreExistStatus(false));
+    }
+  }, [store]);
   /*
 
     This section handles user Inactivity after 20mins
@@ -40,7 +49,7 @@ const PageLayout = ({ children }) => {
   // idle logout during idle state
   const handleIdle = () => {
     removeTokenFromCookie();
-    console.log('logged out because of inactivity')
+    console.log("logged out because of inactivity");
     dispatch(logOutUser());
   };
 
@@ -55,14 +64,14 @@ const PageLayout = ({ children }) => {
   This section handles Token expiry after 1hour
   This section handles redirect for authenticated pages
 
-*/
+  */
   useEffect(() => {
     if (isAuthenticated) {
       const intervalId = setInterval(() => {
         const token = getTokenFromCookie();
         const isCookieExpired = !token;
         if (isCookieExpired) {
-          console.log('logged out because token expired')
+          console.log("logged out because token expired");
           dispatch(logOutUser()); // Dispatch the logout action when the cookie expires
         }
       }, 60000);
@@ -85,7 +94,6 @@ const PageLayout = ({ children }) => {
           {children}
         </div>
       </div>
-
     </section>
   );
 };

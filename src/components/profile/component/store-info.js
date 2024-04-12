@@ -8,6 +8,7 @@ import {
   restPeriods,
 } from "../../../data/profile";
 import { DeleteIcon, GreenCamera, UserAvatar } from "../../../images";
+import { useSelector } from "react-redux";
 
 const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
   const {
@@ -17,6 +18,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     setValue,
     trigger,
   } = form;
+  const storeExists = useSelector((state) => state.storeExists);
   const handleFileUpload = (e) => {
     if (e.target.files.length > 0) {
       handleData("profile_image_data", e.target.files[0]);
@@ -24,7 +26,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
       return;
     }
   };
-
+  
   //gets the selected open days by adding a new day to the array of days when checked or removing a day from the array when unchecked
   const getSelectedDays = (store, value) => {
     return store?.days?.includes(value)
@@ -65,7 +67,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
               editProfile ? "cursor-pointer" : ""
             }`}
           >
-            {profileData?.store?.profile_image?.length > 0 ? (
+            {profileData?.store?.profile_image?.length > 0  ? (
               <div className="relative h-full w-full">
                 <img
                   className="h-full w-full object-cover rounded-full"
@@ -87,7 +89,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
             )}
           </div>
 
-          {editProfile && (
+          {editProfile || !storeExists && (
             <input
               id="profileImage"
               name="profileImage"
@@ -99,7 +101,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           )}
         </label>
 
-        {editProfile && profileData?.store?.profile_image?.length > 0 && (
+        {editProfile && profileData?.store?.profile_image?.length > 0 && storeExists && (
           <p
             className="bg-[#FF3B301A] rounded p-2 cursor-pointer"
             onClick={() => {
@@ -124,7 +126,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           register={register}
           required={true}
           requiredMessage={"Store name is required"}
-          isReadOnly={!editProfile}
+          isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => handleData("store_name", e.target.value)}
         />
         <InputComponent
@@ -140,7 +142,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           patternMessage={"Ensure address is separated by commas and space"}
           requiredMessage={"Store address is required"}
           register={register}
-          isReadOnly={!editProfile}
+          isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => handleData("address", e.target.value)}
         />
         <InputComponent
@@ -154,7 +156,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           register={register}
           required={true}
           requiredMessage={"City is required"}
-          isReadOnly={!editProfile}
+          isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => handleData("city", e.target.value)}
         />
         <InputComponent
@@ -168,7 +170,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           register={register}
           required={true}
           requiredMessage={"Province is required"}
-          isReadOnly={!editProfile}
+          isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => handleData("state", e.target.value)}
         />
 
@@ -183,7 +185,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           register={register}
           required={true}
           requiredMessage={"Postal Code is required"}
-          isReadOnly={!editProfile}
+          isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => handleData("postal_code", e.target.value)}
         />
         <InputComponent
@@ -197,7 +199,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           register={register}
           required={true}
           requiredMessage={"Country is required"}
-          isReadOnly={!editProfile}
+          isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => handleData("country", e.target.value)}
         />
         <div className="space-y-5">
@@ -210,7 +212,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
                   handleChange={() => {
                     handleData("day", day?.value);
                   }}
-                  isDisabled={!editProfile}
+                  isDisabled={!storeExists ? false : !editProfile}
                   value={
                     profileData?.store?.days?.includes(day?.value)
                       ? day?.value
@@ -238,7 +240,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           control={control}
           errors={errors}
           register={register}
-          isDisabled={!editProfile}
+          isDisabled={!storeExists ? false : !editProfile}
           handleChange={(data) => {
             setValue("deliveryOption", data);
             trigger("deliveryOption"); // triggers the input field after a change to re-trigger validation
@@ -275,7 +277,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           control={control}
           errors={errors}
           register={register}
-          isReadOnly={!editProfile}
+          isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => handleData("deliveryStartTime", e.target.value)}
         />
         <InputComponent
@@ -290,7 +292,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           control={control}
           errors={errors}
           register={register}
-          isReadOnly={!editProfile}
+          isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => handleData("deliveryEndTime", e.target.value)}
         />
 
@@ -306,7 +308,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           control={control}
           errors={errors}
           register={register}
-          isReadOnly={!editProfile}
+          isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => {
             handleData("openingTime", e.target.value);
           }}
@@ -323,7 +325,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           control={control}
           errors={errors}
           register={register}
-          isReadOnly={!editProfile}
+          isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => handleData("closingTime", e.target.value)}
         />
         <InputComponent
@@ -337,7 +339,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           control={control}
           errors={errors}
           register={register}
-          isDisabled={!editProfile}
+          isDisabled={!storeExists ? false : !editProfile}
           handleChange={(data) => handleData("deliverySlot", data?.value)}
         />
         <InputComponent
@@ -351,7 +353,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           control={control}
           errors={errors}
           register={register}
-          isDisabled={!editProfile}
+          isDisabled={!storeExists ? false : !editProfile}
           handleChange={(data) => handleData("restPeriod", data?.value)}
         />
       </div>
