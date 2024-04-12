@@ -20,18 +20,18 @@ const PageLayout = ({ children }) => {
   const storeData = useSelector((state) => state.storeData);
 
   useEffect(() => {
-      if (user && user.id) {
-          dispatch(getStoreData(user?.id, token));
-      }
+    if (user && user.id) {
+      dispatch(getStoreData(user?.id, token));
+    }
   }, [user]);
 
   useEffect(() => {
-      if (storeData && storeData.id) {
-          dispatch(getOrdersData(storeData.id, token));
-      }
+    if (storeData && storeData.id) {
+      dispatch(getOrdersData(storeData.id, token));
+      dispatch(getProductData(storeData.id, token));
+    }
   }, [storeData])
-  
-  
+
   /*
 
     This section handles user Inactivity after 20mins
@@ -52,14 +52,11 @@ const PageLayout = ({ children }) => {
   const idleTimer = useIdleActivityTimer(handleIdle, handleActive, 20);
 
   /*
-  /*
 
   This section handles Token expiry after 1hour
   This section handles redirect for authenticated pages
-  This section handles Token expiry after 1hour
-  This section handles redirect for authenticated pages
 
-*/
+  */
   useEffect(() => {
     if (isAuthenticated) {
       const intervalId = setInterval(() => {
@@ -78,25 +75,11 @@ const PageLayout = ({ children }) => {
     }
   }, [isAuthenticated]);
 
-
-  useEffect(() => {
-    if (user) {
-      dispatch(getStoreData(user.id, token));
-    }
-  }, [user])
-
-  useEffect(() => {
-    if (storeData) {
-      dispatch(getProductData(storeData.id, token));
-    }
-  }, [storeData])
-
-
   return (
     <section className="bg-[#F2F2F2] h-[100vh]">
       <AdminNavbar name={"layout"} />
 
-      <div className="flex content-height">
+      <div className="flex h-[calc(100vh-69px)]">
         <AdminSidebar />
         <div className="bg-white w-full h-full overflow-auto no-scrollbar flex flex-col gap-[60px] md:gap-[80px] large-screen">
           {children}

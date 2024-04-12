@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteRequest, getProductData, updateUserRole } from "../../redux/action";
 import { getTokenFromCookie } from "../../utils";
 import { toast } from "react-toastify";
+import { isProductInPendingOrder } from "../../utils/order-utils";
 
 const Detail = ({ name, id, goToEdit, param, user, handleLoading, data }) => {
 
@@ -25,6 +26,7 @@ const Detail = ({ name, id, goToEdit, param, user, handleLoading, data }) => {
 
   const token = getTokenFromCookie();
   const storeData = useSelector((state) => state.storeData);
+  const ordersData = useSelector((state) => state.ordersData);
 
 
   const handleRoleDelete = (e) => {
@@ -37,17 +39,22 @@ const Detail = ({ name, id, goToEdit, param, user, handleLoading, data }) => {
 
   const handleProductDelete = async () => {
     handleLoading(true);
-   
+
     try {
-      const deleteProduct = await deleteRequest(`/api/products/${id}`, token);
-
-      if (deleteProduct[0]) {
-        toast.success(`Product deleted successfully`, { autoClose: 2000 });
-
-        dispatch(getProductData(storeData.id, token));
+      if (isProductInPendingOrder(id, ordersData)) {
+        handleLoading(false);
+        toast.error(`You cannot delete product in pending order`, { autoClose: 2000 });
       } else {
-        toast.error(`An error occurred while deleting product`, { autoClose: 2000 });
-        throw new Error(deleteProduct[1])
+        const deleteProduct = await deleteRequest(`/api/products/${id}`, token);
+
+        if (deleteProduct[0]) {
+          toast.success(`Product deleted successfully`, { autoClose: 2000 });
+
+          dispatch(getProductData(storeData.id, token));
+        } else {
+          toast.error(`An error occurred while deleting product`, { autoClose: 2000 });
+          throw new Error(deleteProduct[1])
+        }
       }
     } catch (error) {
       console.log(error);

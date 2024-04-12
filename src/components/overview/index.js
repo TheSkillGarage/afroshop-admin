@@ -2,7 +2,7 @@ import React from "react";
 import Welcome from "../dashboard/welcome";
 import Dashboard from "../dashboard/dashboard";
 import { useSelector } from "react-redux";
-import { BeatLoader } from 'react-spinners';
+import { BeatLoader } from "react-spinners";
 
 const Overview = () => {
     const storeData = useSelector((state) => state.storeData);

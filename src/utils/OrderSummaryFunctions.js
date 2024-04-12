@@ -144,7 +144,7 @@ export const getTopCustomers = (ordersData) => {
 export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
 
   // if there haven't been any orders yet, return [] 
-  if (ordersData.length > 0) {
+  if (ordersData && ordersData.length > 0) {
 
     const filteredData = [];
     const todaysDate = new Date();

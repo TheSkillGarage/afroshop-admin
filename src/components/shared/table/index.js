@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Detail from "../../products/details";
 import { BeatLoader } from 'react-spinners';
-import { formatPrice } from "../../../utils/formatPrice";
+import { formatPrice } from "../../../utils/order-utils";
 
 
 const DateCol = ({ value }) => {
