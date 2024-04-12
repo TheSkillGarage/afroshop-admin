@@ -18,6 +18,8 @@ const INITIAL_STATE = {
   userStore: {},
   store: {},
   addresses: [],
+  ordersData: [],
+  storeData: null,
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {

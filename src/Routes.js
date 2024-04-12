@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import {
   AddNewRole,
   Orders,
@@ -21,13 +21,14 @@ import {
 import EditRole from "./components/roles-and-permissions/edit-role";
 import RedirectHandler from "./components/redirectHandler";
 import { PageNotFoundComponent } from "./components";
+import { useSelector } from "react-redux";
 
 const MyRoutes = () => {
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<LogInPage />} />
-        <Route exact path="/dashboard" element={<OverviewPage />} />
+        <Route exact path="/" element={isAuthenticated ? <OverviewPage /> : <Navigate to="/login" />} />
         <Route path="/connect/:provider/redirect" element={<RedirectHandler />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/products/new" element={<AddProducts />} />
@@ -48,9 +49,9 @@ const MyRoutes = () => {
         <Route exact path="/store-created" element={<StoreCreated />} />
         <Route exact path="/reset-password" element={<PasswordReset />} />
         <Route exact path="/verify-email" element={<EmailVerification />} />
-        <Route exact path="/sign-up" element={<SignUpPage />} />
+        <Route exact path="/signup" element={<SignUpPage />} />
         <Route exact path="/login" element={<LogInPage />} />
-        <Route exact path="/newpassword" element={<NewPasswordPage />} />
+        <Route exact path="/new-password" element={<NewPasswordPage />} />
         <Route exact path="/404" element={<PageNotFoundComponent />} />
         <Route exact path="/*" element={<PageNotFoundComponent />} />
       </Routes>

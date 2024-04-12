@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  GreenRangerPic,
   LeftArrow,
   LogoutIcon,
   MenuIcon,
   NotificationIcon,
-  ProfilePic,
   SettingsIcon,
+  DefaultUserImage
 } from "../../images";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,12 +13,13 @@ import { logOutUser, sidebarToggle } from "../../redux/action";
 import { renderValidUrl } from "../../utils/constants";
 import OutSideClick from "../../hooks/useHandleClickOutside";
 import { removeTokenFromCookie } from "../../utils";
+import { sidebarToggle } from "../../redux/action";
 
 const AdminNavbar = ({ name }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const store = useSelector((state) => state.store);
+  const store = useSelector((state) => state.storeData);
   const [open, setOpen] = useState(false);
   const modalRef = useRef(null);
   const isSidebarToggled = useSelector((state) => state.isSidebarToggled);
@@ -39,8 +39,12 @@ const AdminNavbar = ({ name }) => {
     setOpen(false);
     dispatch(logOutUser());
     navigate("/");
+    dispatch(sidebarToggle({ toggle: isSidebarToggled }))
   }
 
+
+  // const user = useSelector((state) => state.user)
+  // const store = useSelector((state) => state.storeData)
 
   return (
     <nav className="flex justify-between p-6 border-b border-1 border-[#E6E6E6] min-h-[69px] max-h-[69px] bg-[#ffffff]">
@@ -73,10 +77,10 @@ const AdminNavbar = ({ name }) => {
                 onClick={() => navigate("/orders")}
               />
               <div className="flex">
-                <img src={GreenRangerPic} className="h-[32px] w-[32px]" />
-                <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
-                  All Stores
-                </p>
+                <img src={renderValidUrl(store?.image)} className="h-[32px] w-[32px] rounded-full"/>
+              <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
+                All Stores
+              </p>
               </div>
             </div>
           ) : (
@@ -86,11 +90,11 @@ const AdminNavbar = ({ name }) => {
                 className="w-[20px] h-[20px] cursor-pointer"
                 onClick={() => navigate("/products")}
               />
-              <div className="flex">
-                <img src={GreenRangerPic} className="h-[32px] w-[32px]" />
-                <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
-                  Green Ranger
-                </p>
+             <div className="flex">
+                <img src={renderValidUrl(store?.image)} className="h-[32px] w-[32px] rounded-full"/>
+              <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
+                {store?.name}
+              </p>
               </div>
             </div>
           )}

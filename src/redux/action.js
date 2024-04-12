@@ -1,7 +1,7 @@
 import axios from "axios";
 import { renderValidUrl } from "../utils/constants";
 
-export const userLogin = (user) => (dispatch) => {
+export const userLogin = (user) => dispatch => {
   dispatch({
     type: "LOGIN_USER",
     payload: user,
@@ -109,6 +109,15 @@ export const discardDraft = (hash) => (dispatch) => {
     type: 'RESET_STORE',
   })
 }
+
+export const getOrdersData = (storeID, token) => async (dispatch) => {
+  await fetchData(dispatch, `orders?storeID=${storeID}`, 'ordersData', token);
+}
+
+export const getStoreData = (userID, token) => async (dispatch) => {
+  await fetchData(dispatch, `stores/${userID}`, 'storeData', token);
+}
+
 export const postRequest = (url, data, token = null) => {
   return fetch(renderValidUrl(url), {
     method: "POST",
