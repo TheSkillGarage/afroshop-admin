@@ -5,7 +5,8 @@ import {
   MenuIcon,
   NotificationIcon,
   SettingsIcon,
-  DefaultUserImage
+  DefaultUserImage,
+  StoreDefaultImage
 } from "../../images";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,14 +57,9 @@ const AdminNavbar = ({ name }) => {
             onClick={() => toggleSidebar()}
           />
           <div className="flex">
-            {store && (
-              <img
-                src={store ? renderValidUrl(store?.image) : ""}
-                className="rounded-full h-[36px] w-[36px]"
-              />
-            )}
+            <img src={store?.image ? renderValidUrl(store?.image) : StoreDefaultImage} className="h-[32px] w-[32px] rounded-full" />
             <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
-              {store?.name ?? "--"}
+              {store?.name}
             </p>
           </div>
         </div>
@@ -77,10 +73,10 @@ const AdminNavbar = ({ name }) => {
                 onClick={() => navigate("/orders")}
               />
               <div className="flex">
-                <img src={renderValidUrl(store?.image)} className="h-[32px] w-[32px] rounded-full"/>
-              <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
-                All Stores
-              </p>
+                <img src={store?.image ? renderValidUrl(store?.image) : StoreDefaultImage} className="h-[32px] w-[32px] rounded-full" />
+                <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
+                  All Stores
+                </p>
               </div>
             </div>
           ) : (
@@ -90,11 +86,11 @@ const AdminNavbar = ({ name }) => {
                 className="w-[20px] h-[20px] cursor-pointer"
                 onClick={() => navigate("/products")}
               />
-             <div className="flex">
-                <img src={renderValidUrl(store?.image)} className="h-[32px] w-[32px] rounded-full"/>
-              <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
-                {store?.name}
-              </p>
+              <div className="flex">
+                <img src={store?.image ? renderValidUrl(store?.image) : StoreDefaultImage} className="h-[32px] w-[32px] rounded-full" />
+                <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
+                  {store?.name}
+                </p>
               </div>
             </div>
           )}

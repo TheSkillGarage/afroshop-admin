@@ -5,12 +5,13 @@ import OrdersDashboard from "./orders-dashboard";
 
 const Orders = () => {
     const ordersData = useSelector((state) => state.ordersData);
+    const storeData = useSelector((state) => state.storeData);
     return (
         <div>
-            {ordersData === null || ordersData.length > 0 ?
-                <OrdersDashboard />
-                :
+            {storeData === null || ordersData === null ?
                 <EmptyOrders />
+                :
+                <OrdersDashboard />
             }
         </div>
     )

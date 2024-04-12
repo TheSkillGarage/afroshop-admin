@@ -74,10 +74,12 @@ export const useTableData = (name, headersArray, data, func) => {
             <EyeIcon
                 className="ml-4 cursor-pointer"
                 onClick={() => func(data.orderID)}
-            /> 
-        ) : (
-            <Detail name={name} goToEdit={func} param={name === "roles" ? data : data.SKU} user={data} />
-        ),
+            />
+        ) 
+        : name === "roles" ? (
+            <Detail name={name} id={data.id} goToEdit={func} param={name === "roles" ? data : data.SKU} user={data} />
+        )
+        : null,
     }));
 
     return {

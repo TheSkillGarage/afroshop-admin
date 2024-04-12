@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowDownTriangle, ArrowUp } from '../../images';
-import { formatPrice } from '../../utils/formatPrice';
+import { formatPrice } from '../../utils/order-utils';
 
 const SummaryCards = ({ cardTitle, backgroundColor, cardNumber, percentage, selectedYear }) => {
   return (

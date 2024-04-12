@@ -19,10 +19,10 @@ const BusinessSummary = ({ years, ordersData }) => {
 
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [percentageChanges, setPercentageChanges] = useState({
-        sales: 0,
-        customers: 0,
-        orders: 0,
-        products: 0
+        sales: null,
+        customers: null,
+        orders: null,
+        products: null
     });
 
     const handleSelectedYear = val => setSelectedYear(val);

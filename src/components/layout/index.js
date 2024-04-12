@@ -5,8 +5,9 @@ import AdminNavbar from "../navbar";
 import AdminSidebar from "../sidebar";
 import { getTokenFromCookie, removeTokenFromCookie } from "../../utils";
 import useIdleActivityTimer from "../../hooks/useIdleTimer";
-import { getOrdersData, getStoreData, logOutUser, setStoreExistStatus} from "../../redux/action";
+import { getOrdersData, getStoreData, logOutUser, setStoreExistStatus, getProductData} from "../../redux/action";
 // import { logOutUser, setStoreExistStatus } from "../../redux/action";
+
 
 const PageLayout = ({ children }) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
@@ -20,15 +21,16 @@ const PageLayout = ({ children }) => {
   const storeData = useSelector((state) => state.storeData);
 
   useEffect(() => {
-      if (user && user.id) {
-          dispatch(getStoreData(user?.id, token));
-      }
+    if (user && user.id) {
+      dispatch(getStoreData(user?.id, token));
+    }
   }, [user]);
 
   useEffect(() => {
-      if (storeData && storeData.id) {
-          dispatch(getOrdersData(storeData.id, token));
-      }
+    if (storeData && storeData.id) {
+      dispatch(getOrdersData(storeData.id, token));
+      dispatch(getProductData(storeData.id, token));
+    }
   }, [storeData])
   
   
@@ -83,12 +85,11 @@ const PageLayout = ({ children }) => {
     }
   }, [isAuthenticated]);
 
-
   return (
-    <section className="bg-[#F2F2F2] min-height-[100vh] h-full">
+    <section className="bg-[#F2F2F2] h-[100vh]">
       <AdminNavbar name={"layout"} />
 
-      <div className="flex h-[680px] min-h-full">
+      <div className="flex h-[calc(100vh-69px)]">
         <AdminSidebar />
         <div className="bg-white w-full h-full overflow-auto no-scrollbar flex flex-col gap-[60px] md:gap-[80px] large-screen">
           {children}

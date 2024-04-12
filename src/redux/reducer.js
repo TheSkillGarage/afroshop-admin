@@ -1,4 +1,3 @@
-import PRODUCT_DATA from "../data/products";
 import {
   deliveryData,
   holidayMockData,
@@ -6,21 +5,28 @@ import {
 } from "../data/profile";
 import sectionData from "../data/roles-section-data";
 
-const INITIAL_STATE = {
-  isFetching: false,
-  isAuthenticated: false,
-  user: null,
-  storeExists: false,
-  sections: sectionData,
-  roles: [],
-  profile: profileInitialState,
-  isSidebarToggled: false,
-  productsData: PRODUCT_DATA,
+
+const PRIVATE_INITIAL_STATE = {
+  productsData: null,
+  storeData: null,
+  ordersData: null,
   userStore: {},
   store: {},
   addresses: [],
-  ordersData: [],
-  storeData: null,
+  roles: [],
+  isAuthenticated: false,
+  storeExists: false,
+  user: null,
+};
+
+const INITIAL_STATE = {
+  ...PRIVATE_INITIAL_STATE,
+  isFetching: false,
+  sections: sectionData,
+  delivery: deliveryData,
+  holidays: holidayMockData,
+  profile: profileInitialState,
+  isSidebarToggled: false,
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
@@ -56,7 +62,7 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
     case "LOG_OUT":
       return {
         ...previousState,
-        ...INITIAL_STATE,
+        ...PRIVATE_INITIAL_STATE
       };
     case "UPDATE_PROFILE_INFO":
       return {

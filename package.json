@@ -25,7 +25,11 @@
     "react-router-dom": "^6.17.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
+<<<<<<< HEAD
     "react-time-picker": "^6.6.0",
+=======
+    "react-spinners": "^0.13.8",
+>>>>>>> b8787108b3b1a25364d3a3fd008d947a1a0fd180
     "react-toastify": "^10.0.4",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
