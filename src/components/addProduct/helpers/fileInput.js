@@ -49,7 +49,7 @@ export const FileInput = ({ onFilesSelect, productInfo, register, control, error
         register={register}
         control={control}
         errors={errors}
-        required={productInfo.images.length === 0}
+        required={productInfo?.images?.length === 0}
         requiredMessage={"File is Required"}
         handleChange={handleFileChange}
         id="productImage"

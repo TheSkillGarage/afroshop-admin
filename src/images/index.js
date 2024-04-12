@@ -114,9 +114,11 @@ import BlackEmailIcon from "./sms-black.svg"
 import { ReactComponent as NotFoundImage } from "./notFoundImage.svg";
 import UserAvatar from "./avatar.svg";
 import CautionImage from "./caution-img.svg";
+import EmptyProductsImage from "./empty-product.svg"
 import OrdersCart from "./orders-cart.svg";
 import DefaultUserImage from "./default-user-img.jpg"
 import EmptyStateImage from "./empty-state.svg";
+import StoreDefaultImage from "./storeDefault.png"
 
 export {
   NotFoundImage,
@@ -223,7 +225,9 @@ export {
   BlackEmailIcon,
   BlackUserIcon,
   CautionImage,
+  EmptyProductsImage,
   EmptyStateImage,
   OrdersCart,
   DefaultUserImage,
+  StoreDefaultImage,
 };

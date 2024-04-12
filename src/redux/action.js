@@ -17,6 +17,23 @@ export const fetchData = async (dispatch, url, type, token) => {
   }
 };
 
+export const deleteRequest = async (url, token) => {
+  try {
+    const response = await fetch(renderValidUrl(url), {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const responseData = await response.json();
+    return [true, responseData];
+  } catch (error) {
+    console.error('Error:', error);
+    return [false, error];
+  }
+};
+
 export const userLogin = (user) => dispatch => {
   dispatch({
     type: 'LOGIN_USER',
@@ -97,19 +114,24 @@ export const discardDraft = (hash) => dispatch => {
   })
 }
 
-export const resetStore = () => dispatch => {
-  dispatch({
-    type: 'RESET_STORE',
-  })
+export const getStoreData = (userID, token) => async (dispatch) => {
+  await fetchData(dispatch, `stores/${userID}`, 'storeData', token);
+}
+
+export const getProductData = (storeID, token) => async (dispatch) => {
+  await fetchData(dispatch, `products?storeID=${storeID}`, 'productsData', token);
 }
 
 export const getOrdersData = (storeID, token) => async (dispatch) => {
   await fetchData(dispatch, `orders?storeID=${storeID}`, 'ordersData', token);
 }
 
-export const getStoreData = (userID, token) => async (dispatch) => {
-  await fetchData(dispatch, `stores/${userID}`, 'storeData', token);
+export const resetStore = () => dispatch => {
+  dispatch({
+    type: 'RESET_STORE',
+  })
 }
+
 
 export const postRequest = (url, data, token = null) => {
   return fetch(renderValidUrl(url), {

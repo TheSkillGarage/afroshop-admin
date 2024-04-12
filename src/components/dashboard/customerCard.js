@@ -1,12 +1,13 @@
 import React from 'react';
 import { renderValidUrl } from '../../utils/constants';
+import { DefaultUserImage } from '../../images';
 
 const CustomerCard = ({ data }) => {
   const { name, email, image, orders } = data;
   return (
     <div className="flex gap-2">
       <img
-        src={renderValidUrl(image)}
+        src={image ? renderValidUrl(image) : DefaultUserImage}
         alt="Customer Profile Pic"
         className="w-[50px] h-[50px] rounded-[100%]"
       />
@@ -20,7 +21,7 @@ const CustomerCard = ({ data }) => {
         </div>
 
         <p className="font-normal text-[13px] text-[#7F7F7F]">
-          {`${orders} Orders`}
+          {`${orders} Order${orders > 1 ? 's' : ''}`}
         </p>
       </div>
     </div>

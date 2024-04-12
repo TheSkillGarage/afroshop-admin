@@ -9,32 +9,40 @@ const EditSingleProduct = () => {
 
   const { sku } = useParams();
 
-  
+
   const productData = useSelector((state) => state.productsData);
 
-  const product = productData.find((product) => product.SKU === sku);
+  const product = productData.find((product) => product.SKU == sku);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!product) {
+      navigate("/404");
+    }
+  }, [product])
+
 
   const initialProductInfo = {
-    category: product.category,
-    productName: product.productName,
-    availabilty: product.availabilty,
-    salesPrice: product.salesPrice,
-    discount: product.discount,
-    description: product.description,
-    images: product.images
+    category: product?.productCategory,
+    productName: product?.name,
+    availabilty: product?.availability,
+    salesPrice: product?.price,
+    discount: product?.percentDiscount,
+    description: product?.description,
+    images: product?.images
   }
 
   const [isDraft, setIsDraft] = useState(false);
   const [productInfo, setProductInfo] = useState(initialProductInfo);
 
-  useEffect(() => {
-    if (Object.keys(product.draft).length > 0) {
-      setIsDraft(true);
-      setProductInfo(product.draft);
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (Object.keys(product.draft).length > 0) {
+  //     setIsDraft(true);
+  //     setProductInfo(product.draft);
+  //   }
+  // }, [])
 
-  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -54,13 +62,16 @@ const EditSingleProduct = () => {
   const handleProductDraft = (option) => {
     if (option === "draft") {
       dispatch(editProduct({ sku: sku, productInfos: productInfo, option: "draft" }));
-    }else if (option === "discard"){
-      dispatch(discardDraft({sku: sku}))
+    } else if (option === "discard") {
+      dispatch(discardDraft({ sku: sku }))
     }
 
     navigate("/products");
   }
 
+  if (!product) {
+    return null;
+  }
 
   return (
     <ProductChanges

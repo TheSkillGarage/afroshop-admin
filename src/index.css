@@ -19,12 +19,13 @@
 } */
 
 /* setting styles of react-quill textarea */
-.ql-container{
+.ql-container {
   font-size: 16px !important;
   font-family: inherit !important;
   color: #333333 !important;
   line-height: 24px !important;
 }
+
 *,
 ::after,
 ::before {
@@ -36,20 +37,25 @@
 a {
   text-decoration: none;
 }
+
 /* Remove the spin arrows from number input */
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 input[type='number'] {
-  -moz-appearance: textfield; /* Firefox */
+  -moz-appearance: textfield;
+  /* Firefox */
 }
+
 @keyframes slide-in {
   from {
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -65,23 +71,42 @@ input[type='number'] {
     transform: translateX(0);
     opacity: 1;
   }
+
   to {
     transform: translateX(100%);
     opacity: 0;
   }
 }
+
 .slide-out {
   animation: slide-out 0.3s ease-out;
 }
 
 @layer utilities {
-      /* Hide scrollbar for Chrome, Safari and Opera */
-      .no-scrollbar::-webkit-scrollbar {
-          display: none;
-      }
-     /* Hide scrollbar for IE, Edge and Firefox */
-      .no-scrollbar {
-          -ms-overflow-style: none;  /* IE and Edge */
-          scrollbar-width: none;  /* Firefox */
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .content-height {
+    max-height: calc(100vh - 69px);
+    height: 100%;
+  }
+
+  @media (max-height: 620px) {
+    .content-height {
+      max-height: fit-content;
+      height: fit-content;
     }
   }
+
+}

@@ -7,7 +7,7 @@ import useFilter from "../../hooks/useFilter";
 import Search from "../search";
 import Button from "../shared/button";
 import { useSelector } from "react-redux";
-import { formatPrice } from "../../utils/formatPrice";
+import { formatPrice } from "../../utils/order-utils";
 
 const ViewOrders = () => {
 
