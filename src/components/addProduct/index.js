@@ -37,7 +37,6 @@ const AddProduct = () => {
   const handleCreateProduct = async (data) => {
     const payload = {
       "store": store.id,
-      "images": [5, 2, 1],
       "description": productInfo.description,
       "price": productInfo.salesPrice,
       "name": productInfo.productName,
@@ -66,7 +65,6 @@ const AddProduct = () => {
         payload.images = response
       }
 
-      console.log(payload)
       // handle Product Creation
       const [success, responseData] = await postRequest(
         `/api/products`,
@@ -75,10 +73,9 @@ const AddProduct = () => {
       );
       if (!success || responseData?.error) {
         throw new Error(responseData?.error?.message);
-      } else {
-        console.log("Product info", responseData)
-      }
-      toast.success("Your product was successfull Created!");
+      } 
+
+      toast.success("Your product was successfully Created!");
       navigate("/products");
       
     } catch (error) {
