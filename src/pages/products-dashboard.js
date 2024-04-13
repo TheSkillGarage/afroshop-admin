@@ -1,12 +1,12 @@
-import { PageLayout, ProductsDashboard } from "../components";
+import { PageLayout, Products } from "../components";
 
 
-function Products() {
+function ProductsPage() {
   return (
     <PageLayout>
-      <ProductsDashboard />
+      <Products />
     </PageLayout>
   );
 }
 
-export default Products;
+export default ProductsPage;

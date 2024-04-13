@@ -9,22 +9,31 @@ import Button from "../../shared/button";
 import InputComponent from "../../shared/inputComponent";
 import { postRequest, updateUser } from "../../../redux/action";
 import ConnectButton from "../../../googleLoginButton";
+import PasswordCriteria from "../../shared/passwordChecker";
+import { PasswordStrengthCheck } from "./utils";
 
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const {
     control,
-    formState: { errors },
+    formState: { errors},
     register,
     getValues,
     reset,
     handleSubmit,
-  } = useForm({ mode: "all" });
+    watch,
+  } = useForm({ mode: "all"});
+
+  // Watch for changes in the password field
+  const watchPassword = watch("password");
+
 
   const sendUserOtp = async (value) => {
     setLoading(true);
@@ -81,6 +90,9 @@ const SignUpForm = () => {
     }
   };
 
+
+ const {criteriaCount, passwordStrength} = PasswordStrengthCheck(password);
+
   return (
     <div className="mt-8 w-full flex justify-center">
       <div>
@@ -91,7 +103,7 @@ const SignUpForm = () => {
           </p>
         </div>
 
-        <ConnectButton provider="google"/>
+        <ConnectButton provider="google" />
 
         <p className="text-[13px] leading-[23px] text-center my-6 text-[#CCCCCC]">
           or
@@ -116,6 +128,7 @@ const SignUpForm = () => {
                         control={control}
                         errors={errors}
                         register={register}
+                        compoundValidation={true}
                         patternValue={
                           label === "Email" &&
                           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
@@ -141,6 +154,11 @@ const SignUpForm = () => {
                         errors={errors}
                         register={register}
                         requiredMessage="Password required"
+                        handleChange={(e) => {
+                          setPassword(e.target.value);
+                        }}
+                        onFocus={() => setIsPasswordFocused(true)}
+                        onBlur={() => setIsPasswordFocused(false)}
                         required
                       />
                     </div>
@@ -148,12 +166,15 @@ const SignUpForm = () => {
                 </div>
               );
             })}
-
+            {isPasswordFocused && watchPassword && (
+              <PasswordCriteria criteriaCount={criteriaCount} passwordStrength={passwordStrength}/>
+            )}
             <Button
               type="submit"
               icon="white"
               className="w-full mt-2"
               loading={loading}
+              disabled={criteriaCount < 3}
             >
               Sign Up
             </Button>

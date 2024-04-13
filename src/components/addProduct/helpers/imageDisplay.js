@@ -2,14 +2,13 @@ import { Delete } from "../../../images";
 import { renderValidUrl } from "../../../utils/constants";
 
 export const ImageDisplay = ({ selectedFiles, onDelete }) => {
-  return (
-    <div className="flex flex-wrap gap-8 pt-4">
-      {selectedFiles.map((file, index) => {
-        return (
+    return (
+      <div className="flex flex-wrap gap-8 pt-4">
+        {selectedFiles?.map((file, index) => (
           <div className="flex gap-[12px]" key={index}>
             <div key={index} className="mb-4 relative">
               <img
-                src={renderValidUrl(file.url)}
+                src={file.url.startsWith("/uploads") ? renderValidUrl(file.url) : file.url}
                 alt={`Selected ${index + 1}`}
                 className="w-[120px] h-[120px]"
               />
@@ -18,8 +17,8 @@ export const ImageDisplay = ({ selectedFiles, onDelete }) => {
               <img src={Delete} alt="delete" onClick={() => onDelete(index)} className="cursor-pointer" />
             </div>
           </div>
-        )
-      })}
+        ))
+        }
     </div>
-  );
-};
+  )
+}

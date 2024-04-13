@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DeleteIcon, DetailsIcon, EditIcon } from "../../images";
 import DeleteUser from "../pop-ups/deleteModal";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserRole } from "../../redux/action";
+import { deleteRequest, getProductData, updateUserRole } from "../../redux/action";
+import { getTokenFromCookie } from "../../utils";
+import { toast } from "react-toastify";
+import { isProductInPendingOrder } from "../../utils/order-utils";
 
-const Detail = ({ name, goToEdit, param, user }) => {
+const Detail = ({ name, id, goToEdit, param, user, handleLoading, data }) => {
+
   const dispatch = useDispatch();
   const roles = useSelector((s) => s.roles);
   const [showDetails, setShowDetails] = useState(false);
@@ -20,13 +24,55 @@ const Detail = ({ name, goToEdit, param, user }) => {
     setOpenDeleteModal(false);
   };
 
-  const deleteUser = (e) => {
+  const token = getTokenFromCookie();
+  const storeData = useSelector((state) => state.storeData);
+  const ordersData = useSelector((state) => state.ordersData);
+
+
+  const handleRoleDelete = (e) => {
     e?.stopPropagation();
     const newUsers = roles.filter((r) => r.id !== user.id);
     dispatch(updateUserRole({ roles: newUsers }));
     setOpenDeleteModal(false);
     setShowDetails(false);
   };
+
+  const handleProductDelete = async () => {
+    handleLoading(true);
+
+    try {
+      if (isProductInPendingOrder(id, ordersData)) {
+        handleLoading(false);
+        toast.error(`You cannot delete product in pending order`, { autoClose: 2000 });
+      } else {
+        const deleteProduct = await deleteRequest(`/api/products/${id}`, token);
+
+        if (deleteProduct[0]) {
+          toast.success(`Product deleted successfully`, { autoClose: 2000 });
+
+          dispatch(getProductData(storeData.id, token));
+        } else {
+          toast.error(`An error occurred while deleting product`, { autoClose: 2000 });
+          throw new Error(deleteProduct[1])
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    handleLoading(false);
+  }, [data])
+
+  const handleDelete = async (e, name) => {
+    if (name === "products") {
+      handleProductDelete();
+    } else {
+      handleRoleDelete(e);
+    }
+  };
+
 
   return (
     <div className="relative flex flex-col items-center">
@@ -62,7 +108,7 @@ const Detail = ({ name, goToEdit, param, user }) => {
           {openDeleteModal ? (
             <DeleteUser
               name={name}
-              handleDelete={(e) => deleteUser(e)}
+              handleDelete={(e) => handleDelete(e, name)}
               handleClose={(e) => closeDeleteModal(e)}
             />
           ) : null}
@@ -75,7 +121,7 @@ const Detail = ({ name, goToEdit, param, user }) => {
 Detail.propTypes = {
   name: PropTypes.string.isRequired,
   goToEdit: PropTypes.func.isRequired,
-  param: PropTypes.string.isRequired,
+  param: PropTypes.number,
 };
 
 export default Detail;
