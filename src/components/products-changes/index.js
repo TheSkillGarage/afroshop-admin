@@ -19,7 +19,16 @@ import InputComponent from "../shared/inputComponent";
 import _ from 'lodash'
 
 
-const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, handleProductInfo, handleFormSubmit, handleProductDraft }) => {
+const ProductChanges = ({
+  isEdit,
+  isDraft,
+  productInfo,
+  initialProductInfo,
+  handleProductInfo,
+  handleFormSubmit,
+  handleProductDraft,
+  isLoading
+}) => {
 
   const navigate = useNavigate();
   const [tab, setTab] = useState("");
@@ -140,26 +149,26 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
                     )}
                   </div>
                 </div>
-                
-                  <div className={`${tab === "productImage" ? "" : "hidden"}`} onClick={(e) => e.stopPropagation()}>
-                    <div>
-                      <FileInput
-                        className="hidden"
-                        id="productImage"
-                        productInfo={productInfo}
-                        onFilesSelect={handleFilesSelect}
-                        register={register}
-                        control={control}
-                        errors={errors}
-                      />
-                    </div>
 
-                    <ImageDisplay
-                      selectedFiles={productInfo?.images}
-                      onDelete={handleDelete}
+                <div className={`${tab === "productImage" ? "" : "hidden"}`} onClick={(e) => e.stopPropagation()}>
+                  <div>
+                    <FileInput
+                      className="hidden"
+                      id="productImage"
+                      productInfo={productInfo}
+                      onFilesSelect={handleFilesSelect}
+                      register={register}
+                      control={control}
+                      errors={errors}
                     />
                   </div>
-                
+
+                  <ImageDisplay
+                    selectedFiles={productInfo?.images}
+                    onDelete={handleDelete}
+                  />
+                </div>
+
               </div>
             </section>
           </div>
@@ -204,6 +213,7 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
                 type="submit"
                 className="w-[133px] h-[40px]"
                 disabled={_.isEqual(initialProductInfo, productInfo)}
+                loading={true}
               >
                 Submit
               </Button>

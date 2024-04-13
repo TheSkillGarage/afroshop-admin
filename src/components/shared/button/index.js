@@ -12,6 +12,7 @@ import {
   AddIcon,
 } from "../../../images";
 import PropTypes from "prop-types";
+import { ClipLoader } from 'react-spinners';
 
 /**
  * @description Button Component
@@ -97,14 +98,16 @@ const Button = ({
         onClick={onClick}
       >
         {loading ? (
-          <LoadingAnimation
+          <ClipLoader
             color={LoaderColor[variant]}
+            loading={true}
+            size={14}
+            speedMultiplier={0}
           />
         ) : (
           <span
-            className={`${
-              icon && iconDirection[direction]
-            } justify-center items-center gap-2 font-normal leading-6 text-base w-full`}
+            className={`${icon && iconDirection[direction]
+              } justify-center items-center gap-2 font-normal leading-6 text-base w-full`}
           >
             {children}
             {icon && ICONS[icon]}

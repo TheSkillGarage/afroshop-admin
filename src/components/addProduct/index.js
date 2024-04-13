@@ -8,8 +8,9 @@ import { getTokenFromCookie } from "../../utils";
 
 const AddProduct = () => {
   const store = useSelector((state) => state.storeData)
-  const storeID = store.id
   const token = getTokenFromCookie()
+
+  const [isLoading, setLoading] = useState(false);
 
   const useProductInfo = {
     category: "",
@@ -35,6 +36,8 @@ const AddProduct = () => {
   };
 
   const handleCreateProduct = async (data) => {
+    setLoading(true)
+
     const payload = {
       "store": store.id,
       "description": productInfo.description,
@@ -42,7 +45,7 @@ const AddProduct = () => {
       "name": productInfo.productName,
       "discount": productInfo.discount,
       "productCategory": productInfo.category,
-      "status": productInfo.status,
+      "status": "active", // hardcoded
       "availability": productInfo.availabilty,
       // These need to be added to the UI/UX
       "taxable": true,
@@ -73,16 +76,18 @@ const AddProduct = () => {
       );
       if (!success || responseData?.error) {
         throw new Error(responseData?.error?.message);
-      } 
+      }
 
       toast.success("Your product was successfully Created!");
       navigate("/products");
-      
+
     } catch (error) {
       toast.error(`An Error occured while uploading this Product. Please try again later.`, {
         autoClose: 2000,
       });
       console.error(error);
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -99,6 +104,7 @@ const AddProduct = () => {
       handleProductInfo={handleProductInfo}
       handleFormSubmit={handleCreateProduct}
       handleProductDraft={handleProductDraft}
+      isLoading={isLoading}
     />
   );
 };

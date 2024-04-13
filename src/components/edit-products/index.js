@@ -14,6 +14,7 @@ const EditSingleProduct = () => {
 
   const productData = useSelector((state) => state.productsData);
   const store = useSelector((state) => state.storeData)
+  const [isLoading, setLoading] = useState(false);
 
   const product = productData.find((product) => product.SKU == sku);
 
@@ -58,6 +59,8 @@ const EditSingleProduct = () => {
 
 
   const handleEditProduct = async (data) => {
+    setLoading(true)
+    
     const payload = {
       "store": store.id,
       "description": productInfo.description,
@@ -65,7 +68,7 @@ const EditSingleProduct = () => {
       "name": productInfo.productName,
       "discount": productInfo.discount,
       "productCategory": productInfo.category,
-      "status": productInfo.status,
+      "status": "active", // hardcoded
       "availability": productInfo.availabilty,
       // These need to be added to the UI/UX
       "taxable": true,
@@ -94,7 +97,7 @@ const EditSingleProduct = () => {
       );
       if (!success || responseData?.error) {
         throw new Error(responseData?.error?.message);
-      } 
+      }
 
       toast.success("Your product was successfully Edited!");
       navigate("/products");
@@ -104,6 +107,8 @@ const EditSingleProduct = () => {
         autoClose: 2000,
       });
       console.error(error);
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -130,6 +135,7 @@ const EditSingleProduct = () => {
       handleProductInfo={handleProductInfo}
       handleFormSubmit={handleEditProduct}
       handleProductDraft={handleProductDraft}
+      isLoading={isLoading}
     />
   );
 };
