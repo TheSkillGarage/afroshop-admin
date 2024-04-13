@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import axios from "axios";
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { MessageIcon } from "../../../images";
 import Button from "../../shared/button";
-import { getTokenFromCookie } from "../../../utils";
+import { AFROADMIN_TOKEN } from "../../../utils/constants";
+import { expirationDate } from "../../../utils";
 import { postRequest, putRequest, userLogin } from "../../../redux/action";
 
 const VerifyEmail = () => {
   const [otp, setOtp] = useState(new Array(4).fill(""));
   const [loading, setLoading] = useState(false);
+  const [sendingToken, setSendingToken] = useState(false);
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -35,10 +39,8 @@ const VerifyEmail = () => {
 
   const allOtpsNotEmpty = otp.every((str) => str.length > 0);
 
-  const token = getTokenFromCookie();
-
   // change confirmation to false
-  const updateUserConfirmation = async () => {
+  const updateUserConfirmation = async (token, user) => {
     try {
       const [success, responseData] = await putRequest(
         `/api/users/${user.id}`,
@@ -65,11 +67,10 @@ const VerifyEmail = () => {
 
   // resend user otp
   const sendUserOtp = async (user) => {
-    setLoading(true);
+    setSendingToken(true);
     try {
-      const [success, response] = await postRequest("/api/generate-otps", {
+      const [success, response] = await postRequest("/api/otps", {
         email: user.email,
-        user,
       });
 
       if (!success || response?.error) {
@@ -89,6 +90,43 @@ const VerifyEmail = () => {
         autoClose: 2000,
       });
     } finally {
+      setSendingToken(false);
+    }
+  };
+
+  const registerUser = async () => {
+    setLoading(true);
+    try {
+      const [success, responseData] = await postRequest(
+        "/api/auth/local/register",
+        {
+          username: user.email,
+          email: user.email,
+          password: user.password,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        }
+      );
+
+      if (!success || responseData?.error) {
+        console.error(responseData.error.message);
+        toast.error(
+          `${
+            responseData?.error?.message || "An error occured while signing up"
+          }`,
+          { autoClose: 2000 }
+        );
+      } else {
+        updateUserConfirmation(responseData?.jwt, responseData?.user);
+        dispatch(userLogin(responseData?.user));
+        Cookies.set(AFROADMIN_TOKEN, responseData?.jwt, {
+          expires: expirationDate,
+        });
+        navigate("/store-created");
+      }
+    } catch (error) {
+      toast.error(`An error occured while signing up`, { autoClose: 2000 });
+    } finally {
       setLoading(false);
     }
   };
@@ -96,28 +134,31 @@ const VerifyEmail = () => {
   const onSubmit = async () => {
     setLoading(true);
     try {
-      const [success, responseData] = await postRequest("/api/verify-otps", {
-        otp: Number(otp.join("")),
-        user,
-      });
-
-      if (!success || responseData?.error) {
-        console.error(responseData.error.message);
+      const response = await axios.get(
+        `/otps?email=${user?.email}&otp=${Number(otp.join(""))}`
+      );
+      if (response?.error) {
         toast.error(
           `${
-            responseData?.error?.message ||
+            response?.error?.message ||
             "An error occured while verifying your otp"
           }`,
           { autoClose: 2000 }
         );
       } else {
-        await updateUserConfirmation();
-        navigate("/store-created");
+        await registerUser();
       }
     } catch (error) {
-      toast.error(`An error occured while verifying your otp`, {
-        autoClose: 2000,
-      });
+      console.error("error", error);
+      toast.error(
+        `${
+          error?.response?.data?.error?.message ||
+          "An error occured while verifying your otp"
+        }`,
+        {
+          autoClose: 2000,
+        }
+      );
     } finally {
       setLoading(false);
     }
@@ -151,7 +192,7 @@ const VerifyEmail = () => {
           className="text-center text-[16px] text-green py-[24px] cursor-pointer"
           onClick={async () => await sendUserOtp(user)}
         >
-          Resend Code
+        {sendingToken ? 'Resending...' : 'Resend Code'}
         </p>
         <Button
           icon="white"

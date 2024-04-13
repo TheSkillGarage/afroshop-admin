@@ -5,6 +5,7 @@ import {
 } from "../data/profile";
 import sectionData from "../data/roles-section-data";
 
+
 const PRIVATE_INITIAL_STATE = {
   productsData: null,
   storeData: null,
@@ -54,6 +55,11 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         ...PRIVATE_INITIAL_STATE
       };
+    case "UPDATE_USER":
+      return {
+        ...previousState,
+        user: action.payload,
+      };
     case "UPDATE_PROFILE_INFO":
       return {
         ...previousState,
@@ -91,8 +97,8 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
       return {
         ...previousState,
         isSidebarToggled: !action.toggle,
-      }
-    case 'ADD_PRODUCT':
+      };
+    case "ADD_PRODUCT":
       const id = (Math.floor(Math.random() * 900000) + 100000).toString();
 
       const newProductObj = {
@@ -102,30 +108,33 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         status: action.status,
         ...action.productInfo,
         draft: {},
-      }
+      };
 
-      const updatedProductsArray = [newProductObj, ...previousState.productsData];
+      const updatedProductsArray = [
+        newProductObj,
+        ...previousState.productsData,
+      ];
 
       return {
         ...previousState,
         productsData: updatedProductsArray,
-      }
+      };
     case "EDIT_PRODUCT":
-      const updatedProductData = previousState.productsData.map(product => {
+      const updatedProductData = previousState.productsData.map((product) => {
         if (product.SKU === action.sku) {
           switch (action.option) {
             case "draft":
               return {
                 ...product,
                 draft: action.productInfos,
-                lastEdited: new Date()
-              }
+                lastEdited: new Date(),
+              };
             default:
               return {
                 ...product,
                 ...action.productInfos,
                 draft: {},
-                lastEdited: new Date()
+                lastEdited: new Date(),
               };
           }
         }
@@ -134,23 +143,23 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
       return {
         ...previousState,
         productsData: updatedProductData,
-      }
-    case 'DISCARD_DRAFT':
+      };
+    case "DISCARD_DRAFT":
       const updateProductDraft = previousState.productsData.map((product) => {
         if (product.SKU === action.sku) {
           return {
             ...product,
             draft: {},
-            lastEdited: new Date()
-          }
+            lastEdited: new Date(),
+          };
         }
         return product;
       });
       return {
         ...previousState,
         productsData: updateProductDraft,
-      }
-    case 'RESET_STORE':
+      };
+    case "RESET_STORE":
       return INITIAL_STATE;
     default:
       return previousState;

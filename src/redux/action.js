@@ -47,6 +47,13 @@ export const logOutUser = () => dispatch => {
   });
 };
 
+export const updateUser = (user) => dispatch => {
+  dispatch({
+    type: 'UPDATE_USER',
+    payload: user,
+  })
+}
+
 export const addActionRole = (hash) => (dispatch) => {
   dispatch({
     type: "ADD_ROLE_ACTION",
