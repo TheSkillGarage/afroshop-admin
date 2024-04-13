@@ -213,7 +213,7 @@ const ProductChanges = ({
                 type="submit"
                 className="w-[133px] h-[40px]"
                 disabled={_.isEqual(initialProductInfo, productInfo)}
-                loading={true}
+                loading={isLoading}
               >
                 Submit
               </Button>
