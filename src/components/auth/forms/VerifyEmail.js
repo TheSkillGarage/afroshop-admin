@@ -14,6 +14,7 @@ import { postRequest, putRequest, userLogin } from "../../../redux/action";
 const VerifyEmail = () => {
   const [otp, setOtp] = useState(new Array(4).fill(""));
   const [loading, setLoading] = useState(false);
+  const [sendingToken, setSendingToken] = useState(false);
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const VerifyEmail = () => {
   const allOtpsNotEmpty = otp.every((str) => str.length > 0);
 
   // change confirmation to false
-  const updateUserConfirmation = async (token) => {
+  const updateUserConfirmation = async (token, user) => {
     try {
       const [success, responseData] = await putRequest(
         `/api/users/${user.id}`,
@@ -66,7 +67,7 @@ const VerifyEmail = () => {
 
   // resend user otp
   const sendUserOtp = async (user) => {
-    setLoading(true);
+    setSendingToken(true);
     try {
       const [success, response] = await postRequest("/api/otps", {
         email: user.email,
@@ -89,7 +90,7 @@ const VerifyEmail = () => {
         autoClose: 2000,
       });
     } finally {
-      setLoading(false);
+      setSendingToken(false);
     }
   };
 
@@ -102,6 +103,8 @@ const VerifyEmail = () => {
           username: user.email,
           email: user.email,
           password: user.password,
+          firstName: user.firstName,
+          lastName: user.lastName,
         }
       );
 
@@ -114,7 +117,7 @@ const VerifyEmail = () => {
           { autoClose: 2000 }
         );
       } else {
-        updateUserConfirmation(responseData?.jwt);
+        updateUserConfirmation(responseData?.jwt, responseData?.user);
         dispatch(userLogin(responseData?.user));
         Cookies.set(AFROADMIN_TOKEN, responseData?.jwt, {
           expires: expirationDate,
@@ -189,7 +192,7 @@ const VerifyEmail = () => {
           className="text-center text-[16px] text-green py-[24px] cursor-pointer"
           onClick={async () => await sendUserOtp(user)}
         >
-          Resend Code
+        {sendingToken ? 'Resending...' : 'Resend Code'}
         </p>
         <Button
           icon="white"
