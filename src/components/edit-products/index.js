@@ -58,8 +58,6 @@ const EditSingleProduct = () => {
 
 
   const handleEditProduct = async (data) => {
-    console.log(productInfo)
-
     const payload = {
       "store": store.id,
       "description": productInfo.description,
