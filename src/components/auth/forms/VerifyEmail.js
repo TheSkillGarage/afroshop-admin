@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import axios from "axios";
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { MessageIcon } from "../../../images";
 import Button from "../../shared/button";
-import { getTokenFromCookie } from "../../../utils";
+import { AFROADMIN_TOKEN } from "../../../utils/constants";
+import { expirationDate } from "../../../utils";
 import { postRequest, putRequest, userLogin } from "../../../redux/action";
 
 const VerifyEmail = () => {
@@ -35,10 +38,8 @@ const VerifyEmail = () => {
 
   const allOtpsNotEmpty = otp.every((str) => str.length > 0);
 
-  const token = getTokenFromCookie();
-
   // change confirmation to false
-  const updateUserConfirmation = async () => {
+  const updateUserConfirmation = async (token) => {
     try {
       const [success, responseData] = await putRequest(
         `/api/users/${user.id}`,
@@ -67,9 +68,8 @@ const VerifyEmail = () => {
   const sendUserOtp = async (user) => {
     setLoading(true);
     try {
-      const [success, response] = await postRequest("/api/generate-otps", {
+      const [success, response] = await postRequest("/api/otps", {
         email: user.email,
-        user,
       });
 
       if (!success || response?.error) {
@@ -93,31 +93,69 @@ const VerifyEmail = () => {
     }
   };
 
-  const onSubmit = async () => {
+  const registerUser = async () => {
     setLoading(true);
     try {
-      const [success, responseData] = await postRequest("/api/verify-otps", {
-        otp: Number(otp.join("")),
-        user,
-      });
+      const [success, responseData] = await postRequest(
+        "/api/auth/local/register",
+        {
+          username: user.email,
+          email: user.email,
+          password: user.password,
+        }
+      );
 
       if (!success || responseData?.error) {
         console.error(responseData.error.message);
         toast.error(
           `${
-            responseData?.error?.message ||
+            responseData?.error?.message || "An error occured while signing up"
+          }`,
+          { autoClose: 2000 }
+        );
+      } else {
+        updateUserConfirmation(responseData?.jwt);
+        dispatch(userLogin(responseData?.user));
+        Cookies.set(AFROADMIN_TOKEN, responseData?.jwt, {
+          expires: expirationDate,
+        });
+        navigate("/store-created");
+      }
+    } catch (error) {
+      toast.error(`An error occured while signing up`, { autoClose: 2000 });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSubmit = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `/otps?email=${user?.email}&otp=${Number(otp.join(""))}`
+      );
+      if (response?.error) {
+        toast.error(
+          `${
+            response?.error?.message ||
             "An error occured while verifying your otp"
           }`,
           { autoClose: 2000 }
         );
       } else {
-        await updateUserConfirmation();
-        navigate("/store-created");
+        await registerUser();
       }
     } catch (error) {
-      toast.error(`An error occured while verifying your otp`, {
-        autoClose: 2000,
-      });
+      console.error("error", error);
+      toast.error(
+        `${
+          error?.response?.data?.error?.message ||
+          "An error occured while verifying your otp"
+        }`,
+        {
+          autoClose: 2000,
+        }
+      );
     } finally {
       setLoading(false);
     }

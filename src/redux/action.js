@@ -14,6 +14,13 @@ export const logOutUser = () => dispatch => {
   });
 };
 
+export const updateUser = (user) => dispatch => {
+  dispatch({
+    type: 'UPDATE_USER',
+    payload: user,
+  })
+}
+
 export const fetchData = async (dispatch, url, type) => {
   dispatch({ type: "SET_IS_FETCHING", isFetching: true });
 
