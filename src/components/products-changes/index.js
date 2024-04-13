@@ -30,7 +30,8 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
 
   const handleFilesSelect = (files) => {
     const newImageObj = {
-      url: URL.createObjectURL(files[0])
+      url: URL.createObjectURL(files[0]),
+      data: files[0],
     }
     const newFiles = [...productInfo.images, newImageObj];
 

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import ProductChanges from "../products-changes";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct, postRequest } from "../../redux/action";
+import { toast } from "react-toastify";
+import { addProduct, handleImageUpload, postRequest } from "../../redux/action";
 import { getTokenFromCookie } from "../../utils";
-
 
 const AddProduct = () => {
   const store = useSelector((state) => state.storeData)
@@ -35,27 +35,58 @@ const AddProduct = () => {
   };
 
   const handleCreateProduct = async (data) => {
+    const payload = {
+      "store": store.id,
+      "images": [5, 2, 1],
+      "description": productInfo.description,
+      "price": productInfo.salesPrice,
+      "name": productInfo.productName,
+      "discount": productInfo.discount,
+      "productCategory": productInfo.category,
+      "status": productInfo.status,
+      "availability": productInfo.availabilty,
+      // These need to be added to the UI/UX
+      "taxable": true,
+      "pricingType": "per Item",
+      "unitWeightInGrams": 5
+    }
+
     try {
+      // upload images first
+      const images = productInfo?.images?.map((i) => (i.data));
+
+      if (images?.length === 0) {
+        throw new Error('Add an Image to upload!')
+      }
+
+      const [imageUpSuccess, response] = await handleImageUpload(images, 'products')
+      if (!imageUpSuccess || response?.error) {
+        throw new Error(response?.error.message)
+      } else {
+        payload.images = response
+      }
+
+      console.log(payload)
+      // handle Product Creation
       const [success, responseData] = await postRequest(
-        `/api/products/${storeID}`,
-        data, token
+        `/api/products`,
+        payload,
+        token
       );
       if (!success || responseData?.error) {
         throw new Error(responseData?.error?.message);
       } else {
-       console.log("Product info", responseData)
+        console.log("Product info", responseData)
       }
-
+      toast.success("Your product was successfull Created!");
+      navigate("/products");
+      
     } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("Product created", data);
+      toast.error(`An Error occured while uploading this Product. Please try again later.`, {
+        autoClose: 2000,
+      });
+      console.error(error);
     }
-  };
-
-  const handleFormSubmit = () => {
-    dispatch(addProduct({ productInfo: productInfo, status: "active" }));
-    navigate("/products");
   };
 
   const handleProductDraft = () => {
