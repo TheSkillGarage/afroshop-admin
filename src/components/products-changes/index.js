@@ -174,7 +174,7 @@ const ProductChanges = ({
           </div>
 
           <section className="flex items-center justify-between pt-[7%]">
-            <div className="flex gap-6">
+            {/* <div className="flex gap-6">
               <Button
                 variant="tertiary"
                 size="big"
@@ -195,7 +195,7 @@ const ProductChanges = ({
               >
                 Discard Draft
               </Button>}
-            </div>
+            </div> */}
 
             <div className="flex justify-between items-center gap-[24px]">
 
