@@ -87,7 +87,7 @@ const EditSingleProduct = () => {
         }
         payload.images = [...payload.images, ...response]
       }
-      
+
       // handle Product Update
       const [success, responseData] = await putRequest(
         `/api/products/${product.id}`,
@@ -99,7 +99,7 @@ const EditSingleProduct = () => {
       } 
 
       toast.success("Your product was successfully Edited!");
-      // navigate("/products");
+      navigate("/products");
 
     } catch (error) {
       toast.error(`An Error occured while uploading this Product. Please try again later.`, {
