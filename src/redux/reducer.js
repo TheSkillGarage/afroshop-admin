@@ -5,6 +5,7 @@ import {
 } from "../data/profile";
 import sectionData from "../data/roles-section-data";
 
+
 const PRIVATE_INITIAL_STATE = {
   productsData: null,
   storeData: null,
@@ -29,7 +30,7 @@ const INITIAL_STATE = {
   isSidebarToggled: false,
 };
 
-export const reducer = (previousState = INITIAL_STATE, action) => {
+export const reducer = (previousState = INITIAL_STATE, action) => { 
   switch (action.type) {
     case "SET_IS_FETCHING":
       return {
@@ -80,6 +81,11 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
       return {
         ...previousState,
         ...PRIVATE_INITIAL_STATE,
+      };
+    case "UPDATE_USER":
+      return {
+        ...previousState,
+        user: action.payload,
       };
     case "UPDATE_PROFILE_INFO":
       return {

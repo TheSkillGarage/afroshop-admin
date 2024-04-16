@@ -76,6 +76,14 @@ export const getStoreByUser = (id, token) => async (dispatch) => {
 export const getUserAddress = (token) => async (dispatch) => {
   await fetchData(dispatch, "/addresses", "addresses", token);
 };
+
+export const updateUser = (user) => dispatch => {
+  dispatch({
+    type: 'UPDATE_USER',
+    payload: user,
+  })
+}
+
 export const addActionRole = (hash) => (dispatch) => {
   dispatch({
     type: "ADD_ROLE_ACTION",
@@ -225,6 +233,45 @@ export const putRequest = async (url, data, token = null) => {
     return [true, responseData];
   } catch (error) {
     console.error("Error:", error);
+    return [false, error];
+  }
+};
+
+export const handleImageUpload = async (images, collectionName, id = null) => {
+  if (!images || images.length === 0) {
+    throw new Error("Files are required!")
+  }
+
+  const token = getTokenFromCookie();
+  const uploadConfig = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const uploadedImageIds = [];
+
+  try {
+    for (const image of images) {
+      const formData = new FormData();
+      formData.append("files", image);
+      formData.append("field", "images");
+
+      if (id) {
+        formData.append("ref", collectionName);
+        formData.append("refId", `${id}`);
+      }
+
+      const { data } = await axios.post(`/upload`, formData, uploadConfig);
+      if (!data || !data[0] || !data[0].id) {
+        throw new Error("Error uploading image");
+      }
+      uploadedImageIds.push(data[0].id);
+    }
+
+    return [true, uploadedImageIds];
+  } catch (error) {
+    console.error("Error uploading images:", error);
     return [false, error];
   }
 };
