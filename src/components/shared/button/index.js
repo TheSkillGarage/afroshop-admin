@@ -92,6 +92,7 @@ const Button = ({
     <div>
       <button
         {...restProps}
+        disabled={variant === "disabled" ? true : false}
         type={type}
         className={`flex flex-row justify-center items-center rounded ${!size && `w-44 h-10`} ${classes}`}
         onClick={onClick}

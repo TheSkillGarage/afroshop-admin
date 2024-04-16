@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Checkbox from "../../shared/checkbox";
 import InputComponent from "../../shared/inputComponent";
 import {
@@ -64,7 +64,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
         <label htmlFor="profileImage">
           <div
             className={`rounded-full w-[100px] h-[100px] ${
-              editProfile ? "cursor-pointer" : ""
+              editProfile || !storeExists ? "cursor-pointer" : ""
             }`}
           >
             {profileData?.store?.profile_image?.length > 0  ? (
@@ -89,7 +89,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
             )}
           </div>
 
-          {editProfile || !storeExists && (
+          {(editProfile || !storeExists) && (
             <input
               id="profileImage"
               name="profileImage"

@@ -19,7 +19,7 @@ const AdminNavbar = ({ name }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const store = useSelector((state) => state.storeData);
+  const store = useSelector((state) => state.store);
   const [open, setOpen] = useState(false);
   const modalRef = useRef(null);
   const isSidebarToggled = useSelector((state) => state.isSidebarToggled);
@@ -41,11 +41,6 @@ const AdminNavbar = ({ name }) => {
     navigate("/");
     dispatch(sidebarToggle({ toggle: isSidebarToggled }))
   }
-
-  console.log(user)
-
-  // const user = useSelector((state) => state.user)
-  // const store = useSelector((state) => state.storeData)
 
   return (
     <nav className="flex justify-between p-6 border-b border-1 border-[#E6E6E6] min-h-[69px] max-h-[69px] bg-[#ffffff]">

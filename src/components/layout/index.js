@@ -1,19 +1,25 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AdminNavbar from "../navbar";
 import AdminSidebar from "../sidebar";
 import { getTokenFromCookie, removeTokenFromCookie } from "../../utils";
 import useIdleActivityTimer from "../../hooks/useIdleTimer";
-import { getOrdersData, getStoreData, logOutUser, setStoreExistStatus, getProductData} from "../../redux/action";
+import {
+  getOrdersData,
+  getStoreData,
+  logOutUser,
+  setStoreExistStatus,
+  getProductData,
+} from "../../redux/action";
 // import { logOutUser, setStoreExistStatus } from "../../redux/action";
-
 
 const PageLayout = ({ children }) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const store = useSelector((state) => state.store);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   //  handling API calls
   const token = getTokenFromCookie();
@@ -22,26 +28,30 @@ const PageLayout = ({ children }) => {
 
   useEffect(() => {
     if (user && user.id) {
-      dispatch(getStoreData(user?.id, token));
+      if (location.pathname === "/profile") {
+        dispatch(getStoreData(user?.id, token));
+      }
     }
-  }, [user]);
+  }, [user, token, location.pathname, dispatch]);
 
   useEffect(() => {
     if (storeData && storeData.id) {
-      dispatch(getOrdersData(storeData.id, token));
-      dispatch(getProductData(storeData.id, token));
+      if (location.pathname === "/products") {
+        dispatch(getProductData(storeData.id, token));
+      }
+      if (location.pathname === "/orders") {
+        dispatch(getOrdersData(storeData.id, token));
+      }
     }
-  }, [storeData])
-  
-  
-  
+  }, [storeData, location.pathname, token, dispatch]);
+
   useEffect(() => {
     if (Object.keys(store).length > 0) {
       dispatch(setStoreExistStatus(true));
     } else {
       dispatch(setStoreExistStatus(false));
     }
-  }, [store]);
+  }, [store, dispatch]);
   /*
 
     This section handles user Inactivity after 20mins
@@ -83,7 +93,7 @@ const PageLayout = ({ children }) => {
     } else {
       navigate("/login");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, dispatch]);
 
   return (
     <section className="bg-[#F2F2F2] h-[100vh]">

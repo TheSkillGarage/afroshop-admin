@@ -5,7 +5,6 @@ import {
 } from "../data/profile";
 import sectionData from "../data/roles-section-data";
 
-
 const PRIVATE_INITIAL_STATE = {
   productsData: null,
   storeData: null,
@@ -15,12 +14,13 @@ const PRIVATE_INITIAL_STATE = {
   addresses: [],
   roles: [],
   isAuthenticated: false,
-  storeExists: false,
+  storeExists: null,
   user: null,
 };
 
 const INITIAL_STATE = {
   ...PRIVATE_INITIAL_STATE,
+  loadingStates: null,
   isFetching: false,
   sections: sectionData,
   delivery: deliveryData,
@@ -36,6 +36,23 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         isFetching: action.isFetching,
       };
+    case "API_REQUEST_START":
+      return {
+        ...previousState,
+        loadingStates: {
+          ...previousState.loadingStates,
+          [action.payload]: true, // Set loading state to true for the requestId
+        },
+      };
+    case "API_REQUEST_SUCCESS":
+    case "API_REQUEST_FAILURE":
+      return {
+        ...previousState,
+        loadingStates: {
+          ...previousState.loadingStates,
+          [action.payload]: false, // Set loading state to false for the requestId
+        },
+      };
     case "SET_ERROR":
       return {
         ...previousState,
@@ -48,11 +65,11 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...action.hash,
         isFetching: false,
       };
-      case "SET_STORE_EXIST":
-        return {
-          ...previousState,
-          storeExists: action.payload,
-        };
+    case "SET_STORE_EXIST":
+      return {
+        ...previousState,
+        storeExists: action.payload,
+      };
     case "LOGIN_USER":
       return {
         ...previousState,
@@ -62,7 +79,7 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
     case "LOG_OUT":
       return {
         ...previousState,
-        ...PRIVATE_INITIAL_STATE
+        ...PRIVATE_INITIAL_STATE,
       };
     case "UPDATE_PROFILE_INFO":
       return {

@@ -3,23 +3,13 @@ import { ArrowRight, EditIcon2, EditIconGrey } from "../../images";
 import Button from "../shared/button";
 import ProfileTab from "./profileTab";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getStoreByUser,
-  postRequest,
-  putRequest,
-  updateProfile,
-  updateStore,
-} from "../../redux/action";
 import EditPassword from "./edit-password";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import { renderValidUrl } from "../../utils/constants";
 import {
-  expirationDate,
   getTokenFromCookie,
-  handleAvatarSubmit,
-  handleCreateAddress,
-  setCookieWithExpiry,
+  handleSubmitPassword,
+  handleSubmitStore,
 } from "../../utils";
 import {
   deliveryOptions,
@@ -27,7 +17,6 @@ import {
   restPeriods,
 } from "../../data/profile";
 import { useLocation, useNavigate } from "react-router-dom";
-import { string } from "prop-types";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -43,9 +32,9 @@ const Profile = () => {
   const [profileData, setProfileData] = useState({
     ...data,
     holidays: store.holidays ?? [],
-    store: {
+    store: storeExists ? {
       ...data.store,
-      days: store?.openDays?.map((day) => day?.openDays) || "",
+      days: store?.openDays?.map((day) => day?.openDays) || [],
       email: user?.email || "",
       store_name: store?.name || "",
       address: store?.address?.streetAddress || "",
@@ -70,13 +59,14 @@ const Profile = () => {
         restPeriods.find(
           (option) => option?.value === store?.deliverySlots?.restPeriodinHrs
         )?.value || "",
-    },
-    delivery: store?.deliveryFees
+    } : {days: []},
+    delivery: (storeExists && store?.deliveryFees)
       ? {
-          base_amount: store?.deliveryFees?.baseFee,
-          base_distance: store?.deliveryFees?.baseDistance,
-          additional_distance_fee: store?.deliveryFees?.additionalFeePerUnit,
-          unit: store?.deliveryFees?.measurementUnit,
+          base_amount: store?.deliveryFees?.baseFee || "",
+          base_distance: store?.deliveryFees?.baseDistance || "",
+          additional_distance_fee: store?.deliveryFees?.additionalFeePerUnit || "",
+          unit: store?.deliveryFees?.measurementUnit || "",
+          deliveryType: (!store?.deliveryFees?.useTieredPricing ? 0 : 1) || 0,
           delivery:
             [
               {
@@ -108,6 +98,8 @@ const Profile = () => {
     defaultValues: {
       ...profileData?.store,
       ...profileData?.delivery,
+      destination: null,
+      fee: null
     },
     mode: "all",
   });
@@ -125,157 +117,11 @@ const Profile = () => {
   const [editProfile, setEditProfile] = useState(false);
  
   const handleProfileFormSubmit = async () => {
-    setLoading(true);
-
-    //restructuring of new details of store to be updated
-    const updatedStore = {
-      name: profileData?.store?.store_name,
-      address: {
-        streetAddress: profileData?.store?.address,
-        state: profileData?.store?.state,
-        city: profileData?.store?.city,
-        postalCode: profileData?.store?.postal_code,
-        country: profileData?.store?.country,
-      },
-      openDays: profileData?.store?.days?.map((day) => {
-        return { openDays: day };
-      }),
-      deliveryTimes: {
-        from: profileData?.store?.deliveryStartTime,
-        to: profileData?.store?.deliveryEndTime,
-      },
-      openingTimes: {
-        from: profileData?.store?.openingTime,
-        to: profileData?.store?.closingTime,
-      },
-      deliverySlots: {
-        deliverySlotLengthinHrs: profileData?.store?.deliverySlot,
-        restPeriodsinHrs: profileData?.store?.restPeriod,
-      },
-      deliveryOptions: {
-        delivery: profileData?.store?.deliveryOption
-          ?.map((option) => option?.value)
-          .includes("delivery")
-          ? true
-          : false,
-        pickUp: profileData?.store?.deliveryOption
-          ?.map((option) => option?.value)
-          .includes("pickUp")
-          ? true
-          : false,
-      },
-      holidays: profileData?.holidays,
-      deliveryFees: {
-        useTieredPricing:
-          profileData?.delivery?.deliveryType === 0 ? false : true,
-        baseFee: profileData?.delivery?.base_amount,
-        baseDistance: profileData?.delivery?.base_distance,
-        additionalFeePerUnit: profileData?.delivery?.additional_distance_fee,
-        less_than_5: profileData?.delivery.delivery
-          ? profileData.delivery?.delivery?.filter(
-              (data) => data.label === "Within 5km"
-            )[0]?.value
-          : null,
-        between_5_and_10: profileData?.delivery.delivery
-          ? profileData.delivery?.delivery.filter(
-              (data) => data.label === "Between 5 to 10km"
-            )[0]?.value
-          : null,
-        between_10_and_15: profileData?.delivery.delivery
-          ? profileData.delivery?.delivery.filter(
-              (data) => data.label === "Between 10 to 15km"
-            )[0]?.value
-          : null,
-        between_15_and_20: profileData?.delivery.delivery
-          ? profileData.delivery?.delivery.filter(
-              (data) => data.label === "Between 15 to 20km"
-            )[0]?.value
-          : null,
-        more_than_20: profileData?.delivery.delivery
-          ? profileData.delivery?.delivery.filter(
-              (data) => data.label === "More than 20km"
-            )[0]?.value
-          : null,
-      },
-    };
-
-    if (!storeExists) {
-      // const address = await handleCreateAddress(updatedStore.address);
-      // console.log(address)
-      updatedStore.phoneNumber = user?.phoneNumber;
-      updatedStore.storeKeeper = user?.id;
-      updatedStore.address = 1;
-    }
-
-    //upload image first if it exists before other store updates
-    if (
-      profileData?.store?.profile_image_data &&
-      profileData?.store?.profile_image
-    ) {
-      const uploaded_img = await handleAvatarSubmit(
-        profileData?.store?.profile_image_data,
-        store.id ?? `store${user?.id}`
-      );
-      updatedStore.image = uploaded_img?.[0]?.id;
-    }
-
-    //api call to create or update store details
-    try {
-      const [success, responseData] = !storeExists
-        ? await postRequest(`/api/stores/`, updatedStore, token)
-        : await putRequest(`/api/stores/${store?.id}`, updatedStore, token);
-      if (!success || responseData?.error) {
-        throw new Error(
-          responseData?.error?.message || "An error occurred, please try again"
-        );
-      } else {
-        dispatch(getStoreByUser(user?.id, token));
-        dispatch(updateProfile({ profile: { ...profileData } }));
-        toast.success(
-          !storeExists
-            ? `Store created successfully`
-            : `Store details updated successfully`,
-          {
-            autoClose: 2000,
-          }
-        );
-        setEditProfile(false);
-      }
-    } catch (error) {
-      console.error("Error updating store information:", error);
-    } finally {
-      setLoading(false);
-    }
+     await handleSubmitStore(profileData, store, setEditProfile, setLoading, storeExists, user, dispatch, token);
   };
 
   const handlePasswordFormSubmit = async (data) => {
-    setLoading(true);
-    try {
-      const [success, responseData] = await postRequest(
-        "/api/auth/change-password",
-        {
-          currentPassword: data.currentPassword,
-          password: data.newPassword,
-          passwordConfirmation: data.confirmPassword,
-        },
-        token
-      );
-      if (!success || responseData?.error) {
-        throw new Error(responseData?.error?.message);
-      } else {
-        passwordForm.reset();
-        setCookieWithExpiry(responseData?.jwt);
-        toast.success(`Password updated successfully`, { autoClose: 2000 });
-        setEditProfile(false);
-      }
-    } catch (error) {
-      console.error(error.message);
-      toast.error(`${error.message}`, {
-        autoClose: 2000,
-      });
-    } finally {
-      setLoading(false);
-    }
+    await handleSubmitPassword(data, setLoading, token, passwordForm, setEditProfile);
   };
 
   useEffect(() => {
@@ -287,7 +133,7 @@ const Profile = () => {
   };
 
   const handleCancelClick = () => {
-    setProfileData(data);
+    setProfileData(profileData);
     setEditProfile(false);
     passwordForm?.reset();
     profileForm?.reset();

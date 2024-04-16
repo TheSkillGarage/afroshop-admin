@@ -5,12 +5,13 @@ import Button from "../../shared/button";
 import { destinationOptions } from "../../../data/profile";
 import { LocationIcon } from "../../../images";
 import RadioButton from "../../shared/radioBtn";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
   const store = useSelector((state) => state.store);
+  const storeExists = useSelector((state) => state.storeExists);
   const [deliveryType, setDeliveryType] = useState(
-    store?.deliveryFees?.useTieredPricing ? 1 : 0
+    profileData?.delivery?.deliveryType
   );
   const {
     control,
@@ -21,11 +22,11 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
     trigger,
     setValue,
   } = form;
-  const storeExists = useSelector((state) => state.storeExists);
 
   const handleAddCard = () => {
     const destination = watch("destination");
     const fee = watch("fee");
+
     try {
       if (destination !== "" && fee !== "") {
         const deliveryFormData = {
@@ -93,6 +94,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
     resetField("base_amount");
     resetField("additional_distance_fee");
   };
+
   return (
     <div>
       <div className="flex mt-4 gap-5">
@@ -103,6 +105,15 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
             checked={deliveryType === 0}
             disabled={!storeExists ? false : !editProfile}
             handleChange={() => {
+              setProfileData((prev) => {
+                return {
+                  ...prev,
+                  delivery: {
+                    ...prev["delivery"],
+                    deliveryType: 0,
+                  },
+                };
+              });
               setDeliveryType(0);
             }}
           />
@@ -120,16 +131,11 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                   ...prev,
                   delivery: {
                     ...prev["delivery"],
-                    additional_distance_fee: null,
-                    base_amount: null,
-                    base_distance: null,
                     deliveryType: 1,
-                    unit: null,
                   },
                 };
               });
               resetBaseDistanceForm();
-              // handleData("deliveryType", 1);
               setDeliveryType(1);
             }}
           />
@@ -147,6 +153,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 name="destination"
                 fieldName={`destination`}
                 placeholder="Select"
+                // required={true}
+                // requiredMessage={"This field is required"}
                 className="bg-[#F2F2F2]"
                 control={control}
                 errors={errors}
@@ -161,6 +169,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 type="number"
                 label="Shipping Fee ($)"
                 name="fee"
+                // required={true}
+                // requiredMessage={"This field is required"}
                 fieldName="fee"
                 placeholder="Enter"
                 className="bg-[#F2F2F2]"
@@ -241,6 +251,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               type="number"
               label="Base Distance (km)"
               fieldName={"base_distance"}
+              name={"base_distance"}
               placeholder="Enter"
               className="bg-[#F2F2F2]"
               control={control}
@@ -256,6 +267,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               type="number"
               label="Base Amount ($)"
               fieldName={"base_amount"}
+              name={"base_amount"}
               placeholder="Enter"
               className="bg-[#F2F2F2]"
               control={control}
@@ -271,13 +283,14 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               type="number"
               label="Additional Distance Fee per km ($)"
               fieldName={"additional_distance_fee"}
+              name={"additional_distance_fee"}
               placeholder="Enter"
               className="bg-[#F2F2F2]"
               control={control}
               errors={errors}
               register={register}
               required={true}
-              requiredMessage={"Additional Distance is required"}
+              requiredMessage={"Additional Distance Fee is required"}
               isReadOnly={!storeExists ? false : !editProfile}
               handleChange={(e) =>
                 handleData("additional_distance_fee", e.target.value)

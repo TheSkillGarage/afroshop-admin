@@ -46,7 +46,6 @@ const Dashboard = () => {
     }));
   }
 
-
   useEffect(() => {
     setTopProducts(getTopProducts(ordersData));
     setTopCustomers(getTopCustomers(ordersData));
@@ -67,7 +66,7 @@ const Dashboard = () => {
 
   return (
     <>
-      {!loading ?
+      {/* {!loading ? */}
         <div className="bg-[#F2F2F2] w-full pt-6 pb-8 px-4">
           <div className="flex items-center gap-8 mb-6 h-[39px]">
             <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">
@@ -130,7 +129,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        :
+        {/* :
         <div className="h-screen bg-[#ffffff] flex justify-center items-center">
           <div className='h-full w-full flex justify-center items-center mb-6'>
             <div className="w-full flex justify-center items-center">
@@ -138,7 +137,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      }
+      } */}
     </>
   );
 };
