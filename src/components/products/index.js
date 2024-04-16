@@ -5,7 +5,7 @@ import ProductsDashboard from "./products-dashboard";
 
 
 const Products = () => {
-    const storeData = useSelector((state) => state.storeData);
+    const storeData = useSelector((state) => state.store);
     const productsData = useSelector((state) => state.productsData);
 
     return (

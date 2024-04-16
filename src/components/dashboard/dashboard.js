@@ -17,7 +17,7 @@ import { BeatLoader } from 'react-spinners';
 
 const Dashboard = () => {
   const ordersData = useSelector((state) => state.ordersData);
-  const storeData = useSelector((state) => state.storeData);
+  const storeData = useSelector((state) => state.store);
 
   const [topCustomers, setTopCustomers] = useState(null);
   const [topProducts, setTopProducts] = useState(null);
