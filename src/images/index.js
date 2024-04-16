@@ -119,6 +119,7 @@ import OrdersCart from "./orders-cart.svg";
 import DefaultUserImage from "./default-user-img.jpg"
 import EmptyStateImage from "./empty-state.svg";
 import StoreDefaultImage from "./storeDefault.png"
+import LogoutIcon from "./logOutIcon.svg";
 
 export {
   NotFoundImage,
@@ -230,4 +231,5 @@ export {
   OrdersCart,
   DefaultUserImage,
   StoreDefaultImage,
+  LogoutIcon,
 };
