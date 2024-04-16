@@ -36,7 +36,7 @@ const AdminSidebar = () => {
       </div>
       <div>
         <div
-          className="w-full flex items-center justify-between mb-12"
+          className="w-full flex items-center justify-between mb-12 cursor-pointer"
           onClick={handleUserLogOut}
         >
           {!isSidebarToggled && (
