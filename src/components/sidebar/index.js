@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { AfroshopLogo, LogoImage, LogoutIcon } from "../../images";
+import { AfroshopLogo, LogoImage, LogoutIcon2 } from "../../images";
 import SidebarTab from "./sidebar-tab";
 import SIDEBAR_TABS from "../../data/sidebar-tabs";
 import { useSelector } from "react-redux";
@@ -42,7 +42,7 @@ const AdminSidebar = () => {
           {!isSidebarToggled && (
             <p className="text-[13px] text-[#FF3B30]">Log Out</p>
           )}
-          <img src={LogoutIcon} alt="log-out-icon" />
+          <img src={LogoutIcon2} alt="log-out-icon" />
         </div>
         <img
           src={isSidebarToggled ? LogoImage : AfroshopLogo}
