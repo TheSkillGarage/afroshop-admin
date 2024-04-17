@@ -26,7 +26,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
       return;
     }
   };
-  
+
   //gets the selected open days by adding a new day to the array of days when checked or removing a day from the array when unchecked
   const getSelectedDays = (store, value) => {
     return store?.days?.includes(value)
@@ -67,26 +67,26 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
               editProfile || !storeExists ? "cursor-pointer" : ""
             }`}
           >
-            {profileData?.store?.profile_image?.length > 0  ? (
-              <div className="relative h-full w-full">
+            <div className="relative h-full w-full">
+              {profileData?.store?.profile_image?.length > 0 ? (
                 <img
                   className="h-full w-full object-cover rounded-full"
                   src={profileData?.store?.profile_image}
                   alt="Profile"
                 />
-                {editProfile && (
+              ) : (
+                <img
+                  className="rounded-full border-2"
+                  src={UserAvatar}
+                  alt="Profile"
+                />
+              )}
+              {(editProfile || !storeExists) && (
                   <div className="absolute bottom-[-2px] right-[-4px] w-[30px] h-[30px] rounded-full">
                     <GreenCamera />
                   </div>
                 )}
-              </div>
-            ) : (
-              <img
-                className="rounded-full border-2"
-                src={UserAvatar}
-                alt="Profile"
-              />
-            )}
+            </div>
           </div>
 
           {(editProfile || !storeExists) && (
@@ -101,17 +101,19 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           )}
         </label>
 
-        {editProfile && profileData?.store?.profile_image?.length > 0 && storeExists && (
-          <p
-            className="bg-[#FF3B301A] rounded p-2 cursor-pointer"
-            onClick={() => {
-              handleData("profile_image", null);
-              handleData("profile_image_data", null);
-            }}
-          >
-            <DeleteIcon />
-          </p>
-        )}
+        {editProfile &&
+          profileData?.store?.profile_image?.length > 0 &&
+          storeExists && (
+            <p
+              className="bg-[#FF3B301A] rounded p-2 cursor-pointer"
+              onClick={() => {
+                handleData("profile_image", null);
+                handleData("profile_image_data", null);
+              }}
+            >
+              <DeleteIcon />
+            </p>
+          )}
       </div>
 
       <div className="grid grid-cols-2 gap-8 my-4">

@@ -4,7 +4,6 @@ import {
   RightGreenArrow,
   RightWhiteArrow,
   RightGreyIcon,
-  LoadingAnimation,
   LeftBlackArrow,
   WhiteCart,
   DownloadIcon,
@@ -88,12 +87,13 @@ const Button = ({
     size && SIZE[size],
     className
   );
+  console.log(loading)
 
   return (
     <div>
       <button
         {...restProps}
-        disabled={variant === "disabled" ? true : false}
+        disabled={variant === "disabled"}
         type={type}
         className={`flex flex-row justify-center items-center rounded ${!size && `w-44 h-10`} ${classes}`}
         onClick={onClick}
@@ -103,7 +103,7 @@ const Button = ({
             color={LoaderColor[variant]}
             loading={true}
             size={14}
-            speedMultiplier={0}
+            speedMultiplier={2}
           />
         ) : (
           <span

@@ -7,10 +7,10 @@ import { BeatLoader } from "react-spinners";
 const Overview = () => {
   const storeExists = useSelector((state) => state.storeExists); 
   const loading = useSelector((state) => state.loadingStates);
-
+  
   return (
     <div>
-      {loading?.storeData ? (
+      {loading?.store || !loading ? (
         <div className="fixed inset-0 bg-[#D3D3D3] bg-opacity-25 z-[100] flex justify-center items-center h-screen">
           <div className="mt-[250px] w-full flex justify-center items-center">
             <BeatLoader

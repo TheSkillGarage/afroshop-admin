@@ -2,7 +2,8 @@ import React from "react";
 import { DeleteIcon, LocationIcon } from "../../../images";
 import { format } from "date-fns";
 
-const DeliveryCard = ({ card, icon, type, handleDelete, editProfile }) => {
+const DeliveryCard = ({ card, icon, type, handleDelete, editProfile, storeExists }) => {
+
   return (
     <div className="w-full flex gap-3 shadow-lg p-3 rounded items-center">
       {icon ?? (
@@ -19,7 +20,7 @@ const DeliveryCard = ({ card, icon, type, handleDelete, editProfile }) => {
           {(type === "holiday" ? format(new Date(card?.value), 'EE, MMM d, yyyy') : `$${card?.value}`) ?? "$15"}
         </p>
       </div>
-      {editProfile && (
+      {(editProfile || !storeExists) && (
         <div
           className="bg-[#FF3B301A] rounded p-2 align ml-auto cursor-pointer"
           onClick={() => handleDelete()}

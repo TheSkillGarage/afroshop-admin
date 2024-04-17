@@ -2,7 +2,12 @@ import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { AFROADMIN_TOKEN } from "./constants";
 import axios from "axios";
-import { getStoreByUser, handleAvatarSubmit, postRequest, putRequest } from "../redux/action";
+import {
+  handleAvatarSubmit,
+  postRequest,
+  putRequest,
+  updateStore,
+} from "../redux/action";
 
 // Set a cookie that expires in 3 hours
 const expirationTimeInMinutes = 3 * 60;
@@ -39,8 +44,13 @@ export const handleCreateAddress = async (address) => {
   }
 };
 
-export const getStorePayload =  async (profileData, storeExists, user, store) => {
-  const updatedStore =  {
+export const getStorePayload = async (
+  profileData,
+  storeExists,
+  user,
+  store
+) => {
+  const updatedStore = {
     name: profileData?.store?.store_name,
     address: {
       streetAddress: profileData?.store?.address,
@@ -62,7 +72,7 @@ export const getStorePayload =  async (profileData, storeExists, user, store) =>
     },
     deliverySlots: {
       deliverySlotLengthinHrs: profileData?.store?.deliverySlot,
-      restPeriodsinHrs: profileData?.store?.restPeriod,
+      restPeriodinHrs: profileData?.store?.restPeriod,
     },
     deliveryOptions: {
       delivery: profileData?.store?.deliveryOption
@@ -76,7 +86,9 @@ export const getStorePayload =  async (profileData, storeExists, user, store) =>
         ? true
         : false,
     },
-    holidays: profileData?.holidays,
+    holidays: profileData?.holidays?.map((h) => {
+      return { description: h?.description, date: h?.date };
+    }),
     deliveryFees: {
       useTieredPricing:
         profileData?.delivery?.deliveryType === 0 ? false : true,
@@ -109,8 +121,8 @@ export const getStorePayload =  async (profileData, storeExists, user, store) =>
           )[0]?.value
         : null,
     },
-  }
-  
+  };
+
   //if there's no store, it populates the phone number and store keeper id
   if (!storeExists) {
     updatedStore.phoneNumber = user.phoneNumber ?? "";
@@ -130,28 +142,41 @@ export const getStorePayload =  async (profileData, storeExists, user, store) =>
   }
 
   return updatedStore;
-}
+};
 
-
-export const handleSubmitStore = async (profileData, store, setEditProfile, setLoading, storeExists, user, dispatch, token) => {
+export const handleSubmitStore = async (
+  profileData,
+  store,
+  setEditProfile,
+  setLoading,
+  storeExists,
+  user,
+  dispatch,
+  token
+) => {
   setLoading(true);
-
   //restructuring of new details of store to be updated
-  const updatedStore = await getStorePayload(profileData, storeExists, user, store);
+  const updatedStore = await getStorePayload(
+    profileData,
+    storeExists,
+    user,
+    store
+  );
 
   //api call to create or update store details if store exists or not
   try {
     const [success, responseData] = !storeExists
       ? await postRequest(`/api/stores/`, updatedStore, token)
       : await putRequest(`/api/stores/${store?.id}`, updatedStore, token);
+
     if (!success || responseData?.error) {
       throw new Error(
         responseData?.error?.message || "An error occurred, please try again"
       );
     } else {
-      //refetches the store to get the updated store details and save it
-      dispatch(getStoreByUser(user?.id, token));
-     
+      //updates the store state with the response data
+      dispatch(updateStore(responseData));
+
       //toast that shows whne successful
       toast.success(
         !storeExists
@@ -173,7 +198,13 @@ export const handleSubmitStore = async (profileData, store, setEditProfile, setL
   }
 };
 
-export const handleSubmitPassword = async (data, setLoading, token, passwordForm, setEditProfile) => {
+export const handleSubmitPassword = async (
+  data,
+  setLoading,
+  token,
+  passwordForm,
+  setEditProfile
+) => {
   setLoading(true);
   try {
     const [success, responseData] = await postRequest(

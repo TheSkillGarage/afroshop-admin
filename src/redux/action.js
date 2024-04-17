@@ -38,9 +38,8 @@ export const fetchData = async (dispatch, url, type, token) => {
     dispatch({ type: "API_REQUEST_SUCCESS", payload: type });
     dispatch({ type: "GET_API_REQUEST", hash: { [type]: data } });
   } catch (error) {
-    dispatch({ type: "SET_ERROR", error });
-    dispatch({ type: "API_REQUEST_FAILURE", payload: type });
-  }
+    dispatch({ type: "API_REQUEST_FAILURE", payload: type, error });
+  } 
 };
 
 export const deleteRequest = async (url, token) => {
@@ -60,23 +59,6 @@ export const deleteRequest = async (url, token) => {
   }
 };
 
-// export const userLogin = (user) => dispatch => {
-//   dispatch({
-//     type: 'LOGIN_USER',
-//     payload: user,
-//   });
-// };
-
-// export const getUserById = (id) => async (dispatch) => {
-//   return fetchData(dispatch, `users/${id}`, "user");
-// };
-export const getStoreByUser = (id, token) => async (dispatch) => {
-  return fetchData(dispatch, `stores/${id}`, "store", token);
-};
-export const getUserAddress = (token) => async (dispatch) => {
-  await fetchData(dispatch, "/addresses", "addresses", token);
-};
-
 export const updateUser = (user) => dispatch => {
   dispatch({
     type: 'UPDATE_USER',
@@ -90,21 +72,10 @@ export const addActionRole = (hash) => (dispatch) => {
     ...hash,
   });
 };
-export const updateProfile = (hash) => (dispatch) => {
-  dispatch({
-    type: "UPDATE_PROFILE_INFO",
-    ...hash,
-  });
-};
+
 export const addUserRole = (hash) => (dispatch) => {
   dispatch({
     type: "ADD_USER_ROLE",
-    ...hash,
-  });
-};
-export const addDeliveryData = (hash) => (dispatch) => {
-  dispatch({
-    type: "ADD_DELIVERY_DATA",
     ...hash,
   });
 };
@@ -133,13 +104,6 @@ export const handleAvatarSubmit = async (image, id) => {
   } catch (error) {
     console.log(error);
   }
-};
-
-export const addHolidayData = (hash) => (dispatch) => {
-  dispatch({
-    type: "ADD_HOLIDAY_DATA",
-    ...hash,
-  });
 };
 
 export const updateUserRole = (hash) => (dispatch) => {
@@ -177,7 +141,7 @@ export const discardDraft = (hash) => (dispatch) => {
 };
 
 export const getStoreData = (userID, token) => async (dispatch) => {
-  await fetchData(dispatch, `stores/${userID}`, "storeData", token);
+  await fetchData(dispatch, `stores/${userID}`, "store", token);
 };
 
 export const getProductData = (storeID, token) => async (dispatch) => {
@@ -191,12 +155,6 @@ export const getProductData = (storeID, token) => async (dispatch) => {
 
 export const getOrdersData = (storeID, token) => async (dispatch) => {
   await fetchData(dispatch, `orders?storeID=${storeID}`, "ordersData", token);
-};
-
-export const resetStore = () => (dispatch) => {
-  dispatch({
-    type: "RESET_STORE",
-  });
 };
 
 export const postRequest = (url, data, token = null) => {

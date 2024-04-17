@@ -16,7 +16,6 @@ import {
 
 const PageLayout = ({ children }) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
-  const store = useSelector((state) => state.store);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,9 +27,7 @@ const PageLayout = ({ children }) => {
 
   useEffect(() => {
     if (user && user.id) {
-      if (location.pathname === "/profile") {
-        dispatch(getStoreData(user?.id, token));
-      }
+      dispatch(getStoreData(user?.id, token));
     }
   }, [user, token, location.pathname, dispatch]);
 
@@ -43,15 +40,15 @@ const PageLayout = ({ children }) => {
         dispatch(getOrdersData(storeData.id, token));
       }
     }
-  }, [storeData, location.pathname, token, dispatch]);
+  }, [storeData, location.pathname, token, dispatch, user]);
 
   useEffect(() => {
-    if (Object.keys(store).length > 0) {
+    if (Object.keys(storeData).length > 0) {
       dispatch(setStoreExistStatus(true));
     } else {
       dispatch(setStoreExistStatus(false));
     }
-  }, [store, dispatch]);
+  }, [storeData, dispatch]);
   /*
 
     This section handles user Inactivity after 20mins
@@ -93,7 +90,7 @@ const PageLayout = ({ children }) => {
     } else {
       navigate("/login");
     }
-  }, [isAuthenticated, dispatch]);
+  }, [isAuthenticated, dispatch, navigate]);
 
   return (
     <section className="bg-[#F2F2F2] h-[100vh]">

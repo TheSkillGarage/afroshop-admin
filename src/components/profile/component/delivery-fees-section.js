@@ -11,7 +11,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
   const store = useSelector((state) => state.store);
   const storeExists = useSelector((state) => state.storeExists);
   const [deliveryType, setDeliveryType] = useState(
-    profileData?.delivery?.deliveryType
+    profileData?.delivery?.deliveryType ?? 0
   );
   const {
     control,
@@ -249,7 +249,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
             <InputComponent
               inputType="number"
               type="number"
-              label="Base Distance (km)"
+              label="Base Distance"
               fieldName={"base_distance"}
               name={"base_distance"}
               placeholder="Enter"
@@ -281,7 +281,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
             <InputComponent
               inputType="number"
               type="number"
-              label="Additional Distance Fee per km ($)"
+              label="Additional Distance Fee ($)"
               fieldName={"additional_distance_fee"}
               name={"additional_distance_fee"}
               placeholder="Enter"

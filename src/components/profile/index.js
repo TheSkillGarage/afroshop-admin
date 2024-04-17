@@ -33,7 +33,7 @@ const Profile = () => {
     ...data,
     holidays: store.holidays ?? [],
     store: storeExists ? {
-      ...data.store,
+      ...data?.store,
       days: store?.openDays?.map((day) => day?.openDays) || [],
       email: user?.email || "",
       store_name: store?.name || "",

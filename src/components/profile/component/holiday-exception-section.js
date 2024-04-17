@@ -134,6 +134,7 @@ const HolidayException = ({
                 icon={<DateIcon />}
                 handleDelete={() => deleteHolidayCard(index)}
                 editProfile={editProfile}
+                storeExists={storeExists}
               />
             </div>
           ))}
