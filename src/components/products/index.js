@@ -2,23 +2,34 @@ import React from "react";
 import { useSelector } from "react-redux";
 import EmptyProducts from "./empty-products";
 import ProductsDashboard from "./products-dashboard";
-
+import { BeatLoader } from "react-spinners";
 
 const Products = () => {
-    const storeData = useSelector((state) => state.storeData);
-    const productsData = useSelector((state) => state.productsData);
+  const loading = useSelector((state) => state.loadingStates);
+  const productsData = useSelector((state) => state.productsData);
+  const store = useSelector((state) => state.store);
 
-    return (
-        <>
-            {
-                storeData === null || productsData === null || productsData?.length === 0 ?
-                    <EmptyProducts />
-                    :
-                    <ProductsDashboard productsData={productsData} />
-
-            }
-        </>
-    )
-}
+  return (
+    <>
+      {loading?.productsData || !loading  ? (
+        <div className="fixed inset-0 bg-[#D3D3D3] bg-opacity-25 z-[100] flex justify-center items-center h-screen">
+          <div className="mt-[250px] w-full flex justify-center items-center">
+            <BeatLoader
+              color={"#186F3D"}
+              loading={true}
+              size={25}
+              speedMultiplier={2}
+            />
+          </div>
+        </div>
+      ) : store === null &&
+        (productsData === null || productsData?.length === 0) ? (
+        <EmptyProducts />
+      ) : (
+        <ProductsDashboard productsData={productsData} />
+      )}
+    </>
+  );
+};
 
 export default Products;

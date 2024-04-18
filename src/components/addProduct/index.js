@@ -7,7 +7,7 @@ import { addProduct, handleImageUpload, postRequest } from "../../redux/action";
 import { getTokenFromCookie } from "../../utils";
 
 const AddProduct = () => {
-  const store = useSelector((state) => state.storeData)
+  const store = useSelector((state) => state.store)
   const token = getTokenFromCookie()
 
   const [isLoading, setLoading] = useState(false);

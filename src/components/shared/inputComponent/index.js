@@ -83,6 +83,7 @@ const InputComponent = forwardRef(
                   ) : null}
                   <SelectDropdown
                     {...register(fieldName)}
+                    required={required}
                     multiple={multiple}
                     className={`${className} rounded`}
                     field={field}
@@ -131,7 +132,10 @@ const InputComponent = forwardRef(
               className={`bg-inherit w-full border-none focus:outline-none text-[16px] font-normal placeholder-[#333333] ${className}`}
               type={type}
               accept={accept}
+              ref={ref}
               min={min}
+              title={requiredMessage}
+              step={type === "time" ? 2 : 0}
               max={max}
               name={name}
               placeholder={placeholder}

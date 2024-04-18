@@ -13,7 +13,7 @@ const ProductsDashboard = ({ productsData }) => {
 
     const [activeTab, setActiveTab] = useState('all');
     const [page, setPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(productsData.length > 10 ? 10 : 5);
+    const [itemsPerPage, setItemsPerPage] = useState(productsData?.length > 10 ? 10 : 5);
 
     const [searchTerm, setSearchTerm] = useState('');
 

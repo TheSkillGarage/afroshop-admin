@@ -1,5 +1,5 @@
 import AfroshopLogo from "./afroshop-logo.svg";
-
+import radio from "./radio.svg";
 import { ReactComponent as MenuIcon } from "./menu.svg";
 import { ReactComponent as NotificationIcon } from "./notification.svg";
 import { ReactComponent as SettingsIcon } from "./setting.svg";
@@ -13,6 +13,7 @@ import { ReactComponent as DeleteIcon } from "./icon-delete.svg";
 import { ReactComponent as EyeIcon } from "./eye.svg";
 import { ReactComponent as GreenRightArrow } from "./green-right-icon.svg";
 import { ReactComponent as LeftArrow } from "./icon-left-arrow.svg";
+import { ReactComponent as LogoutIcon } from "./logout.svg";
 import Eye from "./eye.svg";
 import ErrorIcon from "./ErrorIcon.svg";
 import successIcon from "./SuccessIcon.png";
@@ -119,7 +120,7 @@ import OrdersCart from "./orders-cart.svg";
 import DefaultUserImage from "./default-user-img.jpg"
 import EmptyStateImage from "./empty-state.svg";
 import StoreDefaultImage from "./storeDefault.png"
-import LogoutIcon from "./logOutIcon.svg";
+import LogoutIcon2 from "./logOutIcon.svg";
 
 export {
   NotFoundImage,
@@ -140,12 +141,14 @@ export {
   RightGreenArrow,
   RightGreyIcon,
   RightWhiteArrow,
+  LogoutIcon,
   successIcon,
   LoadingIcon,
   ErrorIcon,
   whiteMarkIcon,
   greyMarkIcon,
   AfroshopLogo,
+  radio,
   MenuIcon,
   NotificationIcon,
   SettingsIcon,
@@ -231,5 +234,5 @@ export {
   OrdersCart,
   DefaultUserImage,
   StoreDefaultImage,
-  LogoutIcon,
+  LogoutIcon2,
 };

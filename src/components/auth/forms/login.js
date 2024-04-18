@@ -44,7 +44,7 @@ const LogInForm = () => {
         password: value.password,
       });
       if (!success || responseData?.error) {
-        console.error(responseData?.error?.message);
+      
         toast.error(
           `${responseData?.error?.message || "An Error occured while logging in"
           }`,
@@ -67,7 +67,6 @@ const LogInForm = () => {
         }
       }
     } catch (error) {
-      console.log('error', error)
       toast.error(`An error occured while logging ${error}`, { autoClose: 2000 });
     } finally {
       setLoading(false);

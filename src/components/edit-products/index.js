@@ -13,7 +13,7 @@ const EditSingleProduct = () => {
   const token = getTokenFromCookie();
 
   const productData = useSelector((state) => state.productsData);
-  const store = useSelector((state) => state.storeData)
+  const store = useSelector((state) => state.store)
   const [isLoading, setLoading] = useState(false);
 
   const product = productData.find((product) => product.SKU == sku);

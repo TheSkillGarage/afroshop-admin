@@ -34,7 +34,7 @@ const ProductChanges = ({
   const [tab, setTab] = useState("");
 
   const handleSelectCategory = (val) => {
-    handleProductInfo("category", val);
+    handleProductInfo("category", val?.label);
   };
 
   const handleFilesSelect = (files) => {

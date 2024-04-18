@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 const EmptyProducts = () => {
     const navigate = useNavigate()
-    const storeData = useSelector(state => state.storeData)
+    const storeData = useSelector(state => state.store)
     return (
         <div className="min-h-screen flex justify-center items-center">
 

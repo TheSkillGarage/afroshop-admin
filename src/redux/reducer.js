@@ -1,48 +1,55 @@
-import {
-  deliveryData,
-  holidayMockData,
-  profileInitialState,
-} from "../data/profile";
 import sectionData from "../data/roles-section-data";
 
 
 const PRIVATE_INITIAL_STATE = {
   productsData: null,
-  storeData: null,
   ordersData: null,
+  store: {},
+  addresses: [],
   roles: [],
   isAuthenticated: false,
+  storeExists: null,
+  loadingStates: null,
   user: null,
 };
 
 const INITIAL_STATE = {
   ...PRIVATE_INITIAL_STATE,
-  isFetching: false,
   sections: sectionData,
-  delivery: deliveryData,
-  holidays: holidayMockData,
-  profile: profileInitialState,
   isSidebarToggled: false,
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => { 
   switch (action.type) {
-    case "SET_IS_FETCHING":
+    case "API_REQUEST_START":
       return {
         ...previousState,
-        isFetching: action.isFetching,
+        loadingStates: {
+          ...previousState.loadingStates,
+          [action.payload]: true, // Set loading state to true for the requestId
+        },
       };
-    case "SET_ERROR":
+    case "API_REQUEST_SUCCESS":
+    case "API_REQUEST_FAILURE":
+      if(action.error){
+        console.error(action.error)
+      }
       return {
         ...previousState,
-        error: action.error,
-        isFetching: false,
+        loadingStates: {
+          ...previousState.loadingStates,
+          [action.payload]: false, // Set loading state to false for the requestId
+        },
       };
     case "GET_API_REQUEST":
       return {
         ...previousState,
         ...action.hash,
-        isFetching: false,
+      };
+    case "SET_STORE_EXIST":
+      return {
+        ...previousState,
+        storeExists: action.payload,
       };
     case "LOGIN_USER":
       return {
@@ -53,28 +60,17 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
     case "LOG_OUT":
       return {
         ...previousState,
-        ...PRIVATE_INITIAL_STATE
+        ...PRIVATE_INITIAL_STATE,
       };
     case "UPDATE_USER":
       return {
         ...previousState,
         user: action.payload,
       };
-    case "UPDATE_PROFILE_INFO":
+    case "UPDATE_STORE":
       return {
         ...previousState,
-        profile: action.profile,
-      };
-    case "ADD_DELIVERY_DATA":
-      return {
-        ...previousState,
-        delivery: action.delivery,
-      };
-
-    case "ADD_HOLIDAY_DATA":
-      return {
-        ...previousState,
-        holidays: action.holidays,
+        store: action.payload,
       };
     case "ADD_USER_ROLE":
       return {
@@ -97,52 +93,6 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
       return {
         ...previousState,
         isSidebarToggled: !action.toggle,
-      };
-    case "ADD_PRODUCT":
-      const id = (Math.floor(Math.random() * 900000) + 100000).toString();
-
-      const newProductObj = {
-        id: id,
-        SKU: id,
-        dateAdded: new Date(),
-        status: action.status,
-        ...action.productInfo,
-        draft: {},
-      };
-
-      const updatedProductsArray = [
-        newProductObj,
-        ...previousState.productsData,
-      ];
-
-      return {
-        ...previousState,
-        productsData: updatedProductsArray,
-      };
-    case "EDIT_PRODUCT":
-      const updatedProductData = previousState.productsData.map((product) => {
-        if (product.SKU === action.sku) {
-          switch (action.option) {
-            case "draft":
-              return {
-                ...product,
-                draft: action.productInfos,
-                lastEdited: new Date(),
-              };
-            default:
-              return {
-                ...product,
-                ...action.productInfos,
-                draft: {},
-                lastEdited: new Date(),
-              };
-          }
-        }
-        return product;
-      });
-      return {
-        ...previousState,
-        productsData: updatedProductData,
       };
     case "DISCARD_DRAFT":
       const updateProductDraft = previousState.productsData.map((product) => {

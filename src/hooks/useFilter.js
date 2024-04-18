@@ -4,7 +4,7 @@ export const useFilter = (name, activeTab, DATA, searchTerm, filterObject) => {
     const [filteredData, setFilteredData] = useState([]);
 
     useEffect(() => {
-        let updatedData = DATA.slice();
+        let updatedData = DATA?.slice();
 
         // Filter by searchTerm
         if (searchTerm !== '') {
