@@ -121,8 +121,14 @@ import DefaultUserImage from "./default-user-img.jpg"
 import EmptyStateImage from "./empty-state.svg";
 import StoreDefaultImage from "./storeDefault.png"
 import LogoutIcon2 from "./logOutIcon.svg";
+import Earnings from "./card.svg"
+import EarningsGrey from "./earnings.svg"
+import EarningsIllustration from "./EarningsIllustration.svg"
 
 export {
+  EarningsIllustration,
+  EarningsGrey,
+  Earnings,
   NotFoundImage,
   UserAvatar,
   DefaultImage,

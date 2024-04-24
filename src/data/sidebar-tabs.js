@@ -11,10 +11,10 @@ const SIDEBAR_TABS = [
         name: "products",
         path: "/products"
     },
-    // {
-    //     name: "payments",
-    //     path: "/payments"
-    // },
+    {
+        name: "earnings",
+        path: "/earnings"
+    },
     {
         name: "profile",
         path: "/profile"

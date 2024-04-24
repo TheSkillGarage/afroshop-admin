@@ -17,6 +17,7 @@ import {
   SignUpPage,
   LogInPage,
   NewPasswordPage,
+  EarningsPage,
 } from "./pages";
 import EditRole from "./components/roles-and-permissions/edit-role";
 import RedirectHandler from "./components/redirectHandler";
@@ -76,6 +77,7 @@ const MyRoutes = () => {
         
         <Route exact path="/404" element={<PageNotFoundComponent />} />
         <Route path="/*" element={<PageNotFoundComponent />} />
+        <Route path="/earnings" element={<EarningsPage />} />
       </Routes>
     </BrowserRouter>
   );
