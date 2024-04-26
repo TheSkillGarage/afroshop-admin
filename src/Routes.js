@@ -43,6 +43,7 @@ const MyRoutes = () => {
           <Route exact path="/reset-successful" element={<PasswordSucess />} />
           <Route exact path="/reset-password" element={<PasswordReset />} />
           <Route exact path="/verify-email" element={<EmailVerification />} />
+          <Route exact path="/new-password" element={<NewPasswordPage />} />
           <Route exact path="/signup" element={<SignUpPage />} />
           <Route exact path="/login" element={<LogInPage />} />
           <Route path="/*" element={<Navigate to="/login" />} />
@@ -58,7 +59,6 @@ const MyRoutes = () => {
           <Route exact path="/profile" element={<ProfilePage />} />
           <Route exact path="/orders" element={<Orders />} />
           <Route exact path="/view-order/:orderID" element={<ViewOrdersPage />} />
-          <Route exact path="/new-password" element={<NewPasswordPage />} />
           <Route
             exact
             path="/roles-and-permissions"
