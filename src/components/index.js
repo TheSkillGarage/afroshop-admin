@@ -18,3 +18,4 @@ export {default as VerifyEmail} from './auth/forms/VerifyEmail';
 export {default as NewPassword} from './auth/forms/NewPassword'
 export {default as PageNotFoundComponent} from './pageNotFound';
 export {default as EmptyOrders} from './orders/empty-orders';
+export {default as Earnings} from './earnings/index'
