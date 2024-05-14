@@ -102,7 +102,7 @@ input[type='number'] {
     height: 100%;
   }
 
-  @media (max-height: 620px) {
+  @media (max-height: 640px) {
     .content-height {
       max-height: fit-content;
       height: fit-content;
