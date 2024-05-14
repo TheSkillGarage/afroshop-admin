@@ -18,6 +18,7 @@ const SelectDropdown = forwardRef(
       handleChange,
       closeMenuOnSelect,
       handleSelectedYear,
+      required,
     },
     ref
   ) => {
@@ -31,6 +32,7 @@ const SelectDropdown = forwardRef(
             ? "#FF3B300D"
             : "#FFFFFF"
           : "#F2F2F2",
+        cursor: "pointer",
         fontWeight: 400,
         fontSize: color === "green" ? "13px" : "16px",
         lineHeight: color === "green" ? "23px" : "24px",
@@ -41,10 +43,12 @@ const SelectDropdown = forwardRef(
             ? "1px solid #FF3B30"
             : isDisabled
             ? ""
-            : "1px solid #186F3D"
+            : ""
           : "1px solid #F2F2F2",
         boxShadow: state.isFocused ? 0 : 0,
-        "&:hover": { border: color === "green" ? "1px solid #186F3D" : "1px solid #cccccc" },
+        "&:hover": {
+          border: color === "green" ? "1px solid #186F3D" : "1px solid #cccccc",
+        },
       }),
       placeholder: (baseStyles) => ({
         ...baseStyles,
@@ -69,6 +73,7 @@ const SelectDropdown = forwardRef(
     return (
       <>
         <Select
+          required={required}
           value={multiple ? selectedOptions : value}
           defaultValue={[options[0]]}
           styles={selectStyles}
@@ -87,14 +92,14 @@ const SelectDropdown = forwardRef(
               !multiple
                 ? val?.label
                 : setSelectedOptions((prev) =>
-                  val?.map((v) =>
-                    v?.value !== prev?.value
-                      ? { label: v?.label, value: v?.value }
-                      : prev
+                    val?.map((v) =>
+                      v?.value !== prev?.value
+                        ? { label: v?.label, value: v?.value }
+                        : prev
+                    )
                   )
-                )
             );
-            handleChange?.(multiple ? val : val?.label);
+            handleChange?.(val);
             handleSelectedYear?.(val?.value);
           }}
           className={`${className} basic-multi-select`}

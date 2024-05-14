@@ -34,10 +34,9 @@ const LogInForm = () => {
     handleSubmit,
   } = useForm({ mode: "all" });
 
-
   const onSubmit = async () => {
     const value = getValues();
-  
+
     setLoading(true);
     try {
       const [success, responseData] = await postRequest("/api/auth/local", {
@@ -45,23 +44,22 @@ const LogInForm = () => {
         password: value.password,
       });
       if (!success || responseData?.error) {
-        console.error(responseData?.error?.message);
+      
         toast.error(
-          `${
-            responseData?.error?.message || "An Error occured while logging in"
+          `${responseData?.error?.message || "An Error occured while logging in"
           }`,
           { autoClose: 2000 }
         );
       } else {
         const userData = await fetchUserRole("/users/me?populate=*", responseData);
 
-        if (userData?.role?.name === 'admin') {
+        if (userData?.role?.name === "admin") {
           dispatch(userLogin(responseData?.user));
           Cookies.set(AFROADMIN_TOKEN, responseData?.jwt, {
             expires: expirationDate,
           });
           reset();
-          navigate("/dashboard");
+          navigate("/");
         } else {
           toast.error(`You are not authorized to access this page`, {
             autoClose: 2000,
@@ -69,7 +67,6 @@ const LogInForm = () => {
         }
       }
     } catch (error) {
-      console.log('error', error)
       toast.error(`An error occured while logging ${error}`, { autoClose: 2000 });
     } finally {
       setLoading(false);
@@ -86,7 +83,7 @@ const LogInForm = () => {
           </p>
         </div>
 
-        <ConnectButton provider="google"/>
+        <ConnectButton provider="google" />
 
         <p className="text-[13px] leading-[23px] text-center my-6 text-[#CCCCCC]">
           or
@@ -139,7 +136,7 @@ const LogInForm = () => {
 
             <p className="text-[16px] leading-[24px] text-[#CCCCCC] font-normal text-center mt-2">
               Don't have an account?{" "}
-              <Link to="/sign-up">
+              <Link to="/signup">
                 <span className="text-[#186F3D]">Sign Up</span>
               </Link>
             </p>

@@ -1,5 +1,5 @@
 import React from "react";
-import { CardIcon, OrdersIcon, OrdersIconWhite, OverviewIcon, OverviewIconWhite, PaymentsIconWhite, ProductIcon, ProductIconWhite, RolesIcon, RolesIconWhite, SupportIcon, SupportIconWhite, UserIcon, UserIconWhite } from "../../images";
+import { CardIcon, Earnings, EarningsGrey, OrdersIcon, OrdersIconWhite, OverviewIcon, OverviewIconWhite, PaymentsIconWhite, ProductIcon, ProductIconWhite, RolesIcon, RolesIconWhite, SupportIcon, SupportIconWhite, UserIcon, UserIconWhite } from "../../images";
 import { Link, useLocation } from "react-router-dom";
 
 
@@ -15,6 +15,8 @@ const SidebarTab = ({ name, path, isSidebarToggled }) => {
                 return OrdersIcon
             case "products":
                 return ProductIcon
+            case 'earnings':
+                return EarningsGrey
             case "payments":
                 return CardIcon
             case "profile":
@@ -35,6 +37,8 @@ const SidebarTab = ({ name, path, isSidebarToggled }) => {
                 return OrdersIconWhite
             case "products":
                 return ProductIconWhite
+            case "earnings":
+                return Earnings
             case "payments":
                 return PaymentsIconWhite
             case "profile":

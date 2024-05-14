@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
@@ -19,13 +19,22 @@ import InputComponent from "../shared/inputComponent";
 import _ from 'lodash'
 
 
-const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, handleProductInfo, handleFormSubmit, handleProductDraft }) => {
+const ProductChanges = ({
+  isEdit,
+  isDraft,
+  productInfo,
+  initialProductInfo,
+  handleProductInfo,
+  handleFormSubmit,
+  handleProductDraft,
+  isLoading
+}) => {
 
   const navigate = useNavigate();
   const [tab, setTab] = useState("");
 
   const handleSelectCategory = (val) => {
-    handleProductInfo("category", val);
+    handleProductInfo("category", val?.label);
   };
 
   const handleFilesSelect = (files) => {
@@ -56,7 +65,6 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
 
   const onSubmit = (data) => {
     handleFormSubmit()
-    console.log(data);
   };
 
   return (
@@ -141,32 +149,32 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
                     )}
                   </div>
                 </div>
-                
-                  <div className={`${tab === "productImage" ? "" : "hidden"}`} onClick={(e) => e.stopPropagation()}>
-                    <div>
-                      <FileInput
-                        className="hidden"
-                        id="productImage"
-                        productInfo={productInfo}
-                        onFilesSelect={handleFilesSelect}
-                        register={register}
-                        control={control}
-                        errors={errors}
-                      />
-                    </div>
 
-                    <ImageDisplay
-                      selectedFiles={productInfo?.images}
-                      onDelete={handleDelete}
+                <div className={`${tab === "productImage" ? "" : "hidden"}`} onClick={(e) => e.stopPropagation()}>
+                  <div>
+                    <FileInput
+                      className="hidden"
+                      id="productImage"
+                      productInfo={productInfo}
+                      onFilesSelect={handleFilesSelect}
+                      register={register}
+                      control={control}
+                      errors={errors}
                     />
                   </div>
-                
+
+                  <ImageDisplay
+                    selectedFiles={productInfo?.images}
+                    onDelete={handleDelete}
+                  />
+                </div>
+
               </div>
             </section>
           </div>
 
           <section className="flex items-center justify-between pt-[7%]">
-            <div className="flex gap-6">
+            {/* <div className="flex gap-6">
               <Button
                 variant="tertiary"
                 size="big"
@@ -187,7 +195,7 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
               >
                 Discard Draft
               </Button>}
-            </div>
+            </div> */}
 
             <div className="flex justify-between items-center gap-[24px]">
 
@@ -205,6 +213,7 @@ const ProductChanges = ({ isEdit, isDraft, productInfo, initialProductInfo, hand
                 type="submit"
                 className="w-[133px] h-[40px]"
                 disabled={_.isEqual(initialProductInfo, productInfo)}
+                loading={isLoading}
               >
                 Submit
               </Button>

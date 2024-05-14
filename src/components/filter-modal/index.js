@@ -8,9 +8,9 @@ import CustomScrollbar from "./filter.styles";
 const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA }) => {
 
     const orderKeys = ["orderID", "orderDate", "customer", "price", "items", "status"]
-    const productKeys = ["productName", "SKU", "dateAdded", "salesPrice", "availabilty", "status"]
-
-    const filters = name === "orders" ? orderKeys : name === "view-orders" ?  Object.keys(DATA[0]) : name==="products" ? productKeys : Object.keys(DATA[0]).slice(1) // sets DATA keys as filter criterias 
+    const productKeys = ["productName", "SKU", "dateAdded", "salesPrice", "availability", "status"]
+    const viewOrdersKeys = ["name", "categoryName", "price"]
+    const filters = name === "orders" ? orderKeys : name === "view-orders" ? viewOrdersKeys : name === "products" ? productKeys : Object.keys(DATA[0]).slice(1) // sets DATA keys as filter criterias 
 
     const [toggleFilters, setToggleFilters] = useState({});
     const [formData, setFormData] = useState({});
@@ -47,15 +47,33 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
     const filterSet = useMemo(() => {
         const updatedUniqueValues = {};
 
+        const getUniqueValues = (obj, filter, name) => {
+            switch (filter) {
+                case 'price':
+                    return name !== 'view-orders' ? `$${obj["grandTotal"]}` : `$${obj["price"]}`;
+                case 'orderDate':
+                    return new Date(obj["createdAt"]).toLocaleDateString();
+                case 'customer':
+                    return `${obj["firstName"]} ${obj["lastName"]}`;
+                case 'items':
+                    return obj["products"].length;
+                case 'productName':
+                    return obj["name"];
+                case 'dateAdded':
+                    return new Date(obj[filter]).toLocaleDateString();
+                case 'salesPrice':
+                    return `$${obj["price"]}`;
+                default:
+                    return obj[filter];
+            }
+        };
+
         filters.forEach((filter) => {
             const uniqueArray = Array.from(
                 new Set(
-                    DATA.map((obj) => {
-                        if (filter === 'price' && obj[filter] && typeof obj[filter] === 'object') {
-                            return obj[filter].price;
-                        }
-                        return obj[filter];
-                    }).filter((value) => value !== undefined)
+                    DATA?.filter(obj => obj !== undefined) // Filter out undefined elements in DATA
+                        .map((obj) => getUniqueValues(obj, filter, name))
+                        .filter((value) => value !== undefined)
                 )
             );
 
@@ -63,7 +81,7 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
         });
 
         return updatedUniqueValues;
-    }, [DATA, filters]);
+    }, [DATA, filters, name]);
 
     useEffect(() => {
         setFiltersObject(filterSet);
@@ -152,6 +170,7 @@ const FilterModal = ({ name, openFilter, setOpenFilter, handleFilterObject, DATA
         handleFilterObject({});
         closeFilter();
         setFiltersObject(filterSet);
+        setFormData({});
     }
 
 

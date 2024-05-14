@@ -1,20 +1,33 @@
 import React from "react";
 import Welcome from "../dashboard/welcome";
 import Dashboard from "../dashboard/dashboard";
-import { OVERVIEW_DATA } from "../../data";
-
+import { useSelector } from "react-redux";
+import { BeatLoader } from "react-spinners";
 
 const Overview = () => {
-
-    return (
-        <div >
-            {OVERVIEW_DATA.length < 0 ?
-                <Welcome />
-                :
-                <Dashboard />
-            }
+  const storeExists = useSelector((state) => state.storeExists); 
+  const loading = useSelector((state) => state.loadingStates);
+  
+  return (
+    <div>
+      {loading?.store || !loading ? (
+        <div className="fixed inset-0 bg-[#D3D3D3] bg-opacity-25 z-[100] flex justify-center items-center h-screen">
+          <div className="mt-[250px] w-full flex justify-center items-center">
+            <BeatLoader
+              color={"#186F3D"}
+              loading={true}
+              size={25}
+              speedMultiplier={1}
+            />
+          </div>
         </div>
-    );
+      ) : !storeExists ? (
+        <Welcome />
+      ) : (
+        <Dashboard />
+      )}
+    </div>
+  );
 };
 
 export default Overview;

@@ -4,7 +4,6 @@ import {
   RightGreenArrow,
   RightWhiteArrow,
   RightGreyIcon,
-  LoadingAnimation,
   LeftBlackArrow,
   WhiteCart,
   DownloadIcon,
@@ -12,6 +11,7 @@ import {
   AddIcon,
 } from "../../../images";
 import PropTypes from "prop-types";
+import { ClipLoader } from 'react-spinners';
 
 /**
  * @description Button Component
@@ -87,24 +87,28 @@ const Button = ({
     size && SIZE[size],
     className
   );
+  console.log(loading)
 
   return (
     <div>
       <button
         {...restProps}
+        disabled={variant === "disabled"}
         type={type}
         className={`flex flex-row justify-center items-center rounded ${!size && `w-44 h-10`} ${classes}`}
         onClick={onClick}
       >
         {loading ? (
-          <LoadingAnimation
+          <ClipLoader
             color={LoaderColor[variant]}
+            loading={true}
+            size={14}
+            speedMultiplier={2}
           />
         ) : (
           <span
-            className={`${
-              icon && iconDirection[direction]
-            } justify-center items-center gap-2 font-normal leading-6 text-base w-full`}
+            className={`${icon && iconDirection[direction]
+              } justify-center items-center gap-2 font-normal leading-6 text-base w-full`}
           >
             {children}
             {icon && ICONS[icon]}

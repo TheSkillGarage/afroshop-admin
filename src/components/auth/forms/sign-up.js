@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { GoogleLogo } from "../../../images";
 import SignUpData from "../../../data/SignUp";
 import Button from "../../shared/button";
 import InputComponent from "../../shared/inputComponent";
-import { postRequest, userLogin } from "../../../redux/action";
-import { AFROADMIN_TOKEN } from "../../../utils/constants";
-import { expirationDate } from "../../../utils";
+import { postRequest, updateUser } from "../../../redux/action";
 import ConnectButton from "../../../googleLoginButton";
 import PasswordCriteria from "../../shared/passwordChecker";
 import { PasswordStrengthCheck } from "./utils";
@@ -38,27 +35,39 @@ const SignUpForm = () => {
   const watchPassword = watch("password");
 
 
-  // send user otp
-  const sendUserOtp = async (user) => {
+  const sendUserOtp = async (value) => {
+    setLoading(true);
     try {
-      const [success, response] = await postRequest("/api/generate-otps", {
-        email: user.email,
-        user,
+      const [success, response] = await postRequest("/api/otps", {
+        email: value.email,
       });
 
       if (!success || response?.error) {
-        console.error(response?.error?.message);
+        console.error(response.error.message);
         toast.error(
           `${
-            response?.error?.message || "An error occured while sending an Otp"
+            response?.error?.message ||
+            "An error occured while sending your otp"
           }`,
           { autoClose: 2000 }
         );
       } else {
+        toast.success("otp sent to your email adress", { autoClose: 2000 });
+        dispatch(
+          updateUser({
+            username: value.email,
+            email: value.email,
+            password: value.password,
+            firstName: value.firstname,
+            lastName: value.lastname,
+          })
+        );
         navigate("/verify-email");
       }
     } catch (error) {
-      toast.error(`An error occured while sending an Otp`, { autoClose: 2000 });
+      toast.error(`An error occured while sending your otp`, {
+        autoClose: 2000,
+      });
     } finally {
       setLoading(false);
     }
@@ -66,41 +75,9 @@ const SignUpForm = () => {
 
   const onSubmit = async () => {
     const value = getValues();
-    setLoading(true);
-    try {
-      const [success, responseData] = await postRequest(
-        "/api/auth/local/register",
-        {
-          username: value.email,
-          email: value.email,
-          password: value.password,
-          firstName: value.firstname,
-          lastName: value.lastname,
-        }
-      );
-
-      if (!success || responseData?.error) {
-        console.error(responseData.error.message);
-        toast.error(
-          `${
-            responseData?.error?.message || "An error occured while signing up"
-          }`,
-          { autoClose: 2000 }
-        );
-      } else {
-        dispatch(userLogin(responseData?.user));
-        Cookies.set(AFROADMIN_TOKEN, responseData?.jwt, {
-          expires: expirationDate,
-        });
-        await sendUserOtp(responseData?.user);
-        reset();
-      }
-    } catch (error) {
-      toast.error(`An error occured while signing up`, { autoClose: 2000 });
-    } finally {
-      setLoading(false);
-    }
+    sendUserOtp(value);
   };
+
 
   const requiredMessage = (label) => {
     switch (label) {
