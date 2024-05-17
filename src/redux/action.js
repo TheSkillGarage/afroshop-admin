@@ -127,10 +127,17 @@ export const addProduct = (hash) => (dispatch) => {
   });
 };
 
-export const editProduct = (hash) => (dispatch) => {
+export const editProduct = (productsData) => (dispatch) => {
   dispatch({
     type: "EDIT_PRODUCT",
-    ...hash,
+    payload: productsData
+  });
+};
+
+export const editProductAsDraft = (productsData) => (dispatch) => {
+  dispatch({
+    type: "EDIT_PRODUCT_AS_DRAFT",
+    payload: productsData
   });
 };
 
@@ -201,6 +208,7 @@ export const handleImageUpload = async (images, collectionName, id = null) => {
   }
 
   const token = getTokenFromCookie();
+  console.log(token)
   const uploadConfig = {
     headers: {
       "Content-Type": "multipart/form-data",

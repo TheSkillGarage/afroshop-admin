@@ -35,6 +35,24 @@ const destinationOptions = [
     value: "Over 20km",
   },
 ];
+export const pricingTypeOptions = [
+  {
+    label: 'per Kg',
+    value: 'per Kg',
+  },
+  {
+    label: 'per Lb',
+    value: 'per Lb',
+  },
+  {
+    label: 'per G',
+    value: 'per G',
+  },
+  {
+    label: 'per Dz',
+    value: 'per Dz',
+  },
+]
 const deliveryData = [
   // {
   //   label: "Within 5 km",

@@ -11,15 +11,18 @@ const AddProduct = () => {
   const token = getTokenFromCookie()
 
   const [isLoading, setLoading] = useState(false);
+  const [saveDraftLoading, setSaveDraftLoading] = useState(false);
 
   const useProductInfo = {
     category: "",
     productName: "",
-    availabilty: "",
+    availability: "",
     salesPrice: "",
     discount: "",
     description: "",
     images: [],
+    taxable: false,
+    unitWeightInGrams: 0
   };
 
   const [productInfo, setProductInfo] = useState(useProductInfo);
@@ -35,6 +38,62 @@ const AddProduct = () => {
     }));
   };
 
+  const handleSaveProductAsDraft = async () => {
+    setSaveDraftLoading(true)
+
+    const payload = {
+      "store": store?.id,
+      "description": productInfo?.description,
+      "price": productInfo.salesPrice,
+      "name": productInfo.productName,
+      "discount": productInfo.discount,
+      "productCategory": productInfo.category,
+      "status": "draft", // hardcoded
+      "availability": productInfo.availability,
+      // These need to be added to the UI/UX
+      "taxable": productInfo?.taxable,
+      "pricingType": productInfo?.type === 0 ? "per Item" : productInfo?.pricingType,
+      "unitWeightInGrams": productInfo?.unitWeightInGrams
+    }
+
+    try {
+      // upload images first
+      const images = productInfo?.images?.map((i) => (i.data));
+
+      if (images?.length === 0) {
+        throw new Error('Add an Image to upload!')
+      }
+
+      const [imageUpSuccess, response] = await handleImageUpload(images, 'products')
+      if (!imageUpSuccess || response?.error) {
+        throw new Error(response?.error.message)
+      } else {
+        payload.images = response
+      }
+
+      // handle Product Creation
+      const [success, responseData] = await postRequest(
+        `/api/products`,
+        payload,
+        token
+      );
+      if (!success || responseData?.error) {
+        throw new Error(responseData?.error?.message);
+      }
+
+      toast.success("Your product was successfully saved as draft!");
+      navigate("/products");
+
+    } catch (error) {
+      toast.error(`An Error occured while uploading this Product. Please try again later.`, {
+        autoClose: 2000,
+      });
+      console.error(error);
+    } finally {
+      setSaveDraftLoading(false)
+    }
+  }
+
   const handleCreateProduct = async (data) => {
     setLoading(true)
 
@@ -46,11 +105,11 @@ const AddProduct = () => {
       "discount": productInfo.discount,
       "productCategory": productInfo.category,
       "status": "active", // hardcoded
-      "availability": productInfo.availabilty,
+      "availability": productInfo.availability,
       // These need to be added to the UI/UX
-      "taxable": true,
-      "pricingType": "per Item",
-      "unitWeightInGrams": 5
+      "taxable": productInfo?.taxable,
+      "pricingType": productInfo?.type === 0 ? "per Item" : productInfo?.pricingType,
+      "unitWeightInGrams": productInfo?.unitWeightInGrams
     }
 
     try {
@@ -103,8 +162,9 @@ const AddProduct = () => {
       initialProductInfo={useProductInfo}
       handleProductInfo={handleProductInfo}
       handleFormSubmit={handleCreateProduct}
-      handleProductDraft={handleProductDraft}
+      handleProductDraft={handleSaveProductAsDraft}
       isLoading={isLoading}
+      isDraftLoading={saveDraftLoading}
     />
   );
 };

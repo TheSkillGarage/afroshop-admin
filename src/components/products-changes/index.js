@@ -10,14 +10,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { CATEGORY_DATA } from "../../data";
 import "react-quill/dist/quill.snow.css";
 import { FileInput, ImageDisplay } from "../addProduct/helpers";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 import { ProductInfo } from "./productInfo";
 import Button from "../shared/button";
 import { useForm } from "react-hook-form";
 import InputComponent from "../shared/inputComponent";
-import _ from 'lodash'
-
+import _ from "lodash";
+import Checkbox from "../shared/checkbox";
 
 const ProductChanges = ({
   isEdit,
@@ -27,10 +27,11 @@ const ProductChanges = ({
   handleProductInfo,
   handleFormSubmit,
   handleProductDraft,
-  isLoading
+  isLoading,
+  isDraftLoading
 }) => {
-
   const navigate = useNavigate();
+  const [isTaxable, setIsTaxable] = useState(productInfo?.taxable);
   const [tab, setTab] = useState("");
 
   const handleSelectCategory = (val) => {
@@ -41,7 +42,7 @@ const ProductChanges = ({
     const newImageObj = {
       url: URL.createObjectURL(files[0]),
       data: files[0],
-    }
+    };
     const newFiles = [...productInfo.images, newImageObj];
 
     handleProductInfo("images", newFiles);
@@ -60,11 +61,12 @@ const ProductChanges = ({
     handleSubmit,
   } = useForm({
     mode: "all",
-    defaultValues: productInfo
+    defaultValues: productInfo,
   });
+  console.log(errors, )
 
   const onSubmit = (data) => {
-    handleFormSubmit()
+    handleFormSubmit();
   };
 
   return (
@@ -84,31 +86,57 @@ const ProductChanges = ({
           )}
         </div>
       </div>
-      <form className="bg-white p-[24px] mx-[12px]" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="bg-white p-[24px] mx-[12px]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="flex flex-col justify-between h-[100%]">
           <div>
             <section className="p-[24px]">
-              <div className="md:w-[327px] w-[50%]">
-                <div className="mb-8 text-start w-[327px]">
-                  <InputComponent
-                    inputType="select"
-                    label="Category"
-                    fieldName="category"
-                    defaultValue={productInfo?.category}
-                    value={productInfo?.category}
-                    handleChange={handleSelectCategory}
-                    register={register}
-                    control={control}
-                    errors={errors}
-                    required={true}
-                    requiredMessage={'This field is required'}
-                    options={CATEGORY_DATA}
-                    placeholder={(productInfo?.category !== "") ? productInfo?.category : "Select"}
-                    className="w-full"
-                  />
+              <div className="flex gap-10">
+                <div className=" md:w-[327px] w-[50%]">
+                  <div className="mb-8 text-start w-[327px]">
+                    <InputComponent
+                      inputType="select"
+                      label="Category"
+                      fieldName="category"
+                      defaultValue={productInfo?.category}
+                      value={productInfo?.category}
+                      handleChange={handleSelectCategory}
+                      register={register}
+                      control={control}
+                      errors={errors}
+                      required={true}
+                      requiredMessage={"This field is required"}
+                      options={CATEGORY_DATA}
+                      placeholder={
+                        productInfo?.category !== ""
+                          ? productInfo?.category
+                          : "Select"
+                      }
+                      className="w-full"
+                    />
+                  </div>
                 </div>
+                <Checkbox
+                  name={"taxable"}
+                  handleChange={() => {
+                    setIsTaxable(!isTaxable);
+                    handleProductInfo("taxable", !isTaxable)
+                  }}
+                  isDisabled={false}
+                  value={isTaxable === true}
+                  valueOnChecked={true}
+                >
+                  Taxable
+                </Checkbox>
               </div>
-              <div className="px-4 rounded-[8px] border border-[#B3B3B3]" onClick={() => setTab(tab === "productInfo" ? "" : "productInfo")}>
+              <div
+                className="px-4 rounded-[8px] border border-[#B3B3B3]"
+                onClick={() =>
+                  setTab(tab === "productInfo" ? "" : "productInfo")
+                }
+              >
                 <div className="flex justify-between items-center py-4 cursor-pointer">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Info
@@ -130,18 +158,22 @@ const ProductChanges = ({
                   control={control}
                   errors={errors}
                 />
-
               </div>
               <div className="py-[24px] w-[100%]">
                 <img className="w-[100%]" src={DottedLine} alt="dotted-line" />
               </div>
 
-              <div className="px-[16px] border border-[#B3B3B3] rounded-[8px]" onClick={() => setTab(tab === "productImage" ? "" : "productImage")}>
+              <div
+                className="px-[16px] border border-[#B3B3B3] rounded-[8px]"
+                onClick={() =>
+                  setTab(tab === "productImage" ? "" : "productImage")
+                }
+              >
                 <div className="flex justify-between items-center py-4 cursor-pointer">
                   <div className="text-[16px] font-semibold text-[#186F3D]">
                     Product Images
                   </div>
-                  <div >
+                  <div>
                     {tab === "productImage" ? (
                       <img src={ArrowDown} alt="arrow-down" />
                     ) : (
@@ -150,7 +182,10 @@ const ProductChanges = ({
                   </div>
                 </div>
 
-                <div className={`${tab === "productImage" ? "" : "hidden"}`} onClick={(e) => e.stopPropagation()}>
+                <div
+                  className={`${tab === "productImage" ? "" : "hidden"}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <div>
                     <FileInput
                       className="hidden"
@@ -168,7 +203,6 @@ const ProductChanges = ({
                     onDelete={handleDelete}
                   />
                 </div>
-
               </div>
             </section>
           </div>
@@ -196,13 +230,26 @@ const ProductChanges = ({
                 Discard Draft
               </Button>}
             </div> */}
+            <Button
+              variant="tertiary"
+              outline="green"
+              type="button"
+              className="w-[153px] h-[40px]"
+              loading={isDraftLoading}
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubmit(handleProductDraft)();
+              }}
+            >
+              Save as Draft
+            </Button>
 
-            <div className="flex justify-between items-center gap-[24px]">
-
+            <div className="flex justify-between items-center gap-4">
               <Button
-                variant="secondary"
+                variant="tertiary"
+                outline="green"
                 type="button"
-                className="w-[133px] h-[40px]"
+                className="w-[173px] h-[40px]"
                 onClick={() => navigate("/products")}
               >
                 Cancel
@@ -225,12 +272,9 @@ const ProductChanges = ({
   );
 };
 
-
 ProductChanges.propTypes = {
   isEdit: PropTypes.bool.isRequired,
   productInfo: PropTypes.object,
-}
-
-
+};
 
 export default ProductChanges;

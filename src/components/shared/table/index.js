@@ -45,7 +45,7 @@ const BaseTable = ({ tableHeaders, data, emptyState, name, goToEdit }) => {
                       ? "w-[6.5%]"
                       : header.id === "productName"
                         ? "w-[16.5%]"
-                        : header.id === "availabilty"
+                        : header.id === "availability"
                           ? "w-[12.5%]"
                           : "w-[14.5%]"}  text-left ${header.id === "SKU" ? "pl-4" : "px-2"} ${index === 0 ? "pl-4" : ""}`}
                 >
