@@ -15,21 +15,12 @@ const EditSingleProduct = () => {
   const drafts = useSelector((state) => state.productDrafts);
   const [draftProducts, setDraftProducts] = useState(drafts);
   const token = getTokenFromCookie();
-  const dispatch = useDispatch();
   const productData = useSelector((state) => state.productsData);
   const store = useSelector((state) => state.store);
   const [isLoading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
   const product = productData.find((product) => product.SKU === sku);
   const productDraft = draftProducts.find((draft) => draft.SKU === sku);
-
-  const pricingType = productDraft
-  ? productDraft?.type !== product?.pricingType
-    ? productDraft.type
-    : product?.pricingType
-  : product?.type
-  console.log(product, productDraft)
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,9 +35,9 @@ const EditSingleProduct = () => {
         ? productDraft.productCategory
         : product?.productCategory
       : product?.productCategory,
-    productName: productDraft
-      ? productDraft?.productName !== product?.name
-        ? productDraft.productName
+    name: productDraft
+      ? productDraft?.name !== product?.name
+        ? productDraft.name
         : product?.name
       : product?.name,
     availability: productDraft
@@ -54,9 +45,9 @@ const EditSingleProduct = () => {
         ? productDraft.availability
         : product?.availability
       : product?.availability,
-    salesPrice: productDraft
-      ? productDraft?.salesPrice !== product?.price
-        ? productDraft.salesPrice
+    price: productDraft
+      ? productDraft?.price !== product?.price
+        ? productDraft.price
         : product?.price
       : product?.price,
     discount: productDraft
@@ -74,7 +65,11 @@ const EditSingleProduct = () => {
         ? productDraft.images
         : product?.images
       : product?.images,
-    type: (pricingType === "per Item" ? 0 : 1) ?? 0,
+    pricingType: productDraft
+      ? productDraft?.pricingType !== product?.pricingType
+        ? productDraft.pricingType
+        : product?.pricingType
+      : product?.pricingType,
     taxable: productDraft
       ? productDraft?.taxable !== product?.taxable
         ? productDraft.taxable
@@ -90,10 +85,13 @@ const EditSingleProduct = () => {
         ? productDraft.unitWeightInGrams
         : product?.unitWeightInGrams
       : product?.unitWeightInGrams ?? 0,
+    measurementUnit: productDraft
+      ? productDraft?.measurementUnit !== product?.pricingType
+        ? productDraft.measurementUnit
+        : product?.pricingType
+      : "",
   };
-  console.log(initialProductInfo);
 
-  const [isDraft, setIsDraft] = useState(false);
   const [productInfo, setProductInfo] = useState(initialProductInfo);
 
   const handleProductInfo = (key, val) => {
@@ -103,22 +101,25 @@ const EditSingleProduct = () => {
     }));
   };
 
-  const handleEditProduct = async (data) => {
+  const handleEditProduct = async () => {
     setLoading(true);
 
     const payload = {
       store: store.id,
-      description: productInfo.description,
-      price: productInfo.salesPrice,
-      name: productInfo.productName,
-      discount: productInfo.discount,
+      description: productInfo.description ?? "",
+      price: productInfo.price ?? 0,
+      name: productInfo.name ?? 0,
+      discount: productInfo.discount ?? 0,
       productCategory: productInfo.category,
-      status: "active", // hardcoded
-      availability: productInfo.availability,
+      status: productInfo?.status ?? "active", // hardcoded
+      availability: productInfo.availability ?? 0,
       // These need to be added to the UI/UX
-      taxable: true,
-      pricingType: "per Item",
-      unitWeightInGrams: 5,
+      taxable: productInfo?.taxable,
+      pricingType:
+        productInfo?.pricingType === "per Weight"
+          ? productInfo?.measurementUnit
+          : productInfo?.pricingType,
+      unitWeightInGrams: productInfo?.unitWeightInGrams ?? 0,
     };
 
     try {
@@ -130,7 +131,7 @@ const EditSingleProduct = () => {
         ?.filter((image) => !image.id)
         .map((i) => i.data);
 
-      if (unuploadedImages?.length >= 0) {
+      if (unuploadedImages?.length > 0) {
         const [imageUpSuccess, response] = await handleImageUpload(
           unuploadedImages,
           "products"
@@ -150,7 +151,7 @@ const EditSingleProduct = () => {
       if (!success || responseData?.error) {
         throw new Error(responseData?.error?.message);
       }
-
+      handleProductDraft(false);
       toast.success("Your product was successfully Edited!");
       navigate("/products");
     } catch (error) {
@@ -166,30 +167,27 @@ const EditSingleProduct = () => {
     }
   };
 
-  const handleProductDraft = () => {
+  const handleProductDraft = (showToast = true) => {
     const product = productData.filter((p) => p.SKU === sku);
-    setDraftProducts((prev) => {
-      const updatedDraftArray =
-        prev?.map((d) => (d.SKU === sku ? { ...d, ...productInfo } : d)) ?? [];
 
-      if (!updatedDraftArray?.some((obj) => obj.SKU === sku)) {
-        updatedDraftArray.push({ ...product[0], ...productInfo });
-      }
-      dispatch(editProductAsDraft(updatedDraftArray));
-      return updatedDraftArray;
-    });
-    toast.success("Your product was successfully saved as draft!");
-    // navigate("/products");
+    const updatedDraftArray =
+      draftProducts?.map((d) =>
+        d.SKU === sku ? { ...d, ...productInfo } : d
+      ) ?? [];
+
+    if (!updatedDraftArray?.some((obj) => obj.SKU === sku)) {
+      updatedDraftArray.push({ ...product[0], ...productInfo });
+    }
+
+    dispatch(editProductAsDraft(updatedDraftArray));
+    if (showToast)
+      toast.success("Your product was successfully saved as draft!");
+    // window.location.href = "/products";
   };
-
-  if (!product) {
-    return null;
-  }
 
   return (
     <ProductChanges
       isEdit={true}
-      isDraft={isDraft}
       productInfo={productInfo}
       initialProductInfo={initialProductInfo}
       handleProductInfo={handleProductInfo}

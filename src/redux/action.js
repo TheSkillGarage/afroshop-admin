@@ -135,6 +135,7 @@ export const editProduct = (productsData) => (dispatch) => {
 };
 
 export const editProductAsDraft = (productsData) => (dispatch) => {
+  console.log(productsData)
   dispatch({
     type: "EDIT_PRODUCT_AS_DRAFT",
     payload: productsData

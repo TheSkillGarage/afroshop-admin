@@ -5,7 +5,6 @@ import {
   DottedLine,
   ColorArrowRight,
 } from "../../images";
-
 import { Link, useNavigate } from "react-router-dom";
 import { CATEGORY_DATA } from "../../data";
 import "react-quill/dist/quill.snow.css";
@@ -31,6 +30,7 @@ const ProductChanges = ({
   isDraftLoading
 }) => {
   const navigate = useNavigate();
+  const [draftButtonClicked, setDraftButtonClicked] = useState(false);
   const [isTaxable, setIsTaxable] = useState(productInfo?.taxable);
   const [tab, setTab] = useState("");
 
@@ -59,11 +59,12 @@ const ProductChanges = ({
     formState: { errors },
     register,
     handleSubmit,
+    getValues,
+    watch
   } = useForm({
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: productInfo,
   });
-  console.log(errors, )
 
   const onSubmit = (data) => {
     handleFormSubmit();
@@ -157,6 +158,8 @@ const ProductChanges = ({
                   register={register}
                   control={control}
                   errors={errors}
+                  values={getValues()}
+                  draftButtonClicked={draftButtonClicked}
                 />
               </div>
               <div className="py-[24px] w-[100%]">
@@ -208,28 +211,6 @@ const ProductChanges = ({
           </div>
 
           <section className="flex items-center justify-between pt-[7%]">
-            {/* <div className="flex gap-6">
-              <Button
-                variant="tertiary"
-                size="big"
-                type="button"
-                className=""
-                disabled={_.isEqual(initialProductInfo, productInfo)}
-                onClick={() => handleProductDraft("draft")}
-              >
-                Save as Draft
-              </Button>
-
-              {isDraft && <Button
-                variant="tertiary"
-                size="big"
-                type="button"
-                className=""
-                onClick={() => handleProductDraft("discard")}
-              >
-                Discard Draft
-              </Button>}
-            </div> */}
             <Button
               variant="tertiary"
               outline="green"
@@ -238,7 +219,7 @@ const ProductChanges = ({
               loading={isDraftLoading}
               onClick={(e) => {
                 e.preventDefault();
-                handleSubmit(handleProductDraft)();
+                handleProductDraft();
               }}
             >
               Save as Draft

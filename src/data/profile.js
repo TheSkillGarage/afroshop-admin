@@ -37,8 +37,8 @@ const destinationOptions = [
 ];
 export const pricingTypeOptions = [
   {
-    label: 'per Kg',
-    value: 'per Kg',
+    label: 'per KG',
+    value: 'per KG',
   },
   {
     label: 'per Lb',
@@ -46,7 +46,7 @@ export const pricingTypeOptions = [
   },
   {
     label: 'per G',
-    value: 'per G',
+    value: 'per g',
   },
   {
     label: 'per Dz',

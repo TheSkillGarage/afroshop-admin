@@ -117,10 +117,7 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
     case "EDIT_PRODUCT_AS_DRAFT":
       return {
         ...previousState,
-        productDrafts: [
-          ...previousState.productDrafts,
-          ...action.payload
-        ]
+        productDrafts: action.payload
       };
     case "RESET_STORE":
       return INITIAL_STATE;

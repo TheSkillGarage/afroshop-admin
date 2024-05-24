@@ -64,11 +64,15 @@ const SelectDropdown = forwardRef(
         transform: state.selectProps.menuIsOpen ? "rotate(180deg)" : null,
       }),
       indicatorSeparator: () => null,
+      singleValue: (baseStyles) => ({
+        ...baseStyles,
+        color: background?.selectedOptionColor ?? "#000000"
+      }),
       option: (baseStyles, state) => ({
         ...baseStyles,
         background: state.isFocused || state.isSelected ? "#F2F2F2" : "#FFFFF",
         fontSize: "13px",
-        color: state.isFocused || state.isSelected ? "#186F3D" :  "black",
+        color: state.isSelected ? "#186F3D" :  "black",
       }),
     };
     return (
@@ -76,7 +80,7 @@ const SelectDropdown = forwardRef(
         <Select
           required={required}
           value={multiple ? selectedOptions : value}
-          defaultValue={[options[0]]}
+          defaultValue={[]}
           styles={selectStyles}
           isMulti={multiple}
           isSearchable={false}
