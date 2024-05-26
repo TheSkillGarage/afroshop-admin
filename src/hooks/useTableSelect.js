@@ -32,7 +32,7 @@ const useTableSelect = (params) => {
   //sets the array state to an empty on initial load
   useEffect(() => {
     setSelectedItems([]);
-  }, [params.rows.toLocaleString()]);
+  }, [params?.rows?.toLocaleString()]);
 
   return {
     selectedRows: selectedItems,
