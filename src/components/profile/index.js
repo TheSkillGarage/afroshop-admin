@@ -28,7 +28,7 @@ const Profile = () => {
   const store = useSelector((d) => d.store);
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-  
+  console.log(store)
   const [profileData, setProfileData] = useState({
     ...data,
     holidays: store.holidays ?? [],
@@ -47,9 +47,9 @@ const Profile = () => {
       profile_image: storeExists ? renderValidUrl(store?.image) : null,
       openingTime: store?.openingTimes?.from || "",
       closingTime: store?.openingTimes?.to || "",
-      deliveryOption: deliveryOptions.filter(
+      deliveryOption: store?.deliveryOptions ? deliveryOptions?.filter(
         (d) => store?.deliveryOptions[d?.value]
-      ),
+      ): [],
       deliverySlot:
         deliverySlots.find(
           (option) =>
