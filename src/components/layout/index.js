@@ -36,7 +36,7 @@ const PageLayout = ({ children }) => {
       if (location.pathname === "/products") {
         dispatch(getProductData(storeData.id, token));
       }
-      if (location.pathname === "/orders") {
+      if (location.pathname === "/orders" || location.pathname === "/") {
         dispatch(getOrdersData(storeData.id, token));
       }
     }

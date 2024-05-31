@@ -31,7 +31,7 @@ export const useTableData = (name, headersArray, data, func) => {
                     <Checkbox
                         name="all"
                         handleChange={handleSelectAllRows}
-                        value={selectedRows.length === data.length ? "all" : ""}
+                        value={selectedRows?.length === data?.length ? "all" : ""}
                         valueOnChecked="all"
                     />
                 ),
@@ -51,7 +51,7 @@ export const useTableData = (name, headersArray, data, func) => {
     });
 
 
-    const results = data.map((data) => ({
+    const results = data?.map((data) => ({
         ...data,
         id: data.id,
         selection: (
@@ -61,7 +61,7 @@ export const useTableData = (name, headersArray, data, func) => {
                 handleChange={(payload) => {
                     handleSelectRow(data.id);
                 }}
-                value={selectedRows.includes(data.id) ? data.id : ""}
+                value={selectedRows?.includes(data.id) ? data.id : ""}
                 valueOnChecked={data.id}
             />
         ),
