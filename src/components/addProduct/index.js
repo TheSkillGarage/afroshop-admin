@@ -14,11 +14,11 @@ const AddProduct = () => {
   const [saveDraftLoading, setSaveDraftLoading] = useState(false);
 
   const useProductInfo = {
-    category: "",
+    productCategory: "",
     name: "",
-    availability: "",
-    price: "",
-    discount: "",
+    availability: "0",
+    price: 0,
+    discount: 0,
     description: "",
     images: [],
     taxable: false,
@@ -31,8 +31,6 @@ const AddProduct = () => {
 
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-
   const handleProductInfo = (key, val) => {
     setProductInfo((prevProductInfo) => ({
       ...prevProductInfo,
@@ -41,36 +39,37 @@ const AddProduct = () => {
   };
 
   const submitForm = async (payload, imagesToBeUploaded, setLoading) => {
+    console.log(imagesToBeUploaded);
     try {
       // upload images first
       const images = imagesToBeUploaded?.map((i) => i.data);
 
       if (images?.length === 0) {
-        throw new Error("Add an Image to upload!");
-      }
-
-      const [imageUpSuccess, response] = await handleImageUpload(
-        images,
-        "products"
-      );
-      if (!imageUpSuccess || response?.error) {
-        throw new Error(response?.error.message);
+        toast.error("Add an image to save as draft!", { autoClose: 1000 });
       } else {
-        payload.images = response;
-      }
+        const [imageUpSuccess, response] = await handleImageUpload(
+          images,
+          "products"
+        );
+        if (!imageUpSuccess || response?.error) {
+          throw new Error(response?.error.message);
+        } else {
+          payload.images = response;
+        }
 
-      // handle Product Creation
-      const [success, responseData] = await postRequest(
-        `/api/products`,
-        payload,
-        token
-      );
-      if (!success || responseData?.error) {
-        throw new Error(responseData?.error?.message);
-      }
+        // handle Product Creation
+        const [success, responseData] = await postRequest(
+          `/api/products`,
+          payload,
+          token
+        );
+        if (!success || responseData?.error) {
+          throw new Error(responseData?.error?.message);
+        }
 
-      toast.success("Your product was successfully saved as draft!");
-      navigate("/products");
+        toast.success("Your product was successfully saved as draft!");
+        navigate("/products");
+      }
     } catch (error) {
       toast.error(
         `An Error occured while uploading this Product. Please try again later.`,
@@ -92,7 +91,7 @@ const AddProduct = () => {
       price: productInfo?.price ?? 0,
       name: productInfo.name ?? "",
       discount: productInfo.discount ?? 0,
-      productCategory: productInfo.category ?? "",
+      productCategory: "Draft Product",
       status: "draft", // hardcoded
       availability: productInfo.availability ?? 0,
       // These need to be added to the UI/UX
@@ -107,7 +106,7 @@ const AddProduct = () => {
     await submitForm(payload, productInfo?.images, setSaveDraftLoading);
   };
 
-  const handleCreateProduct = async (data) => {
+  const handleCreateProduct = async () => {
     setLoading(true);
 
     const payload = {
@@ -116,7 +115,7 @@ const AddProduct = () => {
       price: productInfo?.price,
       name: productInfo.name,
       discount: productInfo.discount,
-      productCategory: productInfo.category,
+      productCategory: productInfo.productCategory,
       status: "active", // hardcoded
       availability: productInfo.availability,
       // These need to be added to the UI/UX

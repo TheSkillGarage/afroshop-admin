@@ -28,13 +28,18 @@ const EditSingleProduct = () => {
       navigate("/404");
     }
   }, [product]);
+  console.log(draftProducts);
 
   const initialProductInfo = {
-    category: productDraft
-      ? productDraft?.productCategory !== product?.productCategory
-        ? productDraft.productCategory
-        : product?.productCategory
-      : product?.productCategory,
+    productCategory:
+      (productDraft?.productCategory || product?.productCategory) ===
+      "Draft Product"
+        ? ""
+        : productDraft
+        ? productDraft?.productCategory !== product?.productCategory
+          ? productDraft.productCategory
+          : product?.productCategory
+        : product?.productCategory,
     name: productDraft
       ? productDraft?.name !== product?.name
         ? productDraft.name
@@ -110,7 +115,7 @@ const EditSingleProduct = () => {
       price: productInfo.price ?? 0,
       name: productInfo.name ?? 0,
       discount: productInfo.discount ?? 0,
-      productCategory: productInfo.category,
+      productCategory: productInfo.productCategory,
       status: productInfo?.status ?? "active", // hardcoded
       availability: productInfo.availability ?? 0,
       // These need to be added to the UI/UX
@@ -170,21 +175,28 @@ const EditSingleProduct = () => {
   const handleProductDraft = (showToast = true) => {
     const product = productData.filter((p) => p.SKU === sku);
 
-    const updatedDraftArray =
-      draftProducts?.map((d) =>
-        d.SKU === sku ? { ...d, ...productInfo } : d
-      ) ?? [];
+    product[0].productCategory = productInfo.productCategory;
 
-    if (!updatedDraftArray?.some((obj) => obj.SKU === sku)) {
-      updatedDraftArray.push({ ...product[0], ...productInfo });
+    if (productInfo.images.length === 0) {
+      toast.error("upload an image to save as draft");
+    } else {
+      const updatedDraftArray =
+        draftProducts?.map((d) =>
+          d.SKU === sku ? { ...d, ...productInfo } : d
+        ) ?? [];
+
+      if (!updatedDraftArray?.some((obj) => obj.SKU === sku)) {
+        updatedDraftArray.push({ ...product[0], ...productInfo });
+      }
+
+      dispatch(editProductAsDraft(updatedDraftArray));
+
+      if (showToast)
+        toast.success("Your product was successfully saved as draft!");
+      // window.location.href = "/products";
     }
-
-    dispatch(editProductAsDraft(updatedDraftArray));
-    if (showToast)
-      toast.success("Your product was successfully saved as draft!");
-    // window.location.href = "/products";
+   
   };
-
   return (
     <ProductChanges
       isEdit={true}

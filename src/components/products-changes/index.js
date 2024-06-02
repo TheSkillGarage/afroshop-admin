@@ -35,7 +35,7 @@ const ProductChanges = ({
   const [tab, setTab] = useState("");
 
   const handleSelectCategory = (val) => {
-    handleProductInfo("category", val?.label);
+    handleProductInfo("productCategory", val?.value);
   };
 
   const handleFilesSelect = (files) => {
@@ -100,9 +100,9 @@ const ProductChanges = ({
                     <InputComponent
                       inputType="select"
                       label="Category"
-                      fieldName="category"
-                      defaultValue={productInfo?.category}
-                      value={productInfo?.category}
+                      fieldName="productCategory"
+                      defaultValue={productInfo?.productCategory}
+                      value={productInfo?.productCategory}
                       handleChange={handleSelectCategory}
                       register={register}
                       control={control}
@@ -111,8 +111,8 @@ const ProductChanges = ({
                       requiredMessage={"This field is required"}
                       options={CATEGORY_DATA}
                       placeholder={
-                        productInfo?.category !== ""
-                          ? productInfo?.category
+                        productInfo?.productCategory !== ""
+                          ? productInfo?.productCategory
                           : "Select"
                       }
                       className="w-full"
