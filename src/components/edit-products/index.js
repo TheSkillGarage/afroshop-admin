@@ -28,8 +28,7 @@ const EditSingleProduct = () => {
       navigate("/404");
     }
   }, [product]);
-  console.log(draftProducts);
-
+  
   const initialProductInfo = {
     productCategory:
       (productDraft?.productCategory || product?.productCategory) ===
