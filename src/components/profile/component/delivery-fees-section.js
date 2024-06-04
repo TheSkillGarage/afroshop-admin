@@ -103,7 +103,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
             name="base"
             id="base"
             checked={deliveryType === 0}
-            disabled={!storeExists ? false : !editProfile}
+            // disabled={!storeExists ? false : !editProfile}
             handleChange={() => {
               setProfileData((prev) => {
                 return {
@@ -124,7 +124,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
             name="base"
             id="base"
             checked={deliveryType === 1}
-            disabled={!storeExists ? false : !editProfile}
+            // disabled={!storeExists ? false : !editProfile}
             handleChange={() => {
               setProfileData((prev) => {
                 return {
