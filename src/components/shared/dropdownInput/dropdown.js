@@ -19,6 +19,7 @@ const SelectDropdown = forwardRef(
       closeMenuOnSelect,
       handleSelectedYear,
       required,
+      background
     },
     ref
   ) => {
@@ -30,7 +31,7 @@ const SelectDropdown = forwardRef(
         background: errors
           ? errors[field?.name]
             ? "#FF3B300D"
-            : "#FFFFFF"
+            : background?.background ?? "#FFFFFF"
           : "#F2F2F2",
         cursor: "pointer",
         fontWeight: 400,
@@ -52,22 +53,26 @@ const SelectDropdown = forwardRef(
       }),
       placeholder: (baseStyles) => ({
         ...baseStyles,
-        color: "#333333",
+        color: background?.color ?? "#333333",
         fontSize: "13px",
       }),
       dropdownIndicator: (selectProps, state, baseStyles) => ({
         ...baseStyles,
-        color: color === "green" ? "#186F3D" : "#292D32",
+        color: color === "green" ? "#186F3D" : background?.indicatorColor ?? "#292D32",
         width: "34px",
         transition: "all .1s ease",
         transform: state.selectProps.menuIsOpen ? "rotate(180deg)" : null,
       }),
       indicatorSeparator: () => null,
+      singleValue: (baseStyles) => ({
+        ...baseStyles,
+        color: background?.selectedOptionColor ?? "#000000"
+      }),
       option: (baseStyles, state) => ({
         ...baseStyles,
         background: state.isFocused || state.isSelected ? "#F2F2F2" : "#FFFFF",
         fontSize: "13px",
-        color: state.isFocused || state.isSelected ? "#186F3D" : "black",
+        color: state.isSelected ? "#186F3D" :  "black",
       }),
     };
     return (
@@ -75,7 +80,7 @@ const SelectDropdown = forwardRef(
         <Select
           required={required}
           value={multiple ? selectedOptions : value}
-          defaultValue={[options[0]]}
+          defaultValue={[]}
           styles={selectStyles}
           isMulti={multiple}
           isSearchable={false}
