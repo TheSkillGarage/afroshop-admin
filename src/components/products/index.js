@@ -3,13 +3,18 @@ import { useSelector } from "react-redux";
 import EmptyProducts from "./empty-products";
 import ProductsDashboard from "./products-dashboard";
 import { BeatLoader } from "react-spinners";
+import Welcome from "../dashboard/welcome";
 
 const Products = () => {
   const loading = useSelector((state) => state.loadingStates);
   const productsData = useSelector((state) => state.productsData);
   const store = useSelector((state) => state.store);
+  const storeExists = useSelector((state) => state.storeExists); 
 
   return (
+    !storeExists ? 
+      <Welcome />
+      :
     <>
       {loading?.productsData || !loading  ? (
         <div className="fixed inset-0 bg-[#D3D3D3] bg-opacity-25 z-[100] flex justify-center items-center h-screen">

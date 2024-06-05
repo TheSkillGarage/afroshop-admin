@@ -20,7 +20,7 @@ const AdminSidebar = () => {
     <aside
       className={`px-6 flex flex-col ${
         isSidebarToggled ? "w-[92px]" : "w-[266px]"
-      } min-h-[620px] h-full border-r border-1 border-[#E6E6E6] justify-between bg-[#ffffff] pb-4`}
+      } border-r border-1 border-[#E6E6E6] justify-between bg-[#ffffff] pb-4 sidebar`}
     >
       <div className="mt-10 flex flex-col gap-1">
         {SIDEBAR_TABS.map(({ name, path }, index) => {
