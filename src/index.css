@@ -98,15 +98,16 @@ input[type='number'] {
   }
 
   .content-height {
-    max-height: calc(100vh - 69px);
+    max-height: calc(100vh - 70px);
     height: 100%;
   }
 
-  @media (max-height: 620px) {
-    .content-height {
-      max-height: fit-content;
-      height: fit-content;
-    }
+  .sidebar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: thin;
+    /* Firefox */
+    height: 100%;
+    overflow: auto;
   }
-
 }

@@ -1,6 +1,5 @@
 import sectionData from "../data/roles-section-data";
 
-
 const PRIVATE_INITIAL_STATE = {
   productsData: null,
   ordersData: null,
@@ -11,6 +10,7 @@ const PRIVATE_INITIAL_STATE = {
   storeExists: null,
   loadingStates: null,
   user: null,
+  productDrafts: [],
 };
 
 const INITIAL_STATE = {
@@ -19,7 +19,7 @@ const INITIAL_STATE = {
   isSidebarToggled: false,
 };
 
-export const reducer = (previousState = INITIAL_STATE, action) => { 
+export const reducer = (previousState = INITIAL_STATE, action) => {
   switch (action.type) {
     case "API_REQUEST_START":
       return {
@@ -31,8 +31,8 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
       };
     case "API_REQUEST_SUCCESS":
     case "API_REQUEST_FAILURE":
-      if(action.error){
-        console.error(action.error)
+      if (action.error) {
+        console.error(action.error);
       }
       return {
         ...previousState,
@@ -108,6 +108,16 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
       return {
         ...previousState,
         productsData: updateProductDraft,
+      };
+    case "EDIT_PRODUCT":
+      return {
+        ...previousState,
+        productsData: action.payload,
+      };
+    case "EDIT_PRODUCT_AS_DRAFT":
+      return {
+        ...previousState,
+        productDrafts: action.payload
       };
     case "RESET_STORE":
       return INITIAL_STATE;

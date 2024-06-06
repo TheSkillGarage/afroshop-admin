@@ -63,6 +63,7 @@ const InputComponent = forwardRef(
       defaultValue,
       closeMenuOnSelect,
       onFocus,
+      background,
       ...rest
     },
     ref
@@ -87,6 +88,7 @@ const InputComponent = forwardRef(
                     required={required}
                     multiple={multiple}
                     className={`${className} rounded`}
+                    background={background}
                     field={field}
                     name={field?.name}
                     register={register}

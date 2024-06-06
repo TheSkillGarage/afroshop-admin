@@ -28,70 +28,85 @@ const Profile = () => {
   const store = useSelector((d) => d.store);
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-  console.log(store)
+  console.log(store);
+
   const [profileData, setProfileData] = useState({
     ...data,
     holidays: store.holidays ?? [],
-    store: storeExists ? {
-      ...data?.store,
-      days: store?.openDays?.map((day) => day?.openDays) || [],
-      email: user?.email || "",
-      store_name: store?.name || "",
-      address: store?.address?.streetAddress || "",
-      city: store?.address?.city || "",
-      state: store?.address?.state || "",
-      postal_code: store?.address?.postalCode || "",
-      country: store?.address?.country || "",
-      deliveryStartTime: store?.deliveryTime?.from || "",
-      deliveryEndTime: store?.deliveryTime?.to || "",
-      profile_image: storeExists ? renderValidUrl(store?.image) : null,
-      openingTime: store?.openingTimes?.from || "",
-      closingTime: store?.openingTimes?.to || "",
-      deliveryOption: store?.deliveryOptions ? deliveryOptions?.filter(
-        (d) => store?.deliveryOptions[d?.value]
-      ): [],
-      deliverySlot:
-        deliverySlots.find(
-          (option) =>
-            option?.value === store?.deliverySlots?.deliverySlotLengthinHrs
-        )?.value || "",
-      restPeriod:
-        restPeriods.find(
-          (option) => option?.value === store?.deliverySlots?.restPeriodinHrs
-        )?.value || "",
-    } : {days: []},
-    delivery: (storeExists && store?.deliveryFees)
+    store: storeExists
       ? {
-          base_amount: store?.deliveryFees?.baseFee || "",
-          base_distance: store?.deliveryFees?.baseDistance || "",
-          additional_distance_fee: store?.deliveryFees?.additionalFeePerUnit || "",
-          unit: store?.deliveryFees?.measurementUnit || "",
-          deliveryType: (!store?.deliveryFees?.useTieredPricing ? 0 : 1) || 0,
-          delivery:
-            [
-              {
-                label: "Within 5km",
-                value: store?.deliveryFees?.less_than_5,
-              },
-              {
-                label: "Between 5 to 10km",
-                value: store?.deliveryFees?.between_5_and_10,
-              },
-              {
-                label: "Between 10 to 15km",
-                value: store?.deliveryFees?.between_10_and_15,
-              },
-              {
-                label: "Between 15 to 20km",
-                value: store?.deliveryFees?.between_15_and_20,
-              },
-              {
-                label: "More than 20km",
-                value: store?.deliveryFees?.more_than_20,
-              },
-            ] ?? [],
+          ...data?.store,
+          days: store?.openDays?.map((day) => day?.openDays) || [],
+          email: user?.email || "",
+          store_name: store?.name || "",
+          address: store?.address?.streetAddress || "",
+          city: store?.address?.city || "",
+          state: store?.address?.state || "",
+          postal_code: store?.address?.postalCode || "",
+          country: store?.address?.country || "",
+          deliveryStartTime: store?.deliveryTime?.from || "",
+          deliveryEndTime: store?.deliveryTime?.to || "",
+          profile_image: storeExists ? renderValidUrl(store?.image) : null,
+          openingTime: store?.openingTimes?.from || "",
+          closingTime: store?.openingTimes?.to || "",
+          deliveryOption: store?.deliveryOptions
+            ? deliveryOptions.filter((d) => store?.deliveryOptions[d?.value])
+            : [],
+          deliverySlot: store?.deliverySlots
+            ? deliverySlots.find(
+                (option) =>
+                  option?.value ===
+                  store?.deliverySlots?.deliverySlotLengthinHrs
+              )?.value
+            : "",
+          restPeriod:
+            restPeriods.find(
+              (option) =>
+                option?.value === store?.deliverySlots?.restPeriodinHrs
+            )?.value || "",
         }
-      : {},
+      : { days: [] },
+    delivery:
+      storeExists && store?.deliveryFees
+        ? {
+            base_amount: store?.deliveryFees
+              ? store?.deliveryFees?.baseFee
+              : "",
+            base_distance: store?.deliveryFees
+              ? store?.deliveryFees?.baseDistance
+              : "",
+            additional_distance_fee: store?.deliveryFees
+              ? store?.deliveryFees?.additionalFeePerUnit
+              : "",
+            unit: store?.deliveryFees
+              ? store?.deliveryFees?.measurementUnit
+              : "",
+            deliveryType: (!store?.deliveryFees?.useTieredPricing ? 0 : 1) || 0,
+            delivery:
+              [
+                {
+                  label: "Within 5km",
+                  value: store?.deliveryFees?.less_than_5,
+                },
+                {
+                  label: "Between 5 to 10km",
+                  value: store?.deliveryFees?.between_5_and_10,
+                },
+                {
+                  label: "Between 10 to 15km",
+                  value: store?.deliveryFees?.between_10_and_15,
+                },
+                {
+                  label: "Between 15 to 20km",
+                  value: store?.deliveryFees?.between_15_and_20,
+                },
+                {
+                  label: "More than 20km",
+                  value: store?.deliveryFees?.more_than_20,
+                },
+              ] ?? [],
+          }
+        : {},
   });
 
   const profileForm = useForm({
@@ -99,7 +114,7 @@ const Profile = () => {
       ...profileData?.store,
       ...profileData?.delivery,
       destination: null,
-      fee: null
+      fee: null,
     },
     mode: "all",
   });
@@ -115,13 +130,28 @@ const Profile = () => {
 
   const [currentTab, setCurrentTab] = useState("Profile");
   const [editProfile, setEditProfile] = useState(false);
- 
+
   const handleProfileFormSubmit = async () => {
-     await handleSubmitStore(profileData, store, setEditProfile, setLoading, storeExists, user, dispatch, token);
+    await handleSubmitStore(
+      profileData,
+      store,
+      setEditProfile,
+      setLoading,
+      storeExists,
+      user,
+      dispatch,
+      token
+    );
   };
 
   const handlePasswordFormSubmit = async (data) => {
-    await handleSubmitPassword(data, setLoading, token, passwordForm, setEditProfile);
+    await handleSubmitPassword(
+      data,
+      setLoading,
+      token,
+      passwordForm,
+      setEditProfile
+    );
   };
 
   useEffect(() => {
