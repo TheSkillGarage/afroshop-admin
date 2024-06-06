@@ -67,7 +67,7 @@ export const useTableData = (name, headersArray, data, func) => {
         ),
         status: (
             <div className="capitalize">
-                <StatusPills status={data.status} name={name} />
+                <StatusPills status={data.status} name={name} id={data.id}/>
             </div>
         ),
         detail: name === "orders" ? (
