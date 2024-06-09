@@ -41,6 +41,11 @@ const EditSingleProduct = () => {
           ? productDraft.productCategory
           : product?.productCategory
         : product?.productCategory,
+    category: productDraft
+      ? productDraft?.productCategory !== product?.productCategory
+        ? productDraft.productCategory
+        : product?.productCategory
+      : product?.productCategory,
     name: productDraft
       ? productDraft?.name !== product?.name
         ? productDraft.name
@@ -74,8 +79,12 @@ const EditSingleProduct = () => {
     pricingType: productDraft
       ? productDraft?.pricingType !== product?.pricingType
         ? productDraft.pricingType
-        : productPricingType !== "per Item" ? "per Weight" : productPricingType
-      : productPricingType !== "per Item" ? "per Weight" : productPricingType,
+        : productPricingType !== "per Item"
+        ? "per Weight"
+        : productPricingType
+      : productPricingType !== "per Item"
+      ? "per Weight"
+      : productPricingType,
     taxable: productDraft
       ? productDraft?.taxable !== product?.taxable
         ? productDraft.taxable
@@ -179,6 +188,7 @@ const EditSingleProduct = () => {
       const product = productData.filter((p) => p.SKU === sku);
 
       product[0].productCategory = productInfo.productCategory;
+      product[0].category = productInfo.productCategory;
 
       if (productInfo.images.length === 0) {
         toast.error("upload an image to save as draft");
