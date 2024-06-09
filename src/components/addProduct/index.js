@@ -91,7 +91,7 @@ const AddProduct = () => {
       price: productInfo?.price ?? 0,
       name: productInfo.name ?? "",
       discount: productInfo.discount ?? 0,
-      productCategory: productInfo?.productCategory ?? "Draft Product",
+      productCategory: productInfo?.productCategory === "" ? "Draft Product" : productInfo.productCategory,
       status: "draft", // hardcoded
       availability: productInfo.availability ?? 0,
       // These need to be added to the UI/UX

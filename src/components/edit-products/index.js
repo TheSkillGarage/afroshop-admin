@@ -23,6 +23,7 @@ const EditSingleProduct = () => {
   const product = productData.find((product) => product.SKU === sku);
   const productDraft = draftProducts.find((draft) => draft.SKU === sku);
   const navigate = useNavigate();
+  const productPricingType = product?.pricingType;
 
   useEffect(() => {
     if (!product) {
@@ -73,8 +74,8 @@ const EditSingleProduct = () => {
     pricingType: productDraft
       ? productDraft?.pricingType !== product?.pricingType
         ? productDraft.pricingType
-        : product?.pricingType
-      : product?.pricingType,
+        : productPricingType !== "per Item" ? "per Weight" : productPricingType
+      : productPricingType !== "per Item" ? "per Weight" : productPricingType,
     taxable: productDraft
       ? productDraft?.taxable !== product?.taxable
         ? productDraft.taxable
@@ -93,8 +94,8 @@ const EditSingleProduct = () => {
     measurementUnit: productDraft
       ? productDraft?.measurementUnit !== product?.pricingType
         ? productDraft.measurementUnit
-        : product?.pricingType
-      : "",
+        : productPricingType
+      : productPricingType,
   };
 
   const [productInfo, setProductInfo] = useState(initialProductInfo);
