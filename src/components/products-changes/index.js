@@ -27,7 +27,7 @@ const ProductChanges = ({
   handleFormSubmit,
   handleProductDraft,
   isLoading,
-  isDraftLoading
+  isDraftLoading,
 }) => {
   const navigate = useNavigate();
   const [draftButtonClicked, setDraftButtonClicked] = useState(false);
@@ -35,7 +35,12 @@ const ProductChanges = ({
   const [tab, setTab] = useState("");
 
   const handleSelectCategory = (val) => {
-    handleProductInfo("productCategory", val?.value);
+    console.log(val);
+    if (val?.value == "Others") {
+      handleProductInfo("productCategory", "");
+    } else {
+      handleProductInfo("productCategory", val?.value);
+    }
   };
 
   const handleFilesSelect = (files) => {
@@ -60,7 +65,7 @@ const ProductChanges = ({
     register,
     handleSubmit,
     getValues,
-    watch
+    watch,
   } = useForm({
     mode: "onSubmit",
     defaultValues: productInfo,
@@ -101,7 +106,7 @@ const ProductChanges = ({
                       inputType="select"
                       label="Category"
                       fieldName="productCategory"
-                      defaultValue={productInfo?.productCategory}
+                      // defaultValue={productInfo?.productCategory}
                       value={productInfo?.productCategory}
                       handleChange={handleSelectCategory}
                       register={register}
@@ -119,11 +124,31 @@ const ProductChanges = ({
                     />
                   </div>
                 </div>
+                {productInfo.productCategory === "" && (
+                  <div className="w-[327px]">
+                    <InputComponent
+                      inputType="input"
+                      type="text"
+                      label="Enter Category"
+                      fieldName="productCategory"
+                      placeholder="Enter"
+                      control={control}
+                      errors={errors}
+                      register={register}
+                      required={true}
+                      requiredMessage={"This field is required"}
+                      value={productInfo?.productCategory}
+                      handleChange={(e) => {
+                        handleProductInfo("productCategory", e.target.value);
+                      }}
+                    />
+                  </div>
+                )}
                 <Checkbox
                   name={"taxable"}
                   handleChange={() => {
                     setIsTaxable(!isTaxable);
-                    handleProductInfo("taxable", !isTaxable)
+                    handleProductInfo("taxable", !isTaxable);
                   }}
                   isDisabled={false}
                   value={isTaxable === true}

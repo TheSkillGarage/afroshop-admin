@@ -279,6 +279,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           control={control}
           errors={errors}
           register={register}
+          step={60}
           isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => handleData("deliveryStartTime", e.target.value)}
         />

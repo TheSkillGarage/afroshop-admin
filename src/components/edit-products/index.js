@@ -18,17 +18,19 @@ const EditSingleProduct = () => {
   const productData = useSelector((state) => state.productsData);
   const store = useSelector((state) => state.store);
   const [isLoading, setLoading] = useState(false);
+  const [draftLoading, setDraftLoading] = useState(false);
   const dispatch = useDispatch();
   const product = productData.find((product) => product.SKU === sku);
   const productDraft = draftProducts.find((draft) => draft.SKU === sku);
   const navigate = useNavigate();
+  const productPricingType = product?.pricingType;
 
   useEffect(() => {
     if (!product) {
       navigate("/404");
     }
   }, [product]);
-  
+
   const initialProductInfo = {
     productCategory:
       (productDraft?.productCategory || product?.productCategory) ===
@@ -39,6 +41,11 @@ const EditSingleProduct = () => {
           ? productDraft.productCategory
           : product?.productCategory
         : product?.productCategory,
+    category: productDraft
+      ? productDraft?.productCategory !== product?.productCategory
+        ? productDraft.productCategory
+        : product?.productCategory
+      : product?.productCategory,
     name: productDraft
       ? productDraft?.name !== product?.name
         ? productDraft.name
@@ -72,8 +79,12 @@ const EditSingleProduct = () => {
     pricingType: productDraft
       ? productDraft?.pricingType !== product?.pricingType
         ? productDraft.pricingType
-        : product?.pricingType
-      : product?.pricingType,
+        : productPricingType !== "per Item"
+        ? "per Weight"
+        : productPricingType
+      : productPricingType !== "per Item"
+      ? "per Weight"
+      : productPricingType,
     taxable: productDraft
       ? productDraft?.taxable !== product?.taxable
         ? productDraft.taxable
@@ -92,8 +103,8 @@ const EditSingleProduct = () => {
     measurementUnit: productDraft
       ? productDraft?.measurementUnit !== product?.pricingType
         ? productDraft.measurementUnit
-        : product?.pricingType
-      : "",
+        : productPricingType
+      : productPricingType,
   };
 
   const [productInfo, setProductInfo] = useState(initialProductInfo);
@@ -172,29 +183,37 @@ const EditSingleProduct = () => {
   };
 
   const handleProductDraft = (showToast = true) => {
-    const product = productData.filter((p) => p.SKU === sku);
+    setDraftLoading(true);
+    try {
+      const product = productData.filter((p) => p.SKU === sku);
 
-    product[0].productCategory = productInfo.productCategory;
+      product[0].productCategory = productInfo.productCategory;
+      product[0].category = productInfo.productCategory;
 
-    if (productInfo.images.length === 0) {
-      toast.error("upload an image to save as draft");
-    } else {
-      const updatedDraftArray =
-        draftProducts?.map((d) =>
-          d.SKU === sku ? { ...d, ...productInfo } : d
-        ) ?? [];
+      if (productInfo.images.length === 0) {
+        toast.error("upload an image to save as draft");
+      } else {
+        const updatedDraftArray =
+          draftProducts?.map((d) =>
+            d.SKU === sku ? { ...d, ...productInfo } : d
+          ) ?? [];
 
-      if (!updatedDraftArray?.some((obj) => obj.SKU === sku)) {
-        updatedDraftArray.push({ ...product[0], ...productInfo });
+        if (!updatedDraftArray?.some((obj) => obj.SKU === sku)) {
+          updatedDraftArray.push({ ...product[0], ...productInfo });
+        }
+
+        dispatch(editProductAsDraft(updatedDraftArray));
+
+        if (showToast)
+          toast.success("Your product was successfully saved as draft!");
+
+        setDraftLoading(false);
       }
-
-      dispatch(editProductAsDraft(updatedDraftArray));
-
-      if (showToast)
-        toast.success("Your product was successfully saved as draft!");
-      // window.location.href = "/products";
+    } catch (error) {
+      throw new Error(error);
+    } finally {
+      setDraftLoading(false);
     }
-   
   };
   return (
     <ProductChanges
@@ -205,6 +224,7 @@ const EditSingleProduct = () => {
       handleFormSubmit={handleEditProduct}
       handleProductDraft={handleProductDraft}
       isLoading={isLoading}
+      isDraftLoading={draftLoading}
     />
   );
 };

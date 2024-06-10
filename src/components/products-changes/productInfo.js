@@ -16,7 +16,7 @@ export const ProductInfo = ({
   errors,
 }) => {
   const [newPricingType, setNewPricingType] = useState(productInfo?.pricingType ?? 'per Item');
-  
+ 
   const modules = {
     toolbar: [
       ["bold", "italic"],

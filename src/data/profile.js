@@ -156,8 +156,11 @@ const deliveryEndTimes = [
 const deliverySlots = [
   { label: "1 Hours", value: 1 },
   { label: "2 Hours", value: 2 },
-  { label: "3 Hours", value: 3 },
   { label: "4 Hours", value: 4 },
+  { label: "6 Hours", value: 6 },
+  { label: "8 Hours", value: 8 },
+  { label: "10 Hours", value: 10 },
+  { label: "Next Day", value: 24 },
 ];
 const restPeriods = [
   { label: "1 Hours", value: 1 },
