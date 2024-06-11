@@ -19,7 +19,7 @@ const LineChartComponent = ({ years, selectedYear, handleSelectedYear, dataFilte
                     handleSelectedYear={handleSelectedYear}
                     options={[{ value: "week", label: "Last 7 days" }, ...years]}
                     placeholder="Last 7 Days"
-                    className="w-[127px]"
+                    className="w-[150px]"
                 />}
             </div>
             <div className="h-[250px]">
