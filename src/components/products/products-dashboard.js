@@ -27,7 +27,6 @@ const ProductsDashboard = ({ productsData }) => {
         const combinedArray = Array.from(productsMap.values());
         setNewProducts(combinedArray);
     }, [])
-    console.log(newProducts)
    
     const [activeTab, setActiveTab] = useState('all');
     const [page, setPage] = useState(1);
