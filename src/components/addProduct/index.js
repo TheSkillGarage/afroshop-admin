@@ -100,7 +100,8 @@ const AddProduct = () => {
         productInfo?.pricingType === "per Weight"
           ? productInfo?.measurementUnit
           : productInfo?.pricingType,
-      unitWeightInGrams: productInfo?.unitWeightInGrams ?? 0,
+      unitWeightInGrams: productInfo?.unitWeightInGrams,
+      itemDetail: 0,
     };
 
     await submitForm(payload, productInfo?.images, setSaveDraftLoading);

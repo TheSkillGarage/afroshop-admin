@@ -30,7 +30,7 @@ const EditSingleProduct = () => {
       navigate("/404");
     }
   }, [product]);
-
+console.log(product, productDraft)
   const initialProductInfo = {
     productCategory:
       (productDraft?.productCategory || product?.productCategory) ===
@@ -96,10 +96,10 @@ const EditSingleProduct = () => {
         : product?.status
       : product?.status,
     unitWeightInGrams: productDraft
-      ? productDraft?.unitWeightInGrams !== product?.unitWeightInGrams
+      ? productDraft?.unitWeightInGrams !== product?.itemDetail
         ? productDraft.unitWeightInGrams
-        : product?.unitWeightInGrams
-      : product?.unitWeightInGrams ?? 0,
+        : product?.itemDetail
+      : product?.itemDetail,
     measurementUnit: productDraft
       ? productDraft?.measurementUnit !== product?.pricingType
         ? productDraft.measurementUnit
