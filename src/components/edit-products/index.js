@@ -30,7 +30,7 @@ const EditSingleProduct = () => {
       navigate("/404");
     }
   }, [product]);
-console.log(product, productDraft)
+
   const initialProductInfo = {
     productCategory:
       (productDraft?.productCategory || product?.productCategory) ===
