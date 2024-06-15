@@ -35,7 +35,6 @@ const ProductChanges = ({
   const [tab, setTab] = useState("");
 
   const handleSelectCategory = (val) => {
-    console.log(val);
     if (val?.value == "Others") {
       handleProductInfo("productCategory", "");
     } else {

@@ -142,136 +142,106 @@ export const getTopCustomers = (ordersData) => {
 };
 
 export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
-
   // if there haven't been any orders yet, return [] 
-  if (ordersData && ordersData.length > 0) {
-
-    const filteredData = [];
-    const todaysDate = new Date();
-
-    const yearData = ordersData.filter(entry => new Date(entry.createdAt).getFullYear() === Number(selectedYear));
-
-    if (selectedYear === "week") {
-      const sevenDaysAgo = new Date(todaysDate);
-      sevenDaysAgo.setDate(todaysDate.getDate() - 6);
-    
-      // Filter ordersData for the last 7 days
-      const ordersForLast7Days = ordersData.filter(entry => {
-        const entryDate = new Date(entry.createdAt);
-        return entryDate >= sevenDaysAgo && entryDate <= todaysDate;
-      });
-    
-      // Generate data for the last 7 days
-      for (let i = 0; i < 7; i++) {
-        const date = new Date(sevenDaysAgo);
-        date.setDate(sevenDaysAgo.getDate() + i);
-    
-        // Filter orders for the current date
-        const orders = ordersForLast7Days.filter(entry => {
-          const entryDate = new Date(entry.createdAt).toISOString().split('T')[0];
-          return entryDate === date.toISOString().split('T')[0];
-        });
-    
-        // Calculate total grandTotal for the current date's orders
-        const totalGrandTotal = orders.reduce((total, order) => total + order.grandTotal, 0);
-    
-        filteredData.push({
-          id: i,
-          createdAt: date,
-          grandTotal: totalGrandTotal,
-          orderCount: orders.length
-        });
-      }
-    }
-     else {
-
-      //when selectedYear is a year e.g 2024
-      const startDate = new Date(storeCreateDate);
-
-      //use store start month if selected year equals store create year else use January
-      const startMonth = startDate.getFullYear() === Number(selectedYear) ? startDate.getMonth() : 0;
-      const isCurrentYear = Number(selectedYear) === todaysDate.getFullYear();
-
-      if (isCurrentYear) {
-        // If the selected year is the current year, retrieve data only until the current month
-
-        const currentMonth = todaysDate.getMonth();
-      
-        // Loop through each month from the start month to the current month
-        for (let month = startMonth; month <= currentMonth; month++) {
-          // Filter data for the current month
-          const monthOrders = yearData.filter(entry => new Date(entry.createdAt).getMonth() === month);
-          
-          // Get the number of days in the current month
-          const daysInMonth = new Date(todaysDate.getFullYear(), month + 1, 0).getDate();
-          
-          // Determine the start and end days for filtering data
-          const startDay = (month === startMonth) ? startDate.getDate() : 1;
-          const endDay = (month === currentMonth) ? todaysDate.getDate() : daysInMonth;
-      
-          // Loop through each day in the current month
-          for (let day = startDay; day <= endDay; day++) {
-            // Create a date object for the current day
-            const currentDate = new Date(todaysDate.getFullYear(), month, day);
-            
-            // Filter orders for the current day ad calculate total
-            const ordersForDate = monthOrders.filter(entry => new Date(entry.createdAt).getDate() === day);
-            const totalForDay = ordersForDate.reduce((total, order) => total + order.grandTotal, 0);
-            
-            // Push filtered data for the current day into the array
-            filteredData.push({
-              id: `${day}-${month}`, 
-              createdAt: currentDate,
-              grandTotal: totalForDay,
-              orderCount: ordersForDate.length
-            });
-          }
-        }
-      }
-      else {
-        // If the selected year is not the current year
-        
-        // if selected year is start year get day from date or 1
-        const startDay = startDate.getFullYear() === Number(selectedYear) ? startDate.getDay() : 1;
-        
-        // Create a date object for the first day of the selected year
-        const firstDay = new Date(Number(selectedYear), startMonth, startDay);
-        
-        // Create a date object for December 31st of the selected year
-        const decThirtyFirst = new Date(Number(selectedYear), 11, 31);
-        
-        // Calculate the number of days between the first day and December 31st of the selected year
-        const numberOfDays = Math.floor((decThirtyFirst - firstDay) / (1000 * 60 * 60 * 24)) + 1;
-      
-        // Loop through each day from the first day of the year to December 31st
-        for (let i = 0; i < numberOfDays; i++) {
-          // Create a date object for the current day
-          const currentDate = new Date(firstDay);
-          currentDate.setDate(currentDate.getDate() + i);
-          
-          // Filter orders for the current date and calculate total
-          const ordersForDate = yearData.filter(entry => new Date(entry.createdAt).toDateString() === currentDate.toDateString());
-          const totalForDay = ordersForDate.reduce((total, order) => total + order.grandTotal, 0);
-          
-          // Push filtered data for the current day into the array
-          filteredData.push({
-            id: i,
-            createdAt: currentDate,
-            grandTotal: totalForDay,
-            orderCount: ordersForDate.length
-          });
-        }
-      }
-      
-    }
-
-    return filteredData;
-  } else {
-    return [];
+  if (!ordersData || ordersData.length === 0) {
+    return null
   }
 
+  const data = {
+    dates: []
+  };
+  const startDate = new Date(storeCreateDate);
+  const today = new Date();
+
+  if (selectedYear === "week") {
+    data.income = Array(7).fill(0)
+    data.orders = Array(7).fill(0)
+
+
+    // Fill the dates array with the last 7 days
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - (6 - i));
+      const formattedDate = date.toLocaleString('default', { month: 'short', day: 'numeric' });
+      data.dates.push(formattedDate); // Format as 'MMM dd'
+
+      if (date < startDate) {
+        data.income[6 - i] = null; // Update the income array to null if the date is before the store creation date
+        data.orders[6 - i] = null;  // Update the orders array to null if the date is before the store creation date
+      }
+    }
+
+    ordersData.forEach((order) => {
+      const entryDate = new Date(order.createdAt);
+      const diffTime = new Date() - entryDate;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+
+      if (diffDays < 7 && diffDays >= 0) {
+        data.income[6 - diffDays] += order.grandTotal; // Use 6 - diffDays to match the correct index
+        data.orders[6 - diffDays] += 1; // Use 6 - diffDays to match the correct index
+      }
+    });
+  }
+  else {
+    data.income = Array(12).fill(0)
+    data.orders = Array(12).fill(0)
+
+    // Fill the dates array with the months of the selected year
+    for (let i = 0; i < 12; i++) {
+      const date = new Date(selectedYear, i, 1);
+      const formattedDate = date.toLocaleString('default', { month: 'short' });
+      data.dates.push(formattedDate); // Format as 'MMM'
+
+      // Check if the date is before the store creation date
+      if (date < startDate && i < startDate.getMonth()) {
+        data.income[i] = null;
+        data.orders[i] = null;
+      }
+
+      // Check if the date is after today (only relevant if selectedYear is the current year)
+      if (selectedYear === today.getFullYear() && date > today && i > today.getMonth()) {
+        data.income[i] = null;
+        data.orders[i] = null;
+      }
+    }
+
+    // Iterate over ordersData to aggregate income and orders
+    ordersData.forEach((order) => {
+      const entryDate = new Date(order.createdAt);
+      const entryYear = entryDate.getFullYear();
+      const entryMonth = entryDate.getMonth();
+
+      if (entryYear === selectedYear) {
+        if (data.income[entryMonth] !== null) { // Check if the value is not null before adding
+          data.income[entryMonth] += order.grandTotal; // Use entryMonth to match the correct index
+          data.orders[entryMonth] += 1; // Use entryMonth to match the correct index
+        }
+      }
+    });
+  }
+
+  return data;
 };
 
+export function getAxisDetails(arr, maximum, step) {
+  const max = Math.max(...arr); // Find the maximum value in the array
 
+  const nextPow = Math.pow(10, Math.ceil(Math.log10(max))); // Calculate the next power of 10
+
+  const maxAxisValue = nextPow / 5 > max ? nextPow / 5 : nextPow / 2 > max ? nextPow / 2 : nextPow;
+
+  return {
+    max: Math.max(maximum, maxAxisValue),
+    step: Math.max(maximum / 4, maxAxisValue / 4, step)
+  }
+}
+
+export function getAxisTicks(value, index, ticks) {
+  if (value < 100) {
+    return value;
+  } else {
+    return value / 1000 + 'K';
+  }
+}
 
 

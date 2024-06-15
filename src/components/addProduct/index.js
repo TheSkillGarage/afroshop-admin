@@ -39,7 +39,6 @@ const AddProduct = () => {
   };
 
   const submitForm = async (payload, imagesToBeUploaded, setLoading) => {
-    console.log(imagesToBeUploaded);
     try {
       // upload images first
       const images = imagesToBeUploaded?.map((i) => i.data);

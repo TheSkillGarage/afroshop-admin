@@ -87,7 +87,6 @@ const Button = ({
     size && SIZE[size],
     className
   );
-  console.log(loading)
 
   return (
     <div>

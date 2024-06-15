@@ -135,7 +135,6 @@ export const editProduct = (productsData) => (dispatch) => {
 };
 
 export const editProductAsDraft = (productsData) => (dispatch) => {
-  console.log(productsData)
   dispatch({
     type: "EDIT_PRODUCT_AS_DRAFT",
     payload: productsData
@@ -209,7 +208,6 @@ export const handleImageUpload = async (images, collectionName, id = null) => {
   }
 
   const token = getTokenFromCookie();
-  console.log(token)
   const uploadConfig = {
     headers: {
       "Content-Type": "multipart/form-data",
