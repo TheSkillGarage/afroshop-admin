@@ -67,79 +67,58 @@ export const calculatePercentageChanges = (ordersData, selectedYear) => {
   return percentageChanges;
 };
 
-
-// Function for aggregating top products
-export const getTopProducts = (ordersData) => {
+export const getTopData = (ordersData) => {
   const productSalesMap = {};
+  const customerDetails = {};
+
+  const currentDate = new Date();
+  const sevenDaysAgo = new Date(currentDate);
+  sevenDaysAgo.setDate(currentDate.getDate() - 7);
 
   // Loop through each object in the array and aggregate product sales
   ordersData?.forEach(data => {
-    const products = data?.products;
-
-    products?.forEach(product => {
-
-      if (!productSalesMap[product?.productID]) {
+    // get Top Products
+    data?.products.forEach(product => {
+      try {
+        productSalesMap[product?.productID].totalSales += product?.amount;
+      }
+      catch {
         productSalesMap[product?.productID] = {
           productID: product?.productID,
           productName: product?.name,
           productImage: product?.image,
           totalSales: product?.amount
         };
-      } else {
-        productSalesMap[product?.productID].totalSales += product?.amount;
       }
     });
-  });
+
+    // get Top Customers
+    const orderDate = new Date(data?.createdAt);
+    if (orderDate > sevenDaysAgo) {
+      const { customer, firstName, lastName, email, customerProfileURL } = data;
+      try {
+        customerDetails[email].orders++;
+        customerDetails[email].image = customerDetails[email].image === null ? customerProfileURL : customerDetails[email].image;
+      }
+      catch {
+        customerDetails[email] = {
+          customerID: customer ? customer : null,
+          name: `${firstName} ${lastName}`,
+          email: email,
+          image: customerProfileURL,
+          orders: 1
+        };
+      }
+    };
+  })
 
   // Converting the aggregated product sales into a sorted array of objects
   const topProductsArray = Object.values(productSalesMap).sort((a, b) => b.totalSales - a.totalSales).filter((obj) => obj.productID !== undefined);
-
-  return topProductsArray
-}
-
-
-// Function to filter and aggregate customer data
-export const getTopCustomers = (ordersData) => {
-
-  const currentDate = new Date();
-  const sevenDaysAgo = new Date(currentDate);
-  sevenDaysAgo.setDate(currentDate.getDate() - 7);
-
-  // Filter ordersData to include only orders within the last 7 days
-  const weeklyData = ordersData?.filter(data => {
-    const orderDate = new Date(data?.createdAt);
-    return orderDate > sevenDaysAgo;
-  });
-
-  // Creating an array of top customers
-  const customerDetails = {};
-
-  weeklyData?.forEach(data => {
-
-    const { customer, firstName, lastName, email, customerProfileURL } = data;
-
-    if (!customerDetails[email]) {
-      customerDetails[email] = {
-        customerID: customer ? customer : null,
-        name: `${firstName} ${lastName}`,
-        email: email,
-        image: customerProfileURL,
-        orders: 1
-      };
-    } else if (customerDetails[email].customerID === null) {
-      customerDetails[email].image = customerProfileURL;
-      customerDetails[email].orders++;
-    }
-    else {
-      customerDetails[email].orders++;
-    }
-  });
-
   // Converting the aggregated customer data into an array of objects
   const customerArray = Object.values(customerDetails).sort((a, b) => b.orders - a.orders);
 
-  return customerArray;
-};
+  return [topProductsArray, customerArray]
+}
 
 export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
   // if there haven't been any orders yet, return [] 
@@ -159,15 +138,15 @@ export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
 
 
     // Fill the dates array with the last 7 days
-    for (let i = 6; i >= 0; i--) {
+    for (let i = 0; i < 7; i++) {
       const date = new Date();
-      date.setDate(date.getDate() - (6 - i));
+      date.setDate(date.getDate() - 6 + i);
       const formattedDate = date.toLocaleString('default', { month: 'short', day: 'numeric' });
       data.dates.push(formattedDate); // Format as 'MMM dd'
 
       if (date < startDate) {
-        data.income[6 - i] = null; // Update the income array to null if the date is before the store creation date
-        data.orders[6 - i] = null;  // Update the orders array to null if the date is before the store creation date
+        data.income[i] = null; // Update the income array to null if the date is before the store creation date
+        data.orders[i] = null;  // Update the orders array to null if the date is before the store creation date
       }
     }
 

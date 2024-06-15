@@ -12,7 +12,7 @@ import LineChartComponent from './lineChart-section';
 import { useDispatch, useSelector } from 'react-redux';
 import { extractYears } from '../../utils/extract-years';
 import EmptyState from './empty-state';
-import { getLineChartData, getTopCustomers, getTopProducts } from '../../utils/OrderSummaryFunctions';
+import { getLineChartData, getTopData } from '../../utils/OrderSummaryFunctions';
 import { getTokenFromCookie } from '../../utils';
 import { getOrdersData } from '../../redux/action';
 
@@ -71,14 +71,15 @@ const Dashboard = () => {
   }, [storeData, token, dispatch, refreshInterval]);
 
   useEffect(() => {
-    setTopProducts(getTopProducts(ordersData));
-    setTopCustomers(getTopCustomers(ordersData));
+    const [p, c] = getTopData(ordersData)
+    setTopProducts(p);
+    setTopCustomers(c);
   }, [ordersData, storeData]);
 
   useEffect(() => {
     const lineData = getLineChartData(selectedYear, ordersData, storeData?.createdAt);
     setDataFilter(lineData);
-
+    console.log(lineData)
   }, [selectedYear, ordersData, storeData?.createdAt]);
 
   return (
