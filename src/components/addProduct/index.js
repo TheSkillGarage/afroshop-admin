@@ -15,6 +15,7 @@ const AddProduct = () => {
 
   const useProductInfo = {
     productCategory: "",
+    category: "",
     name: "",
     availability: "0",
     price: 0,
@@ -91,7 +92,12 @@ const AddProduct = () => {
       price: productInfo?.price ?? 0,
       name: productInfo.name ?? "",
       discount: productInfo.discount ?? 0,
-      productCategory: productInfo?.productCategory === "" ? "Draft Product" : productInfo.productCategory,
+      productCategory:
+        productInfo?.productCategory === ""
+          ? "Draft Product"
+          : productInfo.productCategory === "Others"
+          ? productInfo?.category
+          : productInfo?.productCategory,
       status: "draft", // hardcoded
       availability: productInfo.availability ?? 0,
       // These need to be added to the UI/UX
@@ -116,7 +122,10 @@ const AddProduct = () => {
       price: productInfo?.price,
       name: productInfo.name,
       discount: productInfo.discount,
-      productCategory: productInfo.productCategory,
+      productCategory:
+        productInfo.productCategory === "Others"
+          ? productInfo?.category
+          : productInfo?.productCategory,
       status: "active", // hardcoded
       availability: productInfo.availability,
       // These need to be added to the UI/UX

@@ -35,12 +35,7 @@ const ProductChanges = ({
   const [tab, setTab] = useState("");
 
   const handleSelectCategory = (val) => {
-    console.log(val);
-    if (val?.value == "Others") {
-      handleProductInfo("productCategory", "");
-    } else {
-      handleProductInfo("productCategory", val?.value);
-    }
+    handleProductInfo("productCategory", val?.value);
   };
 
   const handleFilesSelect = (files) => {
@@ -124,22 +119,22 @@ const ProductChanges = ({
                     />
                   </div>
                 </div>
-                {productInfo.productCategory === "" && (
+                {productInfo.productCategory === "Others" && (
                   <div className="w-[327px]">
                     <InputComponent
                       inputType="input"
                       type="text"
                       label="Enter Category"
-                      fieldName="productCategory"
+                      fieldName="category"
                       placeholder="Enter"
                       control={control}
                       errors={errors}
                       register={register}
                       required={true}
                       requiredMessage={"This field is required"}
-                      value={productInfo?.productCategory}
+                      value={productInfo?.category}
                       handleChange={(e) => {
-                        handleProductInfo("productCategory", e.target.value);
+                        handleProductInfo("category", e.target.value);
                       }}
                     />
                   </div>
@@ -236,21 +231,27 @@ const ProductChanges = ({
           </div>
 
           <section className="flex items-center justify-between pt-[7%]">
-            <Button
-              variant="tertiary"
-              outline="green"
-              type="button"
-              className="w-[153px] h-[40px]"
-              loading={isDraftLoading}
-              onClick={(e) => {
-                e.preventDefault();
-                handleProductDraft();
-              }}
-            >
-              Save as Draft
-            </Button>
+            {!isEdit && (
+              <Button
+                variant="tertiary"
+                outline="green"
+                type="button"
+                className="w-[153px] h-[40px]"
+                loading={isDraftLoading}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleProductDraft();
+                }}
+              >
+                Save as Draft
+              </Button>
+            )}
 
-            <div className="flex justify-between items-center gap-4">
+            <div
+              className={`flex justify-between items-center gap-4 ${
+                isEdit ? "w-full" : ""
+              }`}
+            >
               <Button
                 variant="tertiary"
                 outline="green"

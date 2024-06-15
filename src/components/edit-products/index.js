@@ -9,6 +9,7 @@ import {
 } from "../../redux/action";
 import { toast } from "react-toastify";
 import { getTokenFromCookie } from "../../utils";
+import { CATEGORY_DATA } from "../../data";
 
 const EditSingleProduct = () => {
   const { sku } = useParams();
@@ -39,13 +40,13 @@ const EditSingleProduct = () => {
         : productDraft
         ? productDraft?.productCategory !== product?.productCategory
           ? productDraft.productCategory
-          : product?.productCategory
-        : product?.productCategory,
+          : CATEGORY_DATA.some((data) => data.value === product?.productCategory) ? product?.productCategory : "Others"
+        : CATEGORY_DATA.some((data) => data.value === product?.productCategory) ? product?.productCategory : "Others",
     category: productDraft
       ? productDraft?.productCategory !== product?.productCategory
         ? productDraft.productCategory
         : product?.productCategory
-      : product?.productCategory,
+      :  product?.productCategory,
     name: productDraft
       ? productDraft?.name !== product?.name
         ? productDraft.name
@@ -96,10 +97,10 @@ const EditSingleProduct = () => {
         : product?.status
       : product?.status,
     unitWeightInGrams: productDraft
-      ? productDraft?.unitWeightInGrams !== product?.itemDetail
+      ? productDraft?.unitWeightInGrams !== product?.unitWeightInGrams
         ? productDraft.unitWeightInGrams
-        : product?.itemDetail
-      : product?.itemDetail,
+        : product?.unitWeightInGrams
+      : product?.unitWeightInGrams,
     measurementUnit: productDraft
       ? productDraft?.measurementUnit !== product?.pricingType
         ? productDraft.measurementUnit
@@ -125,8 +126,8 @@ const EditSingleProduct = () => {
       price: productInfo.price ?? 0,
       name: productInfo.name ?? 0,
       discount: productInfo.discount ?? 0,
-      productCategory: productInfo.productCategory,
-      status: productInfo?.status ?? "active", // hardcoded
+      productCategory: productInfo.productCategory === "Others" ? productInfo?.category : productInfo?.productCategory,
+      status: "active", // hardcoded
       availability: productInfo.availability ?? 0,
       // These need to be added to the UI/UX
       taxable: productInfo?.taxable,
@@ -167,6 +168,7 @@ const EditSingleProduct = () => {
         throw new Error(responseData?.error?.message);
       }
       handleProductDraft(false);
+     
       toast.success("Your product was successfully Edited!");
       navigate("/products");
     } catch (error) {
@@ -203,7 +205,6 @@ const EditSingleProduct = () => {
         }
 
         dispatch(editProductAsDraft(updatedDraftArray));
-
         if (showToast)
           toast.success("Your product was successfully saved as draft!");
 
