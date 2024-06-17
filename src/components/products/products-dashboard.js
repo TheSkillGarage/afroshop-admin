@@ -76,7 +76,7 @@ const ProductsDashboard = ({ productsData }) => {
 
     const headers = tableData.headers
     const results = tableData.results
-console.log(results, headers)
+
     return (
         <div className="bg-[#F2F2F2] w-full py-6 px-4">
 

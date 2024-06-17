@@ -1,6 +1,5 @@
 
 export const getRoles = (role) => {
-  console.log(role);
   switch (role) {
     case "admin":
       return "Admin";

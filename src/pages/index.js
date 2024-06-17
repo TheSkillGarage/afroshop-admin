@@ -5,7 +5,6 @@ export { default as ViewOrdersPage } from './view-orders'
 export { default as AddProducts } from './add-product'
 export { default as RolesAndPermissionsDashboard } from "./roles-and-permissions/roles-and-permissions-dashboard";
 export { default as AddNewRole } from "./roles-and-permissions/add-new-role";
-export {default as DashboardPage} from './dashboard'
 export { default as SupportPage} from './support'
 export { default as ProfilePage } from "./profile";
 export { default as EditProducts } from './edit-products'
