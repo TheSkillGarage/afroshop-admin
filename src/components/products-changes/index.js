@@ -34,8 +34,8 @@ const ProductChanges = ({
   const categories = useSelector((state) => state.productCategories);
   const [tab, setTab] = useState("");
 
-  const handleSelectCategory = (val) => {
-    handleProductInfo("productCategory", val?.value);
+  const handleSelectCategory = (data) => {
+    handleProductInfo("productCategory", data?.value);
   };
 
   const handleFilesSelect = (files) => {
@@ -109,7 +109,6 @@ const ProductChanges = ({
                       inputType="select"
                       label="Category"
                       fieldName="productCategory"
-                      // defaultValue={productInfo?.productCategory}
                       value={productInfo?.productCategory}
                       handleChange={handleSelectCategory}
                       register={register}
