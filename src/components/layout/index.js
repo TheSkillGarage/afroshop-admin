@@ -11,8 +11,8 @@ import {
   logOutUser,
   setStoreExistStatus,
   getProductData,
+  getProductCategoryData,
 } from "../../redux/action";
-// import { logOutUser, setStoreExistStatus } from "../../redux/action";
 
 const PageLayout = ({ children }) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
@@ -28,6 +28,7 @@ const PageLayout = ({ children }) => {
   useEffect(() => {
     if (user && user.id) {
       dispatch(getStoreData(user?.id, token));
+      dispatch(getProductCategoryData(token));
     }
   }, [user, token, location.pathname, dispatch]);
 

@@ -64,6 +64,7 @@ const InputComponent = forwardRef(
       closeMenuOnSelect,
       onFocus,
       background,
+      validate,
       ...rest
     },
     ref
@@ -151,6 +152,7 @@ const InputComponent = forwardRef(
               {...register(fieldName, {
                 required: required ? requiredMessage : false,
                 onChange: handleChange,
+                validate: validate,
                 pattern: patternValue
                   ? {
                     value: patternValue,

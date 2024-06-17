@@ -1,28 +1,23 @@
 import { React, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductChanges from "../products-changes";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
-  editProductAsDraft,
   handleImageUpload,
   putRequest,
 } from "../../redux/action";
 import { toast } from "react-toastify";
 import { getTokenFromCookie } from "../../utils";
-import { CATEGORY_DATA } from "../../data";
 
 const EditSingleProduct = () => {
   const { sku } = useParams();
   const drafts = useSelector((state) => state.productDrafts);
-  const [draftProducts, setDraftProducts] = useState(drafts);
   const token = getTokenFromCookie();
   const productData = useSelector((state) => state.productsData);
   const store = useSelector((state) => state.store);
   const [isLoading, setLoading] = useState(false);
   const [draftLoading, setDraftLoading] = useState(false);
-  const dispatch = useDispatch();
   const product = productData.find((product) => product.SKU === sku);
-  const productDraft = draftProducts.find((draft) => draft.SKU === sku);
   const navigate = useNavigate();
   const productPricingType = product?.pricingType;
 
@@ -34,78 +29,21 @@ const EditSingleProduct = () => {
 
   const initialProductInfo = {
     productCategory:
-      (productDraft?.productCategory || product?.productCategory) ===
-      "Draft Product"
+      product?.productCategory === "Draft Product"
         ? ""
-        : productDraft
-        ? productDraft?.productCategory !== product?.productCategory
-          ? productDraft.productCategory
-          : CATEGORY_DATA.some((data) => data.value === product?.productCategory) ? product?.productCategory : "Others"
-        : CATEGORY_DATA.some((data) => data.value === product?.productCategory) ? product?.productCategory : "Others",
-    category: productDraft
-      ? productDraft?.productCategory !== product?.productCategory
-        ? productDraft.productCategory
-        : product?.productCategory
-      :  product?.productCategory,
-    name: productDraft
-      ? productDraft?.name !== product?.name
-        ? productDraft.name
-        : product?.name
-      : product?.name,
-    availability: productDraft
-      ? productDraft?.availability !== product?.availability
-        ? productDraft.availability
-        : product?.availability
-      : product?.availability,
-    price: productDraft
-      ? productDraft?.price !== product?.price
-        ? productDraft.price
-        : product?.price
-      : product?.price,
-    discount: productDraft
-      ? productDraft?.discount !== product?.percentDiscount
-        ? productDraft.discount
-        : product?.percentDiscount
-      : product?.percentDiscount,
-    description: productDraft
-      ? productDraft?.description !== product?.description
-        ? productDraft.description
-        : product?.description
-      : product?.description,
-    images: productDraft
-      ? productDraft?.images !== product?.images
-        ? productDraft.images
-        : product?.images
-      : product?.images,
-    pricingType: productDraft
-      ? productDraft?.pricingType !== product?.pricingType
-        ? productDraft.pricingType
-        : productPricingType !== "per Item"
-        ? "per Weight"
-        : productPricingType
-      : productPricingType !== "per Item"
-      ? "per Weight"
-      : productPricingType,
-    taxable: productDraft
-      ? productDraft?.taxable !== product?.taxable
-        ? productDraft.taxable
-        : product?.taxable
-      : product?.taxable,
-    status: productDraft
-      ? productDraft?.status !== product?.status
-        ? productDraft.status
-        : product?.status
-      : product?.status,
-    unitWeightInGrams: productDraft
-      ? productDraft?.unitWeightInGrams !== product?.unitWeightInGrams
-        ? productDraft.unitWeightInGrams
-        : product?.unitWeightInGrams
-      : product?.unitWeightInGrams,
-    measurementUnit: productDraft
-      ? productDraft?.measurementUnit !== product?.pricingType
-        ? productDraft.measurementUnit
-        : productPricingType
-      : productPricingType,
+        : product?.productCategory,
+    name: product?.name,
+    availability: product?.availability,
+    price: product?.price,
+    discount: product?.percentDiscount,
+    description: product?.description,
+    images: product?.images,
+    pricingType:
+      productPricingType !== "per Item" ? "per Weight" : productPricingType,
+    taxable: product?.taxable,
+    status: product?.status,
+    unitWeightInGrams: product?.unitWeightInGrams,
+    measurementUnit:  productPricingType !== "per Item" ? productPricingType : "",
   };
 
   const [productInfo, setProductInfo] = useState(initialProductInfo);
@@ -117,27 +55,7 @@ const EditSingleProduct = () => {
     }));
   };
 
-  const handleEditProduct = async () => {
-    setLoading(true);
-
-    const payload = {
-      store: store.id,
-      description: productInfo.description ?? "",
-      price: productInfo.price ?? 0,
-      name: productInfo.name ?? 0,
-      discount: productInfo.discount ?? 0,
-      productCategory: productInfo.productCategory === "Others" ? productInfo?.category : productInfo?.productCategory,
-      status: "active", // hardcoded
-      availability: productInfo.availability ?? 0,
-      // These need to be added to the UI/UX
-      taxable: productInfo?.taxable,
-      pricingType:
-        productInfo?.pricingType === "per Weight"
-          ? productInfo?.measurementUnit
-          : productInfo?.pricingType,
-      unitWeightInGrams: productInfo?.unitWeightInGrams ?? 0,
-    };
-
+  const submitForm = async (payload, setLoading, message) => {
     try {
       // upload images first
       payload.images = productInfo?.images
@@ -167,9 +85,7 @@ const EditSingleProduct = () => {
       if (!success || responseData?.error) {
         throw new Error(responseData?.error?.message);
       }
-      handleProductDraft(false);
-     
-      toast.success("Your product was successfully Edited!");
+      toast.success(message);
       navigate("/products");
     } catch (error) {
       toast.error(
@@ -182,39 +98,58 @@ const EditSingleProduct = () => {
     } finally {
       setLoading(false);
     }
+  }
+
+  const handleEditProduct = async () => {
+    setLoading(true);
+
+    const payload = {
+      store: store.id,
+      description: productInfo.description ?? "",
+      price: productInfo.price ?? 0,
+      name: productInfo.name ?? 0,
+      discount: productInfo.discount ?? 0,
+      productCategory:
+        productInfo.productCategory === "Others"
+          ? productInfo?.category
+          : productInfo?.productCategory,
+      status: "active", // hardcoded
+      availability: productInfo.availability ?? 0,
+      taxable: productInfo?.taxable,
+      pricingType:
+        productInfo?.pricingType === "per Weight"
+          ? productInfo?.measurementUnit
+          : productInfo?.pricingType,
+      unitWeightInGrams: productInfo?.unitWeightInGrams ?? 0,
+    };
+
+    await submitForm(payload, setLoading, "Your product was successfully edited!");
   };
 
-  const handleProductDraft = (showToast = true) => {
+  const handleProductDraft = async () => {
     setDraftLoading(true);
-    try {
-      const product = productData.filter((p) => p.SKU === sku);
 
-      product[0].productCategory = productInfo.productCategory;
-      product[0].category = productInfo.productCategory;
+    const payload = {
+      store: store.id,
+      description: productInfo.description ?? "",
+      price: productInfo.price ?? 0,
+      name: productInfo.name ?? 0,
+      discount: productInfo.discount ?? 0,
+      productCategory:
+        productInfo.productCategory === "Others"
+          ? productInfo?.category
+          : productInfo?.productCategory,
+      status: "draft", // hardcoded
+      availability: productInfo.availability ?? 0,
+      taxable: productInfo?.taxable,
+      pricingType:
+        productInfo?.pricingType === "per Weight"
+          ? productInfo?.measurementUnit
+          : productInfo?.pricingType,
+      unitWeightInGrams: productInfo?.unitWeightInGrams ?? 0,
+    };
 
-      if (productInfo.images.length === 0) {
-        toast.error("upload an image to save as draft");
-      } else {
-        const updatedDraftArray =
-          draftProducts?.map((d) =>
-            d.SKU === sku ? { ...d, ...productInfo } : d
-          ) ?? [];
-
-        if (!updatedDraftArray?.some((obj) => obj.SKU === sku)) {
-          updatedDraftArray.push({ ...product[0], ...productInfo });
-        }
-
-        dispatch(editProductAsDraft(updatedDraftArray));
-        if (showToast)
-          toast.success("Your product was successfully saved as draft!");
-
-        setDraftLoading(false);
-      }
-    } catch (error) {
-      throw new Error(error);
-    } finally {
-      setDraftLoading(false);
-    }
+    await submitForm(payload, setDraftLoading, "Your product was successfully edited as draft!");
   };
   return (
     <ProductChanges
@@ -226,6 +161,7 @@ const EditSingleProduct = () => {
       handleProductDraft={handleProductDraft}
       isLoading={isLoading}
       isDraftLoading={draftLoading}
+      product={product}
     />
   );
 };

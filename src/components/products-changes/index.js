@@ -6,21 +6,19 @@ import {
   ColorArrowRight,
 } from "../../images";
 import { Link, useNavigate } from "react-router-dom";
-import { CATEGORY_DATA } from "../../data";
 import "react-quill/dist/quill.snow.css";
 import { FileInput, ImageDisplay } from "../addProduct/helpers";
 import PropTypes from "prop-types";
-
 import { ProductInfo } from "./productInfo";
 import Button from "../shared/button";
 import { useForm } from "react-hook-form";
 import InputComponent from "../shared/inputComponent";
 import _ from "lodash";
 import Checkbox from "../shared/checkbox";
+import { useSelector } from "react-redux";
 
 const ProductChanges = ({
   isEdit,
-  isDraft,
   productInfo,
   initialProductInfo,
   handleProductInfo,
@@ -28,10 +26,12 @@ const ProductChanges = ({
   handleProductDraft,
   isLoading,
   isDraftLoading,
+  product,
 }) => {
   const navigate = useNavigate();
   const [draftButtonClicked, setDraftButtonClicked] = useState(false);
   const [isTaxable, setIsTaxable] = useState(productInfo?.taxable);
+  const categories = useSelector((state) => state.productCategories);
   const [tab, setTab] = useState("");
 
   const handleSelectCategory = (val) => {
@@ -56,19 +56,27 @@ const ProductChanges = ({
 
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
     register,
     handleSubmit,
     getValues,
-    watch,
   } = useForm({
-    mode: "onSubmit",
+    mode: "onChange",
     defaultValues: productInfo,
   });
 
   const onSubmit = (data) => {
     handleFormSubmit();
   };
+
+  const productCategories = [
+    ...categories?.map((c) => {
+      return { label: c?.name, value: c?.name };
+    }),
+    { label: "Others", value: "Others" },
+  ];
+
+  const disableButton =  !isValid || !isDirty;
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
@@ -109,7 +117,7 @@ const ProductChanges = ({
                       errors={errors}
                       required={true}
                       requiredMessage={"This field is required"}
-                      options={CATEGORY_DATA}
+                      options={productCategories}
                       placeholder={
                         productInfo?.productCategory !== ""
                           ? productInfo?.productCategory
@@ -133,6 +141,10 @@ const ProductChanges = ({
                       required={true}
                       requiredMessage={"This field is required"}
                       value={productInfo?.category}
+                      validate={(value) =>
+                        !productCategories.some((c) => c?.value === value?.trim()) ||
+                        "Category already exists"
+                      }
                       handleChange={(e) => {
                         handleProductInfo("category", e.target.value);
                       }}
@@ -231,7 +243,7 @@ const ProductChanges = ({
           </div>
 
           <section className="flex items-center justify-between pt-[7%]">
-            {!isEdit && (
+            {product?.status !== "active" && (
               <Button
                 variant="tertiary"
                 outline="green"
@@ -247,11 +259,7 @@ const ProductChanges = ({
               </Button>
             )}
 
-            <div
-              className={`flex justify-between items-center gap-4 ${
-                isEdit ? "w-full" : ""
-              }`}
-            >
+            <div className={`flex justify-between items-center gap-4 ml-auto`}>
               <Button
                 variant="tertiary"
                 outline="green"
@@ -263,10 +271,9 @@ const ProductChanges = ({
               </Button>
 
               <Button
-                variant="primary"
+                variant={disableButton ? "disabled" : "primary"}
                 type="submit"
                 className="w-[133px] h-[40px]"
-                disabled={_.isEqual(initialProductInfo, productInfo)}
                 loading={isLoading}
               >
                 Submit

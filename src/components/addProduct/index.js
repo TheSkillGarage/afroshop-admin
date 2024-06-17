@@ -39,8 +39,7 @@ const AddProduct = () => {
     }));
   };
 
-  const submitForm = async (payload, imagesToBeUploaded, setLoading) => {
-    console.log(imagesToBeUploaded);
+  const submitForm = async (payload, imagesToBeUploaded, setLoading, message) => {
     try {
       // upload images first
       const images = imagesToBeUploaded?.map((i) => i.data);
@@ -68,7 +67,7 @@ const AddProduct = () => {
           throw new Error(responseData?.error?.message);
         }
 
-        toast.success("Your product was successfully saved as draft!");
+        toast.success(message);
         navigate("/products");
       }
     } catch (error) {
@@ -100,7 +99,6 @@ const AddProduct = () => {
           : productInfo?.productCategory,
       status: "draft", // hardcoded
       availability: productInfo.availability ?? 0,
-      // These need to be added to the UI/UX
       taxable: productInfo?.taxable ?? false,
       pricingType:
         productInfo?.pricingType === "per Weight"
@@ -110,7 +108,7 @@ const AddProduct = () => {
       itemDetail: 0,
     };
 
-    await submitForm(payload, productInfo?.images, setSaveDraftLoading);
+    await submitForm(payload, productInfo?.images, setSaveDraftLoading, "Your product was successfully saved as draft!");
   };
 
   const handleCreateProduct = async () => {
@@ -128,7 +126,6 @@ const AddProduct = () => {
           : productInfo?.productCategory,
       status: "active", // hardcoded
       availability: productInfo.availability,
-      // These need to be added to the UI/UX
       taxable: productInfo?.taxable,
       pricingType:
         productInfo?.pricingType === "per Weight"
@@ -137,7 +134,7 @@ const AddProduct = () => {
       unitWeightInGrams: productInfo?.unitWeightInGrams,
     };
 
-    await submitForm(payload, productInfo?.images, setLoading);
+    await submitForm(payload, productInfo?.images, setLoading, "Your product was successfully created!");
   };
 
   return (
