@@ -13,6 +13,7 @@ import {
   getProductData,
   getProductCategoryData,
 } from "../../redux/action";
+import ErrorScreen from "../error-screen";
 
 const PageLayout = ({ children }) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
