@@ -11,7 +11,6 @@ import { getTokenFromCookie } from "../../utils";
 
 const EditSingleProduct = () => {
   const { sku } = useParams();
-  const drafts = useSelector((state) => state.productDrafts);
   const token = getTokenFromCookie();
   const productData = useSelector((state) => state.productsData);
   const store = useSelector((state) => state.store);
@@ -113,7 +112,7 @@ const EditSingleProduct = () => {
         productInfo.productCategory === "Others"
           ? productInfo?.category
           : productInfo?.productCategory,
-      status: "active", // hardcoded
+      status: "active",
       availability: productInfo.availability ?? 0,
       taxable: productInfo?.taxable,
       pricingType:
@@ -139,7 +138,7 @@ const EditSingleProduct = () => {
         productInfo.productCategory === "Others"
           ? productInfo?.category
           : productInfo?.productCategory,
-      status: "draft", // hardcoded
+      status: "draft",
       availability: productInfo.availability ?? 0,
       taxable: productInfo?.taxable,
       pricingType:

@@ -97,7 +97,7 @@ const AddProduct = () => {
           : productInfo.productCategory === "Others"
           ? productInfo?.category
           : productInfo?.productCategory,
-      status: "draft", // hardcoded
+      status: "draft",
       availability: productInfo.availability ?? 0,
       taxable: productInfo?.taxable ?? false,
       pricingType:
@@ -124,7 +124,7 @@ const AddProduct = () => {
         productInfo.productCategory === "Others"
           ? productInfo?.category
           : productInfo?.productCategory,
-      status: "active", // hardcoded
+      status: "active",
       availability: productInfo.availability,
       taxable: productInfo?.taxable,
       pricingType:
