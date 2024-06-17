@@ -9,7 +9,6 @@ const RoleActionComponent = ({ sections, section, saveSections }) => {
     const updatedActions = sections?.map((s) => {
       if (s.label == label) {
         obj[action] = !s.action[action];
-        console.log(obj);
         return { ...s, action: { ...s.action, ...obj } };
       }
       return s;

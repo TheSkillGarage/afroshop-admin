@@ -28,7 +28,6 @@ const Profile = () => {
   const store = useSelector((d) => d.store);
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-  console.log(store);
 
   const [profileData, setProfileData] = useState({
     ...data,
