@@ -15,8 +15,9 @@ export const ProductInfo = ({
   control,
   errors,
 }) => {
-  const [newPricingType, setNewPricingType] = useState(productInfo?.pricingType ?? 'per Item');
- 
+  const [newPricingType, setNewPricingType] = useState(
+    productInfo?.pricingType ?? "per Item"
+  );
   const modules = {
     toolbar: [
       ["bold", "italic"],
@@ -25,7 +26,7 @@ export const ProductInfo = ({
       ["link"],
     ],
   };
- 
+
   const sanitizeNumbers = (val, key) => {
     // Remove all characters that are not digits or periods
     let newVal = val.replace(/[^0-9.]/g, "");
@@ -74,11 +75,12 @@ export const ProductInfo = ({
             register={register}
             required={true}
             requiredMessage={"This field is required"}
-            patternValue={/^(?!0\d)/}
+            // patternValue={/^(?!0\d)/}
             patternMessage="Please enter a valid number"
             value={productInfo?.availability}
             handleChange={(e) => {
               let val = e.target.value.replace(/[^0-9]/g, "");
+              // console.log(val.replace(/^0+/, ''))
               handleProductInfo("availability", val);
             }}
           />
@@ -162,8 +164,8 @@ export const ProductInfo = ({
                   errors={errors}
                   register={register}
                   required={true}
-                  patternMessage="Please enter a valid price"
-                  patternValue={/^(?!0\d)/}
+                  patternMessage="Unit weight nust be an integer"
+                  patternValue={/^[0-9]\d*$/}
                   requiredMessage={"This field is required"}
                   value={productInfo?.unitWeightInGrams}
                   handleChange={(e) => {
@@ -184,15 +186,12 @@ export const ProductInfo = ({
                 errors={errors}
                 register={register}
                 required={true}
-                patternValue={/^(?!0\d)\d+(\.\d{1,2})?$/}
+                patternValue={/^\d+(\.[0-9]+)?$/}
                 patternMessage="Please enter a valid price"
                 requiredMessage={"This field is required"}
                 value={productInfo?.price}
                 handleChange={(e) => {
-                  handleProductInfo(
-                    "price",
-                    sanitizeNumbers(e.target.value)
-                  );
+                  handleProductInfo("price", sanitizeNumbers(e.target.value));
                 }}
               />
             </div>
@@ -206,9 +205,7 @@ export const ProductInfo = ({
                 control={control}
                 errors={errors}
                 register={register}
-                patternValue={
-                  /^(?!0\d)(100(\.0{1,2})?|\d{1,2}(\.\d{1,2})?|0(\.\d{1,2})?)$/
-                }
+                patternValue={/^(100(\.0{1,3})?|[0-9]{1,2}(\.[0-9]+)?)$/}
                 patternMessage={"Please enter a valid discount (0 - 100)"}
                 value={productInfo?.discount}
                 handleChange={(e) => {
@@ -231,31 +228,31 @@ export const ProductInfo = ({
               <p className="text-[#B3B3B3] text-[13px]">Price ($)</p>
               <div className="grid grid-flow-col lg:grid-cols-[max-content,auto] gap-4">
                 {/* <div className="w-[30%]"> */}
-                  <InputComponent
-                    inputType="select"
-                    type="select"
-                    options={pricingTypeOptions}
-                    fieldName={"measurementUnit"}
-                    name={"measurementUnit"}
-                    placeholder="Enter"
-                    background={{
-                      background: "#186F3D",
-                      color: "#FFFFFF",
-                      indicatorColor: "#FFFFFF",
-                      optionColor: "#FFFFFF",
-                      selectedOptionColor: "#FFFFFF"
-                    }}
-                    required={true}
-                    requiredMessage={"Rest Period is required"}
-                    className="bg-[#F2F2F2]"
-                    value={productInfo?.measurementUnit}
-                    control={control}
-                    errors={errors}
-                    register={register}
-                    handleChange={(data) =>
-                      handleProductInfo("measurementUnit", data?.value)
-                    }
-                  />
+                <InputComponent
+                  inputType="select"
+                  type="select"
+                  options={pricingTypeOptions}
+                  fieldName={"measurementUnit"}
+                  name={"measurementUnit"}
+                  placeholder="Enter"
+                  background={{
+                    background: "#186F3D",
+                    color: "#FFFFFF",
+                    indicatorColor: "#FFFFFF",
+                    optionColor: "#FFFFFF",
+                    selectedOptionColor: "#FFFFFF",
+                  }}
+                  required={true}
+                  requiredMessage={"Rest Period is required"}
+                  className="bg-[#F2F2F2]"
+                  value={productInfo?.measurementUnit}
+                  control={control}
+                  errors={errors}
+                  register={register}
+                  handleChange={(data) =>
+                    handleProductInfo("measurementUnit", data?.value)
+                  }
+                />
                 {/* </div> */}
                 <InputComponent
                   inputType="input"
@@ -272,10 +269,7 @@ export const ProductInfo = ({
                   requiredMessage={"This field is required"}
                   value={productInfo?.price}
                   handleChange={(e) => {
-                    handleProductInfo(
-                      "price",
-                      sanitizeNumbers(e.target.value)
-                    );
+                    handleProductInfo("price", sanitizeNumbers(e.target.value));
                   }}
                 />
               </div>

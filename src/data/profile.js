@@ -49,8 +49,8 @@ export const pricingTypeOptions = [
     value: 'per g',
   },
   {
-    label: 'per Dz',
-    value: 'per Dz',
+    label: 'per Oz',
+    value: 'per Oz',
   },
 ]
 const deliveryData = [

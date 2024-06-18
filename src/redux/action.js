@@ -164,6 +164,11 @@ export const getOrdersData = (storeID, token) => async (dispatch) => {
   await fetchData(dispatch, `orders?storeID=${storeID}`, "ordersData", token);
 };
 
+export const getProductCategoryData = (token) => async (dispatch) => {
+  await fetchData(dispatch, `product-categories`, "productCategories", token);
+};
+
+
 export const postRequest = (url, data, token = null) => {
   return fetch(renderValidUrl(url), {
     method: "POST",

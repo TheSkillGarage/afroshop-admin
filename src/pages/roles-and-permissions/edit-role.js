@@ -1,13 +1,12 @@
 import React from "react";
-import { AdminNavbar } from "../../components";
+import { PageLayout } from "../../components";
 import EditRole from "../../components/roles-and-permissions/edit-role";
 
 const AddNewRole = () => {
   return (
-    <>
-      <AdminNavbar />
+    <PageLayout pageName={"AddProducts"}>
       <EditRole />
-    </>
+    </PageLayout>
   );
 };
 
