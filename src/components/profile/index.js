@@ -167,7 +167,7 @@ const Profile = () => {
     passwordForm?.reset();
     profileForm?.reset();
   };
-
+ 
   const disableButton =
     (Object.keys(profileForm?.formState?.errors).length === 0 &&
       !(
@@ -177,7 +177,6 @@ const Profile = () => {
       currentTab === "Profile") ||
     (Object.keys(passwordForm?.formState?.errors).length === 0 &&
       currentTab === "Password");
-
   return (
     <div className="bg-[#F2F2F2] w-full py-6 px-4">
       <div className="flex items-center gap-8 mb-6">
