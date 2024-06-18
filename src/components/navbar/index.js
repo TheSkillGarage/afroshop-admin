@@ -107,7 +107,10 @@ const AdminNavbar = ({ name }) => {
           </div>
           {open && (
             <ul ref={modalRef} className="absolute top-14 right-7 text-[13px] bg-white text-black z-[20] rounded-lg space-y-3 w-[150px] py-2 px-4">
-              <li className="cursor-pointer" onClick={() => navigate("/profile")}>Go to Profile</li>
+              {
+                (store?.status === 404 || store?.id) &&
+                <li className="cursor-pointer" onClick={() => navigate("/profile")}>Go to Profile</li>
+              }
               <li className="flex justify-between cursor-pointer" onClick={handleLogout}>
                 <p className="text-[#FF3B30]">Logout</p>
                 <LogoutIcon className="w-4 h-4" />

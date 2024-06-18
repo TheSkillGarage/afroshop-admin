@@ -135,7 +135,6 @@ export const editProduct = (productsData) => (dispatch) => {
 };
 
 export const editProductAsDraft = (productsData) => (dispatch) => {
-  console.log(productsData)
   dispatch({
     type: "EDIT_PRODUCT_AS_DRAFT",
     payload: productsData
@@ -164,6 +163,11 @@ export const getProductData = (storeID, token) => async (dispatch) => {
 export const getOrdersData = (storeID, token) => async (dispatch) => {
   await fetchData(dispatch, `orders?storeID=${storeID}`, "ordersData", token);
 };
+
+export const getProductCategoryData = (token) => async (dispatch) => {
+  await fetchData(dispatch, `product-categories`, "productCategories", token);
+};
+
 
 export const postRequest = (url, data, token = null) => {
   return fetch(renderValidUrl(url), {
@@ -209,7 +213,6 @@ export const handleImageUpload = async (images, collectionName, id = null) => {
   }
 
   const token = getTokenFromCookie();
-  console.log(token)
   const uploadConfig = {
     headers: {
       "Content-Type": "multipart/form-data",

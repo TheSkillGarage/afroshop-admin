@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AdminNavbar from "../navbar";
@@ -11,11 +11,13 @@ import {
   logOutUser,
   setStoreExistStatus,
   getProductData,
+  getProductCategoryData,
 } from "../../redux/action";
-// import { logOutUser, setStoreExistStatus } from "../../redux/action";
+import ErrorScreen from "../error-screen";
 
-const PageLayout = ({ children }) => {
+const PageLayout = ({ children, pageName = "layout"}) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const loadingStates = useSelector(state => state.loadingStates)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,10 +26,12 @@ const PageLayout = ({ children }) => {
   const token = getTokenFromCookie();
   const user = useSelector((state) => state.user);
   const storeData = useSelector((state) => state.store);
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     if (user && user.id) {
       dispatch(getStoreData(user?.id, token));
+      dispatch(getProductCategoryData(token));
     }
   }, [user, token, location.pathname, dispatch]);
 
@@ -43,10 +47,18 @@ const PageLayout = ({ children }) => {
   }, [storeData, location.pathname, token, dispatch, user]);
 
   useEffect(() => {
-    if (Object.keys(storeData).length > 0) {
-      dispatch(setStoreExistStatus(true));
-    } else {
-      dispatch(setStoreExistStatus(false));
+    if (loadingStates !== null && !loadingStates?.store) {
+      if (storeData?.id && !storeData?.status) {
+        setError(false)
+        dispatch(setStoreExistStatus(true));
+      }
+      else if (storeData?.status === 404) {
+        setError(false)
+        dispatch(setStoreExistStatus(false));
+      }
+      else {
+        setError(true)
+      }
     }
   }, [storeData, dispatch]);
   /*
@@ -94,14 +106,22 @@ const PageLayout = ({ children }) => {
 
   return (
     <section className="bg-[#F2F2F2] h-[100vh]">
-      <AdminNavbar name={"layout"} />
+      <AdminNavbar name={pageName} />
 
-      <div className="flex content-height">
-        <AdminSidebar />
-        <div className="bg-white w-full h-full overflow-auto no-scrollbar flex flex-col gap-[60px] md:gap-[80px] large-screen">
-          {children}
-        </div>
-      </div>
+      {
+        error ?
+          <ErrorScreen />
+          :
+          <div className="flex content-height">
+            {
+              pageName === "layout" && <AdminSidebar />
+            }
+            <div className="bg-white w-full h-full overflow-auto no-scrollbar flex flex-col gap-[60px] md:gap-[80px] large-screen">
+              {children}
+            </div>
+          </div>
+      }
+
     </section>
   );
 };

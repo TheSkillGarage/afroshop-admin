@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { getAxisDetails, getAxisTicks } from '../../utils/OrderSummaryFunctions';
 
 
 ChartJS.register(
@@ -22,7 +23,10 @@ ChartJS.register(
   Legend
 );
 
-export function LineChart({ DATA, selectedYear }) {
+export function LineChart({ income, orders, dates }) {
+  const income_details = getAxisDetails(income, 100, 50)
+  const orders_details = getAxisDetails(orders, 10, 5)
+
   const options = {
     bezierCurve: true,
     hitRadius: 5,
@@ -38,7 +42,26 @@ export function LineChart({ DATA, selectedYear }) {
         },
       },
       y: {
+        max: income_details.max,
         beginAtZero: true,
+        ticks: {
+          // forces step size to be 50 units
+          stepSize: income_details.step,
+          callback: getAxisTicks,
+        },
+        border: {
+          display: false,
+          dash: [6],
+        },
+      },
+      y1: {
+        beginAtZero: true,
+        position: 'right',
+        max: orders_details.max,
+        ticks: {
+          stepSize: orders_details.step,
+          callback: getAxisTicks,
+        },
         border: {
           display: false,
           dash: [6],
@@ -68,7 +91,7 @@ export function LineChart({ DATA, selectedYear }) {
       tooltip: {
         enabled: true,
         mode: 'point',
-        intersect: true,
+        intersect: false,
         backgroundColor: 'white',
         borderColor: '#33333329',
         borderWidth: 1,
@@ -90,93 +113,40 @@ export function LineChart({ DATA, selectedYear }) {
           },
           label: function (context) {
             let label = '';
-        
+
             if (context.dataset.label !== "Orders") {
               label = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
             } else {
               label = '' + context.parsed.y; // Append dataset label
             }
-            
+
             return label;
           }
         }
-        
-      },
 
+      },
     },
   };
 
-  const [incomeData, setIncomeData] = useState(0);
-  const [ordersData, setOrdersData] = useState(0);
-  const [uniqueFormattedDates, setuniqueFormattedDates] = useState([])
-
-
-  useEffect(() => {
-    // Function to format date based on selected year
-    const formatDate = (date, selectedYear) => {
-      if (selectedYear === "week") {
-        return date.toLocaleString('default', { month: 'short', day: 'numeric' });
-      } else {
-        return date.toLocaleString('default', { month: 'short' });
-      }
-    };
-  
-    // Initialize objects for income and order counts
-    const incomePerDate = {};
-    const orderCountsPerDate = {};
-  
-    // Iterate over DATA to calculate income and order counts
-    DATA?.forEach(data => {
-      const date = new Date(data.createdAt);
-      const formattedDate = formatDate(date, selectedYear);
-      
-      // Calculate income
-      incomePerDate[formattedDate] = (incomePerDate[formattedDate] || 0) + data.grandTotal;
-      
-      // Calculate order counts
-      orderCountsPerDate[formattedDate] = (orderCountsPerDate[formattedDate] || 0) + data.orderCount;
-
-      // if (data.grandTotal > 0 && data.id !== null){
-      //   orderCountsPerDate[formattedDate] = (orderCountsPerDate[formattedDate] || 0) + 1
-      // }else{
-      //   orderCountsPerDate[formattedDate] = 0;
-      // }
-    });
-  
-    // Extract unique formatted dates
-    const uniqueFormattedDate = Object.keys(incomePerDate);
-  
-    // Extract income data
-    const incomeData = uniqueFormattedDate.map(date => incomePerDate[date] || 0);
-  
-    // Extract order counts data
-    const orderCountsData = uniqueFormattedDate.map(date => orderCountsPerDate[date] || 0);
-
-    // Update state variables
-    setuniqueFormattedDates(uniqueFormattedDate);
-    setIncomeData(incomeData);
-    setOrdersData(orderCountsData);
-  }, [DATA, selectedYear]);
-  
-
-
   // Creating the data object
   const data = {
-    labels: uniqueFormattedDates,
+    labels: dates,
     datasets: [
       {
         label: 'Income',
-        data: incomeData,
+        data: income,
         borderColor: '#186F3D',
         backgroundColor: '#186F3D',
         lineTension: 0.5,
+        yAxisID: 'y',
       },
       {
         label: 'Orders',
-        data: ordersData,
+        data: orders,
         borderColor: '#FCAE17',
         backgroundColor: '#FCAE17',
         lineTension: 0.5,
+        yAxisID: 'y1',
       },
     ],
   };

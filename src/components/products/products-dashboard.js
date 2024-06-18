@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import usePagination from "../../hooks/usePagination";
 import { Link, useNavigate } from "react-router-dom";
 import Filters from "../filters";
@@ -11,34 +11,33 @@ import { useSelector } from "react-redux";
 
 
 const ProductsDashboard = ({ productsData }) => {
-    const [newProducts, setNewProducts] = useState(productsData);
+    // const [newProducts, setNewProducts] = useState(productsData);
     const drafts = useSelector((state) => state.productDrafts);
 
-    useEffect(() => {
-        // Create a Map from the products array
-        const productsMap = new Map(productsData?.map(product => [product.id, product]));
+    // useEffect(() => {
+    //     // Create a Map from the products array
+    //     const productsMap = new Map(productsData?.map(product => [product.id, product]));
     
-        // Update the Map with draftproducts
-        drafts.forEach(draftProduct => {
-        productsMap.set(draftProduct.id, { ...productsMap.get(draftProduct.id), ...draftProduct });
-        });
+    //     // Update the Map with draftproducts
+    //     drafts.forEach(draftProduct => {
+    //     productsMap.set(draftProduct.id, { ...productsMap.get(draftProduct.id), ...draftProduct });
+    //     });
     
-        // Convert the Map back to an array
-        const combinedArray = Array.from(productsMap.values());
-        setNewProducts(combinedArray);
-    }, [])
-    console.log(newProducts)
+    //     // Convert the Map back to an array
+    //     const combinedArray = Array.from(productsMap.values());
+    //     setNewProducts(combinedArray);
+    // }, [])
    
     const [activeTab, setActiveTab] = useState('all');
     const [page, setPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(newProducts?.length > 10 ? 10 : 5);
+    const [itemsPerPage, setItemsPerPage] = useState(productsData?.length > 10 ? 10 : 5);
 
     const [searchTerm, setSearchTerm] = useState('');
 
     const [filterObject, setFilterObject] = useState({});
 
     // from usePagination hook
-    let data = useFilter("products", activeTab, newProducts, searchTerm, filterObject).filteredData;
+    let data = useFilter("products", activeTab, productsData, searchTerm, filterObject).filteredData;
 
     const pagination = usePagination(page, itemsPerPage, data);
 
@@ -77,7 +76,7 @@ const ProductsDashboard = ({ productsData }) => {
 
     const headers = tableData.headers
     const results = tableData.results
-console.log(results, headers)
+
     return (
         <div className="bg-[#F2F2F2] w-full py-6 px-4">
 
@@ -101,7 +100,7 @@ console.log(results, headers)
                         <Link to='/products/new'><button className="bg-[#186F3D] text-[#ffffff] w-[216px] h-[40px] flex items-center justify-center rounded">Add New Product</button></Link>
                     </div>
 
-                    <Search handleSearch={handleSearch} name="products" DATA={newProducts} handleFilterObject={handleFilterObject} />
+                    <Search handleSearch={handleSearch} name="products" DATA={productsData} handleFilterObject={handleFilterObject} />
                 </div>
 
                 {/******************************************************* * table section  **************************************************************/}

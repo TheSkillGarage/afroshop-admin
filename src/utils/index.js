@@ -90,11 +90,12 @@ export const getStorePayload = async (
       return { description: h?.description, date: h?.date };
     }),
     deliveryFees: {
+      measurementUnit: profileData?.delivery?.unit ?? "",
       useTieredPricing:
-        profileData?.delivery?.deliveryType === 0 ? false : true,
-      baseFee: profileData?.delivery?.base_amount,
-      baseDistance: profileData?.delivery?.base_distance,
-      additionalFeePerUnit: profileData?.delivery?.additional_distance_fee,
+        profileData?.delivery?.deliveryType == 0 ? false : true,
+      baseFee: profileData?.delivery?.base_amount ?? 0,
+      baseDistance: profileData?.delivery?.base_distance ?? 0,
+      additionalFeePerUnit: profileData?.delivery?.additional_distance_fee ?? 0,
       less_than_5: profileData?.delivery.delivery
         ? profileData.delivery?.delivery?.filter(
             (data) => data.label === "Within 5km"

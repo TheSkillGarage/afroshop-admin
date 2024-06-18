@@ -63,7 +63,9 @@ const InputComponent = forwardRef(
       defaultValue,
       closeMenuOnSelect,
       onFocus,
-      background
+      background,
+      validate,
+      ...rest
     },
     ref
   ) => {
@@ -130,6 +132,7 @@ const InputComponent = forwardRef(
               />
             ) : null}
             <input
+            {...rest}
               id={id}
               className={`bg-inherit w-full border-none focus:outline-none text-[16px] font-normal placeholder-[#333333] ${className}`}
               type={type}
@@ -137,7 +140,7 @@ const InputComponent = forwardRef(
               ref={ref}
               min={min}
               title={requiredMessage}
-              step={type === "time" ? 2 : 0}
+              step={type === "time" ? 60 : 0}
               max={max}
               name={name}
               placeholder={placeholder}
@@ -149,6 +152,7 @@ const InputComponent = forwardRef(
               {...register(fieldName, {
                 required: required ? requiredMessage : false,
                 onChange: handleChange,
+                validate: validate,
                 pattern: patternValue
                   ? {
                     value: patternValue,

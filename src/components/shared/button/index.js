@@ -9,6 +9,7 @@ import {
   DownloadIcon,
   BackToTop,
   AddIcon,
+  LogoutIcon2
 } from "../../../images";
 import PropTypes from "prop-types";
 import { ClipLoader } from 'react-spinners';
@@ -50,8 +51,10 @@ const ICONS = {
   cart: <WhiteCart />,
   download: <DownloadIcon />,
   top: <BackToTop />,
-  add: <AddIcon />
+  add: <AddIcon />,
+  logout: <img src={LogoutIcon2} alt="log-out-icon" />,
 };
+
 const iconDirection = {
   row: "flex flex-row",
   reverse: "flex flex-row-reverse",
@@ -87,7 +90,6 @@ const Button = ({
     size && SIZE[size],
     className
   );
-  console.log(loading)
 
   return (
     <div>

@@ -7,4 +7,5 @@ export const CATEGORY_DATA = [
     { value: "Spirit", label: "Spirit" },
     { value: "Cakes", label: "Cakes" },
     { value: "Candy", label: "Candy" },
+    { value: "Others", label: "Others" },
   ];

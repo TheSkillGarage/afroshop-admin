@@ -12,11 +12,11 @@ const ProfileTab = (props) => {
     },
     {
       label: "Delivery Fees",
-      value: false,
+      value: true,
     },
     {
       label: "Holidays & Exceptions",
-      value: false,
+      value: true,
     },
   ]);
 

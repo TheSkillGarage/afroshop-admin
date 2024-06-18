@@ -94,7 +94,7 @@ const BusinessSummary = ({ years, ordersData }) => {
                     backgroundColor="#FFD60A26"
                 />
                 <SummaryCards
-                    cardTitle="Total Products"
+                    cardTitle="Total Products Sold"
                     cardNumber={totals.products}
                     percentage={percentageChanges.products}
                     selectedYear={selectedYear}
