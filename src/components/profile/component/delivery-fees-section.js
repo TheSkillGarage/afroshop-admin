@@ -94,7 +94,6 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
     resetField("base_amount");
     resetField("additional_distance_fee");
   };
-
   return (
     <div>
       <div className="flex mt-4 gap-5">
@@ -153,8 +152,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 name="destination"
                 fieldName={`destination`}
                 placeholder="Select"
-                // required={true}
-                // requiredMessage={"This field is required"}
+                required={true}
+                requiredMessage={"This field is required"}
                 className="bg-[#F2F2F2]"
                 control={control}
                 errors={errors}
@@ -169,8 +168,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 type="number"
                 label="Shipping Fee ($)"
                 name="fee"
-                // required={true}
-                // requiredMessage={"This field is required"}
+                required={true}
+                requiredMessage={"This field is required"}
                 fieldName="fee"
                 placeholder="Enter"
                 className="bg-[#F2F2F2]"
@@ -234,7 +233,9 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               name={"unit"}
               placeholder="Enter"
               className="bg-[#F2F2F2]"
+              required={true}
               requiredMessage={"Select"}
+              value={profileData?.unit}
               control={control}
               errors={errors}
               register={register}
@@ -254,6 +255,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               name={"base_distance"}
               placeholder="Enter"
               className="bg-[#F2F2F2]"
+              value={profileData?.base_distance}
               control={control}
               errors={errors}
               register={register}
@@ -271,6 +273,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               placeholder="Enter"
               className="bg-[#F2F2F2]"
               control={control}
+              profileData={profileData?.base_amount}
               errors={errors}
               register={register}
               required={true}
@@ -289,6 +292,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               control={control}
               errors={errors}
               register={register}
+              value={profileData?.additional_distance_fee}
               required={true}
               requiredMessage={"Additional Distance Fee is required"}
               isReadOnly={!storeExists ? false : !editProfile}
