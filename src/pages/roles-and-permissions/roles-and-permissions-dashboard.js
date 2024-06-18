@@ -1,4 +1,4 @@
-import { AdminNavbar, PageLayout, RolesAndPermissions } from "../../components";
+import { PageLayout, RolesAndPermissions } from "../../components";
 
 function RolesAndPermissionsDashboard() {
   return (
