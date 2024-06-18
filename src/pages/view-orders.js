@@ -1,8 +1,10 @@
-import { ViewOrders } from "../components";
+import { PageLayout, ViewOrders } from "../components";
 
 function ViewOrdersPage() {
   return (
-   <ViewOrders />
+    <PageLayout pageName="viewOrders">
+      <ViewOrders />
+    </PageLayout>
   );
 }
 
