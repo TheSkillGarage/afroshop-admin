@@ -80,20 +80,18 @@ const ProductChanges = ({
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
-      <div className="py-[12px]">
-        <div className="flex items-center py-[8px] text-[13px] px-[24px]">
-          <Link to="/products">
-            <span className="text-[#999999]">Products</span>
-          </Link>
-          <span className="px-[5px]">
-            <img src={ColorArrowRight} alt="arrow-right" />
-          </span>
-          {!isEdit ? (
-            <span className="text-green"> Add New Products</span>
-          ) : (
-            <span className="text-green"> Edit Product</span>
-          )}
-        </div>
+      <div className="flex items-center py-[20px] text-[13px] px-[24px]">
+        <Link to="/products">
+          <span className="text-[#999999]">Products</span>
+        </Link>
+        <span className="px-[5px]">
+          <img src={ColorArrowRight} alt="arrow-right" />
+        </span>
+        {!isEdit ? (
+          <span className="text-green"> Add New Products</span>
+        ) : (
+          <span className="text-green"> Edit Product</span>
+        )}
       </div>
       <form
         className="bg-white p-[24px] mx-[12px]"
@@ -104,7 +102,7 @@ const ProductChanges = ({
             <section className="p-[24px]">
               <div className="flex gap-10">
                 <div className=" md:w-[327px] w-[50%]">
-                  <div className="mb-8 text-start w-[327px]">
+                  <div className="mb-8 text-start w-[327px] z-0">
                     <InputComponent
                       inputType="select"
                       label="Category"

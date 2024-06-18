@@ -1,12 +1,11 @@
 import React from "react";
-import { AdminNavbar, EditProduct } from "../components";
+import { PageLayout, EditProduct } from "../components";
 
 const EditProducts = () => {
   return (
-    <>
-      <AdminNavbar name={"EditProducts"} />
+    <PageLayout pageName={"AddProducts"}>
       <EditProduct />
-    </>
+    </PageLayout >
   );
 };
 
