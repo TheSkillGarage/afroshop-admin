@@ -15,7 +15,7 @@ import {
 import ErrorScreen from "../error-screen";
 // import { logOutUser, setStoreExistStatus } from "../../redux/action";
 
-const PageLayout = ({ children }) => {
+const PageLayout = ({ children, pageName = "layout"}) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const loadingStates = useSelector(state => state.loadingStates)
   const dispatch = useDispatch();
@@ -105,14 +105,16 @@ const PageLayout = ({ children }) => {
 
   return (
     <section className="bg-[#F2F2F2] h-[100vh]">
-      <AdminNavbar name={"layout"} />
+      <AdminNavbar name={pageName} />
 
       {
         error ?
           <ErrorScreen />
           :
           <div className="flex content-height">
-            <AdminSidebar />
+            {
+              pageName === "layout" && <AdminSidebar />
+            }
             <div className="bg-white w-full h-full overflow-auto no-scrollbar flex flex-col gap-[60px] md:gap-[80px] large-screen">
               {children}
             </div>
