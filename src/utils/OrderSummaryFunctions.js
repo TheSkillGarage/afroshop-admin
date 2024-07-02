@@ -141,7 +141,10 @@ export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
     for (let i = 0; i < 7; i++) {
       const date = new Date();
       date.setDate(date.getDate() - 6 + i);
-      const formattedDate = date.toLocaleString('default', { month: 'short', day: 'numeric' });
+      const formattedDate = new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric'
+      }).format(date)
       data.dates.push(formattedDate); // Format as 'MMM dd'
 
       if (date < startDate) {
@@ -168,7 +171,10 @@ export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
     // Fill the dates array with the months of the selected year
     for (let i = 0; i < 12; i++) {
       const date = new Date(selectedYear, i, 1);
-      const formattedDate = date.toLocaleString('default', { month: 'short' });
+      const formattedDate = new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+      }).format(date)
+
       data.dates.push(formattedDate); // Format as 'MMM'
 
       // Check if the date is before the store creation date
