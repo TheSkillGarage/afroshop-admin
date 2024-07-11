@@ -102,7 +102,7 @@ export const handleAvatarSubmit = async (image, id) => {
     }
     return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

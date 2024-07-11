@@ -5,11 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrdersData, putRequest } from "../../redux/action";
 
 
-const StatusPills = ({ name, status, id }) => {
+const StatusPills = ({ name, status, id, deliveryOption }) => {
 
-    // const [isStatus, setIsStatus] = useState(status)
     const [isSelected, setIsSelected] = useState(false);
     const dropdownRef = useRef(null);
+
+    const options = deliveryOption === null || deliveryOption === undefined ?
+        []
+        :
+        deliveryOption ?
+            ["Pending", "Shipped", "Delivered", "Cancelled"]
+            :
+            ["Pending", "Ready for Pickup", "Picked Up", "Cancelled"]
 
 
     const colorOfPills = (status) => {
@@ -22,6 +29,10 @@ const StatusPills = ({ name, status, id }) => {
                 return "text-[#007AFF] bg-[rgba(0,122,255,0.1)]"
             case "delivered":
                 return "text-[#34C759] bg-[rgba(52,199,89,0.1)]"
+            case "ready for pickup":
+                return "text-[#007AFF] bg-[rgba(0,122,255,0.1)]"
+            case "picked up":
+                return "text-[#34C759] bg-[rgba(52,199,89,0.1)]"
             case "active":
                 return "text-[#34C759] bg-[rgba(52,199,89,0.1)]"
             case "inactive":
@@ -32,10 +43,6 @@ const StatusPills = ({ name, status, id }) => {
                 return null
         }
     }
-
-    // useEffect(() => {
-    //     setIsStatus(status)
-    // }, [status])
 
     const handleIsSelected = (event) => {
         event.stopPropagation();
@@ -50,8 +57,10 @@ const StatusPills = ({ name, status, id }) => {
         setIsSelected(false)
 
         const allowedTransitions = {
-            Pending: ['Shipped', 'Cancelled'],
+            Pending: ['Shipped', 'Ready for Pickup', 'Cancelled'],
+            'Ready for Pickup': ['Picked Up'],
             Shipped: ['Delivered'],
+            'Picked Up': [],
             Delivered: [],
             Cancelled: []
         };
@@ -77,7 +86,7 @@ const StatusPills = ({ name, status, id }) => {
                 toast.success(`Order status updated successfully`, { autoClose: 2000 });
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -96,19 +105,30 @@ const StatusPills = ({ name, status, id }) => {
         };
     }, []);
 
-
     return (
         <div className="relative">
-            <p className={`w-fit py-1 px-6 rounded-[30px] ${colorOfPills(status)} cursor-pointer`} onClick={handleIsSelected}>{status}</p>
+            <p className={`w-fit py-1 px-6 rounded-[30px] ${colorOfPills(status)} cursor-pointer`} onClick={handleIsSelected}>
+                {
+                    (["Ready for Pickup", "Picked Up"].includes(status))
+                        ?
+                        status === "Ready for Pickup"
+                            ?
+                            "Ready"
+                            :
+                            "Picked"
+                        :
+                        status
+                }
+            </p>
             {(name === "orders" && isSelected) &&
                 <div className="fixed top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.1)] z-[9] flex justify-center items-center">
                     <div className="w-[327px] bg-[#ffffff] max-h-[192px] rounded absolute top-[40%] right-[120px] z-[10] shadow-md status-dropdown" ref={dropdownRef}>
                         {
-                            ["Pending", "Shipped", "Delivered", "Cancelled"].map((item, key) => {
+                            options.map((item, key) => {
                                 return (
                                     <p
                                         key={key}
-                                        className="w-full h-[48px] text-[16px] leading-[24px] text-[#333333] bg-[#ffffff] hover:bg-[#F2F2F2] hover:text-[#186F3D] px-4 flex items-center rounded"
+                                        className="w-full h-[48px] text-[16px] leading-[24px] text-[#333333] bg-[#ffffff] hover:bg-[#F2F2F2] hover:text-[#186F3D] px-4 flex items-center rounded cursor-pointer"
                                         onClick={() => handleStatus(item, status)}>
                                         {item}
                                     </p>
