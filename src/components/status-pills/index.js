@@ -128,7 +128,7 @@ const StatusPills = ({ name, status, id, deliveryOption }) => {
                                 return (
                                     <p
                                         key={key}
-                                        className="w-full h-[48px] text-[16px] leading-[24px] text-[#333333] bg-[#ffffff] hover:bg-[#F2F2F2] hover:text-[#186F3D] px-4 flex items-center rounded"
+                                        className="w-full h-[48px] text-[16px] leading-[24px] text-[#333333] bg-[#ffffff] hover:bg-[#F2F2F2] hover:text-[#186F3D] px-4 flex items-center rounded cursor-pointer"
                                         onClick={() => handleStatus(item, status)}>
                                         {item}
                                     </p>
