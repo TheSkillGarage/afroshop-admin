@@ -281,7 +281,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           register={register}
           step={60}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) => handleData("deliveryStartTime", e.target.value)}
+          handleChange={(e) => handleData("deliveryStartTime", `${e.target.value}:00`)}
         />
         <InputComponent
           inputType="time"
@@ -296,7 +296,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) => handleData("deliveryEndTime", e.target.value)}
+          handleChange={(e) => handleData("deliveryEndTime", `${e.target.value}:00`)}
         />
 
         <InputComponent
@@ -313,7 +313,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => {
-            handleData("openingTime", e.target.value);
+            handleData("openingTime", `${e.target.value}:00`);
           }}
         />
         <InputComponent
@@ -329,7 +329,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) => handleData("closingTime", e.target.value)}
+          handleChange={(e) => handleData("closingTime", `${e.target.value}:00`)}
         />
         <InputComponent
           inputType="select"
