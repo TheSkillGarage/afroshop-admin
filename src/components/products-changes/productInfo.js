@@ -75,12 +75,10 @@ export const ProductInfo = ({
             register={register}
             required={true}
             requiredMessage={"This field is required"}
-            // patternValue={/^(?!0\d)/}
             patternMessage="Please enter a valid number"
             value={productInfo?.availability}
             handleChange={(e) => {
               let val = e.target.value.replace(/[^0-9]/g, "");
-              // console.log(val.replace(/^0+/, ''))
               handleProductInfo("availability", val);
             }}
           />

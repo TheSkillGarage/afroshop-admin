@@ -45,7 +45,7 @@ const Dashboard = () => {
       id: data.id,
       status: (
         <div className="capitalize">
-          <StatusPills status={data.status} name="orders" id={data.id}/>
+          <StatusPills status={data.status} name="orders" id={data.id} deliveryOption={data.deliveryOption} />
         </div>
       ),
     }));
