@@ -40,7 +40,7 @@ export const handleCreateAddress = async (address) => {
     }
     return data;
   } catch (error) {
-    console.log(error);
+    console.errpr(error);
   }
 };
 
