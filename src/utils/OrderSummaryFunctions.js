@@ -136,7 +136,6 @@ export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
     data.income = Array(7).fill(0)
     data.orders = Array(7).fill(0)
 
-
     // Fill the dates array with the last 7 days
     for (let i = 0; i < 7; i++) {
       const date = new Date();
@@ -153,11 +152,12 @@ export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
     ordersData.forEach((order) => {
       const entryDate = new Date(order.createdAt);
       const diffTime = new Date() - entryDate;
+     
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
-
+      
       if (diffDays < 7 && diffDays >= 0) {
-        data.income[6 - diffDays] += order.grandTotal; // Use 6 - diffDays to match the correct index
-        data.orders[6 - diffDays] += 1; // Use 6 - diffDays to match the correct index
+        data.income[7 - diffDays] += order.grandTotal; // Use 6 - diffDays to match the correct index
+        data.orders[7 - diffDays] += 1; // Use 6 - diffDays to match the correct index
       }
     });
   }
