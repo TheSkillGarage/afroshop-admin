@@ -12,6 +12,9 @@ const Overview = () => {
   return (
     <>
       {
+        storeExists && ordersData !== null ?
+          <Dashboard />
+          :
           (loading?.store || !loading || loading?.ordersData)
             ? (
               <div className="fixed inset-0 bg-[#D3D3D3] bg-opacity-25 z-[100] flex justify-center items-center h-screen">
@@ -25,8 +28,6 @@ const Overview = () => {
                 </div>
               </div>
             )
-            : storeExists && ordersData !== null ?
-            <Dashboard />
             :
             <Welcome />
       }

@@ -38,7 +38,6 @@ const filterBySearchTerm = (data, name, searchTerm) => {
 };
 
 const filterByActiveTab = (data, activeTab) => {
-    console.log("active tab: ", activeTab);
     return data.filter(item => item && item.status && item.status.toLowerCase() === activeTab);
 };
 
