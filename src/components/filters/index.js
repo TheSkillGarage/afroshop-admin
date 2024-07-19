@@ -12,6 +12,12 @@ const Filters = ({ filters, activeTab, handleActiveTab }) => {
                 return "w-[84px]"
             case "pending":
                 return "w-[84px]"
+            case "processing":
+                return "w-[92px]"
+            case "ready for pickup":
+                return "w-[125px]"
+            case "picked up":
+                return "w-[92px]"
             case "delivered":
                 return "w-[92px]"
             case "cancelled":

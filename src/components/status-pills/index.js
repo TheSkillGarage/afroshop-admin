@@ -14,15 +14,17 @@ const StatusPills = ({ name, status, id, deliveryOption }) => {
         []
         :
         deliveryOption ?
-            ["Pending", "Shipped", "Delivered", "Cancelled"]
+            ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"]
             :
-            ["Pending", "Ready for Pickup", "Picked Up", "Cancelled"]
+            ["Pending", "Processing", "Ready for Pickup", "Picked Up", "Cancelled"]
 
 
     const colorOfPills = (status) => {
         switch (status?.toLowerCase()) {
             case "pending":
                 return "text-[#FF9500] bg-[rgba(255,149,0,0.1)]"
+            case "processing":
+                return "text-[#FFD700] bg-[rgba(255,215,0,0.1)]"
             case "shipped":
                 return "text-[#007AFF] bg-[rgba(0,122,255,0.1)]"
             case "draft":
@@ -57,7 +59,8 @@ const StatusPills = ({ name, status, id, deliveryOption }) => {
         setIsSelected(false)
 
         const allowedTransitions = {
-            Pending: ['Shipped', 'Ready for Pickup', 'Cancelled'],
+            Pending: ['Processing', 'Cancelled'],
+            Processing: ['Shipped', 'Ready for Pickup'],
             'Ready for Pickup': ['Picked Up'],
             Shipped: ['Delivered'],
             'Picked Up': [],
