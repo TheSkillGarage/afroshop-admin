@@ -60,7 +60,7 @@ const StatusPills = ({ name, status, id, deliveryOption }) => {
 
         const allowedTransitions = {
             Pending: ['Processing', 'Cancelled'],
-            Processing: ['Shipped', 'Ready for Pickup'],
+            Processing: ['Shipped', 'Ready for Pickup', 'Cancelled'],
             'Ready for Pickup': ['Picked Up'],
             Shipped: ['Delivered'],
             'Picked Up': [],
