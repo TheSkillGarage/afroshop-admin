@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 
 const OrdersDashboard = () => {
 
-  const filters = ["all", "pending", "shipped", "delivered", "cancelled"];
+  const filters = ["all", "pending", "processing", "shipped", "ready for pickup", "cancelled", "picked up", "delivered"];
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('all');
