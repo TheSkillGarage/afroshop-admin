@@ -124,8 +124,13 @@ import LogoutIcon2 from "./logOutIcon.svg";
 import Earnings from "./card.svg"
 import EarningsGrey from "./earnings.svg"
 import EarningsIllustration from "./EarningsIllustration.svg"
+import { ReactComponent as CancelOrderIcon } from "./cancel-order-logo.svg";
+
+import { ReactComponent as CancelRed } from "./cancel-red.svg";
 
 export {
+  CancelRed,
+  CancelOrderIcon,
   EarningsIllustration,
   EarningsGrey,
   Earnings,
