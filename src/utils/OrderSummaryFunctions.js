@@ -190,8 +190,8 @@ export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
       console.log(diffDays, entryDate)
 
       if (diffDays < 7 && diffDays >= 0) {
-        data.income[6 - diffDays] += order.grandTotal; // Use 7 - diffDays to match the correct index
-        data.orders[6 - diffDays] += 1; // Use 7 - diffDays to match the correct index
+        data.income[7 - diffDays] += order.grandTotal; // Use 7 - diffDays to match the correct index
+        data.orders[7 - diffDays] += 1; // Use 7 - diffDays to match the correct index
       }
     });
   } else {

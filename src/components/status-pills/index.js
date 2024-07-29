@@ -3,11 +3,7 @@ import { getTokenFromCookie } from "../../utils";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrdersData, putRequest } from "../../redux/action";
-import {
-  CancelOrderIcon,
-  CancelRed,
-  LeftBlackArrow,
-} from "../../images";
+import { CancelOrderIcon, CancelRed, LeftBlackArrow } from "../../images";
 import { orderReasons } from "../../data/profile";
 import InputComponent from "../shared/inputComponent";
 import { useForm } from "react-hook-form";
@@ -73,11 +69,7 @@ const StatusPills = ({ name, status, id, data, deliveryOption }) => {
   const token = getTokenFromCookie();
   const storeData = useSelector((state) => state.store);
 
-  const handleStatus = async (status, currentStatus) => {
-    setIsSelected(false);
-
-    const { reason, other_reasons } = cancelForm.getValues();
-
+  const checkValidStatusTransition = (status, currentStatus) => {
     const allowedTransitions = {
       Pending: ["Processing", "Cancelled"],
       Processing: ["Shipped", "Ready for Pickup", "Cancelled"],
@@ -88,15 +80,23 @@ const StatusPills = ({ name, status, id, data, deliveryOption }) => {
       Cancelled: [],
     };
 
+    if (!allowedTransitions[currentStatus].includes(status)) {
+      toast.error(
+        `Invalid status transition from ${currentStatus} to ${status}`,
+        { autoClose: 2000 }
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const handleStatus = async (status, currentStatus) => {
+    setIsSelected(false);
+
+    const { reason, other_reasons } = cancelForm.getValues();
+
     try {
       setLoading(true);
-      if (!allowedTransitions[currentStatus].includes(status)) {
-        toast.error(
-          `Invalid status transition from ${currentStatus} to ${status}`,
-          { autoClose: 2000 }
-        );
-        return;
-      }
 
       const [success, responseData] = await putRequest(
         `/api/orders/${id}`,
@@ -137,13 +137,11 @@ const StatusPills = ({ name, status, id, data, deliveryOption }) => {
     }
   };
 
-
   const handleCloseCancelOrderModal = (event) => {
     event.stopPropagation();
     setCancelOrder(false);
     cancelForm.reset();
   };
-  
 
   useEffect(() => {
     document.addEventListener("click", handleClick);
@@ -185,9 +183,13 @@ const StatusPills = ({ name, status, id, data, deliveryOption }) => {
                   key={key}
                   className="w-full text-[16px] leading-[24px] text-[#333333] bg-[#ffffff] hover:bg-[#F2F2F2] hover:text-[#186F3D] px-4 py-3 flex items-center rounded cursor-pointer"
                   onClick={() => {
-                    item === "Cancelled"
-                      ? setCancelOrder(true)
-                      : handleStatus(item, status);
+                    const value = checkValidStatusTransition(item, status);
+        
+                    if (value) {
+                      item === "Cancelled"
+                        ? setCancelOrder(true)
+                        : handleStatus(item, status);
+                    }
                   }}
                 >
                   {item}
@@ -206,7 +208,10 @@ const StatusPills = ({ name, status, id, data, deliveryOption }) => {
             onClick={(e) => e.stopPropagation()}
           >
             {cancelForm.watch("reason") === "Other" && (
-              <span className="absolute flex gap-2 items-center top-8 left-10 cursor-pointer" onClick={() => cancelForm.reset()}>
+              <span
+                className="absolute flex gap-2 items-center top-8 left-10 cursor-pointer"
+                onClick={() => cancelForm.reset()}
+              >
                 <LeftBlackArrow /> Back
               </span>
             )}
