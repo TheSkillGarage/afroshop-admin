@@ -77,7 +77,6 @@ const Dashboard = () => {
   }, [ordersData, storeData]);
 
   useEffect(() => {
-    console.log(ordersData)
     const lineData = getLineChartData(selectedYear, ordersData, storeData?.createdAt);
     setDataFilter(lineData);
   }, [selectedYear, ordersData, storeData?.createdAt]);
