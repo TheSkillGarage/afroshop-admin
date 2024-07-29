@@ -184,6 +184,7 @@ export const getLineChartData = (selectedYear, ordersData, storeCreateDate) => {
     ordersData.forEach((order) => {
       const entryDate = new Date(order.createdAt);
       const diffTime = new Date() - entryDate;
+      
 
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
 

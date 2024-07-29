@@ -13,6 +13,29 @@ const deliveryOptions = [
   { value: "pickUp", label: "Pick-Up" },
   { value: "delivery", label: "Delivery" },
 ];
+export const orderReasons = [
+  { 
+    label: "Change of Mind",
+    value: "Change of Mind"
+  },
+  { 
+    label: "Delayed Delivery",
+    value: "Delayed Delivery"
+  },
+  { 
+    label: "Incorrect Order",
+    value: "Incorrect Order"
+  },
+  { 
+    label: "Change in Circumstances",
+    value: "Change in Circumstances"
+  },
+  { 
+    label: "Other",
+    value: "Other"
+  },
+
+]
 const destinationOptions = [
   {
     label: "Within 5km",
