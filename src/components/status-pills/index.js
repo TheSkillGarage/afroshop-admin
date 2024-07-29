@@ -3,11 +3,16 @@ import { getTokenFromCookie } from "../../utils";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrdersData, putRequest } from "../../redux/action";
-import { CancelOrderIcon, CancelRed } from "../../images";
+import {
+  CancelOrderIcon,
+  CancelRed,
+  LeftBlackArrow,
+} from "../../images";
 import { orderReasons } from "../../data/profile";
 import InputComponent from "../shared/inputComponent";
 import { useForm } from "react-hook-form";
 import Button from "../shared/button";
+import OutSideClick from "../../hooks/useHandleClickOutside";
 
 const StatusPills = ({ name, status, id, data, deliveryOption }) => {
   const cancelForm = useForm({
@@ -23,6 +28,7 @@ const StatusPills = ({ name, status, id, data, deliveryOption }) => {
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef(null);
   const cancelRef = useRef(null);
+  const cancelModalOutsideClick = OutSideClick(cancelRef);
 
   const options =
     deliveryOption === null || deliveryOption === undefined
@@ -131,12 +137,13 @@ const StatusPills = ({ name, status, id, data, deliveryOption }) => {
     }
   };
 
+
   const handleCloseCancelOrderModal = (event) => {
     event.stopPropagation();
     setCancelOrder(false);
     cancelForm.reset();
   };
-  console.log(cancelForm.formState.errors);
+  
 
   useEffect(() => {
     document.addEventListener("click", handleClick);
@@ -145,6 +152,12 @@ const StatusPills = ({ name, status, id, data, deliveryOption }) => {
       document.removeEventListener("click", handleClick);
     };
   }, []);
+
+  useEffect(() => {
+    if (cancelModalOutsideClick) {
+      setCancelOrder(false);
+    }
+  }, [cancelModalOutsideClick]);
 
   return (
     <div className="relative">
@@ -172,7 +185,7 @@ const StatusPills = ({ name, status, id, data, deliveryOption }) => {
                   key={key}
                   className="w-full text-[16px] leading-[24px] text-[#333333] bg-[#ffffff] hover:bg-[#F2F2F2] hover:text-[#186F3D] px-4 py-3 flex items-center rounded cursor-pointer"
                   onClick={() => {
-                    item == "Cancelled"
+                    item === "Cancelled"
                       ? setCancelOrder(true)
                       : handleStatus(item, status);
                   }}
@@ -192,6 +205,11 @@ const StatusPills = ({ name, status, id, data, deliveryOption }) => {
             ref={cancelRef}
             onClick={(e) => e.stopPropagation()}
           >
+            {cancelForm.watch("reason") === "Other" && (
+              <span className="absolute flex gap-2 items-center top-8 left-10 cursor-pointer" onClick={() => cancelForm.reset()}>
+                <LeftBlackArrow /> Back
+              </span>
+            )}
             <div className="absolute top-8 right-10">
               <CancelRed onClick={(e) => handleCloseCancelOrderModal(e)} />
             </div>

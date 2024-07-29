@@ -77,6 +77,16 @@ const Dashboard = () => {
   }, [ordersData, storeData]);
 
   useEffect(() => {
+    console.log(ordersData)
+    const data = [
+      { grandTotal: 234.56, createdAt: "2024-07-17T10:56:00.157Z" },
+      { grandTotal: 345.67, createdAt: "2024-07-15T10:56:00.157Z" },
+      { grandTotal: 456.78, createdAt: "2024-07-18T10:56:00.157Z" },
+      // { grandTotal: 567.89, createdAt: "2024-07-21T10:56:00.157Z" },
+      // { grandTotal: 678.90, createdAt: "2024-07-22T10:56:00.157Z" },
+      // { grandTotal: 789.01, createdAt: "2024-07-23T10:56:00.157Z" },
+      // { grandTotal: 890.12, createdAt: "2024-07-24T10:56:00.157Z" }
+    ];
     const lineData = getLineChartData(selectedYear, ordersData, storeData?.createdAt);
     setDataFilter(lineData);
   }, [selectedYear, ordersData, storeData?.createdAt]);
