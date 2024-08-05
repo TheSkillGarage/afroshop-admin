@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import usePagination from "../../hooks/usePagination";
 import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";
@@ -15,9 +15,13 @@ const OrdersDashboard = () => {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('all');
-  const [page, setPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
 
+  // Using params to control pagination
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get('page'), 10) || 1;
+
+
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterObject, setFilterObject] = useState({});
@@ -33,12 +37,13 @@ const OrdersDashboard = () => {
   const pagination = usePagination(page, itemsPerPage, data);
   const totalPages = pagination.totalPages; // sets total 
 
+
   //functions
   const handleItemsPerPage = (e) => setItemsPerPage(parseInt(e.target.value)); // set items per page when selected
   const handleActiveTab = (activeTab) => setActiveTab(activeTab); // controls styles for all, active, pending and draft filters
-  const handlePage = (activePage) => setPage(activePage); // sets page when pagination button is clicked
-  const prevPage = () => page > 1 ? setPage(page - 1) : null; // goes to previous page
-  const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
+  const handlePage = (activePage) => setSearchParams({ page: activePage }); // sets page when pagination button is clicked
+  const prevPage = () => page > 1 ? setSearchParams({ page: page - 1 }) : null; // goes to previous page
+  const nextPage = () => page < totalPages ? setSearchParams({ page: page + 1 }) : null; // goes to next page
 
   const handleViewOrder = (orderID) => navigate(`/view-order/${orderID}`);
 
@@ -58,7 +63,6 @@ const OrdersDashboard = () => {
 
   const headers = tableData.headers
   const results = tableData.results
-
 
   return (
     <div className="bg-[#F2F2F2] w-full pt-6 pb-8 px-4">
@@ -84,8 +88,6 @@ const OrdersDashboard = () => {
 
         {/**************************************************************  table section *****************************************************/}
         <BaseTable tableHeaders={headers} data={results} name="orders" />
-
-
 
         <TableFooter
           pagination={pagination}

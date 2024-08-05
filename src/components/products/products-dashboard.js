@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import usePagination from "../../hooks/usePagination";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Filters from "../filters";
 import useFilter from "../../hooks/useFilter";
 import TableFooter from "../table-footer/table-footer";
@@ -17,19 +17,21 @@ const ProductsDashboard = ({ productsData }) => {
     // useEffect(() => {
     //     // Create a Map from the products array
     //     const productsMap = new Map(productsData?.map(product => [product.id, product]));
-    
+
     //     // Update the Map with draftproducts
     //     drafts.forEach(draftProduct => {
     //     productsMap.set(draftProduct.id, { ...productsMap.get(draftProduct.id), ...draftProduct });
     //     });
-    
+
     //     // Convert the Map back to an array
     //     const combinedArray = Array.from(productsMap.values());
     //     setNewProducts(combinedArray);
     // }, [])
-   
+
     const [activeTab, setActiveTab] = useState('all');
-    const [page, setPage] = useState(1);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const page = parseInt(searchParams.get('page'), 10) || 1;
     const [itemsPerPage, setItemsPerPage] = useState(productsData?.length > 10 ? 10 : 5);
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -49,10 +51,10 @@ const ProductsDashboard = ({ productsData }) => {
 
     const handleItemsPerPage = (e) => setItemsPerPage(e.target.value); // set items per page when selected from select dropdown
     const handleActiveTab = (activeTab) => setActiveTab(activeTab); // controls styles for all, active, pending and draft filters
-    const handlePage = (activePage) => setPage(activePage); // sets page when pagination button is clicked
-    const prevPage = () => page > 1 ? setPage(page - 1) : null; // goes to previous page
-    const nextPage = () => page < totalPages ? setPage(page + 1) : null; // goes to next page
-   
+    const handlePage = (activePage) => setSearchParams({ page: activePage }); // sets page when pagination button is clicked
+    const prevPage = () => page > 1 ? setSearchParams({ page: page - 1 }) : null; // goes to previous page
+    const nextPage = () => page < totalPages ? setSearchParams({ page: page + 1 }) : null; // goes to next page
+
 
     //search and filter modal
     const handleSearch = (searchWord) => setSearchTerm(searchWord)
