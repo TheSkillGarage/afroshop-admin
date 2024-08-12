@@ -39,7 +39,6 @@ export const fetchData = async (dispatch, url, type, token) => {
         ...(token && { Authorization: `Bearer ${token}` }),
       },
     });
-    console.log("data returned", data);
     dispatch({ type: "API_REQUEST_SUCCESS", payload: type });
     dispatch({ type: "GET_API_REQUEST", hash: { [type]: data } });
   } catch (error) {
@@ -154,8 +153,6 @@ export const discardDraft = (hash) => (dispatch) => {
 
 export const getStoreData = (userID, token) => async (dispatch) => {
   const data = await fetchData(dispatch, `stores/${userID}`, "stores", token);
-  console.log(data)
-
   return data;
 };
 

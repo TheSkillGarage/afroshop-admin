@@ -28,11 +28,7 @@ const PageLayout = ({ children, pageName = "layout"}) => {
   const storeId = useSelector((state) => state.storeID);
   const storeData = useSelector((state) => (state.stores));
   const [error, setError] = useState(false);
-  console.log("Store data", storeData);
-
-  console.log("Store data", storeData);
- 
-  // console.log("erorrrrr", storeData)
+  
   useEffect(() => {
     if (user && user.id) {
       dispatch(getStoreData(user?.id, token));
@@ -40,7 +36,7 @@ const PageLayout = ({ children, pageName = "layout"}) => {
     }
   }, [user, token, location.pathname, dispatch]);
 
-  const store = storeData[storeId] ?? {};
+  const store = storeData ? storeData[storeId] : {};
   useEffect(() => {
     if (store && store.id) {
       if (location.pathname === "/products") {
@@ -67,8 +63,7 @@ const PageLayout = ({ children, pageName = "layout"}) => {
       }
     }
   }, [storeData, dispatch, store]);
-  console.log("hereee", loadingStates)
-  console.log("store data", storeData);
+  
   /*
 
     This section handles user Inactivity after 20mins
