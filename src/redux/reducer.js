@@ -3,7 +3,8 @@ import sectionData from "../data/roles-section-data";
 const PRIVATE_INITIAL_STATE = {
   productsData: null,
   ordersData: null,
-  store: {},
+  storeID: 0,
+  stores: null,
   addresses: [],
   roles: [],
   isAuthenticated: false,
@@ -52,6 +53,11 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         storeExists: action.payload,
       };
+      case "SET_STORE_ID":
+        return {
+          ...previousState,
+          storeID: action.payload,
+        };
     case "LOGIN_USER":
       return {
         ...previousState,

@@ -25,7 +25,7 @@ const Profile = () => {
   const token = getTokenFromCookie();
   const storeExists = useSelector((state) => state.storeExists);
   const data = useSelector((d) => d.profile);
-  const store = useSelector((d) => d.store);
+  const store =  useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
 

@@ -8,7 +8,7 @@ import RadioButton from "../../shared/radioBtn";
 import { useSelector } from "react-redux";
 
 const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
-  const store = useSelector((state) => state.store);
+  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
   const storeExists = useSelector((state) => state.storeExists);
   const [deliveryType, setDeliveryType] = useState(
     profileData?.delivery?.deliveryType ?? 0

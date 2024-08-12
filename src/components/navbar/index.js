@@ -6,11 +6,11 @@ import {
   NotificationIcon,
   SettingsIcon,
   DefaultUserImage,
-  StoreDefaultImage
+  StoreDefaultImage,
 } from "../../images";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logOutUser, sidebarToggle } from "../../redux/action";
+import { logOutUser, sidebarToggle, setStoreID } from "../../redux/action";
 import { renderValidUrl } from "../../utils/constants";
 import OutSideClick from "../../hooks/useHandleClickOutside";
 import { removeTokenFromCookie } from "../../utils";
@@ -19,13 +19,23 @@ const AdminNavbar = ({ name }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const store = useSelector((state) => state.store);
+  const storeID = useSelector((state) => state.storeID || 0);
+  const store = useSelector((state) =>
+    state.stores && state.stores.length > 0 ? state.stores[storeID] : {}
+  );
+  const stores = useSelector((state) =>
+    state.stores && state.stores.length > 0 ? state.stores : {}
+  );
   const [open, setOpen] = useState(false);
   const modalRef = useRef(null);
   const isSidebarToggled = useSelector((state) => state.isSidebarToggled);
   const locationClickOutside = OutSideClick(modalRef);
   const toggleSidebar = () => {
     dispatch(sidebarToggle({ toggle: isSidebarToggled }));
+  };
+
+  const handleStoreChange = (key) => {
+    dispatch(setStoreID(key));
   };
 
   useEffect(() => {
@@ -39,8 +49,8 @@ const AdminNavbar = ({ name }) => {
     setOpen(false);
     dispatch(logOutUser());
     navigate("/");
-    dispatch(sidebarToggle({ toggle: isSidebarToggled }))
-  }
+    dispatch(sidebarToggle({ toggle: isSidebarToggled }));
+  };
 
   return (
     <nav className="flex justify-between p-6 border-b border-1 border-[#E6E6E6] min-h-[69px] max-h-[69px] bg-[#ffffff]">
@@ -52,7 +62,12 @@ const AdminNavbar = ({ name }) => {
             onClick={() => toggleSidebar()}
           />
           <div className="flex">
-            <img src={store?.image ? renderValidUrl(store?.image) : StoreDefaultImage} className="h-[32px] w-[32px] rounded-full" />
+            <img
+              src={
+                store?.image ? renderValidUrl(store?.image) : StoreDefaultImage
+              }
+              className="h-[32px] w-[32px] rounded-full"
+            />
             <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
               {store?.name}
             </p>
@@ -68,7 +83,14 @@ const AdminNavbar = ({ name }) => {
                 onClick={() => navigate("/orders")}
               />
               <div className="flex">
-                <img src={store?.image ? renderValidUrl(store?.image) : StoreDefaultImage} className="h-[32px] w-[32px] rounded-full" />
+                <img
+                  src={
+                    store?.image
+                      ? renderValidUrl(store?.image)
+                      : StoreDefaultImage
+                  }
+                  className="h-[32px] w-[32px] rounded-full"
+                />
                 <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
                   All Stores
                 </p>
@@ -82,7 +104,14 @@ const AdminNavbar = ({ name }) => {
                 onClick={() => navigate("/products")}
               />
               <div className="flex">
-                <img src={store?.image ? renderValidUrl(store?.image) : StoreDefaultImage} className="h-[32px] w-[32px] rounded-full" />
+                <img
+                  src={
+                    store?.image
+                      ? renderValidUrl(store?.image)
+                      : StoreDefaultImage
+                  }
+                  className="h-[32px] w-[32px] rounded-full"
+                />
                 <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
                   {store?.name}
                 </p>
@@ -106,12 +135,35 @@ const AdminNavbar = ({ name }) => {
             </p>
           </div>
           {open && (
-            <ul ref={modalRef} className="absolute top-14 right-7 text-[13px] bg-white text-black z-[20] rounded-lg space-y-3 w-[150px] py-2 px-4">
-              {
-                (store?.status === 404 || store?.id) &&
-                <li className="cursor-pointer" onClick={() => navigate("/profile")}>Go to Profile</li>
-              }
-              <li className="flex justify-between cursor-pointer" onClick={handleLogout}>
+            <ul
+              ref={modalRef}
+              className="absolute top-14 right-7 text-[13px] bg-white text-black z-[20] rounded-lg space-y-3 w-[150px] py-2 px-4"
+            >
+              {(store?.status === 404 || store?.id) && (
+                <li
+                  className="cursor-pointer"
+                  onClick={() => navigate("/profile")}
+                >
+                  Go to Profile
+                </li>
+              )}
+
+              {stores &&
+                stores.length > 1 &&
+                stores.map((store, key) => (
+                  <li
+                    key={key}
+                    onClick={() => handleStoreChange(key)}
+                    className="cursor-pointer"
+                  >
+                    {store.name}
+                  </li>
+                ))}
+
+              <li
+                className="flex justify-between cursor-pointer"
+                onClick={handleLogout}
+              >
                 <p className="text-[#FF3B30]">Logout</p>
                 <LogoutIcon className="w-4 h-4" />
               </li>

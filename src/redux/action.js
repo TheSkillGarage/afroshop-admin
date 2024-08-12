@@ -26,6 +26,10 @@ export const setStoreExistStatus = (value) => (dispatch) => {
     payload: value,
   });
 };
+export const setStoreID = (id) => ({
+  type: 'SET_STORE_ID',
+  payload: id,
+});
 export const fetchData = async (dispatch, url, type, token) => {
   dispatch({ type: "API_REQUEST_START", payload: type });
   try {
@@ -35,6 +39,7 @@ export const fetchData = async (dispatch, url, type, token) => {
         ...(token && { Authorization: `Bearer ${token}` }),
       },
     });
+    console.log("data returned", data);
     dispatch({ type: "API_REQUEST_SUCCESS", payload: type });
     dispatch({ type: "GET_API_REQUEST", hash: { [type]: data } });
   } catch (error) {
@@ -148,7 +153,10 @@ export const discardDraft = (hash) => (dispatch) => {
 };
 
 export const getStoreData = (userID, token) => async (dispatch) => {
-  await fetchData(dispatch, `stores/${userID}`, "store", token);
+  const data = await fetchData(dispatch, `stores/${userID}`, "stores", token);
+  console.log(data)
+
+  return data;
 };
 
 export const getProductData = (storeID, token) => async (dispatch) => {

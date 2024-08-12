@@ -25,9 +25,14 @@ const PageLayout = ({ children, pageName = "layout"}) => {
   //  handling API calls
   const token = getTokenFromCookie();
   const user = useSelector((state) => state.user);
-  const storeData = useSelector((state) => state.store);
-  const [error, setError] = useState(false)
+  const storeId = useSelector((state) => state.storeID);
+  const storeData = useSelector((state) => (state.stores));
+  const [error, setError] = useState(false);
+  console.log("Store data", storeData);
 
+  console.log("Store data", storeData);
+ 
+  // console.log("erorrrrr", storeData)
   useEffect(() => {
     if (user && user.id) {
       dispatch(getStoreData(user?.id, token));
@@ -35,20 +40,21 @@ const PageLayout = ({ children, pageName = "layout"}) => {
     }
   }, [user, token, location.pathname, dispatch]);
 
+  const store = storeData[storeId] ?? {};
   useEffect(() => {
-    if (storeData && storeData.id) {
+    if (store && store.id) {
       if (location.pathname === "/products") {
-        dispatch(getProductData(storeData.id, token));
+        dispatch(getProductData(store.id, token));
       }
       if (location.pathname === "/orders" || location.pathname === "/") {
-        dispatch(getOrdersData(storeData.id, token));
+        dispatch(getOrdersData(store.id, token));
       }
     }
-  }, [storeData, location.pathname, token, dispatch, user]);
+  }, [store, location.pathname, token, dispatch, user]);
 
   useEffect(() => {
     if (loadingStates !== null && !loadingStates?.store) {
-      if (storeData?.id && !storeData?.status) {
+      if (store?.id && !storeData?.status) {
         setError(false)
         dispatch(setStoreExistStatus(true));
       }
@@ -60,7 +66,9 @@ const PageLayout = ({ children, pageName = "layout"}) => {
         setError(true)
       }
     }
-  }, [storeData, dispatch]);
+  }, [storeData, dispatch, store]);
+  console.log("hereee", loadingStates)
+  console.log("store data", storeData);
   /*
 
     This section handles user Inactivity after 20mins
