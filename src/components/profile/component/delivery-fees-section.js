@@ -152,8 +152,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 name="destination"
                 fieldName={`destination`}
                 placeholder="Select"
-                required={true}
-                requiredMessage={"This field is required"}
+                // required={true}
+                // requiredMessage={"This field is required"}
                 className="bg-[#F2F2F2]"
                 control={control}
                 errors={errors}
@@ -168,8 +168,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 type="number"
                 label="Shipping Fee ($)"
                 name="fee"
-                required={true}
-                requiredMessage={"This field is required"}
+                // required={true}
+                // requiredMessage={"This field is required"}
                 fieldName="fee"
                 placeholder="Enter"
                 className="bg-[#F2F2F2]"

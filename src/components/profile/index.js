@@ -27,6 +27,7 @@ const Profile = () => {
   const token = getTokenFromCookie();
   const storeExists = useSelector((state) => state.storeExists);
   const storeID = useSelector((state) => state.storeID || 0);
+  const stores = useSelector((state) => state.stores);
   const store = useSelector((state) =>
     state.stores && state.stores.length > 0 && storeID !== -1
       ? state.stores[storeID]
@@ -73,7 +74,8 @@ const Profile = () => {
       storeExists,
       user,
       dispatch,
-      token
+      token,
+      stores
     );
   };
 

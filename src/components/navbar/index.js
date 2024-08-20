@@ -171,7 +171,7 @@ const AdminNavbar = ({ name }) => {
                 ))}
 
               <li
-                className="text-xs text-[#186F3D]"
+                className="cursor-pointer text-xs text-[#186F3D]"
                 onClick={() => {
                   dispatch(setStoreExistStatus(false));
                   handleStoreChange(-1);

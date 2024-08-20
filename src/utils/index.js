@@ -6,6 +6,7 @@ import {
   handleAvatarSubmit,
   postRequest,
   putRequest,
+  setStores,
   updateStore,
 } from "../redux/action";
 import { deliveryOptions, deliverySlots, restPeriods } from "../data/profile";
@@ -77,36 +78,36 @@ export const getStoreDefaultValues = (store, storeExists, user) => {
         )?.value || "",
     },
     delivery: {
-      base_amount: store?.deliveryFees ? store?.deliveryFees?.baseFee : "",
+      base_amount: store?.deliveryFees ? store?.deliveryFees?.baseFee : 0,
       base_distance: store?.deliveryFees
         ? store?.deliveryFees?.baseDistance
-        : "",
+        : 0,
       additional_distance_fee: store?.deliveryFees
         ? store?.deliveryFees?.additionalFeePerUnit
-        : "",
-      unit: store?.deliveryFees ? store?.deliveryFees?.measurementUnit : "",
+        : 0,
+      unit: store?.deliveryFees ? store?.deliveryFees?.measurementUnit : 0,
       deliveryType: (!store?.deliveryFees?.useTieredPricing ? 0 : 1) || 0,
       delivery:
         [
           {
             label: "Within 5km",
-            value: store?.deliveryFees?.less_than_5,
+            value: store?.deliveryFees?.less_than_5 ?? 0,
           },
           {
             label: "Between 5 to 10km",
-            value: store?.deliveryFees?.between_5_and_10,
+            value: store?.deliveryFees?.between_5_and_10 ?? 0,
           },
           {
             label: "Between 10 to 15km",
-            value: store?.deliveryFees?.between_10_and_15,
+            value: store?.deliveryFees?.between_10_and_15 ?? 0,
           },
           {
             label: "Between 15 to 20km",
-            value: store?.deliveryFees?.between_15_and_20,
+            value: store?.deliveryFees?.between_15_and_20 ?? 0,
           },
           {
             label: "More than 20km",
-            value: store?.deliveryFees?.more_than_20,
+            value: store?.deliveryFees?.more_than_20 ?? 0,
           },
         ] ?? [],
     },
@@ -222,7 +223,8 @@ export const handleSubmitStore = async (
   storeExists,
   user,
   dispatch,
-  token
+  token,
+  stores
 ) => {
   setLoading(true);
   //restructuring of new details of store to be updated
@@ -246,6 +248,11 @@ export const handleSubmitStore = async (
     } else {
       //updates the store state with the response data
       dispatch(updateStore(responseData));
+
+      dispatch(setStores([
+        ...stores,
+        responseData
+      ]))
 
       //toast that shows whne successful
       toast.success(

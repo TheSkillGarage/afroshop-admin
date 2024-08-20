@@ -53,11 +53,16 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         storeExists: action.payload,
       };
-      case "SET_STORE_ID":
-        return {
-          ...previousState,
-          storeID: action.payload,
-        };
+    case "SET_STORES":
+      return {
+        ...previousState,
+        stores: action.payload,
+      };
+    case "SET_STORE_ID":
+      return {
+        ...previousState,
+        storeID: action.payload,
+      };
     case "LOGIN_USER":
       return {
         ...previousState,
@@ -124,7 +129,7 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
     case "EDIT_PRODUCT_AS_DRAFT":
       return {
         ...previousState,
-        productDrafts: action.payload
+        productDrafts: action.payload,
       };
     case "RESET_STORE":
       return INITIAL_STATE;

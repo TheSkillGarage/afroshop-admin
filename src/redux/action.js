@@ -84,6 +84,13 @@ export const addUserRole = (hash) => (dispatch) => {
   });
 };
 
+export const setStores = (stores) => (dispatch) => {
+  dispatch({
+    type: "SET_STORES",
+    payload: stores
+  })
+}
+
 export const handleAvatarSubmit = async (image, id) => {
   if (image?.length === 0) {
     toast.error("File is required*", {
