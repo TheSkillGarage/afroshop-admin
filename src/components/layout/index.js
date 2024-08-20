@@ -54,7 +54,7 @@ const PageLayout = ({ children, pageName = "layout"}) => {
         setError(false)
         dispatch(setStoreExistStatus(true));
       }
-      else if (storeData?.status === 404) {
+      else if (storeData?.status === 404 || storeId === -1) {
         setError(false)
         dispatch(setStoreExistStatus(false));
       }

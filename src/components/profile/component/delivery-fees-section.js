@@ -226,7 +226,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               inputType="select"
               options={[
                 { label: "km", value: "km" },
-                { label: "miles", value: "miles" },
+                { label: "miles", value: "mi" },
               ]}
               label="Unit of Measurement"
               fieldName={"unit"}

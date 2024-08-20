@@ -7,6 +7,7 @@ import EditPassword from "./edit-password";
 import { useForm } from "react-hook-form";
 import { renderValidUrl } from "../../utils/constants";
 import {
+  getStoreDefaultValues,
   getTokenFromCookie,
   handleSubmitPassword,
   handleSubmitStore,
@@ -17,6 +18,7 @@ import {
   restPeriods,
 } from "../../data/profile";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getStoreById } from "../../redux/action";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -24,99 +26,31 @@ const Profile = () => {
   const dispatch = useDispatch();
   const token = getTokenFromCookie();
   const storeExists = useSelector((state) => state.storeExists);
-  const data = useSelector((d) => d.profile);
-  const store =  useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
+  const storeID = useSelector((state) => state.storeID || 0);
+  const store = useSelector((state) =>
+    state.stores && state.stores.length > 0 && storeID !== -1
+      ? state.stores[storeID]
+      : null
+  );
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-
-  const [profileData, setProfileData] = useState({
-    ...data,
-    holidays: store.holidays ?? [],
-    store: storeExists
-      ? {
-          ...data?.store,
-          days: store?.openDays?.map((day) => day?.openDays) || [],
-          email: user?.email || "",
-          store_name: store?.name || "",
-          address: store?.address?.streetAddress || "",
-          city: store?.address?.city || "",
-          state: store?.address?.state || "",
-          postal_code: store?.address?.postalCode || "",
-          country: store?.address?.country || "",
-          deliveryStartTime: store?.deliveryTime?.from || "",
-          deliveryEndTime: store?.deliveryTime?.to || "",
-          profile_image: storeExists ? renderValidUrl(store?.image) : null,
-          openingTime: store?.openingTimes?.from || "",
-          closingTime: store?.openingTimes?.to || "",
-          deliveryOption: store?.deliveryOptions
-            ? deliveryOptions.filter((d) => store?.deliveryOptions[d?.value])
-            : [],
-          deliverySlot: store?.deliverySlots
-            ? deliverySlots.find(
-                (option) =>
-                  option?.value ===
-                  store?.deliverySlots?.deliverySlotLengthinHrs
-              )?.value
-            : "",
-          restPeriod:
-            restPeriods.find(
-              (option) =>
-                option?.value === store?.deliverySlots?.restPeriodinHrs
-            )?.value || "",
-        }
-      : { days: [] },
-    delivery:
-      storeExists && store?.deliveryFees
-        ? {
-            base_amount: store?.deliveryFees
-              ? store?.deliveryFees?.baseFee
-              : "",
-            base_distance: store?.deliveryFees
-              ? store?.deliveryFees?.baseDistance
-              : "",
-            additional_distance_fee: store?.deliveryFees
-              ? store?.deliveryFees?.additionalFeePerUnit
-              : "",
-            unit: store?.deliveryFees
-              ? store?.deliveryFees?.measurementUnit
-              : "",
-            deliveryType: (!store?.deliveryFees?.useTieredPricing ? 0 : 1) || 0,
-            delivery:
-              [
-                {
-                  label: "Within 5km",
-                  value: store?.deliveryFees?.less_than_5,
-                },
-                {
-                  label: "Between 5 to 10km",
-                  value: store?.deliveryFees?.between_5_and_10,
-                },
-                {
-                  label: "Between 10 to 15km",
-                  value: store?.deliveryFees?.between_10_and_15,
-                },
-                {
-                  label: "Between 15 to 20km",
-                  value: store?.deliveryFees?.between_15_and_20,
-                },
-                {
-                  label: "More than 20km",
-                  value: store?.deliveryFees?.more_than_20,
-                },
-              ] ?? [],
-          }
-        : {},
-  });
-
+  const [profileData, setProfileData] = useState();
   const profileForm = useForm({
-    defaultValues: {
-      ...profileData?.store,
-      ...profileData?.delivery,
-      destination: null,
-      fee: null,
-    },
     mode: "all",
   });
+
+  useEffect(() => {
+    const result = getStoreDefaultValues(store, storeExists, user);
+    setProfileData(result);
+    profileForm.reset({
+      ...result?.store,
+      ...result?.delivery,
+      destination: null,
+      fee: null,
+    });
+  }, [store, storeID]);
+
+  console.log(store, storeExists, profileData, profileForm.getValues());
 
   const passwordForm = useForm({
     defaultValues: {
@@ -167,7 +101,7 @@ const Profile = () => {
     passwordForm?.reset();
     profileForm?.reset();
   };
- 
+
   const disableButton =
     (Object.keys(profileForm?.formState?.errors).length === 0 &&
       !(

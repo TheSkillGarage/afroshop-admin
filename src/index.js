@@ -31,7 +31,7 @@ const Root = () => {
     <Provider store={store}>
       <React.StrictMode>
         <ToastContainer/>
-        {!isMobile ? <MyRoutes /> : <DetectMobile />}
+         <MyRoutes />
       </React.StrictMode>
     </Provider>
   );

@@ -10,7 +10,12 @@ import {
 } from "../../images";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logOutUser, sidebarToggle, setStoreID } from "../../redux/action";
+import {
+  logOutUser,
+  sidebarToggle,
+  setStoreID,
+  setStoreExistStatus,
+} from "../../redux/action";
 import { renderValidUrl } from "../../utils/constants";
 import OutSideClick from "../../hooks/useHandleClickOutside";
 import { removeTokenFromCookie } from "../../utils";
@@ -153,12 +158,27 @@ const AdminNavbar = ({ name }) => {
                 stores.map((store, key) => (
                   <li
                     key={key}
-                    onClick={() => handleStoreChange(key)}
-                    className="cursor-pointer"
+                    onClick={() => {
+                      dispatch(setStoreExistStatus(true));
+                      handleStoreChange(key);
+                    }}
+                    className={`cursor-pointer ${
+                      storeID === key ? "bg-[#186F3D] text-white p-2 rounded" : ""
+                    }`}
                   >
                     {store.name}
                   </li>
                 ))}
+
+              <li
+                className="text-xs text-[#186F3D]"
+                onClick={() => {
+                  dispatch(setStoreExistStatus(false));
+                  handleStoreChange(-1);
+                }}
+              >
+                + Add New Store
+              </li>
 
               <li
                 className="flex justify-between cursor-pointer"
