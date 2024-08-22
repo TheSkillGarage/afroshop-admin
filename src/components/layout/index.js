@@ -25,7 +25,7 @@ const PageLayout = ({ children, pageName = "layout"}) => {
   //  handling API calls
   const token = getTokenFromCookie();
   const user = useSelector((state) => state.user);
-  const storeData = useSelector((state) => state.store);
+  const storeData = useSelector((state) => state.store[0]);
   const [error, setError] = useState(false)
 
   useEffect(() => {

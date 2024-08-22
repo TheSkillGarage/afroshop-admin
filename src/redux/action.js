@@ -168,6 +168,10 @@ export const getProductCategoryData = (token) => async (dispatch) => {
   await fetchData(dispatch, `product-categories`, "productCategories", token);
 };
 
+export const getProductsDatabase = (token) => async(dispatch) => {
+  await fetchData(dispatch, `products?template=True`, "productsDatabase", token);
+}
+
 
 export const postRequest = (url, data, token = null) => {
   return fetch(renderValidUrl(url), {

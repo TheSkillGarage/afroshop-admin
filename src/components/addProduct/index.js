@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addProduct, handleImageUpload, postRequest } from "../../redux/action";
 import { getTokenFromCookie } from "../../utils";
+import DatabaseModal from "./database-modal";
 
 const AddProduct = () => {
   const store = useSelector((state) => state.store);
@@ -95,8 +96,8 @@ const AddProduct = () => {
         productInfo?.productCategory === ""
           ? "Draft Product"
           : productInfo.productCategory === "Others"
-          ? productInfo?.category
-          : productInfo?.productCategory,
+            ? productInfo?.category
+            : productInfo?.productCategory,
       status: "draft",
       availability: productInfo.availability ?? 0,
       taxable: productInfo?.taxable ?? false,
@@ -138,16 +139,19 @@ const AddProduct = () => {
   };
 
   return (
-    <ProductChanges
-      isEdit={false}
-      productInfo={productInfo}
-      initialProductInfo={useProductInfo}
-      handleProductInfo={handleProductInfo}
-      handleFormSubmit={handleCreateProduct}
-      handleProductDraft={handleSaveProductAsDraft}
-      isLoading={isLoading}
-      isDraftLoading={saveDraftLoading}
-    />
+    <>
+      <DatabaseModal />
+      <ProductChanges
+        isEdit={false}
+        productInfo={productInfo}
+        initialProductInfo={useProductInfo}
+        handleProductInfo={handleProductInfo}
+        handleFormSubmit={handleCreateProduct}
+        handleProductDraft={handleSaveProductAsDraft}
+        isLoading={isLoading}
+        isDraftLoading={saveDraftLoading}
+      />
+    </>
   );
 };
 
