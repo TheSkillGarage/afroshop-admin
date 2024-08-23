@@ -6,6 +6,7 @@ import {
   handleAvatarSubmit,
   postRequest,
   putRequest,
+  setStoreID,
   setStores,
   updateStore,
 } from "../redux/action";
@@ -248,12 +249,10 @@ export const handleSubmitStore = async (
     } else {
       //updates the store state with the response data
       dispatch(updateStore(responseData));
+      const newStores = [...stores, responseData];
+      dispatch(setStores(newStores));
 
-      dispatch(setStores([
-        ...stores,
-        responseData
-      ]))
-
+      console.log("response data", newStores, newStores.length);
       //toast that shows whne successful
       toast.success(
         !storeExists
@@ -264,6 +263,9 @@ export const handleSubmitStore = async (
         }
       );
       setEditProfile(false);
+      if (!storeExists) {
+        dispatch(setStoreID(newStores[newStores.length - 1]));
+      }
     }
   } catch (error) {
     console.error(error.message);

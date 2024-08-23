@@ -57,6 +57,10 @@ const AdminNavbar = ({ name }) => {
     dispatch(sidebarToggle({ toggle: isSidebarToggled }));
   };
 
+  console.log("new store", store)
+  console.log("new store id", storeID)
+  console.log("new storess length", stores.length)
+
   return (
     <nav className="flex justify-between p-6 border-b border-1 border-[#E6E6E6] min-h-[69px] max-h-[69px] bg-[#ffffff]">
       {name === "layout" ? (
@@ -147,7 +151,8 @@ const AdminNavbar = ({ name }) => {
               {(store?.status === 404 || store?.id) && (
                 <li
                   className="cursor-pointer"
-                  onClick={() => navigate("/profile")}
+                  
+                  onClick={() => {navigate("/profile"); setOpen(false)}}
                 >
                   Go to Profile
                 </li>
@@ -161,6 +166,7 @@ const AdminNavbar = ({ name }) => {
                     onClick={() => {
                       dispatch(setStoreExistStatus(true));
                       handleStoreChange(key);
+                      setOpen(false)
                     }}
                     className={`cursor-pointer ${
                       storeID === key ? "bg-[#186F3D] text-white p-2 rounded" : ""
@@ -175,6 +181,7 @@ const AdminNavbar = ({ name }) => {
                 onClick={() => {
                   dispatch(setStoreExistStatus(false));
                   handleStoreChange(-1);
+                  setOpen(false)
                 }}
               >
                 + Add New Store
