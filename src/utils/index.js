@@ -1,13 +1,15 @@
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import { AFROADMIN_TOKEN } from "./constants";
+import { AFROADMIN_TOKEN, renderValidUrl } from "./constants";
 import axios from "axios";
 import {
   handleAvatarSubmit,
   postRequest,
   putRequest,
+  setStores,
   updateStore,
 } from "../redux/action";
+import { deliveryOptions, deliverySlots, restPeriods } from "../data/profile";
 
 // Set a cookie that expires in 3 hours
 const expirationTimeInMinutes = 3 * 60;
@@ -42,6 +44,74 @@ export const handleCreateAddress = async (address) => {
   } catch (error) {
     console.errpr(error);
   }
+};
+
+export const getStoreDefaultValues = (store, storeExists, user) => {
+  return {
+    holidays: store?.holidays ?? [],
+    store: {
+      days: store?.openDays?.map((day) => day?.openDays) || [],
+      email: user?.email || "",
+      store_name: store?.name || "",
+      address: store?.address?.streetAddress || "",
+      city: store?.address?.city || "",
+      state: store?.address?.state || "",
+      postal_code: store?.address?.postalCode || "",
+      country: store?.address?.country || "",
+      deliveryStartTime: store?.deliveryTime?.from || "",
+      deliveryEndTime: store?.deliveryTime?.to || "",
+      profile_image: storeExists ? renderValidUrl(store?.image) : null,
+      openingTime: store?.openingTimes?.from || "",
+      closingTime: store?.openingTimes?.to || "",
+      deliveryOption: store?.deliveryOptions
+        ? deliveryOptions.filter((d) => store?.deliveryOptions[d?.value])
+        : [],
+      deliverySlot: store?.deliverySlots
+        ? deliverySlots.find(
+            (option) =>
+              option?.value === store?.deliverySlots?.deliverySlotLengthinHrs
+          )?.value
+        : "",
+      restPeriod:
+        restPeriods.find(
+          (option) => option?.value === store?.deliverySlots?.restPeriodinHrs
+        )?.value || "",
+    },
+    delivery: {
+      base_amount: store?.deliveryFees ? store?.deliveryFees?.baseFee : 0,
+      base_distance: store?.deliveryFees
+        ? store?.deliveryFees?.baseDistance
+        : 0,
+      additional_distance_fee: store?.deliveryFees
+        ? store?.deliveryFees?.additionalFeePerUnit
+        : 0,
+      unit: store?.deliveryFees ? store?.deliveryFees?.measurementUnit : 0,
+      deliveryType: (!store?.deliveryFees?.useTieredPricing ? 0 : 1) || 0,
+      delivery:
+        [
+          {
+            label: "Within 5km",
+            value: store?.deliveryFees?.less_than_5 ?? 0,
+          },
+          {
+            label: "Between 5 to 10km",
+            value: store?.deliveryFees?.between_5_and_10 ?? 0,
+          },
+          {
+            label: "Between 10 to 15km",
+            value: store?.deliveryFees?.between_10_and_15 ?? 0,
+          },
+          {
+            label: "Between 15 to 20km",
+            value: store?.deliveryFees?.between_15_and_20 ?? 0,
+          },
+          {
+            label: "More than 20km",
+            value: store?.deliveryFees?.more_than_20 ?? 0,
+          },
+        ] ?? [],
+    },
+  };
 };
 
 export const getStorePayload = async (
@@ -92,7 +162,7 @@ export const getStorePayload = async (
     deliveryFees: {
       measurementUnit: profileData?.delivery?.unit ?? "",
       useTieredPricing:
-        profileData?.delivery?.deliveryType == 0 ? false : true,
+        profileData?.delivery?.deliveryType === 0 ? false : true,
       baseFee: profileData?.delivery?.base_amount ?? 0,
       baseDistance: profileData?.delivery?.base_distance ?? 0,
       additionalFeePerUnit: profileData?.delivery?.additional_distance_fee ?? 0,
@@ -137,7 +207,7 @@ export const getStorePayload = async (
   ) {
     const uploaded_img = await handleAvatarSubmit(
       profileData?.store?.profile_image_data,
-      store.id ?? `store${user?.id}`
+      store?.id ?? `store${user?.id}`
     );
     updatedStore.image = uploaded_img?.[0]?.id;
   }
@@ -153,7 +223,8 @@ export const handleSubmitStore = async (
   storeExists,
   user,
   dispatch,
-  token
+  token,
+  stores
 ) => {
   setLoading(true);
   //restructuring of new details of store to be updated
@@ -177,6 +248,11 @@ export const handleSubmitStore = async (
     } else {
       //updates the store state with the response data
       dispatch(updateStore(responseData));
+
+      dispatch(setStores([
+        ...stores,
+        responseData
+      ]))
 
       //toast that shows whne successful
       toast.success(

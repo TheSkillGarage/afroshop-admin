@@ -9,6 +9,8 @@ const Overview = () => {
   const loading = useSelector((state) => state.loadingStates);
   const ordersData = useSelector((state) => state.ordersData)
 
+  console.log("storeExists", storeExists)
+
   return (
     <>
       {

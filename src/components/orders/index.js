@@ -6,7 +6,7 @@ import { BeatLoader } from "react-spinners";
 
 const Orders = () => {
     const ordersData = useSelector((state) => state.ordersData);
-    const storeData = useSelector((state) => state.store);
+    const storeData = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
     const loading = useSelector((state) => state.loadingStates);
     
     return (

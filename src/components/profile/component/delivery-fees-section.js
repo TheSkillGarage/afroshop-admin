@@ -8,7 +8,7 @@ import RadioButton from "../../shared/radioBtn";
 import { useSelector } from "react-redux";
 
 const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
-  const store = useSelector((state) => state.store);
+  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
   const storeExists = useSelector((state) => state.storeExists);
   const [deliveryType, setDeliveryType] = useState(
     profileData?.delivery?.deliveryType ?? 0
@@ -152,8 +152,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 name="destination"
                 fieldName={`destination`}
                 placeholder="Select"
-                required={true}
-                requiredMessage={"This field is required"}
+                // required={true}
+                // requiredMessage={"This field is required"}
                 className="bg-[#F2F2F2]"
                 control={control}
                 errors={errors}
@@ -168,8 +168,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 type="number"
                 label="Shipping Fee ($)"
                 name="fee"
-                required={true}
-                requiredMessage={"This field is required"}
+                // required={true}
+                // requiredMessage={"This field is required"}
                 fieldName="fee"
                 placeholder="Enter"
                 className="bg-[#F2F2F2]"
@@ -226,7 +226,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               inputType="select"
               options={[
                 { label: "km", value: "km" },
-                { label: "miles", value: "miles" },
+                { label: "miles", value: "mi" },
               ]}
               label="Unit of Measurement"
               fieldName={"unit"}

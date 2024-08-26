@@ -8,7 +8,7 @@ import { getTokenFromCookie } from "../../utils";
 import DatabaseModal from "./database-modal";
 
 const AddProduct = () => {
-  const store = useSelector((state) => state.store);
+  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
   const token = getTokenFromCookie();
 
   const [isLoading, setLoading] = useState(false);
