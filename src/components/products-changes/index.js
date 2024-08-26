@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
@@ -27,42 +27,21 @@ const ProductChanges = ({
   isLoading,
   isDraftLoading,
   product,
+  productType,
+  setProductType,
+  databaseInfo,
+  setDatabaseInfo,
+  handleDatabaseInfo,
+  handleSetDatabaseInfo
 }) => {
   const navigate = useNavigate();
   const [draftButtonClicked, setDraftButtonClicked] = useState(false);
   const [isTaxable, setIsTaxable] = useState(productInfo?.taxable);
   const categories = useSelector((state) => state.productCategories);
- 
+
 
   const [tab, setTab] = useState("");
-
-  const [productType, setProductType] = useState("manual");
   const [openModal, setOpenModal] = useState(false);
-  const [databaseInfo, setDatabaseInfo] = useState({})
-
-  const handleDatabaseInfo = (product) => {
-
-    const databaseProductInfo = {
-      productCategory: product?.productCategory,
-      name: product?.name,
-      availability: product?.itemDetail,
-      discount: product?.percentDiscount,
-      description: product?.description,
-      images: product?.images,
-      pricingType: product?.pricingType,
-      taxable: product?.taxable,
-      unitWeightInGrams: product?.unitWeightInGrams,
-    };
-    setDatabaseInfo(databaseProductInfo)
-  }
-
-  const handleSetDatabaseInfo = (key, val) => {
-    setDatabaseInfo((prevDatabaseInfo) => ({
-        ...prevDatabaseInfo,
-        [key]: val,
-      }));
-  }
-
 
   const handleFilesSelect = (files) => {
     const newImageObj = {
@@ -88,7 +67,7 @@ const ProductChanges = ({
     getValues,
   } = useForm({
     mode: "onChange",
-    defaultValues: productInfo,
+    defaultValues: databaseInfo,
   });
 
   const onSubmit = (data) => {
@@ -103,6 +82,7 @@ const ProductChanges = ({
   ];
 
   const disableButton = !isValid || !isDirty;
+  const isSubmitDisabled = disableButton && productType !== "database" && Object.keys(databaseInfo).length === 0;
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
@@ -120,14 +100,14 @@ const ProductChanges = ({
         )}
       </div>
 
-      <div className="bg-[#FFFFFF] px-[24px]">
+      {!isEdit && <div className="bg-[#FFFFFF] px-[24px]">
         <div className="flex p-[24px] gap-6">
           <div className="flex gap-3">
             <RadioButton
               name="manual"
               id="manual"
               checked={productType === "manual"}
-              handleChange={() => {setProductType("manual"); setDatabaseInfo({})}}
+              handleChange={() => { setProductType("manual"); setDatabaseInfo({}) }}
             />
             <label for="manual">Manual Entry</label>
           </div>
@@ -137,7 +117,7 @@ const ProductChanges = ({
               name="database"
               id="database"
               checked={productType === "database"}
-              handleChange={() => {setProductType("database"); setDatabaseInfo({})}}
+              handleChange={() => { setProductType("database") }}
             />
             <label for="database">Database Entry</label>
           </div>
@@ -145,16 +125,16 @@ const ProductChanges = ({
 
         {productType === "database" &&
           <div>
-            <DatabaseModal 
-            openModal={openModal} 
-            closeModal={setOpenModal} 
-            handleDatabaseInfo={handleDatabaseInfo} />
+            <DatabaseModal
+              openModal={openModal}
+              closeModal={setOpenModal}
+              handleDatabaseInfo={handleDatabaseInfo} />
             <div className="py-8 px-6">
               <Button type="button" variant="tertiary" outline="green" icon="add" direction="reverse" onClick={() => setOpenModal(true)}>Add Product</Button>
             </div>
           </div>
         }
-      </div>
+      </div>}
       <form
         className="bg-white p-[24px] mx-[12px]"
         onSubmit={handleSubmit(onSubmit)}
@@ -334,7 +314,7 @@ const ProductChanges = ({
               </Button>
 
               <Button
-                variant={(disableButton && Object.keys(databaseInfo).length === 0) ? "disabled" : "primary"}
+                variant={isSubmitDisabled ? "disabled" : "primary"}
                 type="submit"
                 className="w-[133px] h-[40px]"
                 loading={isLoading}

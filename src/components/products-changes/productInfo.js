@@ -41,11 +41,7 @@ export const ProductInfo = ({
     return newVal;
   };
 
-  let isDatabaseInfoEmpty = Object.keys(databaseInfo).length !== 0;
-
-  useEffect(() => {
-    isDatabaseInfoEmpty = Object.keys(databaseInfo).length === 0;
-  }, [databaseInfo])
+  const isDatabaseInfoEmpty = Object.keys(databaseInfo).length !== 0;
 
   return (
     <div
@@ -59,11 +55,12 @@ export const ProductInfo = ({
             type="text"
             label="Name"
             fieldName="name"
+            name="name"
             placeholder="Enter"
             control={control}
             errors={errors}
             register={register}
-            required={!isDatabaseInfoEmpty}
+            required={true}
             requiredMessage={"This field is required"}
             value={isDatabaseInfoEmpty ? databaseInfo?.name : productInfo?.name}
             handleChange={(e) => {
@@ -79,11 +76,12 @@ export const ProductInfo = ({
             type="text"
             label="Availability"
             fieldName="availability"
+            name="availability"
             placeholder="Enter"
             control={control}
             errors={errors}
             register={register}
-            required={!isDatabaseInfoEmpty}
+            required={true}
             requiredMessage={"This field is required"}
             patternMessage="Please enter a valid number"
             value={isDatabaseInfoEmpty ? databaseInfo?.availability : productInfo?.availability}
@@ -103,7 +101,7 @@ export const ProductInfo = ({
             fieldName="description"
             control={control}
             rules={{
-              required: !isDatabaseInfoEmpty ? "This field is required" : false,
+              required: !isDatabaseInfoEmpty && databaseInfo?.description === "" ? "This field is required" : false,
             }}
             render={({ field }) => (
               <ReactQuill
@@ -177,7 +175,7 @@ export const ProductInfo = ({
                 control={control}
                 errors={errors}
                 register={register}
-                required={!isDatabaseInfoEmpty}
+                required={true}
                 patternMessage="Unit weight nust be an integer"
                 patternValue={/^[0-9]\d*$/}
                 requiredMessage={"This field is required"}
@@ -199,6 +197,7 @@ export const ProductInfo = ({
                 type="text"
                 label="Price ($)"
                 fieldName="price"
+                name="price"
                 placeholder="Enter"
                 control={control}
                 errors={errors}
@@ -219,6 +218,7 @@ export const ProductInfo = ({
                 type="text"
                 label="Discount % (If Applicable)"
                 fieldName="discount"
+                name="discount"
                 placeholder="Enter"
                 control={control}
                 errors={errors}
@@ -283,6 +283,7 @@ export const ProductInfo = ({
                   type="text"
                   label=""
                   fieldName="price"
+                  name="price"
                   placeholder="Enter"
                   control={control}
                   errors={errors}
@@ -304,6 +305,7 @@ export const ProductInfo = ({
                 type="text"
                 label="Discount % (If Applicable)"
                 fieldName="discount"
+                name="discount"
                 placeholder="Enter"
                 control={control}
                 errors={errors}
