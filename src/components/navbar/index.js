@@ -27,6 +27,7 @@ const AdminNavbar = ({ name }) => {
   const storeID = useSelector((state) => state.storeID || 0);
   const store = useSelector((state) =>
     state.stores && state.stores.length > 0 ? state.stores[storeID] : {}
+
   );
   const stores = useSelector((state) =>
     state.stores && state.stores.length > 0 ? state.stores : {}
@@ -42,6 +43,8 @@ const AdminNavbar = ({ name }) => {
   const handleStoreChange = (key) => {
     dispatch(setStoreID(key));
   };
+
+  
 
   useEffect(() => {
     if (locationClickOutside) {
