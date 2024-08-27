@@ -11,7 +11,7 @@ import SelectDropdown from "../shared/dropdownInput/dropdown";
 
 
 
-const DatabaseModal = ({ openModal, closeModal, handleDatabaseInfo }) => {
+const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => {
 
     const categories = useSelector((state) => state.productCategories);
     const [isDisabled, setIsDisabled] = useState(false);
@@ -70,10 +70,11 @@ const DatabaseModal = ({ openModal, closeModal, handleDatabaseInfo }) => {
             handleProductChange() 
         }
     };
-
     const handleSelectCategory = (val) => {
         const selectedCategory = val.value;
-        const filteredItems = productsDatabase.filter(product => product.productCategory === selectedCategory);
+        console.log(productsDatabase, selectedCategory)
+        const filteredItems = productsDatabase?.filter(product => product.category === selectedCategory);
+       
         setFilterProducts(filteredItems);
       };
 
@@ -94,14 +95,14 @@ const DatabaseModal = ({ openModal, closeModal, handleDatabaseInfo }) => {
         mode: "onChange",
     });
 
-    const groupedProductsByFirstLetter = filteredProducts?.reduce((accumulator, product) => {
+    const groupedProductsByFirstLetter = filteredProducts?.length > 0 ? filteredProducts?.reduce((accumulator, product) => {
         const firstLetter = product.name.charAt(0).toUpperCase();
         if (!accumulator[firstLetter]) {
             accumulator[firstLetter] = [];
         }
         accumulator[firstLetter].push(product);
         return accumulator;
-    }, {});
+    }, {}) : {};
 
     return (
         <div className={`flex justify-end fixed inset-0 bg-[rgba(0,0,0,0.2)] z-50 ${openModal ? "" : "hidden"}`}>
@@ -113,7 +114,6 @@ const DatabaseModal = ({ openModal, closeModal, handleDatabaseInfo }) => {
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="pt-4">
-                        
                         <label htmlFor="productCategory" className="text-[13px] leading-[23px] text-[#B3B3B3] block mb-2">Category</label>
                         
                         <SelectDropdown 

@@ -41,7 +41,7 @@ export const ProductInfo = ({
     return newVal;
   };
 
-  const isDatabaseInfoEmpty = Object.keys(databaseInfo).length !== 0;
+  const isDatabaseInfoEmpty = databaseInfo && Object.keys(databaseInfo).length !== 0;
 
   return (
     <div
@@ -65,7 +65,7 @@ export const ProductInfo = ({
             value={isDatabaseInfoEmpty ? databaseInfo?.name : productInfo?.name}
             handleChange={(e) => {
               handleProductInfo("name", e.target.value);
-              handleSetDatabaseInfo("name", e.target.value);
+              handleSetDatabaseInfo?.("name", e.target.value);
             }}
           />
         </div>
@@ -88,7 +88,7 @@ export const ProductInfo = ({
             handleChange={(e) => {
               let val = e.target.value.replace(/[^0-9]/g, "");
               handleProductInfo("availability", val);
-              handleSetDatabaseInfo("availability", e.target.value)
+              handleSetDatabaseInfo?.("availability", e.target.value)
             }}
           />
         </div>
@@ -113,7 +113,7 @@ export const ProductInfo = ({
                 onChange={(value) => {
                   field.onChange(productInfo?.description);
                   handleProductInfo("description", value);
-                  handleSetDatabaseInfo("description", value)
+                  handleSetDatabaseInfo?.("description", value)
                 }}
               />
             )}
@@ -138,7 +138,7 @@ export const ProductInfo = ({
             handleChange={(e) => {
               setNewPricingType("per Item");
               handleProductInfo("pricingType", "per Item")
-              handleSetDatabaseInfo("pricingType", "per Item");
+              handleSetDatabaseInfo?.("pricingType", "per Item");
             }}
           />
           <label>Price Per Item</label>
@@ -152,7 +152,7 @@ export const ProductInfo = ({
             handleChange={() => {
               setNewPricingType("per Weight");
               handleProductInfo("pricingType", "per Weight");
-              handleSetDatabaseInfo("pricingType", "per Weight")
+              handleSetDatabaseInfo?.("pricingType", "per Weight")
             }}
           />
           <label>Price Per Weight</label>
@@ -185,7 +185,7 @@ export const ProductInfo = ({
                     "unitWeightInGrams",
                     sanitizeNumbers(e.target.value)
                   );
-                  handleSetDatabaseInfo(
+                  handleSetDatabaseInfo?.(
                     "unitWeightInGrams",
                     sanitizeNumbers(e.target.value)
                   );
@@ -231,7 +231,7 @@ export const ProductInfo = ({
                     "discount",
                     sanitizeNumbers(e.target.value)
                   );
-                  handleSetDatabaseInfo(
+                  handleSetDatabaseInfo?.(
                     "discount",
                     sanitizeNumbers(e.target.value)
                   );
@@ -242,7 +242,7 @@ export const ProductInfo = ({
         </div>
       )}
 
-      {(newPricingType === "per Weight" || databaseInfo.pricingType === "per kg") && (
+      {(newPricingType === "per Weight" || databaseInfo?.pricingType === "per kg") && (
         <div className="pb-4 space-y-3">
           <p className="text-[#4F4F4F] font-bold">Price Per Weight</p>
           <div className="flex justify-between items-start pb-[15px] mt-10">
@@ -273,7 +273,7 @@ export const ProductInfo = ({
                   register={register}
                   handleChange={(data) => {
                     handleProductInfo("measurementUnit", data?.value);
-                    handleSetDatabaseInfo("pricingType", data?.value)
+                    handleSetDatabaseInfo?.("pricingType", data?.value)
                   }
                   }
                 />
@@ -320,7 +320,7 @@ export const ProductInfo = ({
                     "discount",
                     sanitizeNumbers(e.target.value)
                   );
-                  handleSetDatabaseInfo(
+                  handleSetDatabaseInfo?.(
                     "discount",
                     sanitizeNumbers(e.target.value)
                   );

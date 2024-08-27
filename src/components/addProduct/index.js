@@ -8,7 +8,8 @@ import { getTokenFromCookie } from "../../utils";
 import DatabaseModal from "./database-modal";
 
 const AddProduct = () => {
-  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
+  const storeId = useSelector((state) => state.storeID);
+  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[storeId] : {});
   const token = getTokenFromCookie();
 
   const [isLoading, setLoading] = useState(false);
@@ -35,23 +36,23 @@ const AddProduct = () => {
 
   const productsDatabase = useSelector((state) => state.productsDatabase);
   const firstProductName = productsDatabase?.[0]?.name || "";
-  const productOne = productsDatabase?.find((product) => product.name === firstProductName);
+  const productOne = productsDatabase?.length > 0 ? productsDatabase?.find((product) => product.name === firstProductName) : {};
 
   const [databaseInfo, setDatabaseInfo] = useState({
-    productCategory: productOne?.productCategory,
-    name: productOne?.name,
-    availability: productOne?.itemDetail,
-    discount: productOne?.percentDiscount,
-    description: productOne?.description,
-    images: productOne?.images,
-    pricingType: productOne?.pricingType,
-    taxable: productOne?.taxable,
-    unitWeightInGrams: productOne?.unitWeightInGrams,
+    productCategory: productOne?.productCategory ?? "",
+    name: productOne?.name ?? "",
+    availability: productOne?.itemDetail ?? 0,
+    discount: productOne?.percentDiscount ?? 0,
+    description: productOne?.description ?? "",
+    images: productOne?.images ?? [],
+    pricingType: productOne?.pricingType ?? "per Item",
+    
+    taxable: productOne?.taxable ?? 0,
+    unitWeightInGrams: productOne?.unitWeightInGrams ?? 0,
   });
 
 
   const handleDatabaseInfo = (product) => {
-
     const databaseProductInfo = {
       productCategory: product?.productCategory,
       name: product?.name,
@@ -160,7 +161,7 @@ const AddProduct = () => {
     setLoading(true);
 
     const payload = {
-      store: store.id,
+      store: store?.id,
       description: productInfo.description,
       price: productInfo?.price,
       name: productInfo.name,
@@ -184,7 +185,7 @@ const AddProduct = () => {
 
   return (
     <>
-      <DatabaseModal />
+      <DatabaseModal store={store} />
       <ProductChanges
         isEdit={false}
         productType={productType}

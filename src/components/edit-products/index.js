@@ -13,7 +13,8 @@ const EditSingleProduct = () => {
   const { sku } = useParams();
   const token = getTokenFromCookie();
   const productData = useSelector((state) => state.productsData);
-  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
+  const storeId = useSelector((state) => state.storeID);
+  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[storeId] : {});
   const [isLoading, setLoading] = useState(false);
   const [draftLoading, setDraftLoading] = useState(false);
   const product = productData.find((product) => product.SKU === sku);
@@ -44,6 +45,7 @@ const EditSingleProduct = () => {
     unitWeightInGrams: product?.unitWeightInGrams,
     measurementUnit:  productPricingType !== "per Item" ? productPricingType : "",
   };
+  console.log(initialProductInfo)
 
   const [productInfo, setProductInfo] = useState(initialProductInfo);
 

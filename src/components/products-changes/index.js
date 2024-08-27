@@ -82,7 +82,7 @@ const ProductChanges = ({
   ];
 
   const disableButton = !isValid || !isDirty;
-  const isSubmitDisabled = disableButton && productType !== "database" && Object.keys(databaseInfo).length === 0;
+  const isSubmitDisabled = disableButton && productType !== "database" && databaseInfo ? Object.keys(databaseInfo)?.length === 0 : false;
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
@@ -151,7 +151,9 @@ const ProductChanges = ({
                         label="Category"
                         fieldName="productCategory"
                         value={productInfo?.productCategory}
-                        // handleChange={handleSelectCategory}
+                        handleChange={(val) => {
+                          handleProductInfo("productCategory", val.value)
+                        }}
                         register={register}
                         control={control}
                         errors={errors}
@@ -277,7 +279,7 @@ const ProductChanges = ({
                   </div>
 
                   <ImageDisplay
-                    selectedFiles={Object.keys(databaseInfo).length !== 0 ? databaseInfo?.images : productInfo?.images}
+                    selectedFiles={databaseInfo && Object.keys(databaseInfo).length !== 0 ? databaseInfo?.images : productInfo?.images}
                     onDelete={handleDelete}
                   />
                 </div>
