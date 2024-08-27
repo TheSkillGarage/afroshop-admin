@@ -6,6 +6,7 @@ import {
   handleAvatarSubmit,
   postRequest,
   putRequest,
+  setStoreID,
   setStores,
   updateStore,
 } from "../redux/action";
@@ -60,7 +61,7 @@ export const getStoreDefaultValues = (store, storeExists, user) => {
       country: store?.address?.country || "",
       deliveryStartTime: store?.deliveryTime?.from || "",
       deliveryEndTime: store?.deliveryTime?.to || "",
-      profile_image: storeExists ? renderValidUrl(store?.image) : null,
+      profile_image: store ? renderValidUrl(store?.image) : null,
       openingTime: store?.openingTimes?.from || "",
       closingTime: store?.openingTimes?.to || "",
       deliveryOption: store?.deliveryOptions
@@ -248,12 +249,12 @@ export const handleSubmitStore = async (
     } else {
       //updates the store state with the response data
       dispatch(updateStore(responseData));
-
-      dispatch(setStores([
-        ...stores,
-        responseData
-      ]))
-
+      const newStores = [...stores, responseData];
+      const newId = newStores.length - 1;
+      dispatch(setStoreID(newId));
+      dispatch(setStores(newStores));
+    
+      console.log("response data", newStores, newStores.length);
       //toast that shows whne successful
       toast.success(
         !storeExists

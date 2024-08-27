@@ -27,6 +27,7 @@ const AdminNavbar = ({ name }) => {
   const storeID = useSelector((state) => state.storeID || 0);
   const store = useSelector((state) =>
     state.stores && state.stores.length > 0 ? state.stores[storeID] : {}
+
   );
   const stores = useSelector((state) =>
     state.stores && state.stores.length > 0 ? state.stores : {}
@@ -43,6 +44,8 @@ const AdminNavbar = ({ name }) => {
     dispatch(setStoreID(key));
   };
 
+  
+
   useEffect(() => {
     if (locationClickOutside) {
       setOpen(false);
@@ -56,6 +59,10 @@ const AdminNavbar = ({ name }) => {
     navigate("/");
     dispatch(sidebarToggle({ toggle: isSidebarToggled }));
   };
+
+  console.log("new store", store)
+  console.log("new store id", storeID)
+  console.log("new storess length", stores.length)
 
   return (
     <nav className="flex justify-between p-6 border-b border-1 border-[#E6E6E6] min-h-[69px] max-h-[69px] bg-[#ffffff]">
@@ -147,7 +154,8 @@ const AdminNavbar = ({ name }) => {
               {(store?.status === 404 || store?.id) && (
                 <li
                   className="cursor-pointer"
-                  onClick={() => navigate("/profile")}
+                  
+                  onClick={() => {navigate("/profile"); setOpen(false)}}
                 >
                   Go to Profile
                 </li>
@@ -161,6 +169,7 @@ const AdminNavbar = ({ name }) => {
                     onClick={() => {
                       dispatch(setStoreExistStatus(true));
                       handleStoreChange(key);
+                      setOpen(false)
                     }}
                     className={`cursor-pointer ${
                       storeID === key ? "bg-[#186F3D] text-white p-2 rounded" : ""
@@ -175,6 +184,7 @@ const AdminNavbar = ({ name }) => {
                 onClick={() => {
                   dispatch(setStoreExistStatus(false));
                   handleStoreChange(-1);
+                  setOpen(false)
                 }}
               >
                 + Add New Store

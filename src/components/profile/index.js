@@ -51,7 +51,6 @@ const Profile = () => {
     });
   }, [store, storeID]);
 
-  console.log(store, storeExists, profileData, profileForm.getValues());
 
   const passwordForm = useForm({
     defaultValues: {
