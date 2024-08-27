@@ -292,6 +292,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               control={control}
               errors={errors}
               register={register}
+              patternValue={"\b(?!0\b)\d+\b"}
+              patternMessage={"Number must not be 0"}
               value={profileData?.additional_distance_fee}
               required={true}
               requiredMessage={"Additional Distance Fee is required"}
