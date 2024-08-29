@@ -5,13 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addProduct, handleImageUpload, postRequest } from "../../redux/action";
 import { getTokenFromCookie } from "../../utils";
+import DatabaseModal from "./database-modal";
 
 const AddProduct = () => {
-  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
+  const storeId = useSelector((state) => state.storeID);
+  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[storeId] : {});
   const token = getTokenFromCookie();
 
   const [isLoading, setLoading] = useState(false);
   const [saveDraftLoading, setSaveDraftLoading] = useState(false);
+
+  const [productType, setProductType] = useState("manual");
 
   const useProductInfo = {
     productCategory: "",
@@ -30,6 +34,48 @@ const AddProduct = () => {
 
   const [productInfo, setProductInfo] = useState(useProductInfo);
 
+  const productsDatabase = useSelector((state) => state.productsDatabase);
+  const firstProductName = productsDatabase?.[0]?.name || "";
+  const productOne = productsDatabase?.length > 0 ? productsDatabase?.find((product) => product.name === firstProductName) : {};
+
+  const [databaseInfo, setDatabaseInfo] = useState({
+    productCategory: productOne?.productCategory ?? "",
+    name: productOne?.name ?? "",
+    availability: productOne?.itemDetail ?? 0,
+    discount: productOne?.percentDiscount ?? 0,
+    description: productOne?.description ?? "",
+    images: productOne?.images ?? [],
+    pricingType: productOne?.pricingType ?? "per Item",
+    
+    taxable: productOne?.taxable ?? 0,
+    unitWeightInGrams: productOne?.unitWeightInGrams ?? 0,
+  });
+
+
+  const handleDatabaseInfo = (product) => {
+    const databaseProductInfo = {
+      productCategory: product?.productCategory,
+      name: product?.name,
+      availability: product?.itemDetail,
+      discount: product?.percentDiscount,
+      description: product?.description,
+      images: product?.images,
+      pricingType: product?.pricingType,
+      taxable: product?.taxable,
+      unitWeightInGrams: product?.unitWeightInGrams,
+    };
+    setDatabaseInfo(databaseProductInfo)
+  }
+
+  const handleSetDatabaseInfo = (key, val) => {
+    setDatabaseInfo((prevDatabaseInfo) => ({
+      ...prevDatabaseInfo,
+      [key]: val,
+    }));
+  }
+
+  const submittedImages = productType !== "manual" ? databaseInfo.images : productInfo.images
+
   const navigate = useNavigate();
 
   const handleProductInfo = (key, val) => {
@@ -44,7 +90,7 @@ const AddProduct = () => {
       // upload images first
       const images = imagesToBeUploaded?.map((i) => i.data);
 
-      if (images?.length === 0) {
+      if (images?.length === 0 && productType === "manual") {
         toast.error("Add an image to save as draft!", { autoClose: 1000 });
       } else {
         const [imageUpSuccess, response] = await handleImageUpload(
@@ -95,8 +141,8 @@ const AddProduct = () => {
         productInfo?.productCategory === ""
           ? "Draft Product"
           : productInfo.productCategory === "Others"
-          ? productInfo?.category
-          : productInfo?.productCategory,
+            ? productInfo?.category
+            : productInfo?.productCategory,
       status: "draft",
       availability: productInfo.availability ?? 0,
       taxable: productInfo?.taxable ?? false,
@@ -108,14 +154,14 @@ const AddProduct = () => {
       itemDetail: 0,
     };
 
-    await submitForm(payload, productInfo?.images, setSaveDraftLoading, "Your product was successfully saved as draft!");
+    await submitForm(payload, submittedImages, setSaveDraftLoading, "Your product was successfully saved as draft!");
   };
 
   const handleCreateProduct = async () => {
     setLoading(true);
 
     const payload = {
-      store: store.id,
+      store: store?.id,
       description: productInfo.description,
       price: productInfo?.price,
       name: productInfo.name,
@@ -134,20 +180,29 @@ const AddProduct = () => {
       unitWeightInGrams: productInfo?.unitWeightInGrams,
     };
 
-    await submitForm(payload, productInfo?.images, setLoading, "Your product was successfully created!");
+    await submitForm(payload, submittedImages, setLoading, "Your product was successfully created!");
   };
 
   return (
-    <ProductChanges
-      isEdit={false}
-      productInfo={productInfo}
-      initialProductInfo={useProductInfo}
-      handleProductInfo={handleProductInfo}
-      handleFormSubmit={handleCreateProduct}
-      handleProductDraft={handleSaveProductAsDraft}
-      isLoading={isLoading}
-      isDraftLoading={saveDraftLoading}
-    />
+    <>
+      <DatabaseModal store={store} />
+      <ProductChanges
+        isEdit={false}
+        productType={productType}
+        setProductType={setProductType}
+        databaseInfo={databaseInfo}
+        setDatabaseInfo={setDatabaseInfo}
+        handleDatabaseInfo={handleDatabaseInfo}
+        handleSetDatabaseInfo={handleSetDatabaseInfo}
+        productInfo={productInfo}
+        initialProductInfo={useProductInfo}
+        handleProductInfo={handleProductInfo}
+        handleFormSubmit={handleCreateProduct}
+        handleProductDraft={handleSaveProductAsDraft}
+        isLoading={isLoading}
+        isDraftLoading={saveDraftLoading}
+      />
+    </>
   );
 };
 

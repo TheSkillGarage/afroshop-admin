@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import usePagination from "../../hooks/usePagination";
 import ROLES_DATA from "../../data/rolesAndPermissions";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useTableSelect from "../../hooks/useTableSelect";
 import BaseTable from "../shared/table";
 import useFilter from "../../hooks/useFilter";
@@ -11,7 +11,10 @@ import { useSelector } from "react-redux";
 import useTableData from "../../hooks/useTableData";
 
 const RolesAndPermissions = () => {
-  const [page, setPage] = useState(1);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get('page'), 10) || 1;
+
   const users = useSelector((s) => s.roles);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const navigate = useNavigate();
@@ -39,9 +42,9 @@ const RolesAndPermissions = () => {
   const totalPages = pagination.totalPages; // sets total pages
 
   const handleItemsPerPage = (e) => setItemsPerPage(e.target.value); // set items per page when selected from select dropdown
-  const handlePage = (activePage) => setPage(activePage); // sets page when pagination button is clicked
-  const prevPage = () => (page > 1 ? setPage(page - 1) : null); // goes to previous page
-  const nextPage = () => (page < totalPages ? setPage(page + 1) : null); // goes to next page
+  const handlePage = (activePage) => setSearchParams({ page: activePage}); // sets page when pagination button is clicked
+  const prevPage = () => page > 1 ? setSearchParams({ page: page - 1 }) : null; // goes to previous page
+  const nextPage = () => page < totalPages ? setSearchParams({ page: page + 1 }) : null; // goes to next page
 
   const { selectedRows, handleSelectAllRows, handleSelectRow } = useTableSelect(
     { rows: pagination.currentData }
