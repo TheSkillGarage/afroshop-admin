@@ -26,6 +26,7 @@ const AddProduct = () => {
     unitWeightInGrams: 0,
     pricingType: "per Item",
     measurementUnit: "",
+    sku: ""
   };
 
   const [productInfo, setProductInfo] = useState(useProductInfo);
@@ -98,6 +99,7 @@ const AddProduct = () => {
           ? productInfo?.category
           : productInfo?.productCategory,
       status: "draft",
+      sku: productInfo.sku ?? "",
       availability: productInfo.availability ?? 0,
       taxable: productInfo?.taxable ?? false,
       pricingType:
@@ -120,6 +122,7 @@ const AddProduct = () => {
       price: productInfo?.price,
       name: productInfo.name,
       discount: productInfo.discount,
+      SKU: productInfo.sku ?? "",
       productCategory:
         productInfo.productCategory === "Others"
           ? productInfo?.category

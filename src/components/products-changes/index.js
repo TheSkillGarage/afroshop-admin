@@ -124,6 +124,28 @@ const ProductChanges = ({
                     />
                   </div>
                 </div>
+                <div className=" md:w-[327px] w-[50%]">
+                  <div className="mb-8 text-start w-[327px] z-0">
+                    <InputComponent
+                      inputType="text"
+                      label="SKU"
+                      fieldName="sku"
+                      placeholder="Enter"
+                      value={productInfo?.sku}
+                      patternValue={"^AFR-[a-zA-Z0-9]+"}
+                      patternMessage="Must start with AFR"
+                      handleChange={(e) => {
+                        handleProductInfo("sku", e.target.value);
+                      }}
+                      register={register}
+                      control={control}
+                      errors={errors}
+                      required={true}
+                      requiredMessage={"This field is required"}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
                 {productInfo.productCategory === "Others" && (
                   <div className="w-[327px]">
                     <InputComponent
