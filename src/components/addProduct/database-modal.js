@@ -20,11 +20,15 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
 
     const [selectedProduct, setSelectedProduct] = useState(firstProductName);
 
- 
+
     useEffect(() => {
         setFilterProducts(productsDatabase);
         setSelectedProduct(firstProductName);
     }, [productsDatabase]);
+
+    useEffect(() => {
+        setSelectedProduct(firstProductName);
+    }, [filteredProducts])
 
 
     const productCategories = [
@@ -72,7 +76,7 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
 
     const handleSelectCategory = (val) => {
         const selectedCategory = val.value;
-        const filteredItems = productsDatabase?.filter(product => product.category === selectedCategory);
+        const filteredItems = productsDatabase?.filter(product => product.productCategory === selectedCategory);
 
         setFilterProducts(filteredItems);
     };
@@ -94,15 +98,15 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
         mode: "onChange",
     });
 
-const groupedProductsByFirstLetter = filteredProducts?.length > 0 ? filteredProducts.reduce((accumulator, product) => {
-    const firstLetter = product.name.charAt(0).toUpperCase();
-    if (!accumulator[firstLetter]) {
-        accumulator[firstLetter] = [];
-    }
-    accumulator[firstLetter].push(product);
-    accumulator[firstLetter].sort((a, b) => a.name.localeCompare(b.name)); 
-    return accumulator;
-}, {}) : {};
+    const groupedProductsByFirstLetter = filteredProducts?.length > 0 ? filteredProducts.reduce((accumulator, product) => {
+        const firstLetter = product.name.charAt(0).toUpperCase();
+        if (!accumulator[firstLetter]) {
+            accumulator[firstLetter] = [];
+        }
+        accumulator[firstLetter].push(product);
+        accumulator[firstLetter].sort((a, b) => a.name.localeCompare(b.name));
+        return accumulator;
+    }, {}) : {};
 
 
 
