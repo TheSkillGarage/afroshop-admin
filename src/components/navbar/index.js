@@ -60,9 +60,6 @@ const AdminNavbar = ({ name }) => {
     dispatch(sidebarToggle({ toggle: isSidebarToggled }));
   };
 
-  console.log("new store", store)
-  console.log("new store id", storeID)
-  console.log("new storess length", stores.length)
 
   return (
     <nav className="flex justify-between p-6 border-b border-1 border-[#E6E6E6] min-h-[69px] max-h-[69px] bg-[#ffffff]">

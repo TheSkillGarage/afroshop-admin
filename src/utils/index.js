@@ -26,7 +26,6 @@ export const setCookieWithExpiry = (value) =>
   });
 
 export const getTokenFromCookie = () => Cookies.get(AFROADMIN_TOKEN);
-
 export const removeTokenFromCookie = () =>
   Cookies.remove(AFROADMIN_TOKEN, { path: "/" });
 
@@ -43,7 +42,7 @@ export const handleCreateAddress = async (address) => {
     }
     return data;
   } catch (error) {
-    console.errpr(error);
+    console.error(error);
   }
 };
 
@@ -254,7 +253,6 @@ export const handleSubmitStore = async (
       dispatch(setStoreID(newId));
       dispatch(setStores(newStores));
     
-      console.log("response data", newStores, newStores.length);
       //toast that shows whne successful
       toast.success(
         !storeExists
