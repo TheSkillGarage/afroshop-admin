@@ -45,7 +45,6 @@ const EditSingleProduct = () => {
     unitWeightInGrams: product?.unitWeightInGrams,
     measurementUnit:  productPricingType !== "per Item" ? productPricingType : "",
   };
-  console.log(initialProductInfo)
 
   const [productInfo, setProductInfo] = useState(initialProductInfo);
 

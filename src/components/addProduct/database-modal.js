@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import CustomScrollbar from "../filter-modal/filter.styles";
-import { getProductsDatabase } from "../../redux/action";
-import { getTokenFromCookie } from "../../utils";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { LeftArrow, SearchIcon } from "../../images";
 import { useForm } from "react-hook-form";
 import RadioButton from "../shared/radioBtn";
@@ -14,19 +12,20 @@ import SelectDropdown from "../shared/dropdownInput/dropdown";
 const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => {
 
     const categories = useSelector((state) => state.productCategories);
-    const [isDisabled, setIsDisabled] = useState(false);
+    const [isDisabled] = useState(false);
 
     const productsDatabase = useSelector((state) => state.productsDatabase);
     const [filteredProducts, setFilterProducts] = useState(productsDatabase);
-    const firstProductName = filteredProducts?.[0]?.name || "";
+    const firstProductName = [...(filteredProducts || [])].sort((a, b) => a.name.localeCompare(b.name))[0]?.name || "";
+
     const [selectedProduct, setSelectedProduct] = useState(firstProductName);
 
-    const dispatch = useDispatch();
-    const token = getTokenFromCookie();
-
+ 
     useEffect(() => {
-        dispatch(getProductsDatabase(token));
-    }, []);
+        setFilterProducts(productsDatabase);
+        setSelectedProduct(firstProductName);
+    }, [productsDatabase]);
+
 
     const productCategories = [
         ...categories?.map((c) => {
@@ -39,7 +38,7 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
     const dropdownRef = useRef(null);
     const handleClick = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            closeModal(false); 
+            closeModal(false);
         }
     };
 
@@ -51,7 +50,7 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
         return () => {
             document.removeEventListener("mousedown", handleClick);
         };
-    }, [openModal]); 
+    }, [openModal]);
 
 
     // Handle product selection
@@ -67,19 +66,19 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
         setSelectedProduct(firstProductName);
 
         if (selectedProduct) {
-            handleProductChange() 
+            handleProductChange();
         }
     };
+
     const handleSelectCategory = (val) => {
         const selectedCategory = val.value;
-        console.log(productsDatabase, selectedCategory)
         const filteredItems = productsDatabase?.filter(product => product.category === selectedCategory);
-       
+
         setFilterProducts(filteredItems);
-      };
+    };
 
     const handleChange = (e) => {
-        const filteredItems = productsDatabase.filter(product => 
+        const filteredItems = productsDatabase.filter(product =>
             product.name.toLowerCase().includes(e.target.value.toLowerCase())
         );
 
@@ -95,14 +94,17 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
         mode: "onChange",
     });
 
-    const groupedProductsByFirstLetter = filteredProducts?.length > 0 ? filteredProducts?.reduce((accumulator, product) => {
-        const firstLetter = product.name.charAt(0).toUpperCase();
-        if (!accumulator[firstLetter]) {
-            accumulator[firstLetter] = [];
-        }
-        accumulator[firstLetter].push(product);
-        return accumulator;
-    }, {}) : {};
+const groupedProductsByFirstLetter = filteredProducts?.length > 0 ? filteredProducts.reduce((accumulator, product) => {
+    const firstLetter = product.name.charAt(0).toUpperCase();
+    if (!accumulator[firstLetter]) {
+        accumulator[firstLetter] = [];
+    }
+    accumulator[firstLetter].push(product);
+    accumulator[firstLetter].sort((a, b) => a.name.localeCompare(b.name)); 
+    return accumulator;
+}, {}) : {};
+
+
 
     return (
         <div className={`flex justify-end fixed inset-0 bg-[rgba(0,0,0,0.2)] z-50 ${openModal ? "" : "hidden"}`}>
@@ -115,25 +117,25 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
 
                     <form onSubmit={handleSubmit(onSubmit)} className="pt-4">
                         <label htmlFor="productCategory" className="text-[13px] leading-[23px] text-[#B3B3B3] block mb-2">Category</label>
-                        
-                        <SelectDropdown 
-                        name="productCategory" 
-                        options={productCategories} 
-                        placeholder="Select" 
-                        handleChange={handleSelectCategory} 
-                        color="green" 
-                        className="h-[53px]"
-                        errors={errors}
+
+                        <SelectDropdown
+                            name="productCategory"
+                            options={productCategories}
+                            placeholder="Select"
+                            handleChange={handleSelectCategory}
+                            color="green"
+                            className="h-[53px]"
+                            errors={errors}
                         />
 
                         <div className="relative mb-2">
                             <SearchIcon className="absolute top-[50px] left-[18px] " />
-                            <input 
-                            type="text" 
-                            name="search" 
-                            placeholder="Search Product" 
-                            className="mt-10 bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12 focus:outline-none"
-                            onChange={(e) => handleChange(e)}
+                            <input
+                                type="text"
+                                name="search"
+                                placeholder="Search Product"
+                                className="mt-10 bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12 focus:outline-none"
+                                onChange={(e) => handleChange(e)}
                             />
                         </div>
 
@@ -149,7 +151,7 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
                                                     type="radio"
                                                     value={product.name}
                                                     id={product.name}
-                                                    name="sselectedProduct"
+                                                    name="selectedProduct"
                                                     checked={selectedProduct === product.name}
                                                     handleChange={() => { setSelectedProduct(product.name) }}
                                                     register={register}

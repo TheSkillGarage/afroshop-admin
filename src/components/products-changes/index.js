@@ -16,7 +16,6 @@ import InputComponent from "../shared/inputComponent";
 import Checkbox from "../shared/checkbox";
 import { useSelector } from "react-redux";
 import RadioButton from "../shared/radioBtn";
-import DatabaseModal from "../addProduct/database-modal";
 
 const ProductChanges = ({
   isEdit,
@@ -32,7 +31,8 @@ const ProductChanges = ({
   databaseInfo,
   setDatabaseInfo,
   handleDatabaseInfo,
-  handleSetDatabaseInfo
+  handleSetDatabaseInfo,
+  setOpenModal,
 }) => {
   const navigate = useNavigate();
   const [draftButtonClicked, setDraftButtonClicked] = useState(false);
@@ -41,7 +41,7 @@ const ProductChanges = ({
 
 
   const [tab, setTab] = useState("");
-  const [openModal, setOpenModal] = useState(false);
+  // const [openModal, setOpenModal] = useState(false);
 
   const handleFilesSelect = (files) => {
     const newImageObj = {
@@ -54,9 +54,12 @@ const ProductChanges = ({
   };
 
   const handleDelete = (index) => {
-    const newFiles = [...productInfo.images];
+    const newFiles = [...productInfo.images, ...databaseInfo.images];
+
+    console.log(newFiles);
     newFiles.splice(index, 1);
     handleProductInfo("images", newFiles);
+    handleSetDatabaseInfo("images", newFiles);
   };
 
   const {
@@ -65,10 +68,16 @@ const ProductChanges = ({
     register,
     handleSubmit,
     getValues,
+    reset,
   } = useForm({
     mode: "onChange",
-    defaultValues: databaseInfo,
+    defaultValues: (!productType || productType === "manual") ? productInfo : databaseInfo,
   });
+
+
+  useEffect(() => {
+    reset(databaseInfo);
+  }, [databaseInfo, reset]);
 
   const onSubmit = (data) => {
     handleFormSubmit(data);
@@ -125,10 +134,6 @@ const ProductChanges = ({
 
         {productType === "database" &&
           <div>
-            <DatabaseModal
-              openModal={openModal}
-              closeModal={setOpenModal}
-              handleDatabaseInfo={handleDatabaseInfo} />
             <div className="py-8 px-6">
               <Button type="button" variant="tertiary" outline="green" icon="add" direction="reverse" onClick={() => setOpenModal(true)}>Add Product</Button>
             </div>
@@ -142,7 +147,7 @@ const ProductChanges = ({
         <div className="flex flex-col justify-between h-[100%]">
           <div>
             <section className="p-[24px]">
-              {productType === "manual" &&
+              
                 <div className="flex gap-10">
                   <div className=" md:w-[327px] w-[50%]">
                     <div className="mb-8 text-start w-[327px] z-0">
@@ -150,9 +155,11 @@ const ProductChanges = ({
                         inputType="select"
                         label="Category"
                         fieldName="productCategory"
-                        value={productInfo?.productCategory}
+                        name="productCategory"
+                        value={"protein"}
                         handleChange={(val) => {
-                          handleProductInfo("productCategory", val.value)
+                          handleProductInfo?.("productCategory", val.value);
+                          handleSetDatabaseInfo?.("productCategory", val.value);
                         }}
                         register={register}
                         control={control}
@@ -161,15 +168,17 @@ const ProductChanges = ({
                         requiredMessage={"This field is required"}
                         options={productCategories}
                         placeholder={
-                          productInfo?.productCategory !== ""
+                          (productType === "manual" && productInfo?.productCategory !== "")
                             ? productInfo?.productCategory
+                            : productType === "database" 
+                            ? databaseInfo?.productCategory
                             : "Select"
                         }
                         className="w-full"
                       />
                     </div>
                   </div>
-                  {productInfo.productCategory === "Others" && (
+                  {(productInfo?.productCategory || databaseInfo.productCategory === "Others") && (
                     <div className="w-[327px]">
                       <InputComponent
                         inputType="input"
@@ -205,7 +214,8 @@ const ProductChanges = ({
                   >
                     Taxable
                   </Checkbox>
-                </div>}
+                </div>
+                
               <div
                 className="px-4 rounded-[8px] border border-[#B3B3B3]"
                 onClick={() =>
@@ -279,7 +289,7 @@ const ProductChanges = ({
                   </div>
 
                   <ImageDisplay
-                    selectedFiles={databaseInfo && Object.keys(databaseInfo).length !== 0 ? databaseInfo?.images : productInfo?.images}
+                    selectedFiles={(!productType || productType === "manual") ? productInfo?.images : databaseInfo?.images}
                     onDelete={handleDelete}
                   />
                 </div>
