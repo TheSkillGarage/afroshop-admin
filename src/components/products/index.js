@@ -8,7 +8,7 @@ import Welcome from "../dashboard/welcome";
 const Products = () => {
   const loading = useSelector((state) => state.loadingStates);
   const productsData = useSelector((state) => state.productsData);
-  const store = useSelector((state) => state.store);
+  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
   const storeExists = useSelector((state) => state.storeExists); 
 
   return (

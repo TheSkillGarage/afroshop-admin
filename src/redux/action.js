@@ -9,9 +9,9 @@ export const userLogin = (user) => (dispatch) => {
     payload: user,
   });
 };
-export const updateStore = (store) => (dispatch) => {
+export const updateStores = (store) => (dispatch) => {
   dispatch({
-    type: "UPDATE_STORE",
+    type: "UPDATE_STORES",
     payload: store,
   });
 };
@@ -147,9 +147,21 @@ export const discardDraft = (hash) => (dispatch) => {
   });
 };
 
-export const getStoreData = (userID, token) => async (dispatch) => {
-  await fetchData(dispatch, `stores/${userID}`, "store", token);
+export const getStoresData = (userID, token) => async (dispatch) => {
+  await fetchData(dispatch, `stores/${userID}`, "stores", token);
 };
+
+export const setStores = (stores) => (dispatch) => {
+  dispatch({
+    type: "SET_STORES",
+    payload: stores
+  })
+}
+
+export const setStoreID = (id) => ({
+  type: 'SET_STORE_ID',
+  payload: id,
+});
 
 export const getProductData = (storeID, token) => async (dispatch) => {
   await fetchData(
