@@ -1,13 +1,15 @@
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import { AFROADMIN_TOKEN } from "./constants";
+import { AFROADMIN_TOKEN, renderValidUrl } from "./constants";
 import axios from "axios";
 import {
   handleAvatarSubmit,
   postRequest,
   putRequest,
-  updateStore,
+  updateStores,
+  setStoreID,
 } from "../redux/action";
+import { deliveryOptions, deliverySlots, restPeriods } from "../data/profile";
 
 // Set a cookie that expires in 3 hours
 const expirationTimeInMinutes = 3 * 60;
@@ -40,8 +42,75 @@ export const handleCreateAddress = async (address) => {
     }
     return data;
   } catch (error) {
-    console.errpr(error);
+    console.error(error);
   }
+};
+
+export const getStoreDefaultValues = (store, user) => {
+  return {
+    holidays: store?.holidays ?? [],
+    store: {
+      days: store?.openDays?.map((day) => day?.openDays) || [],
+      email: user?.email || "",
+      store_name: store?.name || "",
+      address: store?.address?.streetAddress || "",
+      city: store?.address?.city || "",
+      state: store?.address?.state || "",
+      postal_code: store?.address?.postalCode || "",
+      country: store?.address?.country || "",
+      deliveryStartTime: store?.deliveryTime?.from || "",
+      deliveryEndTime: store?.deliveryTime?.to || "",
+      profile_image: store ? renderValidUrl(store?.image) : null,
+      openingTime: store?.openingTimes?.from || "",
+      closingTime: store?.openingTimes?.to || "",
+      deliveryOption: store?.deliveryOptions
+        ? deliveryOptions.filter((d) => store?.deliveryOptions[d?.value])
+        : [],
+      deliverySlot: store?.deliverySlots
+        ? deliverySlots.find(
+          (option) =>
+            option?.value === store?.deliverySlots?.deliverySlotLengthinHrs
+        )?.value
+        : "",
+      restPeriod:
+        restPeriods.find(
+          (option) => option?.value === store?.deliverySlots?.restPeriodinHrs
+        )?.value || "",
+    },
+    delivery: {
+      base_amount: store?.deliveryFees ? store?.deliveryFees?.baseFee : 0,
+      base_distance: store?.deliveryFees
+        ? store?.deliveryFees?.baseDistance
+        : 0,
+      additional_distance_fee: store?.deliveryFees
+        ? store?.deliveryFees?.additionalFeePerUnit
+        : 0,
+      unit: store?.deliveryFees ? store?.deliveryFees?.measurementUnit : 0,
+      deliveryType: (!store?.deliveryFees?.useTieredPricing ? 0 : 1) || 0,
+      delivery: [
+        store?.deliveryFees?.less_than_5 && {
+          label: "Within 5km",
+          value: store.deliveryFees.less_than_5,
+        },
+        store?.deliveryFees?.between_5_and_10 && {
+          label: "Between 5 to 10km",
+          value: store.deliveryFees.between_5_and_10,
+        },
+        store?.deliveryFees?.between_10_and_15 && {
+          label: "Between 10 to 15km",
+          value: store.deliveryFees.between_10_and_15,
+        },
+        store?.deliveryFees?.between_15_and_20 && {
+          label: "Between 15 to 20km",
+          value: store.deliveryFees.between_15_and_20,
+        },
+        store?.deliveryFees?.more_than_20 && {
+          label: "Over 20km",
+          value: store.deliveryFees.more_than_20,
+        },
+      ].filter(Boolean)
+    },
+  };
 };
 
 export const getStorePayload = async (
@@ -92,34 +161,34 @@ export const getStorePayload = async (
     deliveryFees: {
       measurementUnit: profileData?.delivery?.unit ?? "",
       useTieredPricing:
-        profileData?.delivery?.deliveryType == 0 ? false : true,
+        profileData?.delivery?.deliveryType === 0 ? false : true,
       baseFee: profileData?.delivery?.base_amount ?? 0,
       baseDistance: profileData?.delivery?.base_distance ?? 0,
       additionalFeePerUnit: profileData?.delivery?.additional_distance_fee ?? 0,
       less_than_5: profileData?.delivery.delivery
         ? profileData.delivery?.delivery?.filter(
-            (data) => data.label === "Within 5km"
-          )[0]?.value
+          (data) => data.label === "Within 5km"
+        )[0]?.value
         : null,
       between_5_and_10: profileData?.delivery.delivery
         ? profileData.delivery?.delivery.filter(
-            (data) => data.label === "Between 5 to 10km"
-          )[0]?.value
+          (data) => data.label === "Between 5 to 10km"
+        )[0]?.value
         : null,
       between_10_and_15: profileData?.delivery.delivery
         ? profileData.delivery?.delivery.filter(
-            (data) => data.label === "Between 10 to 15km"
-          )[0]?.value
+          (data) => data.label === "Between 10 to 15km"
+        )[0]?.value
         : null,
       between_15_and_20: profileData?.delivery.delivery
         ? profileData.delivery?.delivery.filter(
-            (data) => data.label === "Between 15 to 20km"
-          )[0]?.value
+          (data) => data.label === "Between 15 to 20km"
+        )[0]?.value
         : null,
       more_than_20: profileData?.delivery.delivery
         ? profileData.delivery?.delivery.filter(
-            (data) => data.label === "More than 20km"
-          )[0]?.value
+          (data) => data.label === "More than 20km"
+        )[0]?.value
         : null,
     },
   };
@@ -137,7 +206,7 @@ export const getStorePayload = async (
   ) {
     const uploaded_img = await handleAvatarSubmit(
       profileData?.store?.profile_image_data,
-      store.id ?? `store${user?.id}`
+      store?.id ?? `store${user?.id}`
     );
     updatedStore.image = uploaded_img?.[0]?.id;
   }
@@ -148,12 +217,13 @@ export const getStorePayload = async (
 export const handleSubmitStore = async (
   profileData,
   store,
-  setEditProfile,
+  handleRedirect,
   setLoading,
   storeExists,
   user,
   dispatch,
-  token
+  token,
+  stores
 ) => {
   setLoading(true);
   //restructuring of new details of store to be updated
@@ -176,7 +246,11 @@ export const handleSubmitStore = async (
       );
     } else {
       //updates the store state with the response data
-      dispatch(updateStore(responseData));
+      const newStores = !storeExists ? [...stores, responseData] : responseData;
+      dispatch(updateStores(newStores));
+      if (!storeExists) {
+        dispatch(setStoreID(newStores.length - 1));
+      }
 
       //toast that shows whne successful
       toast.success(
@@ -187,11 +261,13 @@ export const handleSubmitStore = async (
           autoClose: 2000,
         }
       );
-      setEditProfile(false);
+      handleRedirect();
     }
   } catch (error) {
     console.error(error.message);
-    toast.error(`Error updating store information`, {
+    toast.error(!storeExists
+      ? `Error creating new Store`
+      : `Error updating Store information`, {
       autoClose: 2000,
     });
   } finally {

@@ -6,12 +6,12 @@ import { BeatLoader } from "react-spinners";
 
 const Orders = () => {
     const ordersData = useSelector((state) => state.ordersData);
-    const storeData = useSelector((state) => state.store);
+    const storeData = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
     const loading = useSelector((state) => state.loadingStates);
     
     return (
         <div>
-            {loading?.store || !loading || loading?.ordersData 
+            {loading?.stores || !loading || loading?.ordersData 
             ? (
                 <div className="fixed inset-0 bg-[#D3D3D3] bg-opacity-25 z-[100] flex justify-center items-center h-screen">
                     <div className="mt-[250px] w-full flex justify-center items-center">

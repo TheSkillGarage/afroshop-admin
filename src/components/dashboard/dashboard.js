@@ -19,7 +19,7 @@ import { getOrdersData } from '../../redux/action';
 
 const Dashboard = () => {
   const ordersData = useSelector((state) => state.ordersData);
-  const storeData = useSelector((state) => state.store);
+  const storeData = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
 
   const [topCustomers, setTopCustomers] = useState(null);
   const [topProducts, setTopProducts] = useState(null);
