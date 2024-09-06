@@ -24,6 +24,7 @@ const AdminNavbar = ({ name }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
+  const storeID = useSelector((state) => state.storeID);
   const stores = useSelector((state) => state.stores);
   const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
   const [open, setOpen] = useState(false);
@@ -136,7 +137,7 @@ const AdminNavbar = ({ name }) => {
                         <li
                           key={index}
                           onClick={(e) => { e.stopPropagation(); handleSwitchStore(index); }}
-                          className={`cursor-pointer px-4 ${store?.id === index ? "bg-[#186F3D] text-white p-2 rounded" : ""
+                          className={`cursor-pointer px-4 ${storeID === index ? "text-[#186F3D] p-2 rounded" : ""
                             }`}
                         >
                           {store.name}
