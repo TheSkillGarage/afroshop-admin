@@ -13,8 +13,7 @@ const EditSingleProduct = () => {
   const { sku } = useParams();
   const token = getTokenFromCookie();
   const productData = useSelector((state) => state.productsData);
-  const storeId = useSelector((state) => state.storeID);
-  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[storeId] : {});
+  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
   const [isLoading, setLoading] = useState(false);
   const [draftLoading, setDraftLoading] = useState(false);
   const product = productData.find((product) => product.SKU === sku);

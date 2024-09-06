@@ -7,7 +7,7 @@ import { getTokenFromCookie, removeTokenFromCookie } from "../../utils";
 import useIdleActivityTimer from "../../hooks/useIdleTimer";
 import {
   getOrdersData,
-  getStoreData,
+  getStoresData,
   logOutUser,
   setStoreExistStatus,
   getProductData,
@@ -25,13 +25,13 @@ const PageLayout = ({ children, pageName = "layout"}) => {
   //  handling API calls
   const token = getTokenFromCookie();
   const user = useSelector((state) => state.user);
-  const storeId = useSelector((state) => state.storeID);
-  const storeData = useSelector((state) => (state.stores));
-  const [error, setError] = useState(false);
-  
+  const storeID = useSelector((state) => state.storeID);
+  const storeData = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
+  const [error, setError] = useState(false)
+
   useEffect(() => {
     if (user && user.id) {
-      dispatch(getStoreData(user?.id, token));
+      dispatch(getStoresData(user?.id, token));
       dispatch(getProductCategoryData(token));
     }
   }, [user, token, location.pathname, dispatch]);
@@ -49,12 +49,12 @@ const PageLayout = ({ children, pageName = "layout"}) => {
   }, [store, location.pathname, token, dispatch, user]);
 
   useEffect(() => {
-    if (loadingStates !== null && !loadingStates?.store) {
-      if (store?.id && !storeData?.status) {
+    if (loadingStates !== null && !loadingStates?.stores) {
+      if (storeData?.id && !storeData?.status) {
         setError(false)
         dispatch(setStoreExistStatus(true));
       }
-      else if (storeData?.status === 404 || storeId === -1) {
+      else if (storeData?.status === 404 || storeID === -1) {
         setError(false)
         dispatch(setStoreExistStatus(false));
       }

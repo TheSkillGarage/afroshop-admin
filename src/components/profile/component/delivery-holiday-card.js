@@ -14,10 +14,10 @@ const DeliveryCard = ({ card, icon, type, handleDelete, editProfile, storeExists
 
       <div>
         <p className="font-bold text-[#186F3D]">
-          {card?.label ?? "Within 5 km"}
+          {card?.label ?? "Unknown Holiday"}
         </p>
         <p className="text-[#333333]">
-          {(type === "holiday" ? format(new Date(card?.value), 'EE, MMM d, yyyy') : `$${card?.value}`) ?? "$15"}
+          {(type === "holiday" ? format(new Date(card?.value ?? 0), 'EE, MMM d, yyyy') : `$${card?.value}`) ?? "$15"}
         </p>
       </div>
       {(editProfile || !storeExists) && (

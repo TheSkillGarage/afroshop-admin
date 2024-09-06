@@ -6,9 +6,8 @@ import {
   handleAvatarSubmit,
   postRequest,
   putRequest,
+  updateStores,
   setStoreID,
-  setStores,
-  updateStore,
 } from "../redux/action";
 import { deliveryOptions, deliverySlots, restPeriods } from "../data/profile";
 
@@ -43,11 +42,11 @@ export const handleCreateAddress = async (address) => {
     }
     return data;
   } catch (error) {
-    console.errpr(error);
+    console.error(error);
   }
 };
 
-export const getStoreDefaultValues = (store, storeExists, user) => {
+export const getStoreDefaultValues = (store, user) => {
   return {
     holidays: store?.holidays ?? [],
     store: {
@@ -69,9 +68,9 @@ export const getStoreDefaultValues = (store, storeExists, user) => {
         : [],
       deliverySlot: store?.deliverySlots
         ? deliverySlots.find(
-            (option) =>
-              option?.value === store?.deliverySlots?.deliverySlotLengthinHrs
-          )?.value
+          (option) =>
+            option?.value === store?.deliverySlots?.deliverySlotLengthinHrs
+        )?.value
         : "",
       restPeriod:
         restPeriods.find(
@@ -88,29 +87,28 @@ export const getStoreDefaultValues = (store, storeExists, user) => {
         : 0,
       unit: store?.deliveryFees ? store?.deliveryFees?.measurementUnit : 0,
       deliveryType: (!store?.deliveryFees?.useTieredPricing ? 0 : 1) || 0,
-      delivery:
-        [
-          {
-            label: "Within 5km",
-            value: store?.deliveryFees?.less_than_5 ?? 0,
-          },
-          {
-            label: "Between 5 to 10km",
-            value: store?.deliveryFees?.between_5_and_10 ?? 0,
-          },
-          {
-            label: "Between 10 to 15km",
-            value: store?.deliveryFees?.between_10_and_15 ?? 0,
-          },
-          {
-            label: "Between 15 to 20km",
-            value: store?.deliveryFees?.between_15_and_20 ?? 0,
-          },
-          {
-            label: "More than 20km",
-            value: store?.deliveryFees?.more_than_20 ?? 0,
-          },
-        ] ?? [],
+      delivery: [
+        store?.deliveryFees?.less_than_5 && {
+          label: "Within 5km",
+          value: store.deliveryFees.less_than_5,
+        },
+        store?.deliveryFees?.between_5_and_10 && {
+          label: "Between 5 to 10km",
+          value: store.deliveryFees.between_5_and_10,
+        },
+        store?.deliveryFees?.between_10_and_15 && {
+          label: "Between 10 to 15km",
+          value: store.deliveryFees.between_10_and_15,
+        },
+        store?.deliveryFees?.between_15_and_20 && {
+          label: "Between 15 to 20km",
+          value: store.deliveryFees.between_15_and_20,
+        },
+        store?.deliveryFees?.more_than_20 && {
+          label: "Over 20km",
+          value: store.deliveryFees.more_than_20,
+        },
+      ].filter(Boolean)
     },
   };
 };
@@ -169,28 +167,28 @@ export const getStorePayload = async (
       additionalFeePerUnit: profileData?.delivery?.additional_distance_fee ?? 0,
       less_than_5: profileData?.delivery.delivery
         ? profileData.delivery?.delivery?.filter(
-            (data) => data.label === "Within 5km"
-          )[0]?.value
+          (data) => data.label === "Within 5km"
+        )[0]?.value
         : null,
       between_5_and_10: profileData?.delivery.delivery
         ? profileData.delivery?.delivery.filter(
-            (data) => data.label === "Between 5 to 10km"
-          )[0]?.value
+          (data) => data.label === "Between 5 to 10km"
+        )[0]?.value
         : null,
       between_10_and_15: profileData?.delivery.delivery
         ? profileData.delivery?.delivery.filter(
-            (data) => data.label === "Between 10 to 15km"
-          )[0]?.value
+          (data) => data.label === "Between 10 to 15km"
+        )[0]?.value
         : null,
       between_15_and_20: profileData?.delivery.delivery
         ? profileData.delivery?.delivery.filter(
-            (data) => data.label === "Between 15 to 20km"
-          )[0]?.value
+          (data) => data.label === "Between 15 to 20km"
+        )[0]?.value
         : null,
       more_than_20: profileData?.delivery.delivery
         ? profileData.delivery?.delivery.filter(
-            (data) => data.label === "More than 20km"
-          )[0]?.value
+          (data) => data.label === "More than 20km"
+        )[0]?.value
         : null,
     },
   };
@@ -219,7 +217,7 @@ export const getStorePayload = async (
 export const handleSubmitStore = async (
   profileData,
   store,
-  setEditProfile,
+  handleRedirect,
   setLoading,
   storeExists,
   user,
@@ -248,13 +246,12 @@ export const handleSubmitStore = async (
       );
     } else {
       //updates the store state with the response data
-      dispatch(updateStore(responseData));
-      const newStores = [...stores, responseData];
-      const newId = newStores.length - 1;
-      dispatch(setStoreID(newId));
-      dispatch(setStores(newStores));
-    
-      console.log("response data", newStores, newStores.length);
+      const newStores = !storeExists ? [...stores, responseData] : responseData;
+      dispatch(updateStores(newStores));
+      if (!storeExists) {
+        dispatch(setStoreID(newStores.length - 1));
+      }
+
       //toast that shows whne successful
       toast.success(
         !storeExists
@@ -264,11 +261,13 @@ export const handleSubmitStore = async (
           autoClose: 2000,
         }
       );
-      setEditProfile(false);
+      handleRedirect();
     }
   } catch (error) {
     console.error(error.message);
-    toast.error(`Error updating store information`, {
+    toast.error(!storeExists
+      ? `Error creating new Store`
+      : `Error updating Store information`, {
       autoClose: 2000,
     });
   } finally {
