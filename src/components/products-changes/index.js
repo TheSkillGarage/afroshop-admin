@@ -178,7 +178,7 @@ const ProductChanges = ({
                       />
                     </div>
                   </div>
-                  {(productInfo?.productCategory || databaseInfo.productCategory === "Others") && (
+                  {(productInfo?.productCategory === "Others" || databaseInfo.productCategory === "Others") && (
                     <div className="w-[327px]">
                       <InputComponent
                         inputType="input"
