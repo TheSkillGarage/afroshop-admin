@@ -7,15 +7,11 @@ import EditPassword from "./edit-password";
 import { useForm } from "react-hook-form";
 import { renderValidUrl } from "../../utils/constants";
 import {
+  getStoreDefaultValues,
   getTokenFromCookie,
   handleSubmitPassword,
   handleSubmitStore,
 } from "../../utils";
-import {
-  deliveryOptions,
-  deliverySlots,
-  restPeriods,
-} from "../../data/profile";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -24,90 +20,13 @@ const Profile = () => {
   const dispatch = useDispatch();
   const token = getTokenFromCookie();
   const storeExists = useSelector((state) => state.storeExists);
-  const data = useSelector((d) => d.profile);
-  const store = useSelector((d) => d.store);
+  const stores = useSelector((state) => state.stores);
+  const storeID = useSelector((state) => state.storeID);
+  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
 
-  const [profileData, setProfileData] = useState({
-    ...data,
-    holidays: store.holidays ?? [],
-    store: storeExists
-      ? {
-          ...data?.store,
-          days: store?.openDays?.map((day) => day?.openDays) || [],
-          email: user?.email || "",
-          store_name: store?.name || "",
-          address: store?.address?.streetAddress || "",
-          city: store?.address?.city || "",
-          state: store?.address?.state || "",
-          postal_code: store?.address?.postalCode || "",
-          country: store?.address?.country || "",
-          deliveryStartTime: store?.deliveryTime?.from || "",
-          deliveryEndTime: store?.deliveryTime?.to || "",
-          profile_image: storeExists ? renderValidUrl(store?.image) : null,
-          openingTime: store?.openingTimes?.from || "",
-          closingTime: store?.openingTimes?.to || "",
-          deliveryOption: store?.deliveryOptions
-            ? deliveryOptions.filter((d) => store?.deliveryOptions[d?.value])
-            : [],
-          deliverySlot: store?.deliverySlots
-            ? deliverySlots.find(
-                (option) =>
-                  option?.value ===
-                  store?.deliverySlots?.deliverySlotLengthinHrs
-              )?.value
-            : "",
-          restPeriod:
-            restPeriods.find(
-              (option) =>
-                option?.value === store?.deliverySlots?.restPeriodinHrs
-            )?.value || "",
-        }
-      : { days: [] },
-    delivery:
-      storeExists && store?.deliveryFees
-        ? {
-            base_amount: store?.deliveryFees
-              ? store?.deliveryFees?.baseFee
-              : "",
-            base_distance: store?.deliveryFees
-              ? store?.deliveryFees?.baseDistance
-              : "",
-            additional_distance_fee: store?.deliveryFees
-              ? store?.deliveryFees?.additionalFeePerUnit
-              : "",
-            unit: store?.deliveryFees
-              ? store?.deliveryFees?.measurementUnit
-              : "",
-            deliveryType: (!store?.deliveryFees?.useTieredPricing ? 0 : 1) || 0,
-            delivery:
-              [
-                {
-                  label: "Within 5km",
-                  value: store?.deliveryFees?.less_than_5,
-                },
-                {
-                  label: "Between 5 to 10km",
-                  value: store?.deliveryFees?.between_5_and_10,
-                },
-                {
-                  label: "Between 10 to 15km",
-                  value: store?.deliveryFees?.between_10_and_15,
-                },
-                {
-                  label: "Between 15 to 20km",
-                  value: store?.deliveryFees?.between_15_and_20,
-                },
-                {
-                  label: "More than 20km",
-                  value: store?.deliveryFees?.more_than_20,
-                },
-              ] ?? [],
-          }
-        : {},
-  });
-
+  const [profileData, setProfileData] = useState(getStoreDefaultValues(store, user));
   const profileForm = useForm({
     defaultValues: {
       ...profileData?.store,
@@ -117,6 +36,18 @@ const Profile = () => {
     },
     mode: "all",
   });
+
+  useEffect(() => {
+    const result = getStoreDefaultValues(store, user);
+    setProfileData(result);
+    profileForm.reset({
+      ...result?.store,
+      ...result?.delivery,
+      destination: null,
+      fee: null,
+    });
+    setEditProfile(false);
+  }, [store, storeID]);
 
   const passwordForm = useForm({
     defaultValues: {
@@ -130,16 +61,22 @@ const Profile = () => {
   const [currentTab, setCurrentTab] = useState("Profile");
   const [editProfile, setEditProfile] = useState(false);
 
+  const handleRedirect = () => {
+    navigate("/")
+    setEditProfile(false)
+  }
+
   const handleProfileFormSubmit = async () => {
     await handleSubmitStore(
       profileData,
       store,
-      setEditProfile,
+      handleRedirect,
       setLoading,
       storeExists,
       user,
       dispatch,
-      token
+      token,
+      stores
     );
   };
 
@@ -207,11 +144,10 @@ const Profile = () => {
               <p
                 key={index}
                 onClick={() => handleTabClick(t)}
-                className={`cursor-pointer w-[380px] flex items-center justify-center ${
-                  t === currentTab
-                    ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
-                    : "text-[#4F4F4F] font-normal"
-                }`}
+                className={`cursor-pointer w-[380px] flex items-center justify-center ${t === currentTab
+                  ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
+                  : "text-[#4F4F4F] font-normal"
+                  }`}
               >
                 {t}
               </p>
@@ -225,9 +161,8 @@ const Profile = () => {
           <div className="py-4 px-4 border-b-[2px] text-[#186F3D] border-[#E6E6E6] flex items-center justify-between">
             <p className="text-xl font-bold">{currentTab}</p>
             <p
-              className={`flex gap-2 items-center font-semibold cursor-pointer ${
-                editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
-              }`}
+              className={`flex gap-2 items-center font-semibold cursor-pointer ${editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
+                }`}
               onClick={() => setEditProfile(true)}
             >
               {editProfile ? (

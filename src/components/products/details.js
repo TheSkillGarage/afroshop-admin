@@ -25,7 +25,7 @@ const Detail = ({ name, id, goToEdit, param, user, handleLoading, data }) => {
   };
 
   const token = getTokenFromCookie();
-  const storeData = useSelector((state) => state.store);
+  const storeData = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
   const ordersData = useSelector((state) => state.ordersData);
 
 
