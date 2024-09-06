@@ -152,8 +152,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 name="destination"
                 fieldName={`destination`}
                 placeholder="Select"
-                // required={true}
-                // requiredMessage={"This field is required"}
+                required={profileData?.delivery?.delivery.length < 2}
+                requiredMessage={"When using Tiered Fees you must add atleast 2 ranges."}
                 className="bg-[#F2F2F2]"
                 control={control}
                 errors={errors}
@@ -168,8 +168,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 type="number"
                 label="Shipping Fee ($)"
                 name="fee"
-                // required={true}
-                // requiredMessage={"This field is required"}
+                required={profileData?.delivery?.delivery.length < 2}
+                requiredMessage={"When using Tiered Fees you must add atleast 2 ranges."}
                 fieldName="fee"
                 placeholder="Enter"
                 className="bg-[#F2F2F2]"

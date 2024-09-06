@@ -68,6 +68,7 @@ const StatusPills = ({ name, status, id, data, deliveryOption }) => {
   const dispatch = useDispatch();
   const token = getTokenFromCookie();
   const storeData = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
+
   const checkValidStatusTransition = (status, currentStatus) => {
     const allowedTransitions = {
       Pending: ["Processing", "Cancelled"],

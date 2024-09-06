@@ -11,7 +11,7 @@ const Orders = () => {
     
     return (
         <div>
-            {loading?.store || !loading || loading?.ordersData 
+            {loading?.stores || !loading || loading?.ordersData 
             ? (
                 <div className="fixed inset-0 bg-[#D3D3D3] bg-opacity-25 z-[100] flex justify-center items-center h-screen">
                     <div className="mt-[250px] w-full flex justify-center items-center">

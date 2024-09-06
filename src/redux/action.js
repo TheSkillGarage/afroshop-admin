@@ -9,9 +9,9 @@ export const userLogin = (user) => (dispatch) => {
     payload: user,
   });
 };
-export const updateStore = (store) => (dispatch) => {
+export const updateStores = (store) => (dispatch) => {
   dispatch({
-    type: "UPDATE_STORE",
+    type: "UPDATE_STORES",
     payload: store,
   });
 };
@@ -26,10 +26,7 @@ export const setStoreExistStatus = (value) => (dispatch) => {
     payload: value,
   });
 };
-export const setStoreID = (id) => ({
-  type: 'SET_STORE_ID',
-  payload: id,
-});
+ 
 export const fetchData = async (dispatch, url, type, token) => {
   dispatch({ type: "API_REQUEST_START", payload: type });
   try {
@@ -83,13 +80,6 @@ export const addUserRole = (hash) => (dispatch) => {
     ...hash,
   });
 };
-
-export const setStores = (stores) => (dispatch) => {
-  dispatch({
-    type: "SET_STORES",
-    payload: stores
-  })
-}
 
 export const handleAvatarSubmit = async (image, id) => {
   if (image?.length === 0) {
@@ -158,10 +148,21 @@ export const discardDraft = (hash) => (dispatch) => {
   });
 };
 
-export const getStoreData = (userID, token) => async (dispatch) => {
-  const data = await fetchData(dispatch, `stores/${userID}`, "stores", token);
-  return data;
+export const getStoresData = (userID, token) => async (dispatch) => {
+  await fetchData(dispatch, `stores/${userID}`, "stores", token);
 };
+
+export const setStores = (stores) => (dispatch) => {
+  dispatch({
+    type: "SET_STORES",
+    payload: stores
+  })
+}
+
+export const setStoreID = (id) => ({
+  type: 'SET_STORE_ID',
+  payload: id,
+});
 
 export const getProductData = (storeID, token) => async (dispatch) => {
   await fetchData(

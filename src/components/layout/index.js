@@ -7,7 +7,7 @@ import { getTokenFromCookie, removeTokenFromCookie } from "../../utils";
 import useIdleActivityTimer from "../../hooks/useIdleTimer";
 import {
   getOrdersData,
-  getStoreData,
+  getStoresData,
   logOutUser,
   setStoreExistStatus,
   getProductData,
@@ -25,36 +25,35 @@ const PageLayout = ({ children, pageName = "layout"}) => {
   //  handling API calls
   const token = getTokenFromCookie();
   const user = useSelector((state) => state.user);
-  const storeId = useSelector((state) => state.storeID);
-  const storeData = useSelector((state) => (state.stores));
-  const [error, setError] = useState(false);
-  
+  const storeID = useSelector((state) => state.storeID);
+  const storeData = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
+  const [error, setError] = useState(false)
+
   useEffect(() => {
     if (user && user.id) {
-      dispatch(getStoreData(user?.id, token));
+      dispatch(getStoresData(user?.id, token));
       dispatch(getProductCategoryData(token));
     }
   }, [user, token, location.pathname, dispatch]);
 
-  const store = storeData ? storeData[storeId] : {};
   useEffect(() => {
-    if (store && store.id) {
+    if (storeData && storeData.id) {
       if (location.pathname === "/products") {
-        dispatch(getProductData(store.id, token));
+        dispatch(getProductData(storeData.id, token));
       }
       if (location.pathname === "/orders" || location.pathname === "/") {
-        dispatch(getOrdersData(store.id, token));
+        dispatch(getOrdersData(storeData.id, token));
       }
     }
-  }, [store, location.pathname, token, dispatch, user]);
+  }, [storeData, location.pathname, token, dispatch, user]);
 
   useEffect(() => {
-    if (loadingStates !== null && !loadingStates?.store) {
-      if (store?.id && !storeData?.status) {
+    if (loadingStates !== null && !loadingStates?.stores) {
+      if (storeData?.id && !storeData?.status) {
         setError(false)
         dispatch(setStoreExistStatus(true));
       }
-      else if (storeData?.status === 404 || storeId === -1) {
+      else if (storeData?.status === 404 || storeID === -1) {
         setError(false)
         dispatch(setStoreExistStatus(false));
       }
@@ -62,8 +61,7 @@ const PageLayout = ({ children, pageName = "layout"}) => {
         setError(true)
       }
     }
-  }, [storeData, dispatch, store]);
-  
+  }, [storeData, dispatch]);
   /*
 
     This section handles user Inactivity after 20mins
