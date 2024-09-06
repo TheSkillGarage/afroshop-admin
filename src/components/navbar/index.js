@@ -55,10 +55,6 @@ const AdminNavbar = ({ name }) => {
     dispatch(sidebarToggle({ toggle: isSidebarToggled }));
   };
 
-  console.log("new store", store)
-  console.log("new store id", storeID)
-  console.log("new storess length", stores.length)
-
   const handleSwitchStore = (storeID) => {
     dispatch(setStoreID(storeID));
     dispatch(setStoreExistStatus(storeID !== -1));

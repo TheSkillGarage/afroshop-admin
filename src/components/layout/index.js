@@ -36,17 +36,16 @@ const PageLayout = ({ children, pageName = "layout"}) => {
     }
   }, [user, token, location.pathname, dispatch]);
 
-  const store = storeData ? storeData[storeId] : {};
   useEffect(() => {
-    if (store && store.id) {
+    if (storeData && storeData.id) {
       if (location.pathname === "/products") {
-        dispatch(getProductData(store.id, token));
+        dispatch(getProductData(storeData.id, token));
       }
       if (location.pathname === "/orders" || location.pathname === "/") {
-        dispatch(getOrdersData(store.id, token));
+        dispatch(getOrdersData(storeData.id, token));
       }
     }
-  }, [store, location.pathname, token, dispatch, user]);
+  }, [storeData, location.pathname, token, dispatch, user]);
 
   useEffect(() => {
     if (loadingStates !== null && !loadingStates?.stores) {
@@ -62,8 +61,7 @@ const PageLayout = ({ children, pageName = "layout"}) => {
         setError(true)
       }
     }
-  }, [storeData, dispatch, store]);
-  
+  }, [storeData, dispatch]);
   /*
 
     This section handles user Inactivity after 20mins
