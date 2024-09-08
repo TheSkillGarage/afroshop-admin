@@ -26,6 +26,7 @@ const PageLayout = ({ children, pageName = "layout"}) => {
   const token = getTokenFromCookie();
   const user = useSelector((state) => state.user);
   const storeID = useSelector((state) => state.storeID);
+  const stores = useSelector((state) => state.stores);
   const storeData = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
   const [error, setError] = useState(false)
 
@@ -53,7 +54,7 @@ const PageLayout = ({ children, pageName = "layout"}) => {
         setError(false)
         dispatch(setStoreExistStatus(true));
       }
-      else if (storeData?.status === 404 || storeID === -1) {
+      else if (stores?.status === 404 || storeID === -1) {
         setError(false)
         dispatch(setStoreExistStatus(false));
       }
