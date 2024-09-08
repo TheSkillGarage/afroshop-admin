@@ -7,6 +7,7 @@ import Search from "../search";
 import Button from "../shared/button";
 import { useSelector } from "react-redux";
 import { formatPrice } from "../../utils/order-utils";
+import { exportOrderWithProductsToCSV } from "../../utils/generateCSV";
 
 const ViewOrders = () => {
 
@@ -36,6 +37,24 @@ const ViewOrders = () => {
         }
     }, [order, navigate]);
 
+    const [loadingCSV, setLoading] = useState(false)
+    const storeName = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID].name : {});
+    const handleCSVDownload = (e) => {
+      e.stopPropagation()
+      if (!loadingCSV) {
+        try {
+          setLoading(true)
+          exportOrderWithProductsToCSV(order, storeName)
+        }
+        catch (e) {
+          console.error(e)
+        }
+        finally {
+          setLoading(false)
+        }
+      }
+    }
+
     if (!order) {
         return null;
     }
@@ -48,6 +67,9 @@ const ViewOrders = () => {
                 <p className="text-[13px] leading-[23px] text-[#999999] cursor-pointer" onClick={() => navigate("/orders")}>Orders</p>
                 <GreenRightArrow alt="" />
                 <p className="text-[13px] leading-[23px] text-[#186F3D]">View Orders</p>
+
+                <Button loading={loadingCSV} variant="tertiary" className="ml-auto" onClick={handleCSVDownload}>Download as CSV</Button>
+
             </div>
 
             <div className="bg-[#ffffff] px-8 pt-12 pb-8">
@@ -116,13 +138,13 @@ const ViewOrders = () => {
 
                             <tbody>
                                 {
-                                    data.map(({ name, SKU, price }, key) => {
+                                    data.map(({ name, SKU, price, percentMarkup, percentDiscount }, key) => {
                                         return (
                                             <tr key={key} className="border-b border-1 border-[#E6E6E6] text-[13px] leading-[23px] text-[#333333]">
                                                 <td className="py-2 pr-8"></td>
                                                 <td className="py-2 pr-8" >{name}</td>
                                                 <td className="py-2 pr-8">{SKU}</td>
-                                                <td className="py-2 pr-8">{formatPrice(price)}</td>
+                                                <td className="py-2 pr-8">{formatPrice(price * (1 + (percentMarkup ?? 0) / 100) * (1 - (percentDiscount ?? 0) / 100))}</td>
                                                 <td className="py-4 pr-8 capitalize">
                                                     <StatusPills status={order?.status} />
                                                 </td>

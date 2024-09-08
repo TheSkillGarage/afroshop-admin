@@ -8,6 +8,9 @@ import Search from "../search";
 import BaseTable from "../shared/table";
 import useTableData from "../../hooks/useTableData";
 import { useSelector } from "react-redux";
+import Button from "../shared/button";
+import { exportOrdersToCSV } from "../../utils/generateCSV";
+import { result } from "lodash";
 
 const OrdersDashboard = () => {
 
@@ -63,6 +66,24 @@ const OrdersDashboard = () => {
 
   const headers = tableData.headers
   const results = tableData.results
+  const storeName = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID].name : {});
+
+  const [loadingCSV, setLoading] = useState(false)
+  const handleCSVDownload = (e) => {
+    e.stopPropagation()
+    if (!loadingCSV) {
+      try {
+        setLoading(true)
+        exportOrdersToCSV(tableData.results, storeName)
+      }
+      catch (e) {
+        console.error(e)
+      }
+      finally {
+        setLoading(false)
+      }
+    }
+  }
 
   return (
     <div className="bg-[#F2F2F2] w-full pt-6 pb-8 px-4">
@@ -70,6 +91,11 @@ const OrdersDashboard = () => {
       <div className="flex items-center gap-8 mb-6 h-[39px]">
         <p className="text-[rgba(48,48,48,0.4)] font-medium text-[14px] leading-[16.8px] -tracking[16%] font-['Lato']">...</p>
         <p className="text-[13px] leading-[23px] text-[#186F3D]">Orders</p>
+        {
+          results.length > 0 && (
+            <Button loading={loadingCSV} variant="tertiary" className="ml-auto" onClick={handleCSVDownload}>Download as CSV</Button>
+          )
+        }
       </div>
 
       <Filters filters={filters} activeTab={activeTab} handleActiveTab={handleActiveTab} />
