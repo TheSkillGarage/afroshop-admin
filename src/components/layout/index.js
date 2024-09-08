@@ -15,7 +15,7 @@ import {
 } from "../../redux/action";
 import ErrorScreen from "../error-screen";
 
-const PageLayout = ({ children, pageName = "layout"}) => {
+const PageLayout = ({ children, pageName = "layout" }) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const loadingStates = useSelector(state => state.loadingStates)
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const PageLayout = ({ children, pageName = "layout"}) => {
 
   useEffect(() => {
     if (loadingStates !== null && !loadingStates?.stores) {
-      if (storeData?.id && !storeData?.status) {
+      if (storeData?.id && !stores?.status) {
         setError(false)
         dispatch(setStoreExistStatus(true));
       }
@@ -62,7 +62,7 @@ const PageLayout = ({ children, pageName = "layout"}) => {
         setError(true)
       }
     }
-  }, [storeData, dispatch]);
+  }, [stores, dispatch]);
   /*
 
     This section handles user Inactivity after 20mins
