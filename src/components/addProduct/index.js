@@ -26,7 +26,7 @@ const AddProduct = () => {
     unitWeightInGrams: 0,
     pricingType: "per Item",
     measurementUnit: "",
-    sku: ""
+    SKU: ""
   };
 
   const [productInfo, setProductInfo] = useState(useProductInfo);
@@ -91,6 +91,7 @@ const AddProduct = () => {
       description: productInfo?.description ?? "",
       price: productInfo?.price ?? 0,
       name: productInfo.name ?? "",
+      SKU: productInfo?.SKU ?? "",
       discount: productInfo.discount ?? 0,
       productCategory:
         productInfo?.productCategory === ""
@@ -99,7 +100,6 @@ const AddProduct = () => {
           ? productInfo?.category
           : productInfo?.productCategory,
       status: "draft",
-      sku: productInfo.sku ?? "",
       availability: productInfo.availability ?? 0,
       taxable: productInfo?.taxable ?? false,
       pricingType:
@@ -122,7 +122,7 @@ const AddProduct = () => {
       price: productInfo?.price,
       name: productInfo.name,
       discount: productInfo.discount,
-      SKU: productInfo.sku ?? "",
+      SKU: productInfo?.SKU ?? "",
       productCategory:
         productInfo.productCategory === "Others"
           ? productInfo?.category
@@ -142,6 +142,7 @@ const AddProduct = () => {
 
   return (
     <ProductChanges
+      store={store}
       isEdit={false}
       productInfo={productInfo}
       initialProductInfo={useProductInfo}

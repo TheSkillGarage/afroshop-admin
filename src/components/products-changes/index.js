@@ -18,6 +18,7 @@ import Checkbox from "../shared/checkbox";
 import { useSelector } from "react-redux";
 
 const ProductChanges = ({
+  store,
   isEdit,
   productInfo,
   initialProductInfo,
@@ -65,9 +66,9 @@ const ProductChanges = ({
     defaultValues: productInfo,
   });
 
-  const onSubmit = (data) => {
-    handleFormSubmit();
-  };
+  // const onSubmit = (data) => {
+  //   handleFormSubmit();
+  // };
 
   const productCategories = [
     ...categories?.map((c) => {
@@ -76,7 +77,7 @@ const ProductChanges = ({
     { label: "Others", value: "Others" },
   ];
 
-  const disableButton =  !isValid || !isDirty;
+  const disableButton = !isValid || !isDirty;
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
@@ -95,7 +96,7 @@ const ProductChanges = ({
       </div>
       <form
         className="bg-white p-[24px] mx-[12px]"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
       >
         <div className="flex flex-col justify-between h-[100%]">
           <div>
@@ -124,28 +125,6 @@ const ProductChanges = ({
                     />
                   </div>
                 </div>
-                <div className=" md:w-[327px] w-[50%]">
-                  <div className="mb-8 text-start w-[327px] z-0">
-                    <InputComponent
-                      inputType="text"
-                      label="SKU"
-                      fieldName="sku"
-                      placeholder="Enter"
-                      value={productInfo?.sku}
-                      patternValue={"^AFR-[a-zA-Z0-9]+"}
-                      patternMessage="Must start with AFR"
-                      handleChange={(e) => {
-                        handleProductInfo("sku", e.target.value);
-                      }}
-                      register={register}
-                      control={control}
-                      errors={errors}
-                      required={true}
-                      requiredMessage={"This field is required"}
-                      className="w-full"
-                    />
-                  </div>
-                </div>
                 {productInfo.productCategory === "Others" && (
                   <div className="w-[327px]">
                     <InputComponent
@@ -168,6 +147,30 @@ const ProductChanges = ({
                         handleProductInfo("category", e.target.value);
                       }}
                     />
+                  </div>
+                )}
+                 {store?.allowUserSKU && (
+                  <div className=" md:w-[327px] w-[50%]">
+                    <div className="mb-8 text-start w-[327px] z-0">
+                      <InputComponent
+                        inputType="text"
+                        label="SKU"
+                        fieldName="SKU"
+                        placeholder="Enter"
+                        value={productInfo?.SKU}
+                        patternValue={/^[a-zA-Z0-9-]{5,}$/}
+                        patternMessage="SKU must not be less than 5 characters"
+                        handleChange={(e) => {
+                          handleProductInfo("SKU", e.target.value);
+                        }}
+                        register={register}
+                        control={control}
+                        errors={errors}
+                        required={true}
+                        requiredMessage={"This field is required"}
+                        className="w-full"
+                      />
+                    </div>
                   </div>
                 )}
                 <Checkbox
