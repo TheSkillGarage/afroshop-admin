@@ -18,7 +18,7 @@ const PRIVATE_INITIAL_STATE = {
 const INITIAL_STATE = {
   ...PRIVATE_INITIAL_STATE,
   sections: sectionData,
-  isSidebarToggled: true,
+  isSidebarToggled: false,
 };
 
 export const reducer = (previousState = INITIAL_STATE, action) => {
