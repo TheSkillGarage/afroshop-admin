@@ -66,10 +66,6 @@ const ProductChanges = ({
     defaultValues: productInfo,
   });
 
-  // const onSubmit = (data) => {
-  //   handleFormSubmit();
-  // };
-
   const productCategories = [
     ...categories?.map((c) => {
       return { label: c?.name, value: c?.name };
