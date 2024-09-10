@@ -20,6 +20,7 @@ import RadioButton from "../shared/radioBtn";
 const ProductChanges = ({
   isEdit,
   productInfo,
+  setProductInfo,
   handleProductInfo,
   handleFormSubmit,
   handleProductDraft,
@@ -28,10 +29,6 @@ const ProductChanges = ({
   product,
   productType,
   setProductType,
-  databaseInfo,
-  setDatabaseInfo,
-  handleDatabaseInfo,
-  handleSetDatabaseInfo,
   setOpenModal,
 }) => {
   const navigate = useNavigate();
@@ -41,7 +38,6 @@ const ProductChanges = ({
 
 
   const [tab, setTab] = useState("");
-  // const [openModal, setOpenModal] = useState(false);
 
   const handleFilesSelect = (files) => {
     const newImageObj = {
@@ -54,12 +50,10 @@ const ProductChanges = ({
   };
 
   const handleDelete = (index) => {
-    const newFiles = [...productInfo.images, ...databaseInfo.images];
+    const newFiles = [...productInfo.images];
 
-    console.log(newFiles);
     newFiles.splice(index, 1);
     handleProductInfo("images", newFiles);
-    handleSetDatabaseInfo("images", newFiles);
   };
 
   const {
@@ -71,13 +65,12 @@ const ProductChanges = ({
     reset,
   } = useForm({
     mode: "onChange",
-    defaultValues: (!productType || productType === "manual") ? productInfo : databaseInfo,
+    defaultValues: productInfo,
   });
 
-
   useEffect(() => {
-    reset(databaseInfo);
-  }, [databaseInfo, reset]);
+    reset(productInfo);
+  }, [productInfo, reset]);
 
   const onSubmit = (data) => {
     handleFormSubmit(data);
@@ -90,8 +83,7 @@ const ProductChanges = ({
     { label: "Others", value: "Others" },
   ];
 
-  const disableButton = !isValid || !isDirty;
-  const isSubmitDisabled = disableButton && productType !== "database" && databaseInfo ? Object.keys(databaseInfo)?.length === 0 : false;
+  const disableButton = !isValid;
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">
@@ -116,7 +108,7 @@ const ProductChanges = ({
               name="manual"
               id="manual"
               checked={productType === "manual"}
-              handleChange={() => { setProductType("manual"); setDatabaseInfo({}) }}
+              handleChange={() => {setProductType("manual"); setProductInfo({})}}
             />
             <label for="manual">Manual Entry</label>
           </div>
@@ -126,7 +118,7 @@ const ProductChanges = ({
               name="database"
               id="database"
               checked={productType === "database"}
-              handleChange={() => { setProductType("database") }}
+              handleChange={() => {setProductType("database"); setProductInfo({})}}
             />
             <label for="database">Database Entry</label>
           </div>
@@ -159,7 +151,6 @@ const ProductChanges = ({
                         value={"protein"}
                         handleChange={(val) => {
                           handleProductInfo?.("productCategory", val.value);
-                          handleSetDatabaseInfo?.("productCategory", val.value);
                         }}
                         register={register}
                         control={control}
@@ -168,17 +159,15 @@ const ProductChanges = ({
                         requiredMessage={"This field is required"}
                         options={productCategories}
                         placeholder={
-                          (productType === "manual" && productInfo?.productCategory !== "")
+                          (productInfo?.productCategory !== "")
                             ? productInfo?.productCategory
-                            : productType === "database" 
-                            ? databaseInfo?.productCategory
                             : "Select"
                         }
                         className="w-full"
                       />
                     </div>
                   </div>
-                  {(productInfo?.productCategory === "Others" || databaseInfo.productCategory === "Others") && (
+                  {(productInfo?.productCategory === "Others") && (
                     <div className="w-[327px]">
                       <InputComponent
                         inputType="input"
@@ -237,10 +226,8 @@ const ProductChanges = ({
 
                 <ProductInfo
                   productInfo={productInfo}
-                  databaseInfo={databaseInfo}
                   isProductInfoOpen={tab === "productInfo"}
                   handleProductInfo={handleProductInfo}
-                  handleSetDatabaseInfo={handleSetDatabaseInfo}
                   register={register}
                   control={control}
                   errors={errors}
@@ -284,12 +271,11 @@ const ProductChanges = ({
                       register={register}
                       control={control}
                       errors={errors}
-                      databaseInfo={databaseInfo}
                     />
                   </div>
 
                   <ImageDisplay
-                    selectedFiles={(!productType || productType === "manual") ? productInfo?.images : databaseInfo?.images}
+                    selectedFiles={productInfo?.images}
                     onDelete={handleDelete}
                   />
                 </div>
@@ -326,7 +312,7 @@ const ProductChanges = ({
               </Button>
 
               <Button
-                variant={isSubmitDisabled ? "disabled" : "primary"}
+                variant={disableButton ? "disabled" : "primary"}
                 type="submit"
                 className="w-[133px] h-[40px]"
                 loading={isLoading}

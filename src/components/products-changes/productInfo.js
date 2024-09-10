@@ -9,10 +9,8 @@ import { pricingTypeOptions } from "../../data/profile";
 
 export const ProductInfo = ({
   productInfo,
-  databaseInfo,
   isProductInfoOpen,
   handleProductInfo,
-  handleSetDatabaseInfo,
   register,
   control,
   errors,
@@ -41,8 +39,6 @@ export const ProductInfo = ({
     return newVal;
   };
 
-  const isDatabaseInfoEmpty = databaseInfo && Object.keys(databaseInfo).length !== 0;
-
   return (
     <div
       className={`${isProductInfoOpen ? "" : "hidden"} pt-4`}
@@ -62,10 +58,9 @@ export const ProductInfo = ({
             register={register}
             required={true}
             requiredMessage={"This field is required"}
-            value={isDatabaseInfoEmpty ? databaseInfo?.name : productInfo?.name}
+            value={productInfo?.name}
             handleChange={(e) => {
               handleProductInfo?.("name", e.target.value);
-              handleSetDatabaseInfo?.("name", e.target.value);
             }}
           />
         </div>
@@ -84,11 +79,10 @@ export const ProductInfo = ({
             required={true}
             requiredMessage={"This field is required"}
             patternMessage="Please enter a valid number"
-            value={isDatabaseInfoEmpty ? databaseInfo.availability : productInfo?.availability}
+            value={productInfo?.availability}
             handleChange={(e) => {
               let val = e.target.value.replace(/[^0-9]/g, "");
               handleProductInfo?.("availability", val);
-              handleSetDatabaseInfo?.("availability", val)
             }}
           />
         </div>
@@ -101,19 +95,18 @@ export const ProductInfo = ({
             fieldName="description"
             control={control}
             rules={{
-              required: !isDatabaseInfoEmpty && databaseInfo?.description === "" ? "This field is required" : false,
+              required: true,
             }}
             render={({ field }) => (
               <ReactQuill
                 {...field}
                 theme="snow"
                 modules={modules}
-                value={isDatabaseInfoEmpty ? databaseInfo?.description : productInfo?.description}
+                value={productInfo?.description}
                 className="h-[100%] w-[100%]"
                 onChange={(value) => {
                   field.onChange(productInfo?.description);
                   handleProductInfo?.("description", value);
-                  handleSetDatabaseInfo?.("description", value)
                 }}
               />
             )}
@@ -133,12 +126,11 @@ export const ProductInfo = ({
           <RadioButton
             name="pricingType"
             id="pricingType"
-            checked={isDatabaseInfoEmpty ? databaseInfo?.pricingType === "per Item" : newPricingType === "per Item"}
+            checked={productInfo?.pricingType === "per Item" || newPricingType === "per Item"}
             disabled={false}
             handleChange={(e) => {
               setNewPricingType?.("per Item");
-              handleProductInfo?.("pricingType", "per Item")
-              handleSetDatabaseInfo?.("pricingType", "per Item");
+              handleProductInfo?.("pricingType", "per Item");
             }}
           />
           <label>Price Per Item</label>
@@ -147,12 +139,11 @@ export const ProductInfo = ({
           <RadioButton
             name="pricingType"
             id="pricingType"
-            checked={isDatabaseInfoEmpty ? databaseInfo?.pricingType === "per Weight" : newPricingType === "per Weight"}
+            checked={productInfo?.pricingType === "per Weight" || newPricingType === "per Weight"}
             disabled={false}
             handleChange={() => {
               setNewPricingType?.("per Weight");
               handleProductInfo?.("pricingType", "per Weight");
-              handleSetDatabaseInfo?.("pricingType", "per Weight")
             }}
           />
           <label>Price Per Weight</label>
@@ -179,13 +170,9 @@ export const ProductInfo = ({
                 patternMessage="Unit weight nust be an integer"
                 patternValue={/^[0-9]\d*$/}
                 requiredMessage={"This field is required"}
-                value={isDatabaseInfoEmpty ? databaseInfo?.unitWeightInGrams : productInfo?.unitWeightInGrams}
+                value={productInfo?.unitWeightInGrams}
                 handleChange={(e) => {
                   handleProductInfo?.(
-                    "unitWeightInGrams",
-                    sanitizeNumbers(e.target.value)
-                  );
-                  handleSetDatabaseInfo?.(
                     "unitWeightInGrams",
                     sanitizeNumbers(e.target.value)
                   );
@@ -206,13 +193,9 @@ export const ProductInfo = ({
                 patternValue={/^\d+(\.[0-9]+)?$/}
                 patternMessage="Please enter a valid price"
                 requiredMessage={"This field is required"}
-                value={isDatabaseInfoEmpty ? databaseInfo?.price : productInfo?.price}
+                value={productInfo?.price}
                 handleChange={(e) => {
                   handleProductInfo?.("price", sanitizeNumbers(e.target.value));
-                  handleSetDatabaseInfo?.(
-                    "price",
-                    sanitizeNumbers(e.target.value)
-                  );
                 }}
               />
             </div>
@@ -229,13 +212,9 @@ export const ProductInfo = ({
                 register={register}
                 patternValue={/^(100(\.0{1,3})?|[0-9]{1,2}(\.[0-9]+)?)$/}
                 patternMessage={"Please enter a valid discount (0 - 100)"}
-                value={isDatabaseInfoEmpty ? databaseInfo?.discount : productInfo?.discount}
+                value={productInfo?.discount}
                 handleChange={(e) => {
                   handleProductInfo?.(
-                    "discount",
-                    sanitizeNumbers(e.target.value)
-                  );
-                  handleSetDatabaseInfo?.(
                     "discount",
                     sanitizeNumbers(e.target.value)
                   );
@@ -246,7 +225,7 @@ export const ProductInfo = ({
         </div>
       )}
 
-      {(newPricingType === "per Weight" || databaseInfo?.pricingType === "per kg") && (
+      {(newPricingType === "per Weight" || productInfo?.pricingType === "per kg") && (
         <div className="pb-4 space-y-3">
           <p className="text-[#4F4F4F] font-bold">Price Per Weight</p>
           <div className="flex justify-between items-start pb-[15px] mt-10">
@@ -271,17 +250,15 @@ export const ProductInfo = ({
                   required={true}
                   requiredMessage={"Rest Period is required"}
                   className="bg-[#F2F2F2]"
-                  value={isDatabaseInfoEmpty ? databaseInfo?.pricingType : productInfo?.measurementUnit}
+                  value={productInfo?.measurementUnit}
                   control={control}
                   errors={errors}
                   register={register}
                   handleChange={(data) => {
                     handleProductInfo?.("measurementUnit", data?.value);
-                    handleSetDatabaseInfo?.("pricingType", data?.value)
                   }
                   }
                 />
-                {/* </div> */}
                 <InputComponent
                   inputType="input"
                   type="text"
@@ -296,13 +273,9 @@ export const ProductInfo = ({
                   patternValue={/^(?!0\d)\d+(\.\d{1,2})?$/}
                   patternMessage="Please enter a valid price"
                   requiredMessage={"This field is required"}
-                  value={isDatabaseInfoEmpty ? databaseInfo?.price : productInfo?.price}
+                  value={productInfo?.price}
                   handleChange={(e) => {
                     handleProductInfo?.("price", sanitizeNumbers(e.target.value));
-                    handleSetDatabaseInfo?.(
-                      "price",
-                      sanitizeNumbers(e.target.value)
-                    );
                   }}
                 />
               </div>
@@ -322,13 +295,9 @@ export const ProductInfo = ({
                   /^(?!0\d)(100(\.0{1,2})?|\d{1,2}(\.\d{1,2})?|0(\.\d{1,2})?)$/
                 }
                 patternMessage={"Please enter a valid discount (0 - 100)"}
-                value={isDatabaseInfoEmpty ? databaseInfo?.discount : productInfo?.discount}
+                value={productInfo?.discount}
                 handleChange={(e) => {
                   handleProductInfo?.(
-                    "discount",
-                    sanitizeNumbers(e.target.value)
-                  );
-                  handleSetDatabaseInfo?.(
                     "discount",
                     sanitizeNumbers(e.target.value)
                   );

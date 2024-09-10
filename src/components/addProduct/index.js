@@ -21,7 +21,7 @@ const AddProduct = () => {
     productCategory: "",
     category: "",
     name: "",
-    availability: "0",
+    availability: "",
     price: 0,
     discount: 0,
     description: "",
@@ -39,8 +39,6 @@ const AddProduct = () => {
   }, []);
 
   const [productInfo, setProductInfo] = useState(useProductInfo);
-  const [databaseInfo, setDatabaseInfo] = useState({});
-
 
   const handleDatabaseInfo = (product) => {
     const databaseProductInfo = {
@@ -54,18 +52,10 @@ const AddProduct = () => {
       taxable: product?.taxable,
       unitWeightInGrams: product?.unitWeightInGrams,
     };
-    setDatabaseInfo(databaseProductInfo);
+    setProductInfo(databaseProductInfo);
   }
 
-  const handleSetDatabaseInfo = (key, val) => {
-    setDatabaseInfo((prevDatabaseInfo) => ({
-      ...prevDatabaseInfo,
-      [key]: val,
-    }));
-  }
-
-  const submittedImages = productType !== "manual" ? databaseInfo.images : productInfo.images
-
+  const submittedImages = productInfo.images
   const navigate = useNavigate();
 
   const handleProductInfo = (key, val) => {
@@ -77,9 +67,7 @@ const AddProduct = () => {
 
   const submitForm = async (payload, images, setLoading, message) => {
     try {
-      // upload images first
-      // const images = imagesToBeUploaded?.map((i) => i.data);
-
+ 
       if (images?.length === 0) {
         toast.error("Add an image to save as draft!", { autoClose: 1000 });
       } else {
@@ -154,32 +142,7 @@ const AddProduct = () => {
       itemDetail: 0,
     };
 
-    const databasePayload = {
-      store: store?.id,
-      description:databaseInfo?.description ?? "",
-      price: databaseInfo?.price ?? 0,
-      name: databaseInfo.name ?? "",
-      discount: databaseInfo.discount ?? 0,
-      productCategory:
-        productInfo?.productCategory === ""
-          ? "Draft Product"
-          : databaseInfo.productCategory === "Others"
-            ? productInfo?.category
-            : databaseInfo?.productCategory,
-      status: "draft",
-      availability: databaseInfo.availability ?? 0,
-      taxable: databaseInfo?.taxable ?? false,
-      pricingType:
-        databaseInfo?.pricingType === "per Weight"
-          ? databaseInfo?.measurementUnit
-          : databaseInfo?.pricingType,
-      unitWeightInGrams: databaseInfo?.unitWeightInGrams,
-      itemDetail: 0,
-    };
-
-    const usedPayload = productType === "manual" ? payload : databasePayload;
-
-    await submitForm(usedPayload, submittedImages, setSaveDraftLoading, "Your product was successfully saved as draft!");
+    await submitForm(payload, submittedImages, setSaveDraftLoading, "Your product was successfully saved as draft!");
   };
 
   const handleCreateProduct = async () => {
@@ -205,29 +168,7 @@ const AddProduct = () => {
       unitWeightInGrams: productInfo?.unitWeightInGrams,
     };
 
-    const databasePayload = {
-      store: store?.id,
-      description: databaseInfo.description,
-      price: databaseInfo?.price,
-      name: databaseInfo.name,
-      discount: databaseInfo.discount,
-      productCategory:
-        databaseInfo.productCategory === "Others"
-          ? productInfo?.category
-          : databaseInfo?.productCategory,
-      status: "active",
-      availability: databaseInfo.availability,
-      taxable: databaseInfo?.taxable,
-      pricingType:
-        databaseInfo?.pricingType === "per Weight"
-          ? databaseInfo?.measurementUnit
-          : databaseInfo?.pricingType,
-      unitWeightInGrams: databaseInfo?.unitWeightInGrams,
-    };
-
-    const usedPayload = productType === "manual" ? payload : databasePayload;
-
-    await submitForm(usedPayload, submittedImages, setLoading, "Your product was successfully created!");
+    await submitForm(payload, submittedImages, setLoading, "Your product was successfully created!");
   };
 
   return (
@@ -242,11 +183,9 @@ const AddProduct = () => {
         isEdit={false}
         productType={productType}
         setProductType={setProductType}
-        databaseInfo={databaseInfo}
-        setDatabaseInfo={setDatabaseInfo}
         handleDatabaseInfo={handleDatabaseInfo}
-        handleSetDatabaseInfo={handleSetDatabaseInfo}
         productInfo={productInfo}
+        setProductInfo={setProductInfo}
         initialProductInfo={useProductInfo}
         handleProductInfo={handleProductInfo}
         handleFormSubmit={handleCreateProduct}

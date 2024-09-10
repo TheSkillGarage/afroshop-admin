@@ -3,7 +3,7 @@ import { Dot, ErrorIcon, Framer } from "../../../images";
 import InputComponent from "../../shared/inputComponent";
 
 
-export const FileInput = ({ onFilesSelect, productInfo, register, control, errors, databaseInfo}) => {
+export const FileInput = ({ onFilesSelect, productInfo, register, control, errors}) => {
   const [isUploading, setIsUploading] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const [activeUpload, setActiveUpload] = useState(false);
@@ -49,7 +49,7 @@ export const FileInput = ({ onFilesSelect, productInfo, register, control, error
         register={register}
         control={control}
         errors={errors}
-        required={productInfo?.images?.length === 0 && Object.keys(databaseInfo).length === 0}
+        required={productInfo?.images?.length === 0}
         requiredMessage={"File is Required"}
         handleChange={handleFileChange}
         id="productImage"
