@@ -52,6 +52,7 @@ export const getStoreDefaultValues = (store, user) => {
     store: {
       days: store?.openDays?.map((day) => day?.openDays) || [],
       email: user?.email || "",
+      allowUserSKU: store?.allowUserSKU || false,
       store_name: store?.name || "",
       address: store?.address?.streetAddress || "",
       city: store?.address?.city || "",
@@ -121,6 +122,7 @@ export const getStorePayload = async (
 ) => {
   const updatedStore = {
     name: profileData?.store?.store_name,
+    allowUserSKU: profileData?.store?.allowUserSKU,
     address: {
       streetAddress: profileData?.store?.address,
       state: profileData?.store?.state,

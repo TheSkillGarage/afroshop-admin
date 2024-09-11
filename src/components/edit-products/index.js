@@ -37,6 +37,7 @@ const EditSingleProduct = () => {
     discount: product?.percentDiscount,
     description: product?.description,
     images: product?.images,
+    SKU: product?.SKU ?? "",
     pricingType:
       productPricingType !== "per Item" ? "per Weight" : productPricingType,
     taxable: product?.taxable,
@@ -105,6 +106,7 @@ const EditSingleProduct = () => {
     const payload = {
       store: store.id,
       description: productInfo.description ?? "",
+      SKU: productInfo?.SKU ?? "",
       price: productInfo.price ?? 0,
       name: productInfo.name ?? 0,
       discount: productInfo.discount ?? 0,
@@ -133,6 +135,7 @@ const EditSingleProduct = () => {
       description: productInfo.description ?? "",
       price: productInfo.price ?? 0,
       name: productInfo.name ?? 0,
+      SKU: productInfo?.SKU ?? "",
       discount: productInfo.discount ?? 0,
       productCategory:
         productInfo.productCategory === "Others"

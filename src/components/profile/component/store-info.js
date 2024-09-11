@@ -116,6 +116,20 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           )}
       </div>
 
+      <div className="flex items-start">
+        <Checkbox
+          name={"allowUserSKU"}
+          handleChange={(e) => {
+            handleData("allowUserSKU", !profileData?.store?.allowUserSKU);
+          }}
+          isDisabled={!storeExists ? false : !editProfile}
+          value={profileData?.store?.allowUserSKU ===  true ? true :  ""}
+          valueOnChecked={profileData?.store?.allowUserSKU}
+        >
+          Use custom SKU
+        </Checkbox>
+      </div>
+
       <div className="grid grid-cols-2 gap-8 my-4">
         <InputComponent
           inputType="text"
