@@ -23,6 +23,7 @@ import greyMarkIcon from "./grey-mark-icon.svg";
 import MessageIcon from "./message.svg";
 import {ReactComponent as WelcomeImage} from "./welcomeImage.svg"
 
+import ArrowRight2 from "./arrow-right2.svg";
 import ArrowRight from "./arrow-right.svg";
 import ArrowDown from "./arrow-down.svg";
 import Dot from "./dot.svg";
@@ -61,6 +62,7 @@ import UserIconWhite from "./user-white.svg";
 import RolesIconWhite from "./roles-white.svg";
 import SupportIconWhite from "./icon-support-white.svg";
 import LogoImage from "./logo-2.svg"
+import storeModal from "./store-modal-logo.svg";
 
 
 
@@ -246,4 +248,6 @@ export {
   DefaultUserImage,
   StoreDefaultImage,
   LogoutIcon2,
+  storeModal,
+  ArrowRight2,
 };

@@ -10,6 +10,7 @@ import {
   setStoreID,
 } from "../redux/action";
 import { deliveryOptions, deliverySlots, restPeriods } from "../data/profile";
+import { showModal } from "../components/modal/storeModal";
 
 // Set a cookie that expires in 3 hours
 const expirationTimeInMinutes = 3 * 60;
@@ -253,14 +254,24 @@ export const handleSubmitStore = async (
       }
 
       //toast that shows whne successful
-      toast.success(
-        !storeExists
-          ? `Store created successfully`
-          : `Store details updated successfully`,
-        {
-          autoClose: 2000,
-        }
-      );
+      // toast.success(
+      //   !storeExists
+      //     ? `Store created successfully`
+      //     : `Store details updated successfully`,
+      //   {
+      //     autoClose: 2000,
+      //   }
+      // );
+
+         // Call the modal function
+         showModal({
+          title: "Store Submission Received!",
+          message: !storeExists
+            ? `Your submission is now under review. We'll notify you once it's been approved.`
+            : `Your submission is now under review. We'll notify you once it's been approved.`,
+          onConfirm: handleRedirect,
+        });
+
       handleRedirect();
     }
   } catch (error) {
