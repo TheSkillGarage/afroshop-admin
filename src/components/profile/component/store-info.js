@@ -203,8 +203,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           requiredMessage={"Country is required"}
           isReadOnly={!storeExists ? false : !editProfile}
           handleChange={(e) => handleData("country", e.target.value)}
-        />
-        <div className="space-y-5">
+        /> 
+        {/* <div className="space-y-5">
           <p className="text-[13px] text-[#B3B3B3]">Open Day(s)</p>
           <div className="flex w-full justify-between">
             {daysOfTheWeek.map((day, index) => (
@@ -227,7 +227,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
         <InputComponent
           inputType="select"
           multiple={true}
