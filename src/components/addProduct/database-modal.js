@@ -2,45 +2,24 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import CustomScrollbar from "../filter-modal/filter.styles";
 import { useSelector } from "react-redux";
 import { LeftArrow, SearchIcon } from "../../images";
-import { useForm } from "react-hook-form";
 import RadioButton from "../shared/radioBtn";
 import Button from "../shared/button";
 import SelectDropdown from "../shared/dropdownInput/dropdown";
+import { capitalize } from "lodash";
 
 
 
-const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => {
+const DatabaseModal = ({ openModal, closeModal, handleDatabaseInfo }) => {
 
     const categories = useSelector((state) => state.productCategories);
-    const productsDatabase = useSelector((state) => state.productsDatabase);
-
-    const sortedProducts = useMemo(() => {
-        return productsDatabase?.slice().sort((a, b) => a.name.localeCompare(b.name));
-    }, [productsDatabase]);
-
-    const [isDisabled] = useState(false);
-    const [filteredProducts, setFilterProducts] = useState(sortedProducts);
-    const firstProductName = filteredProducts[0]?.name || "";
-
-    const [selectedProduct, setSelectedProduct] = useState(firstProductName);
-
-
-    useEffect(() => {
-        setFilterProducts(sortedProducts);
-        setSelectedProduct(firstProductName);
-    }, [productsDatabase]);
-
-    useEffect(() => {
-        setSelectedProduct(firstProductName);
-    }, [filteredProducts])
-
-
     const productCategories = [
+        { label: "All", value: "" },
         ...categories?.map((c) => {
             return { label: c?.name, value: c?.name };
         }),
-        { label: "Others", value: "Others" },
     ];
+
+    const [isDisabled, setDisable] = useState(true);
 
     // handle close modal on outside click
     const dropdownRef = useRef(null);
@@ -60,83 +39,51 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
         };
     }, [openModal]);
 
+    const productsDatabase = useSelector((state) => state.productsDatabase.sort((a, b) => a.name.localeCompare(b.name)));
 
-    // Handle product selection
-    const handleProductChange = () => {
-        const productName = selectedProduct;
-        const product = filteredProducts?.find((product) => product.name === productName);
-        handleDatabaseInfo(product);
-    };
+    const [filteredProducts, setFilterProducts] = useState([]);
 
-    // Handle form submission
-    const onSubmit = () => {
-        closeModal(false);
-        setSelectedProduct(firstProductName);
+    const [selectedProduct, setSelectedProduct] = useState(-1);
 
-        if (selectedProduct) {
-            handleProductChange();
-        }
-    };
+    const [filters, setFilters] = useState({
+        selectedCategory: "",
+        searchTerm: ""
+    })
 
-
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const handleSelectCategory = (val) => setSelectedCategory(val.value);
-
-
-    // const handleSearch = (e) => {
-    //     const filteredItems = sortedProducts.filter(product =>
-    //         product.name.toLowerCase().includes(e.target.value.toLowerCase())
-    //     );
-
-    //     setFilterProducts(filteredItems);
-    // }
-
+    const handleFilterChange = (filter, value) => {
+        setFilters({
+            ...filters,
+            [filter]: value
+        })
+    }
 
     useEffect(() => {
-        applyFilters();
-    }, [selectedCategory, searchTerm]);
-    
+        // Reset state
+        setSelectedProduct(-1);
+        setDisable(true);
 
-    const applyFilters = () => {
-        let filteredItems = sortedProducts;
-    
-        if (selectedCategory) {
-            filteredItems = filteredItems.filter(product => product.productCategory === selectedCategory);
-        }
-    
-        if (searchTerm) {
-            filteredItems = filteredItems.filter(product =>
-                product.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-        }
-    
-        setFilterProducts(filteredItems);
+        const { selectedCategory, searchTerm } = filters;
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        const isCategoryEmpty = selectedCategory === "";
+        const isSearchEmpty = searchTerm === "";
+
+        // Filter products
+        const filteredProducts = productsDatabase.filter(({ productCategory, name }) => {
+            const categoryMatches = isCategoryEmpty || productCategory === selectedCategory;
+            const searchMatches = isSearchEmpty || name.toLowerCase().includes(lowerCaseSearchTerm);
+            return categoryMatches && searchMatches;
+        });
+
+        // Update state with filtered products
+        setFilterProducts(filteredProducts);
+
+    }, [productsDatabase, filters]);
+
+
+    const handleUseSelectedProduct = () => {
+        closeModal(false);
+        handleDatabaseInfo(filteredProducts[selectedProduct]);
     };
-
-    const groupedProductsByFirstLetter = useMemo(() => {
-        if (filteredProducts?.length > 0) {
-            const grouped = filteredProducts.reduce((accumulator, product) => {
-                const firstLetter = product.name.charAt(0).toUpperCase();
-                if (!accumulator[firstLetter]) {
-                    accumulator[firstLetter] = [];
-                }
-                accumulator[firstLetter].push(product);
-                return accumulator;
-            }, {});
-    
-            // Sort each group after all products are grouped
-            Object.keys(grouped).forEach(letter => {
-                grouped[letter].sort((a, b) => a.name.localeCompare(b.name));
-            });
-    
-            return grouped;
-        }
-    
-        return {};
-    }, [filteredProducts]); 
-
 
     return (
         <div className={`flex justify-end fixed inset-0 bg-[rgba(0,0,0,0.2)] z-50 ${openModal ? "" : "hidden"}`}>
@@ -153,7 +100,7 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
                         name="productCategory"
                         options={productCategories}
                         placeholder="Select"
-                        handleChange={handleSelectCategory}
+                        handleChange={(v) => handleFilterChange("selectedCategory", v.value)}
                         color="green"
                         className="h-[53px]"
                     />
@@ -165,33 +112,40 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
                             name="search"
                             placeholder="Search Product"
                             className="mt-10 bg-[#F2F2F2] w-full h-[45px] rounded-[30px] text-[#999999] px-12 focus:outline-none"
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onChange={(e) => handleFilterChange("searchTerm", e.target.value)}
                         />
                     </div>
 
+                    {filteredProducts.map((product, index) => {
+                        const firstLetter = product?.name[0].toUpperCase() ?? "";
+                        const lastFirstLetter = index > 0 ? filteredProducts[index - 1].name[0].toUpperCase() : "";
 
-                    <div className="pt-[40px]">
-                        {Object.keys(groupedProductsByFirstLetter ?? {})?.sort()?.map((firstLetter, index) => (
-                            <div key={firstLetter} className="mb-[40px]">
-                                <p className="text-[16px] leading-[25px] text-[#186F3D] mb-6">{firstLetter}</p>
-                                {groupedProductsByFirstLetter[firstLetter].map((product, index) => (
-                                    <div className="mb-6">
-                                        <div key={product.name} className="flex gap-[12px]">
-                                            <RadioButton
-                                                type="radio"
-                                                value={product.name}
-                                                id={product.name}
-                                                name="selectedProduct"
-                                                checked={selectedProduct === product.name}
-                                                handleChange={() => { setSelectedProduct(product.name) }}
-                                            />
-                                            <label htmlFor={product.name}>{product.name}</label>
-                                        </div>
+                        return (
+                            <React.Fragment key={index}>
+                                {lastFirstLetter !== firstLetter && (
+                                    <p className="text-[16px] leading-[25px] text-[#186F3D] mt-[40px] mb-6">
+                                        {firstLetter}
+                                    </p>
+                                )}
+                                <div className="mb-6">
+                                    <div className="flex gap-[12px]">
+                                        <RadioButton
+                                            type="radio"
+                                            value={product.name}
+                                            id={product.name}
+                                            name="selectedProduct"
+                                            checked={selectedProduct === index}
+                                            handleChange={() => {
+                                                setSelectedProduct(index);
+                                                setDisable(false);
+                                            }}
+                                        />
+                                        <label htmlFor={product.name}>{capitalize(product.name)}</label>
                                     </div>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
+                                </div>
+                            </React.Fragment>
+                        );
+                    })}
 
                     <div className={`flex justify-end items-center gap-6 ml-auto mt-[60px]`}>
                         <Button
@@ -207,7 +161,7 @@ const DatabaseModal = ({ store, openModal, closeModal, handleDatabaseInfo }) => 
                             variant={isDisabled ? "disabled" : "primary"}
                             type="submit"
                             className="w-[133px] h-[40px]"
-                            onClick={() => onSubmit()}
+                            onClick={handleUseSelectedProduct}
                         >
                             Add
                         </Button>

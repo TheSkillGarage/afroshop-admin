@@ -83,7 +83,7 @@ const ProductChanges = ({
     { label: "Others", value: "Others" },
   ];
 
-  const disableButton = !isValid;
+  const disableButton = !isValid && isDirty;
 
   return (
     <div className="w-[100%] mx-auto bg-[#F2F2F2]">

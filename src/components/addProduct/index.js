@@ -91,6 +91,7 @@ const AddProduct = () => {
           }
         }
 
+        console.log(payload)
         // handle Product Creation
         const [success, responseData] = await postRequest(
           `/api/products`,

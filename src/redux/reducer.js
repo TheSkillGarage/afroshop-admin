@@ -85,11 +85,6 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
         ...previousState,
         stores: action.payload,
       };
-    case "SET_STORE_ID":
-      return {
-        ...previousState,
-        storeID: action.payload,
-      };
     case "ADD_USER_ROLE":
       return {
         ...previousState,
