@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
 
-const timePicker = ({ onCancel, onConfirm }) => {
+const TimePicker = ({ onCancel, onConfirm }) => {
     const [hours, setHours] = useState('12');
     const [minutes, setMinutes] = useState("00");
     const [period, setPeriod] = useState("AM");
+
+    const handleConfirm = () => {
+        const selectedTime = `${hours} ${minutes} ${period}`;
+        onConfirm(selectedTime);
+    }
 
     
   return (
@@ -58,14 +63,14 @@ const timePicker = ({ onCancel, onConfirm }) => {
 
         <button 
             className='bg-green text-white py-1 px-4 rounded'
-            onClick={onCancel}
+            onClick={handleConfirm}
             >
-                cancel
+                Ok
             </button>
         </div>
 
     </div>
-  )
-}
+  );
+};
 
-export default timePicker
+export default TimePicker;

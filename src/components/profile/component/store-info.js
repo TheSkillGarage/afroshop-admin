@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Checkbox from "../../shared/checkbox";
 import InputComponent from "../../shared/inputComponent";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../../../data/profile";
 import { DeleteIcon, GreenCamera, UserAvatar } from "../../../images";
 import { useSelector } from "react-redux";
+import TimePicker from "../../timePicker/timePicker";
 
 const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
   const {
@@ -19,6 +20,10 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     trigger,
   } = form;
   const storeExists = useSelector((state) => state.storeExists);
+
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [activeField, setActiveField] = useState(null);
+
   const handleFileUpload = (e) => {
     if (e.target.files.length > 0) {
       handleData("profile_image_data", e.target.files[0]);
@@ -33,6 +38,22 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
       ? [...store?.days?.filter((p) => p !== value)] ?? []
       : [...store?.days, value];
   };
+
+  const handleTimeSelect = (time) => {
+    setProfileData((prev) => ({
+      ...prev,
+      store: {
+        ...prev.store,
+        [activeField]: time,
+      },
+    }));
+    setShowTimePicker(false); // close the time picker after selection
+    setActiveField(null); // Reset the active field
+  }
+  const openTimePicker = (field) => {
+      setActiveField(field);
+      setShowTimePicker(true); //show time picker
+  }
 
   //sets the state of the profile data on change of the input fields
   const handleData = (input, value) => {
@@ -267,6 +288,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           handleChange={(e) => handleData("email", e.target.value)}
         /> */}
 
+
         <InputComponent
           inputType="time"
           type="time"
@@ -281,6 +303,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           register={register}
           step={60}
           isReadOnly={!storeExists ? false : !editProfile}
+          handleInputClick={() => openTimePicker('deliveryStartTime')}
+          value={profileData?.store?.deliveryStartTime || ''}
           handleChange={(e) => handleData("deliveryStartTime", `${e.target.value}:00`)}
         />
         <InputComponent
@@ -296,6 +320,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
+          value={profileData?.store?.deliveryEndTime || ''}
+          handleInputClick={() => openTimePicker('deliveryEndTime')}
           handleChange={(e) => handleData("deliveryEndTime", `${e.target.value}:00`)}
         />
 
@@ -312,6 +338,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
+          handleInputClick={() => openTimePicker('openingTime')}
+          value={profileData?.store?.openingTime || ''}
           handleChange={(e) => {
             handleData("openingTime", `${e.target.value}:00`);
           }}
@@ -329,6 +357,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
+          handleInputClick={() => openTimePicker('closingTime')}
+          value={profileData?.store?.closingTime || ''}
           handleChange={(e) => handleData("closingTime", `${e.target.value}:00`)}
         />
         <InputComponent
