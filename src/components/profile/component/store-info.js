@@ -47,12 +47,19 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
         [activeField]: time,
       },
     }));
-    setShowTimePicker(false); // close the time picker after selection
-    setActiveField(null); // Reset the active field
+    setShowTimePicker(false);
+    setActiveField(null);
   }
+
   const openTimePicker = (field) => {
-      setActiveField(field);
-      setShowTimePicker(true); //show time picker
+    
+      const isDisabled = storeExists && !editProfile;
+      
+      if (!isDisabled) {
+        setActiveField(field);
+        setShowTimePicker(true); //show time picker
+      }
+      
   }
 
   //sets the state of the profile data on change of the input fields
@@ -390,6 +397,15 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           handleChange={(data) => handleData("restPeriod", data?.value)}
         />
       </div>
+
+      {showTimePicker && (
+        <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <TimePicker
+          onCancel={() => setShowTimePicker(false)}
+          onConfirm={handleTimeSelect}
+          />
+        </div>
+      )}
     </div>
   );
 };
