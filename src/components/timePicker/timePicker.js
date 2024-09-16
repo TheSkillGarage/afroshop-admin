@@ -22,6 +22,20 @@ const TimePicker = ({ onCancel, onConfirm }) => {
         setPeriod(selectedPeriod);
     };
 
+    const handleHourChange = (e) => {
+        const value = e.target.value;
+        if (value === '' || (parseInt(value) >= 1 && parseInt(value) <= 12)) {
+            setHours(value); // Only set the value if it's between 1 and 12
+        }
+    };
+
+    const handleMinuteChange = (e) => {
+        const value = e.target.value;
+        if (value === '' || (parseInt(value) >= 0 && parseInt(value) <= 59)) {
+            setMinutes(value); // Only set the value if it's between 0 and 59
+        }
+    };
+
     return (
         <div className='bg-white px-6 shadow-lg rounded-lg w-[328px]'>
             <p className='text-gray-700 py-6'>
@@ -35,13 +49,13 @@ const TimePicker = ({ onCancel, onConfirm }) => {
                       min="1"
                       max="12"
                       value={hours}
-                      onChange={(e) => setHours(e.target.value)}
+                      onChange={handleHourChange}
                       className='border-2 border-[#186F3D] p-2 w-[96px] h-[80px] text-[56px] rounded text-center'
                     />
                     <label htmlFor='hours' className='block text-sm mt-2 font-medium text-gray-700'>Hour</label>
                 </div>
-                <div className='mb-8'>
-                    <span className='text-[56px]'>:</span>
+                <div className='mb-8 mx-2'>
+                    <span className='text-[56px] font-light'>:</span>
                 </div>
                 <div>
                     <input
@@ -50,20 +64,20 @@ const TimePicker = ({ onCancel, onConfirm }) => {
                       min="0"
                       max="59"
                       value={minutes}
-                      onChange={(e) => setMinutes(e.target.value)}
+                      onChange={handleMinuteChange}
                       className='border p-2 w-[96px] h-[80px] bg-[#212121]/10 text-[56px] rounded text-center'
                     />
                     <label htmlFor='minutes' className='block text-sm mt-2 font-medium text-gray-700'>Minute</label>
                 </div>
-                <div className='flex flex-col pb-6'>
+                <div className='flex flex-col pb-6 ml-3'>
                     <button
-                        className={`p-2 text-center border w-[64px] rounded-t ${period === 'AM' ? 'bg-gray-300' : 'bg-white'}`}
+                        className={`p-2 text-center border w-[52px] rounded-t ${period === 'AM' ? 'bg-gray-300' : 'bg-white'}`}
                         onClick={() => togglePeriod('AM')}
                     >
                         AM
                     </button>
                     <button
-                        className={`p-2 text-center border w-[64px] rounded-b ${period === 'PM' ? 'bg-gray-300' : 'bg-white'}`}
+                        className={`p-2 text-center border w-[52px] rounded-b ${period === 'PM' ? 'bg-gray-300' : 'bg-white'}`}
                         onClick={() => togglePeriod('PM')}
                     >
                         PM
