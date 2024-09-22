@@ -27,23 +27,15 @@ const EditSingleProduct = () => {
   }, [product]);
 
   const initialProductInfo = {
+    ...product,
+    userSKU: product.userSKU ?? "",
     productCategory:
       product?.productCategory === "Draft Product"
         ? ""
         : product?.productCategory,
-    name: product?.name,
-    availability: product?.availability,
-    price: product?.price,
-    discount: product?.percentDiscount,
-    description: product?.description,
-    images: product?.images,
-    SKU: product?.SKU ?? "",
     pricingType:
       productPricingType !== "per Item" ? "per Weight" : productPricingType,
-    taxable: product?.taxable,
-    status: product?.status,
-    unitWeightInGrams: product?.unitWeightInGrams,
-    measurementUnit:  productPricingType !== "per Item" ? productPricingType : "",
+    measurementUnit: productPricingType !== "per Item" ? productPricingType : "",
   };
 
   const [productInfo, setProductInfo] = useState(initialProductInfo);
@@ -154,17 +146,18 @@ const EditSingleProduct = () => {
     await submitForm(payload, setDraftLoading, "Your product was successfully edited as draft!");
   };
   return (
-    <ProductChanges
-      isEdit={true}
-      productInfo={productInfo}
-      initialProductInfo={initialProductInfo}
-      handleProductInfo={handleProductInfo}
-      handleFormSubmit={handleEditProduct}
-      handleProductDraft={handleProductDraft}
-      isLoading={isLoading}
-      isDraftLoading={draftLoading}
-      product={product}
-    />
+    <div className="bg-white p-[24px] mx-[12px]">
+      <ProductChanges
+        productInfo={productInfo}
+        initialProductInfo={initialProductInfo}
+        handleProductInfo={handleProductInfo}
+        handleFormSubmit={handleEditProduct}
+        handleProductDraft={handleProductDraft}
+        isLoading={isLoading}
+        isDraftLoading={draftLoading}
+        product={product}
+      />
+    </div>
   );
 };
 
