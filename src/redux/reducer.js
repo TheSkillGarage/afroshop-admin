@@ -12,7 +12,8 @@ const PRIVATE_INITIAL_STATE = {
   loadingStates: null,
   user: null,
   productDrafts: [],
-  productCategories: []
+  productCategories: [],
+  productTemplates: [],
 };
 
 const INITIAL_STATE = {

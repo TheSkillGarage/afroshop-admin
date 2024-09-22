@@ -15,9 +15,7 @@ export const ProductInfo = ({
   control,
   errors,
 }) => {
-  const [newPricingType, setNewPricingType] = useState(
-    productInfo?.pricingType ?? "per Item"
-  );
+
   const modules = {
     toolbar: [
       ["bold", "italic"],
@@ -38,6 +36,7 @@ export const ProductInfo = ({
 
     return newVal;
   };
+
   return (
     <div
       className={`${isProductInfoOpen ? "" : "hidden"} pt-4`}
@@ -50,6 +49,7 @@ export const ProductInfo = ({
             type="text"
             label="Name"
             fieldName="name"
+            name="name"
             placeholder="Enter"
             control={control}
             errors={errors}
@@ -69,6 +69,7 @@ export const ProductInfo = ({
             type="text"
             label="Availability"
             fieldName="availability"
+            name="availability"
             placeholder="Enter"
             control={control}
             errors={errors}
@@ -121,10 +122,9 @@ export const ProductInfo = ({
           <RadioButton
             name="pricingType"
             id="pricingType"
-            checked={newPricingType === "per Item"}
+            checked={productInfo?.pricingType === "per Item"}
             disabled={false}
             handleChange={(e) => {
-              setNewPricingType("per Item");
               handleProductInfo("pricingType", "per Item");
             }}
           />
@@ -134,10 +134,9 @@ export const ProductInfo = ({
           <RadioButton
             name="pricingType"
             id="pricingType"
-            checked={newPricingType === "per Weight"}
+            checked={productInfo?.pricingType === "per Weight"}
             disabled={false}
             handleChange={() => {
-              setNewPricingType("per Weight");
               handleProductInfo("pricingType", "per Weight");
             }}
           />
@@ -145,40 +144,41 @@ export const ProductInfo = ({
         </div>
       </div>
 
-      {newPricingType === "per Item" && (
+      {productInfo.pricingType === "per Item" && (
         <div className="pb-4 space-y-3">
           <p className="text-[#4F4F4F] font-bold">Price Per Item</p>
           <div className="flex justify-between items-start pb-[15px]">
             <div className="grid grid-flow-col lg:grid-cols-[max-content,auto] gap-4 w-[48%]">
               {/* <div className="w-[30%]"> */}
-                <InputComponent
-                  inputType="input"
-                  type="text"
-                  label="Unit Weight"
-                  fieldName="unitWeightInGrams"
-                  name="unitWeightInGrams"
-                  placeholder="Enter"
-                  control={control}
-                  errors={errors}
-                  register={register}
-                  required={true}
-                  patternMessage="Unit weight nust be an integer"
-                  patternValue={/^[0-9]\d*$/}
-                  requiredMessage={"This field is required"}
-                  value={productInfo?.unitWeightInGrams}
-                  handleChange={(e) => {
-                    handleProductInfo(
-                      "unitWeightInGrams",
-                      sanitizeNumbers(e.target.value)
-                    );
-                  }}
-                />
+              <InputComponent
+                inputType="input"
+                type="text"
+                label="Unit Weight"
+                fieldName="unitWeightInGrams"
+                name="unitWeightInGrams"
+                placeholder="Enter"
+                control={control}
+                errors={errors}
+                register={register}
+                required={true}
+                patternMessage="Unit weight nust be an integer"
+                patternValue={/^[0-9]\d*$/}
+                requiredMessage={"This field is required"}
+                value={productInfo?.unitWeightInGrams}
+                handleChange={(e) => {
+                  handleProductInfo(
+                    "unitWeightInGrams",
+                    sanitizeNumbers(e.target.value)
+                  );
+                }}
+              />
               {/* </div> */}
               <InputComponent
                 inputType="input"
                 type="text"
                 label="Price ($)"
                 fieldName="price"
+                name="price"
                 placeholder="Enter"
                 control={control}
                 errors={errors}
@@ -199,6 +199,7 @@ export const ProductInfo = ({
                 type="text"
                 label="Discount % (If Applicable)"
                 fieldName="discount"
+                name="discount"
                 placeholder="Enter"
                 control={control}
                 errors={errors}
@@ -218,7 +219,7 @@ export const ProductInfo = ({
         </div>
       )}
 
-      {newPricingType === "per Weight" && (
+      {productInfo.pricingType === "per Weight" && (
         <div className="pb-4 space-y-3">
           <p className="text-[#4F4F4F] font-bold">Price Per Weight</p>
           <div className="flex justify-between items-start pb-[15px] mt-10">
@@ -247,16 +248,17 @@ export const ProductInfo = ({
                   control={control}
                   errors={errors}
                   register={register}
-                  handleChange={(data) =>
-                    handleProductInfo("measurementUnit", data?.value)
+                  handleChange={(data) => {
+                    handleProductInfo("measurementUnit", data?.value);
+                  }
                   }
                 />
-                {/* </div> */}
                 <InputComponent
                   inputType="input"
                   type="text"
                   label=""
                   fieldName="price"
+                  name="price"
                   placeholder="Enter"
                   control={control}
                   errors={errors}
@@ -278,6 +280,7 @@ export const ProductInfo = ({
                 type="text"
                 label="Discount % (If Applicable)"
                 fieldName="discount"
+                name="discount"
                 placeholder="Enter"
                 control={control}
                 errors={errors}
