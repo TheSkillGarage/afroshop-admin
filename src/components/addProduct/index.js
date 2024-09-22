@@ -37,6 +37,7 @@ const AddProduct = () => {
   const handleDatabaseInfo = (product) => {
     const databaseProductInfo = {
       ...productInfo,
+      ...product,
       discount: product?.percentDiscount,
       pricingType: product?.pricingType !== "per Item" ? "per Weight" : product?.pricingType,
       measurementUnit: product?.pricingType !== "per Item" ? product?.pricingType : "",
