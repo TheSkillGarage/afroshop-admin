@@ -33,6 +33,17 @@ export const capitalize = (myString) => {
   return myString.charAt(0).toUpperCase() + myString.slice(1)
 }
 
+export function mergeUniqueByUrl(inputArray, newData) {
+  // Create a Set of all the URLs in inputArray
+  const urlsInInputArray = new Set(inputArray.map(obj => obj.url));
+
+  // Filter out objects from newData where the url exists in inputArray
+  const filteredNewData = newData.filter(obj => !urlsInInputArray.has(obj.url));
+
+  // Return inputArray combined with the filtered NewData
+  return [...inputArray, ...filteredNewData];
+}
+
 export const handleCreateAddress = async (address) => {
   try {
     const { data } = await axios.post(`/addresses`, address, {

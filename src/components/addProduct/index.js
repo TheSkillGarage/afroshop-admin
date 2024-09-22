@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { handleImageUpload, postRequest } from "../../redux/action";
-import { getTokenFromCookie } from "../../utils";
+import { getTokenFromCookie, mergeUniqueByUrl } from "../../utils";
 import DatabaseModal from "./database-modal";
 import RadioButton from "../shared/radioBtn";
 import Button from "../shared/button";
@@ -35,9 +35,11 @@ const AddProduct = () => {
   const [productInfo, setProductInfo] = useState(useProductInfo);
 
   const handleDatabaseInfo = (product) => {
+    const images = mergeUniqueByUrl(productInfo.images, product.images)
     const databaseProductInfo = {
       ...productInfo,
       ...product,
+      images,
       discount: product?.percentDiscount,
       pricingType: product?.pricingType !== "per Item" ? "per Weight" : product?.pricingType,
       measurementUnit: product?.pricingType !== "per Item" ? product?.pricingType : "",
@@ -54,8 +56,6 @@ const AddProduct = () => {
       [key]: val,
     }));
   };
-
-  useEffect(() => { console.log(productInfo) }, [productInfo])
 
   const submitForm = async (payload, images, setLoading, message) => {
     try {
