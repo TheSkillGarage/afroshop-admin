@@ -50,7 +50,7 @@ const ProductChanges = ({
 
   const {
     control,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
     register,
     handleSubmit,
     getValues,
@@ -70,7 +70,7 @@ const ProductChanges = ({
     { label: "Others", value: "Others" },
   ];
 
-  const disableButton = !isValid
+  const disableButton = !isValid && isDirty
 
   return (
     <form
