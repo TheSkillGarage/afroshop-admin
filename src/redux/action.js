@@ -172,6 +172,10 @@ export const getProductData = (storeID, token) => async (dispatch) => {
   );
 };
 
+export const getProductsDatabase = (token) => async(dispatch) => {
+  await fetchData(dispatch, `products?template=True`, "productTemplates", token);
+}
+
 export const getOrdersData = (storeID, token) => async (dispatch) => {
   await fetchData(dispatch, `orders?storeID=${storeID}`, "ordersData", token);
 };

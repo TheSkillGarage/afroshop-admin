@@ -12,6 +12,7 @@ import {
   setStoreExistStatus,
   getProductData,
   getProductCategoryData,
+  getProductsDatabase,
 } from "../../redux/action";
 import ErrorScreen from "../error-screen";
 
@@ -44,6 +45,9 @@ const PageLayout = ({ children, pageName = "layout" }) => {
       }
       if (location.pathname === "/orders" || location.pathname === "/") {
         dispatch(getOrdersData(storeData.id, token));
+      }
+      if (location.pathname === "/products/new"){
+        dispatch(getProductsDatabase(token));
       }
     }
   }, [storeData, location.pathname, token, dispatch, user]);

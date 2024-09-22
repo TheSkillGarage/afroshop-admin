@@ -29,6 +29,10 @@ export const getTokenFromCookie = () => Cookies.get(AFROADMIN_TOKEN);
 export const removeTokenFromCookie = () =>
   Cookies.remove(AFROADMIN_TOKEN, { path: "/" });
 
+export const capitalize = (myString) => {
+  return myString.charAt(0).toUpperCase() + myString.slice(1)
+}
+
 export const handleCreateAddress = async (address) => {
   try {
     const { data } = await axios.post(`/addresses`, address, {

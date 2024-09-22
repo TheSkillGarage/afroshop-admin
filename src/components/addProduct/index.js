@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductChanges from "../products-changes";
 import { useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { addProduct, handleImageUpload, postRequest } from "../../redux/action";
+import { handleImageUpload, postRequest } from "../../redux/action";
 import { getTokenFromCookie } from "../../utils";
+import DatabaseModal from "./database-modal";
+import RadioButton from "../shared/radioBtn";
+import Button from "../shared/button";
 
 const AddProduct = () => {
   const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
@@ -13,24 +16,35 @@ const AddProduct = () => {
   const [isLoading, setLoading] = useState(false);
   const [saveDraftLoading, setSaveDraftLoading] = useState(false);
 
+  const [productType, setProductType] = useState("manual");
+  const [openModal, setOpenModal] = useState(false);
+
   const useProductInfo = {
     productCategory: "",
     category: "",
     name: "",
-    availability: "0",
-    price: 0,
-    discount: 0,
     description: "",
     images: [],
     taxable: false,
     unitWeightInGrams: 0,
     pricingType: "per Item",
     measurementUnit: "",
-    SKU: ""
+    userSKU: ""
   };
 
   const [productInfo, setProductInfo] = useState(useProductInfo);
 
+  const handleDatabaseInfo = (product) => {
+    const databaseProductInfo = {
+      ...productInfo,
+      discount: product?.percentDiscount,
+      pricingType: product?.pricingType !== "per Item" ? "per Weight" : product?.pricingType,
+      measurementUnit: product?.pricingType !== "per Item" ? product?.pricingType : "",
+    };
+    setProductInfo(databaseProductInfo);
+  }
+
+  const submittedImages = productInfo.images
   const navigate = useNavigate();
 
   const handleProductInfo = (key, val) => {
@@ -40,22 +54,32 @@ const AddProduct = () => {
     }));
   };
 
-  const submitForm = async (payload, imagesToBeUploaded, setLoading, message) => {
+  useEffect(() => { console.log(productInfo) }, [productInfo])
+
+  const submitForm = async (payload, images, setLoading, message) => {
     try {
-      // upload images first
-      const images = imagesToBeUploaded?.map((i) => i.data);
 
       if (images?.length === 0) {
         toast.error("Add an image to save as draft!", { autoClose: 1000 });
       } else {
-        const [imageUpSuccess, response] = await handleImageUpload(
-          images,
-          "products"
-        );
-        if (!imageUpSuccess || response?.error) {
-          throw new Error(response?.error.message);
-        } else {
-          payload.images = response;
+
+        payload.images = images
+          ?.filter((image) => image.id)
+          .map((i) => i.id);
+        const unuploadedImages = images
+          ?.filter((image) => !image.id)
+          .map((i) => i.data);
+
+        if (unuploadedImages.length > 0) {
+          const [imageUpSuccess, response] = await handleImageUpload(
+            unuploadedImages,
+            "products"
+          );
+          if (!imageUpSuccess || response?.error) {
+            throw new Error(response?.error.message);
+          } else {
+            payload.images = [...payload.images, ...response];
+          }
         }
 
         // handle Product Creation
@@ -91,14 +115,14 @@ const AddProduct = () => {
       description: productInfo?.description ?? "",
       price: productInfo?.price ?? 0,
       name: productInfo.name ?? "",
-      SKU: productInfo?.SKU ?? "",
+      SKU: productInfo?.userSKU ?? "",
       discount: productInfo.discount ?? 0,
       productCategory:
         productInfo?.productCategory === ""
           ? "Draft Product"
           : productInfo.productCategory === "Others"
-          ? productInfo?.category
-          : productInfo?.productCategory,
+            ? productInfo?.category
+            : productInfo?.productCategory,
       status: "draft",
       availability: productInfo.availability ?? 0,
       taxable: productInfo?.taxable ?? false,
@@ -110,19 +134,19 @@ const AddProduct = () => {
       itemDetail: 0,
     };
 
-    await submitForm(payload, productInfo?.images, setSaveDraftLoading, "Your product was successfully saved as draft!");
+    await submitForm(payload, submittedImages, setSaveDraftLoading, "Your product was successfully saved as draft!");
   };
 
   const handleCreateProduct = async () => {
     setLoading(true);
 
     const payload = {
-      store: store.id,
+      store: store?.id,
       description: productInfo.description,
       price: productInfo?.price,
       name: productInfo.name,
       discount: productInfo.discount,
-      SKU: productInfo?.SKU ?? "",
+      SKU: productInfo?.userSKU ?? "",
       productCategory:
         productInfo.productCategory === "Others"
           ? productInfo?.category
@@ -137,21 +161,58 @@ const AddProduct = () => {
       unitWeightInGrams: productInfo?.unitWeightInGrams,
     };
 
-    await submitForm(payload, productInfo?.images, setLoading, "Your product was successfully created!");
+    await submitForm(payload, submittedImages, setLoading, "Your product was successfully created!");
   };
 
   return (
-    <ProductChanges
-      store={store}
-      isEdit={false}
-      productInfo={productInfo}
-      initialProductInfo={useProductInfo}
-      handleProductInfo={handleProductInfo}
-      handleFormSubmit={handleCreateProduct}
-      handleProductDraft={handleSaveProductAsDraft}
-      isLoading={isLoading}
-      isDraftLoading={saveDraftLoading}
-    />
+    <>
+      <DatabaseModal
+        openModal={openModal}
+        closeModal={setOpenModal}
+        handleDatabaseInfo={handleDatabaseInfo}
+      />
+      <div className="bg-white px-6 pt-[40px] flex flex-col gap-[24px] mx-[12px]">
+        <div className="flex px-[24px] gap-[12px]">
+          <div className="flex gap-3">
+            <RadioButton
+              name="manual"
+              id="manual"
+              checked={productType === "manual"}
+              handleChange={() => { setProductType("manual"); }}
+            />
+            <label for="manual">Manual Entry</label>
+          </div>
+
+          <div className="flex gap-3">
+            <RadioButton
+              name="database"
+              id="database"
+              checked={productType === "database"}
+              handleChange={() => { setProductType("database"); }}
+            />
+            <label for="database">Database Entry</label>
+          </div>
+        </div>
+
+        {productType === "database" &&
+          <div className="px-[24px]">
+            <Button type="button" variant="tertiary" outline="green" icon="add" direction="reverse" onClick={() => setOpenModal(true)}>Add Product</Button>
+          </div>
+        }
+
+        <ProductChanges
+          store={store}
+          productInfo={productInfo}
+          setProductInfo={setProductInfo}
+          initialProductInfo={useProductInfo}
+          handleProductInfo={handleProductInfo}
+          handleFormSubmit={handleCreateProduct}
+          handleProductDraft={handleSaveProductAsDraft}
+          isLoading={isLoading}
+          isDraftLoading={saveDraftLoading}
+        />
+      </div>
+    </>
   );
 };
 
