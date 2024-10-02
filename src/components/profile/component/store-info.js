@@ -125,6 +125,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           isDisabled={!storeExists ? false : !editProfile}
           value={profileData?.store?.allowUserSKU ===  true ? true :  ""}
           valueOnChecked={profileData?.store?.allowUserSKU}
+          register={register}
         >
           Use custom SKU
         </Checkbox>
