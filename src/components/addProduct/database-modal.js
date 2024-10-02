@@ -39,7 +39,7 @@ const DatabaseModal = ({ openModal, closeModal, handleDatabaseInfo }) => {
         };
     }, [openModal]);
 
-    const productTemplates = useSelector((state) => state.productTemplates.sort((a, b) => a.name.localeCompare(b.name)));
+    const productTemplates = useSelector((state) => state?.productTemplates ? state?.productTemplates?.sort((a, b) => a.name.localeCompare(b.name)) : []);
 
     const [filteredProducts, setFilterProducts] = useState([]);
 
