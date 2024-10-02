@@ -7,7 +7,15 @@ import Button from "../shared/button";
 import SelectDropdown from "../shared/dropdownInput/dropdown";
 import { capitalize } from "lodash";
 
-
+const getFirstLetter = (name)=> {
+    if (!name || name.length === 0) {
+        return ""
+    }
+    if (/^[A-Za-z]/.test(name[0])){
+        return name[0].toUpperCase()
+    }
+    return "#"
+}
 
 const DatabaseModal = ({ openModal, closeModal, handleDatabaseInfo }) => {
 
@@ -117,8 +125,8 @@ const DatabaseModal = ({ openModal, closeModal, handleDatabaseInfo }) => {
                     </div>
 
                     {filteredProducts.map((product, index) => {
-                        const firstLetter = product?.name[0].toUpperCase() ?? "";
-                        const lastFirstLetter = index > 0 ? filteredProducts[index - 1].name[0].toUpperCase() : "";
+                        const firstLetter = getFirstLetter(product?.name ?? "");
+                        const lastFirstLetter = index > 0 ? getFirstLetter(filteredProducts[index - 1].name ?? ""): "";
 
                         return (
                             <React.Fragment key={index}>
