@@ -208,6 +208,14 @@ export const getStorePayload = async (
         )[0]?.value
         : null,
     },
+    storeDiscount: {
+      discount: false,
+      percentageDiscount: 0
+    },
+    storeMarkup: {
+      markup: false,
+      percentageMarkup: 0
+    }
   };
 
   //if there's no store, it populates the phone number and store keeper id
