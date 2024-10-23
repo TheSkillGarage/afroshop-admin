@@ -82,10 +82,10 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
                 />
               )}
               {(editProfile || !storeExists) && (
-                  <div className="absolute bottom-[-2px] right-[-4px] w-[30px] h-[30px] rounded-full">
-                    <GreenCamera />
-                  </div>
-                )}
+                <div className="absolute bottom-[-2px] right-[-4px] w-[30px] h-[30px] rounded-full">
+                  <GreenCamera />
+                </div>
+              )}
             </div>
           </div>
 
@@ -123,7 +123,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
             handleData("allowUserSKU", !profileData?.store?.allowUserSKU);
           }}
           isDisabled={!storeExists ? false : !editProfile}
-          value={profileData?.store?.allowUserSKU ===  true ? true :  ""}
+          value={profileData?.store?.allowUserSKU === true ? true : ""}
           valueOnChecked={profileData?.store?.allowUserSKU}
           register={register}
         >
@@ -253,6 +253,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           placeholder="Enter"
           className="bg-[#F2F2F2]"
           closeMenuOnSelect={false}
+          required={true}
           requiredMessage={"At least one delivery option is required"}
           control={control}
           errors={errors}
@@ -294,9 +295,12 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           control={control}
           errors={errors}
           register={register}
+          required={true}
           step={60}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) => handleData("deliveryStartTime", `${e.target.value}:00`)}
+          handleChange={(e) => {
+            handleData("deliveryStartTime", `${e.target.value}:00`);
+          }}
         />
         <InputComponent
           inputType="time"
@@ -308,10 +312,13 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           requiredMessage={"Delivery End Time is required"}
           className="bg-[#F2F2F2] cursor-pointer"
           control={control}
+          required={true}
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) => handleData("deliveryEndTime", `${e.target.value}:00`)}
+          handleChange={(e) =>
+            handleData("deliveryEndTime", `${e.target.value}:00`)
+          }
         />
 
         <InputComponent
@@ -321,6 +328,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           label="Opening Time"
           fieldName={"openingTime"}
           placeholder="Enter"
+          required={true}
           requiredMessage={"Opening Time is required"}
           className="bg-[#F2F2F2] cursor-pointer w-full"
           control={control}
@@ -338,13 +346,16 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           label="Closing Time"
           fieldName={"closingTime"}
           placeholder="Enter"
+          required={true}
           requiredMessage={"Delivery End Time is required"}
           className="bg-[#F2F2F2] cursor-pointer"
           control={control}
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) => handleData("closingTime", `${e.target.value}:00`)}
+          handleChange={(e) =>
+            handleData("closingTime", `${e.target.value}:00`)
+          }
         />
         <InputComponent
           inputType="select"
@@ -352,6 +363,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           label="Delivery Slots"
           fieldName={"deliverySlot"}
           placeholder="Enter"
+          required={true}
           requiredMessage={"Delivery Slot is required"}
           className="bg-[#F2F2F2]"
           control={control}
@@ -366,6 +378,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           label="Rest Period"
           fieldName={"restPeriod"}
           placeholder="Enter"
+          required={true}
           requiredMessage={"Rest Period is required"}
           className="bg-[#F2F2F2]"
           control={control}
