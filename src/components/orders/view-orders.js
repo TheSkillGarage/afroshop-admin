@@ -40,19 +40,19 @@ const ViewOrders = () => {
     const [loadingCSV, setLoading] = useState(false)
     const storeName = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID].name : {});
     const handleCSVDownload = (e) => {
-      e.stopPropagation()
-      if (!loadingCSV) {
-        try {
-          setLoading(true)
-          exportOrderWithProductsToCSV(order, storeName)
+        e.stopPropagation()
+        if (!loadingCSV) {
+            try {
+                setLoading(true)
+                exportOrderWithProductsToCSV(order, storeName)
+            }
+            catch (e) {
+                console.error(e)
+            }
+            finally {
+                setLoading(false)
+            }
         }
-        catch (e) {
-          console.error(e)
-        }
-        finally {
-          setLoading(false)
-        }
-      }
     }
 
     if (!order) {
@@ -102,7 +102,11 @@ const ViewOrders = () => {
                             <div className="flex">
                                 <div className="text-[13px] leading-[23px] text-[#333333] w-[30%]">
                                     <p>Name:</p>
-                                    <p>Delivery Address:</p>
+                                    <p>
+                                        {
+                                            order.deliveryOption ? "Delivery Address:" : "Pickup Address:"
+                                        }
+                                    </p>
                                     <p>Phone:</p>
                                     <p>Email:</p>
                                 </div>
