@@ -28,7 +28,7 @@ const EditSingleProduct = () => {
 
   const initialProductInfo = {
     ...product,
-    userSKU: product.userSKU ?? "",
+    userSKU: product.SKU ?? "",
     productCategory:
       product?.productCategory === "Draft Product"
         ? ""
