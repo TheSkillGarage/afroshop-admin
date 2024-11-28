@@ -32,7 +32,7 @@ const AdminNavbar = ({ name }) => {
   const isSidebarToggled = useSelector((state) => state.isSidebarToggled);
   const locationClickOutside = OutSideClick(modalRef);
   const toggleSidebar = () => {
-    dispatch(sidebarToggle({ toggle: isSidebarToggled }));
+    dispatch(sidebarToggle(!isSidebarToggled));
   };
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const AdminNavbar = ({ name }) => {
     setOpen(false);
     dispatch(logOutUser());
     navigate("/");
-    dispatch(sidebarToggle({ toggle: isSidebarToggled }))
+    dispatch(sidebarToggle(false))
   }
 
   const handleSwitchStore = (storeID) => {

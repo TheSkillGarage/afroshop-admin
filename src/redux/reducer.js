@@ -100,7 +100,7 @@ export const reducer = (previousState = INITIAL_STATE, action) => {
     case "SIDEBAR_TOGGLE":
       return {
         ...previousState,
-        isSidebarToggled: !action.toggle,
+        isSidebarToggled: action.payload,
       };
     case "DISCARD_DRAFT":
       const updateProductDraft = previousState.productsData.map((product) => {
