@@ -4,7 +4,7 @@ import { AfroshopLogo, LogoImage, LogoutIcon2 } from "../../images";
 import SidebarTab from "./sidebar-tab";
 import SIDEBAR_TABS from "../../data/sidebar-tabs";
 import { useSelector } from "react-redux";
-import { logOutUser } from "../../redux/action";
+import { logOutUser, sidebarToggle } from "../../redux/action";
 import { removeTokenFromCookie } from "../../utils";
 
 const AdminSidebar = () => {
@@ -14,6 +14,7 @@ const AdminSidebar = () => {
   const handleUserLogOut = () => {
     removeTokenFromCookie();
     dispatch(logOutUser());
+    dispatch(sidebarToggle(false))
   };
 
   return (
