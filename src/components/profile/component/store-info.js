@@ -19,13 +19,6 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     trigger,
   } = form;
   const storeExists = useSelector((state) => state.storeExists);
-  const handleFileUpload = (e) => {
-    if (e.target.files.length > 0) {
-      handleData("profile_image_data", e.target.files[0]);
-      handleData("profile_image", URL.createObjectURL(e.target.files[0]));
-      return;
-    }
-  };
 
   //gets the selected open days by adding a new day to the array of days when checked or removing a day from the array when unchecked
   const getSelectedDays = (store, value) => {
@@ -58,6 +51,14 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     });
   };
 
+  const handleFileUpload = (e) => {
+    if (e.target.files.length > 0) {
+      handleData("profile_image_data", e.target.files[0]);
+      handleData("profile_image", URL.createObjectURL(e.target.files[0]));
+      return;
+    }
+  };
+  
   return (
     <div className="flex flex-col mt-6 gap-6">
       <div className="flex items-center gap-3 mb-3">
