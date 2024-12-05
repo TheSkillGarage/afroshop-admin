@@ -113,10 +113,10 @@ export const updateUserRole = (hash) => (dispatch) => {
   });
 };
 
-export const sidebarToggle = (hash) => (dispatch) => {
+export const sidebarToggle = (toggle) => (dispatch) => {
   dispatch({
     type: "SIDEBAR_TOGGLE",
-    ...hash,
+     payload: toggle
   });
 };
 

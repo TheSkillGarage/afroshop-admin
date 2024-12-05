@@ -5,7 +5,6 @@ import ProfileTab from "./profileTab";
 import { useSelector, useDispatch } from "react-redux";
 import EditPassword from "./edit-password";
 import { useForm } from "react-hook-form";
-import { renderValidUrl } from "../../utils/constants";
 import {
   getStoreDefaultValues,
   getTokenFromCookie,
@@ -36,6 +35,23 @@ const Profile = () => {
     },
     mode: "all",
   });
+  
+  const [currentTab, setCurrentTab] = useState("Profile");
+  const [disableButton, setDisable] = useState(false)
+  useEffect(() => {
+    if (currentTab === "Profile") {
+      setDisable(
+        Object.keys(profileForm?.formState?.errors).length === 0 &&
+        !(
+          profileData?.store?.profile_image === null &&
+          profileData?.store?.profile_image_data === null
+        )
+      )
+    }
+    else if (currentTab === "Password") {
+      setDisable(Object.keys(passwordForm?.formState?.errors).length === 0)
+    }
+  }, [profileData, currentTab])
 
   useEffect(() => {
     const result = getStoreDefaultValues(store, user);
@@ -47,7 +63,7 @@ const Profile = () => {
       fee: null,
     });
     setEditProfile(false);
-  }, [store, storeID]);
+  }, [storeID, user]);
 
   const passwordForm = useForm({
     defaultValues: {
@@ -58,7 +74,7 @@ const Profile = () => {
     mode: "all",
   });
 
-  const [currentTab, setCurrentTab] = useState("Profile");
+
   const [editProfile, setEditProfile] = useState(false);
 
   const handleRedirect = () => {
@@ -104,16 +120,8 @@ const Profile = () => {
     passwordForm?.reset();
     profileForm?.reset();
   };
- 
-  const disableButton =
-    (Object.keys(profileForm?.formState?.errors).length === 0 &&
-      !(
-        profileData?.store?.profile_image === null &&
-        profileData?.store?.profile_image_data === null
-      ) &&
-      currentTab === "Profile") ||
-    (Object.keys(passwordForm?.formState?.errors).length === 0 &&
-      currentTab === "Password");
+
+
   return (
     <div className="bg-[#F2F2F2] w-full py-6 px-4">
       <div className="flex items-center gap-8 mb-6">

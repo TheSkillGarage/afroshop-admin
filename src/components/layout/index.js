@@ -46,7 +46,7 @@ const PageLayout = ({ children, pageName = "layout" }) => {
       if (location.pathname === "/orders" || location.pathname === "/") {
         dispatch(getOrdersData(storeData.id, token));
       }
-      if (location.pathname === "/products/new"){
+      if (location.pathname === "/products/new") {
         dispatch(getProductsDatabase(token));
       }
     }
@@ -94,21 +94,34 @@ const PageLayout = ({ children, pageName = "layout" }) => {
   */
   useEffect(() => {
     if (isAuthenticated) {
-      const intervalId = setInterval(() => {
-        const token = getTokenFromCookie();
-        const isCookieExpired = !token;
-        if (isCookieExpired) {
-          console.log("logged out because token expired");
-          dispatch(logOutUser()); // Dispatch the logout action when the cookie expires
+      const checkLoginStatus = () => {
+        try {
+          const token = getTokenFromCookie();
+          if (!token) {
+            console.log("Logged out because token expired or missing");
+            dispatch(logOutUser());
+            navigate("/login");
+          }
+        } catch (error) {
+          console.error("Error checking login status:", error);
+          dispatch(logOutUser());
+          navigate("/login");
         }
-      }, 60000);
+      };
+  
+      // Perform the initial check
+      checkLoginStatus();
+  
+      // Set up periodic checks
+      const intervalId = setInterval(checkLoginStatus, 60000);
+  
       return () => {
-        clearInterval(intervalId); // Clear the interval on component unmount
+        clearInterval(intervalId); // Clean up on unmount
       };
     } else {
       navigate("/login");
     }
-  }, [isAuthenticated, dispatch, navigate]);
+  }, [isAuthenticated, dispatch, navigate]); 
 
   return (
     <section className="bg-[#F2F2F2] h-[100vh]">

@@ -76,7 +76,7 @@ export const getStoreDefaultValues = (store, user) => {
       country: store?.address?.country || "",
       deliveryStartTime: store?.deliveryTime?.from || "",
       deliveryEndTime: store?.deliveryTime?.to || "",
-      profile_image: store ? renderValidUrl(store?.image) : null,
+      profile_image: store?.image ? renderValidUrl(store?.image) : null,
       openingTime: store?.openingTimes?.from || "",
       closingTime: store?.openingTimes?.to || "",
       deliveryOption: store?.deliveryOptions
@@ -271,8 +271,10 @@ export const handleSubmitStore = async (
       );
     } else {
       //updates the store state with the response data
-      const newStores = !storeExists ? [...stores, responseData] : responseData;
+      const storeList = stores && Array.isArray(stores) && stores?.length > 0 ? stores : [];
+      const newStores = !storeExists ? [...storeList, responseData] : responseData;
       dispatch(updateStores(newStores));
+
       if (!storeExists) {
         dispatch(setStoreID(newStores.length - 1));
       }
