@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Checkbox from "../../shared/checkbox";
 import InputComponent from "../../shared/inputComponent";
 import {
@@ -17,39 +17,57 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     register,
     setValue,
     trigger,
+    watch,
+    setError,
+    clearErrors,
   } = form;
   const storeExists = useSelector((state) => state.storeExists);
 
-  //gets the selected open days by adding a new day to the array of days when checked or removing a day from the array when unchecked
-  const getSelectedDays = (store, value) => {
-    return store?.days?.includes(value)
-      ? [...store?.days?.filter((p) => p !== value)] ?? []
-      : [...store?.days, value];
-  };
+// Updates the profile data and handles validation for days
+const handleCheckboxChange = (dayValue) => {
+  const currentDays = watch("days") || [];
+  const updatedDays = currentDays.includes(dayValue)
+    ? currentDays.filter((day) => day !== dayValue)
+    : [...currentDays, dayValue];
+  console.log(updatedDays, "updatedDays");
+  setValue("days", updatedDays);
+  trigger("days");
 
-  //sets the state of the profile data on change of the input fields
-  const handleData = (input, value) => {
-    setProfileData((prev) => {
-      switch (input) {
-        case "day":
-          return {
-            ...prev,
-            store: {
-              ...prev["store"],
-              days: getSelectedDays(prev?.store, value),
-            },
-          };
-        default:
-          return {
-            ...prev,
-            store: {
-              ...prev["store"],
-              [input]: value,
-            },
-          };
-      }
+  handleData("day", updatedDays); // Update profileData state
+
+  if (updatedDays.length === 0) {
+    setError("days", {
+      type: "manual",
+      message: "At least one day must be selected",
     });
-  };
+  } else {
+    clearErrors("days");
+  }
+};
+
+// Updates profile data based on input changes
+const handleData = (input, value) => {
+  setProfileData((prev) => {
+    switch (input) {
+      case "day":
+        return {
+          ...prev,
+          store: {
+            ...prev.store,
+            days: value,
+          },
+        };
+      default:
+        return {
+          ...prev,
+          store: {
+            ...prev.store,
+            [input]: value,
+          },
+        };
+    }
+  });
+};
 
   const handleFileUpload = (e) => {
     if (e.target.files.length > 0) {
@@ -58,7 +76,9 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
       return;
     }
   };
-  
+
+
+  console.log(errors, "errors");
   return (
     <div className="flex flex-col mt-6 gap-6">
       <div className="flex items-center gap-3 mb-3">
@@ -226,10 +246,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
             {daysOfTheWeek.map((day, index) => (
               <div key={index} className="flex">
                 <Checkbox
-                  name={day.label}
-                  handleChange={() => {
-                    handleData("day", day?.value);
-                  }}
+                name={`days[${index}]`}
+                handleChange={() => handleCheckboxChange(day.value)}
                   isDisabled={!storeExists ? false : !editProfile}
                   value={
                     profileData?.store?.days?.includes(day?.value)
@@ -243,6 +261,9 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
               </div>
             ))}
           </div>
+          {errors.days && (
+          <p className="text-red-500 text-sm">{errors.days.message}</p>
+        )}
         </div>
         <InputComponent
           inputType="select"
