@@ -30,9 +30,11 @@ const Profile = () => {
   const [profileData, setProfileData] = useState(
     getStoreDefaultValues(store, user)
   );
+
   const [deliveryType, setDeliveryType] = useState(
     profileData?.delivery?.deliveryType ?? 0
   );
+
   const profileForm = useForm({
     defaultValues: {
       ...profileData?.store,
@@ -87,8 +89,72 @@ const Profile = () => {
     setEditProfile(false);
   };
 
+  const validateForm = () => {
+    const baseDistance = profileForm.watch("base_distance");
+    const baseAmount = profileForm.watch("base_amount");
+    const additionalFee = profileForm.watch("additional_distance_fee");
+    const unit = profileForm.watch("unit");
+    const delivery = profileForm.watch("delivery");
+
+    if (deliveryType === 0) {
+      // Checks for `0` and update to `null` for error validation
+      if (baseDistance === 0) {
+        profileForm.setValue("base_distance", null, { shouldValidate: true });
+      }
+      if (baseAmount === 0) {
+        profileForm.setValue("base_amount", null, { shouldValidate: true });
+      }
+      if (additionalFee === 0) {
+        profileForm.setValue("additional_distance_fee", null, {
+          shouldValidate: true,
+        });
+      }
+      if (!unit) {
+        profileForm.setValue("unit", null, { shouldValidate: true });
+      }
+
+      if (!baseDistance) {
+        profileForm.setError("base_distance", {
+          message: "Base Distance is required and must be greater than 0",
+        });
+      }
+      if (!baseAmount) {
+        profileForm.setError("base_amount", {
+          message: "Base Amount is required and must be greater than 0",
+        });
+      }
+      if (!additionalFee) {
+        profileForm.setError("additional_distance_fee", {
+          message:
+            "Additional Distance Fee is required and must be greater than 0",
+        });
+      }
+      if (!unit) {
+        profileForm.setError("unit", {
+          message: "Unit of Measurement is required",
+        });
+      }
+    }
+
+    if (deliveryType === 1) {
+      if (!delivery || delivery.length < 2) {
+        profileForm.setError("delivery", {
+          message: "At least two tiers are required for Tiered Distance Fees.",
+        });
+      }
+    }
+  };
+
+  const validateFormDays = () => {
+    const days = profileForm.watch("days");
+    if (!days || days.length < 2) {
+      profileForm.setError("days", {
+        message: "At least one day must be selected",
+      });
+    }
+  };
+
   const handleProfileFormSubmit = async () => {
-    validateForm();
     await handleSubmitStore(
       profileData,
       store,
@@ -127,88 +193,11 @@ const Profile = () => {
     profileForm?.reset();
   };
 
-  const validateForm = () => {
-    const baseDistance = profileForm.watch("base_distance");
-    const baseAmount = profileForm.watch("base_amount");
-    const additionalFee = profileForm.watch("additional_distance_fee");
-    const unit = profileForm.watch("unit");
-    const days = profileForm.watch("days");
-    const delivery = profileForm.watch("delivery");
-
-    if (deliveryType === 0) {
-      // Check for `0` and update to `null` if necessary
-      if (baseDistance === 0) {
-        profileForm.setValue("base_distance", null, { shouldValidate: true });
-      }
-      if (baseAmount === 0) {
-        profileForm.setValue("base_amount", null, { shouldValidate: true });
-      }
-      if (additionalFee === 0) {
-        profileForm.setValue("additional_distance_fee", null, {
-          shouldValidate: true,
-        });
-      }
-      if (!unit) {
-        profileForm.setValue("unit", null, { shouldValidate: true });
-      }
-
-      // Add specific error handling if needed
-      if (!baseDistance) {
-        profileForm.setError("base_distance", {
-          message: "Base Distance is required and must be greater than 0",
-        });
-      }
-      if (!baseAmount) {
-        profileForm.setError("base_amount", {
-          message: "Base Amount is required and must be greater than 0",
-        });
-      }
-      if (!additionalFee) {
-        profileForm.setError("additional_distance_fee", {
-          message:
-            "Additional Distance Fee is required and must be greater than 0",
-        });
-      }
-      if (!unit) {
-        profileForm.setError("unit", {
-          message: "Unit of Measurement is required",
-        });
-      }
-    }
-
-    if (deliveryType === 1) {
-      if (!delivery || delivery.length < 2) {
-        profileForm.setError("delivery", {
-          message: "At least two tiers are required for Tiered Distance Fees.",
-        });
-      }
-    }
-
-    if (!days || days.length === 0) {
-      profileForm.setError("days", {
-        message: "At least one day must be selected.",
-      });
-    }
-  };
-
-
-  useEffect(() => {
+  const handleProfileValidation = () => {
     validateForm();
-  }, [profileForm, deliveryType]);
-
-
-  // useEffect(() => {
-  //   profileForm.register("days", {
-  //     validate: (value) =>
-  //       value && value.length > 0 ? true : "At least one day must be selected.",
-  //   });
-
-  // }, [profileForm.register]);
-  // console.log(
-  //   profileForm.formState.isValid,
-  //   "profileForm.formState.isValid",
-  //   profileForm
-  // );
+    validateFormDays();
+    profileForm?.handleSubmit(handleProfileFormSubmit)();
+  };
   return (
     <div className="bg-[#F2F2F2] w-full py-6 px-4">
       <div className="flex items-center gap-8 mb-6">
@@ -277,6 +266,7 @@ const Profile = () => {
             profileData={profileData}
             setProfileData={setProfileData}
             form={profileForm}
+            validateForm={validateForm}
             deliveryType={deliveryType}
             setDeliveryType={setDeliveryType}
           />
@@ -301,14 +291,14 @@ const Profile = () => {
               onClick={(event) => {
                 event.preventDefault();
                 currentTab === "Profile"
-                  ? profileForm?.handleSubmit(handleProfileFormSubmit)()
+                  ? handleProfileValidation()
                   : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
               }}
-              variant={
-                profileForm.formState.isValid && disableButton
-                  ? "primary"
-                  : "disabled"
-              }
+              // variant={
+              //   profileForm.formState.isValid && disableButton
+              //     ? "primary"
+              //     : "disabled"
+              // }
             >
               {!storeExists ? "Submit" : "Save"}
             </Button>

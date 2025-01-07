@@ -7,19 +7,21 @@ import { LocationIcon } from "../../../images";
 import RadioButton from "../../shared/radioBtn";
 import { useSelector } from "react-redux";
 
-const DeliveryFees = ({ editProfile, profileData, setProfileData, form, deliveryType, setDeliveryType }) => {
-  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
+const DeliveryFees = ({ editProfile, profileData, setProfileData, form, deliveryType, setDeliveryType, validateForm }) => {
+  const store = useSelector((state) =>
+    state.stores && state.stores.length > 0 ? state.stores[state.storeID] : {}
+  );
   const storeExists = useSelector((state) => state.storeExists);
 
   const {
     control,
-    formState: errors,
+    formState: { errors },
     register,
     resetField,
     watch,
     trigger,
     setValue,
-    clearErrors
+    clearErrors,
   } = form;
 
   const handleAddCard = () => {
@@ -58,6 +60,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
       //resets the fields after adding the object
       resetField("destination");
       resetField("fee");
+      validateForm();
     } catch (error) {}
   };
 
@@ -72,6 +75,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
         },
       };
     });
+    validateForm();
   };
 
   const deleteDeliveryCard = (index) => {
@@ -85,13 +89,14 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
         delivery: { ...prev["delivery"], delivery: remainingData },
       };
     });
+    validateForm();
   };
 
   useEffect(() => {
-   setValue("delivery", profileData?.delivery?.delivery);
-   if (profileData?.delivery?.delivery?.length === 2) {
-    clearErrors("delivery");
-   }
+    setValue("delivery", profileData?.delivery?.delivery);
+    if (profileData?.delivery?.delivery?.length === 2) {
+      clearErrors("delivery");
+    }
   }, [profileData?.delivery?.delivery]);
 
   const resetBaseDistanceForm = () => {
@@ -100,6 +105,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
     resetField("base_amount");
     resetField("additional_distance_fee");
   };
+
+
   return (
     <div>
       <div className="flex mt-4 gap-5">
@@ -120,6 +127,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
                 };
               });
               setDeliveryType(0);
+              validateForm();
             }}
           />
           <label>Base + Per Unit Distance</label>
@@ -142,6 +150,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
               });
               resetBaseDistanceForm();
               setDeliveryType(1);
+              validateForm();
             }}
           />
           <label>Tiered Distance Fees</label>
@@ -159,7 +168,9 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
                 fieldName={`destination`}
                 placeholder="Select"
                 required={profileData?.delivery?.delivery.length < 2}
-                requiredMessage={"When using Tiered Fees you must add atleast 2 ranges."}
+                requiredMessage={
+                  "When using Tiered Fees you must add atleast 2 ranges."
+                }
                 className="bg-[#F2F2F2]"
                 control={control}
                 errors={errors}
@@ -175,7 +186,9 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
                 label="Shipping Fee ($)"
                 name="fee"
                 required={profileData?.delivery?.delivery.length < 2}
-                requiredMessage={"When using Tiered Fees you must add atleast 2 ranges."}
+                requiredMessage={
+                  "When using Tiered Fees you must add atleast 2 ranges."
+                }
                 fieldName="fee"
                 placeholder="Enter"
                 className="bg-[#F2F2F2]"
@@ -185,7 +198,6 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
                 register={register}
               />
             </div>
-
             <div className="mt-6 mb-3">
               <Button
                 className="w-[144px]"
@@ -240,7 +252,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
               placeholder="Enter"
               className="bg-[#F2F2F2]"
               required={true}
-              requiredMessage={"Select"}
+              requiredMessage={"Select a unit of measurement"}
               value={profileData?.unit}
               control={control}
               errors={errors}
@@ -252,7 +264,6 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
                 handleData("unit", data?.value);
               }}
             />
-
             <InputComponent
               inputType="number"
               type="number"

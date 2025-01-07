@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import Checkbox from "../../shared/checkbox";
 import InputComponent from "../../shared/inputComponent";
 import {
@@ -7,7 +7,12 @@ import {
   deliverySlots,
   restPeriods,
 } from "../../../data/profile";
-import { DeleteIcon, GreenCamera, UserAvatar } from "../../../images";
+import {
+  DeleteIcon,
+  GreenCamera,
+  UserAvatar,
+  ErrorIcon,
+} from "../../../images";
 import { useSelector } from "react-redux";
 
 const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
@@ -23,51 +28,50 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
   } = form;
   const storeExists = useSelector((state) => state.storeExists);
 
-// Updates the profile data and handles validation for days
-const handleCheckboxChange = (dayValue) => {
-  const currentDays = watch("days") || [];
-  const updatedDays = currentDays.includes(dayValue)
-    ? currentDays.filter((day) => day !== dayValue)
-    : [...currentDays, dayValue];
-  console.log(updatedDays, "updatedDays");
-  setValue("days", updatedDays);
-  trigger("days");
+  // Updates the profile data and handles validation for days
+  const handleCheckboxChange = (dayValue) => {
+    const currentDays = watch("days") || [];
+    const updatedDays = currentDays.includes(dayValue)
+      ? currentDays.filter((day) => day !== dayValue)
+      : [...currentDays, dayValue];
+    setValue("days", updatedDays);
+    trigger("days");
 
-  handleData("day", updatedDays); // Update profileData state
+    handleData("day", updatedDays); // Update profileData state
 
-  if (updatedDays.length === 0) {
-    setError("days", {
-      type: "manual",
-      message: "At least one day must be selected",
-    });
-  } else {
-    clearErrors("days");
-  }
-};
-
-// Updates profile data based on input changes
-const handleData = (input, value) => {
-  setProfileData((prev) => {
-    switch (input) {
-      case "day":
-        return {
-          ...prev,
-          store: {
-            ...prev.store,
-            days: value,
-          },
-        };
-      default:
-        return {
-          ...prev,
-          store: {
-            ...prev.store,
-            [input]: value,
-          },
-        };
+    if (updatedDays.length === 0) {
+      setError("days", {
+        type: "manual",
+        message: "At least one day must be selected",
+      });
+    } else {
+      clearErrors("days");
     }
-  });
-};
+  };
+
+  // Updates profile data based on input changes
+  const handleData = (input, value) => {
+    setProfileData((prev) => {
+      switch (input) {
+        case "day":
+          return {
+            ...prev,
+            store: {
+              ...prev.store,
+              days: value,
+            },
+          };
+        default:
+          return {
+            ...prev,
+            store: {
+              ...prev.store,
+              [input]: value,
+            },
+          };
+      }
+    });
+  };
 
   const handleFileUpload = (e) => {
     if (e.target.files.length > 0) {
@@ -77,8 +81,6 @@ const handleData = (input, value) => {
     }
   };
 
-
-  console.log(errors, "errors");
   return (
     <div className="flex flex-col mt-6 gap-6">
       <div className="flex items-center gap-3 mb-3">
@@ -246,8 +248,8 @@ const handleData = (input, value) => {
             {daysOfTheWeek.map((day, index) => (
               <div key={index} className="flex">
                 <Checkbox
-                name={`days[${index}]`}
-                handleChange={() => handleCheckboxChange(day.value)}
+                  name={`days[${index}]`}
+                  handleChange={() => handleCheckboxChange(day.value)}
                   isDisabled={!storeExists ? false : !editProfile}
                   value={
                     profileData?.store?.days?.includes(day?.value)
@@ -262,8 +264,13 @@ const handleData = (input, value) => {
             ))}
           </div>
           {errors.days && (
-          <p className="text-red-500 text-sm">{errors.days.message}</p>
-        )}
+            <div className="flex flex-row gap-2 mt-1 ">
+              <img src={ErrorIcon} alt="errorIcon" />
+              <span className="text-[#FF3B30] text-[10px]">
+                {errors.days.message}
+              </span>
+            </div>
+          )}
         </div>
         <InputComponent
           inputType="select"
