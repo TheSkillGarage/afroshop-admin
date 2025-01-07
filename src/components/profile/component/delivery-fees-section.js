@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeliveryCard from "./delivery-holiday-card";
 import InputComponent from "../../shared/inputComponent";
 import Button from "../../shared/button";
@@ -7,12 +7,10 @@ import { LocationIcon } from "../../../images";
 import RadioButton from "../../shared/radioBtn";
 import { useSelector } from "react-redux";
 
-const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
+const DeliveryFees = ({ editProfile, profileData, setProfileData, form, deliveryType, setDeliveryType }) => {
   const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
   const storeExists = useSelector((state) => state.storeExists);
-  const [deliveryType, setDeliveryType] = useState(
-    profileData?.delivery?.deliveryType ?? 0
-  );
+
   const {
     control,
     formState: errors,
@@ -21,6 +19,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
     watch,
     trigger,
     setValue,
+    clearErrors
   } = form;
 
   const handleAddCard = () => {
@@ -87,6 +86,13 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
       };
     });
   };
+
+  useEffect(() => {
+   setValue("delivery", profileData?.delivery?.delivery);
+   if (profileData?.delivery?.delivery?.length === 2) {
+    clearErrors("delivery");
+   }
+  }, [profileData?.delivery?.delivery]);
 
   const resetBaseDistanceForm = () => {
     resetField("unit");

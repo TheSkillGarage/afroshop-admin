@@ -21,11 +21,18 @@ const Profile = () => {
   const storeExists = useSelector((state) => state.storeExists);
   const stores = useSelector((state) => state.stores);
   const storeID = useSelector((state) => state.storeID);
-  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
+  const store = useSelector((state) =>
+    state.stores && state.stores.length > 0 ? state.stores[state.storeID] : {}
+  );
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
 
-  const [profileData, setProfileData] = useState(getStoreDefaultValues(store, user));
+  const [profileData, setProfileData] = useState(
+    getStoreDefaultValues(store, user)
+  );
+  const [deliveryType, setDeliveryType] = useState(
+    profileData?.delivery?.deliveryType ?? 0
+  );
   const profileForm = useForm({
     defaultValues: {
       ...profileData?.store,
@@ -35,24 +42,22 @@ const Profile = () => {
     },
     mode: "all",
   });
-  
+
   const [currentTab, setCurrentTab] = useState("Profile");
-  const [disableButton, setDisable] = useState(false)
-  
+  const [disableButton, setDisable] = useState(false);
   useEffect(() => {
     if (currentTab === "Profile") {
       setDisable(
         Object.keys(profileForm?.formState?.errors).length === 0 &&
-        !(
-          profileData?.store?.profile_image === null ||
-          profileData?.store?.profile_image_data === null
-        )
-      )
+          !(
+            profileData?.store?.profile_image === null &&
+            profileData?.store?.profile_image_data === null
+          )
+      );
+    } else if (currentTab === "Password") {
+      setDisable(Object.keys(passwordForm?.formState?.errors).length === 0);
     }
-    else if (currentTab === "Password") {
-      setDisable(Object.keys(passwordForm?.formState?.errors).length === 0)
-    }
-  }, [profileData, currentTab])
+  }, [profileData, currentTab]);
 
   useEffect(() => {
     const result = getStoreDefaultValues(store, user);
@@ -75,15 +80,15 @@ const Profile = () => {
     mode: "all",
   });
 
-
   const [editProfile, setEditProfile] = useState(false);
 
   const handleRedirect = () => {
-    navigate("/")
-    setEditProfile(false)
-  }
+    navigate("/");
+    setEditProfile(false);
+  };
 
   const handleProfileFormSubmit = async () => {
+    validateForm();
     await handleSubmitStore(
       profileData,
       store,
@@ -122,7 +127,88 @@ const Profile = () => {
     profileForm?.reset();
   };
 
+  const validateForm = () => {
+    const baseDistance = profileForm.watch("base_distance");
+    const baseAmount = profileForm.watch("base_amount");
+    const additionalFee = profileForm.watch("additional_distance_fee");
+    const unit = profileForm.watch("unit");
+    const days = profileForm.watch("days");
+    const delivery = profileForm.watch("delivery");
 
+    if (deliveryType === 0) {
+      // Check for `0` and update to `null` if necessary
+      if (baseDistance === 0) {
+        profileForm.setValue("base_distance", null, { shouldValidate: true });
+      }
+      if (baseAmount === 0) {
+        profileForm.setValue("base_amount", null, { shouldValidate: true });
+      }
+      if (additionalFee === 0) {
+        profileForm.setValue("additional_distance_fee", null, {
+          shouldValidate: true,
+        });
+      }
+      if (!unit) {
+        profileForm.setValue("unit", null, { shouldValidate: true });
+      }
+
+      // Add specific error handling if needed
+      if (!baseDistance) {
+        profileForm.setError("base_distance", {
+          message: "Base Distance is required and must be greater than 0",
+        });
+      }
+      if (!baseAmount) {
+        profileForm.setError("base_amount", {
+          message: "Base Amount is required and must be greater than 0",
+        });
+      }
+      if (!additionalFee) {
+        profileForm.setError("additional_distance_fee", {
+          message:
+            "Additional Distance Fee is required and must be greater than 0",
+        });
+      }
+      if (!unit) {
+        profileForm.setError("unit", {
+          message: "Unit of Measurement is required",
+        });
+      }
+    }
+
+    if (deliveryType === 1) {
+      if (!delivery || delivery.length < 2) {
+        profileForm.setError("delivery", {
+          message: "At least two tiers are required for Tiered Distance Fees.",
+        });
+      }
+    }
+
+    if (!days || days.length === 0) {
+      profileForm.setError("days", {
+        message: "At least one day must be selected.",
+      });
+    }
+  };
+
+
+  useEffect(() => {
+    validateForm();
+  }, [profileForm, deliveryType]);
+
+
+  // useEffect(() => {
+  //   profileForm.register("days", {
+  //     validate: (value) =>
+  //       value && value.length > 0 ? true : "At least one day must be selected.",
+  //   });
+
+  // }, [profileForm.register]);
+  // console.log(
+  //   profileForm.formState.isValid,
+  //   "profileForm.formState.isValid",
+  //   profileForm
+  // );
   return (
     <div className="bg-[#F2F2F2] w-full py-6 px-4">
       <div className="flex items-center gap-8 mb-6">
@@ -153,10 +239,11 @@ const Profile = () => {
               <p
                 key={index}
                 onClick={() => handleTabClick(t)}
-                className={`cursor-pointer w-[380px] flex items-center justify-center ${t === currentTab
-                  ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
-                  : "text-[#4F4F4F] font-normal"
-                  }`}
+                className={`cursor-pointer w-[380px] flex items-center justify-center ${
+                  t === currentTab
+                    ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
+                    : "text-[#4F4F4F] font-normal"
+                }`}
               >
                 {t}
               </p>
@@ -170,8 +257,9 @@ const Profile = () => {
           <div className="py-4 px-4 border-b-[2px] text-[#186F3D] border-[#E6E6E6] flex items-center justify-between">
             <p className="text-xl font-bold">{currentTab}</p>
             <p
-              className={`flex gap-2 items-center font-semibold cursor-pointer ${editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
-                }`}
+              className={`flex gap-2 items-center font-semibold cursor-pointer ${
+                editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
+              }`}
               onClick={() => setEditProfile(true)}
             >
               {editProfile ? (
@@ -189,6 +277,8 @@ const Profile = () => {
             profileData={profileData}
             setProfileData={setProfileData}
             form={profileForm}
+            deliveryType={deliveryType}
+            setDeliveryType={setDeliveryType}
           />
         ) : (
           <EditPassword editProfile={editProfile} form={passwordForm} />
@@ -214,7 +304,11 @@ const Profile = () => {
                   ? profileForm?.handleSubmit(handleProfileFormSubmit)()
                   : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
               }}
-              variant={disableButton ? "primary" : "disabled"}
+              variant={
+                profileForm.formState.isValid && disableButton
+                  ? "primary"
+                  : "disabled"
+              }
             >
               {!storeExists ? "Submit" : "Save"}
             </Button>
