@@ -50,17 +50,16 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
           ) {
             updatedArray.push(deliveryFormData);
           }
-
           return {
             ...prev,
             delivery: { ...prev["delivery"], delivery: updatedArray },
           };
         });
       }
+      validateForm();
       //resets the fields after adding the object
       resetField("destination");
       resetField("fee");
-      validateForm();
     } catch (error) {}
   };
 
@@ -106,7 +105,6 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
     resetField("additional_distance_fee");
   };
 
-
   return (
     <div>
       <div className="flex mt-4 gap-5">
@@ -148,9 +146,9 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
                   },
                 };
               });
+              validateForm();
               resetBaseDistanceForm();
               setDeliveryType(1);
-              validateForm();
             }}
           />
           <label>Tiered Distance Fees</label>
@@ -167,7 +165,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
                 name="destination"
                 fieldName={`destination`}
                 placeholder="Select"
-                required={profileData?.delivery?.delivery.length < 2}
+                required={profileData?.delivery?.delivery.length < 2 && deliveryType === 1}
                 requiredMessage={
                   "When using Tiered Fees you must add atleast 2 ranges."
                 }
@@ -185,7 +183,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
                 type="number"
                 label="Shipping Fee ($)"
                 name="fee"
-                required={profileData?.delivery?.delivery.length < 2}
+                required={profileData?.delivery?.delivery.length < 2 && deliveryType === 1}
                 requiredMessage={
                   "When using Tiered Fees you must add atleast 2 ranges."
                 }
@@ -251,7 +249,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
               name={"unit"}
               placeholder="Enter"
               className="bg-[#F2F2F2]"
-              required={true}
+              required={deliveryType === 0}
               requiredMessage={"Select a unit of measurement"}
               value={profileData?.unit}
               control={control}
@@ -276,7 +274,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
               control={control}
               errors={errors}
               register={register}
-              required={true}
+              required={deliveryType === 0}
               requiredMessage={"Base Distance is required"}
               isReadOnly={!storeExists ? false : !editProfile}
               handleChange={(e) => handleData("base_distance", e.target.value)}
@@ -293,7 +291,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
               profileData={profileData?.base_amount}
               errors={errors}
               register={register}
-              required={true}
+              required={deliveryType === 0}
               requiredMessage={"Base Amount is required"}
               isReadOnly={!storeExists ? false : !editProfile}
               handleChange={(e) => handleData("base_amount", e.target.value)}
@@ -310,7 +308,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
               errors={errors}
               register={register}
               value={profileData?.additional_distance_fee}
-              required={true}
+              required={deliveryType === 0}
               requiredMessage={"Additional Distance Fee is required"}
               isReadOnly={!storeExists ? false : !editProfile}
               handleChange={(e) =>

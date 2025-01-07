@@ -138,7 +138,10 @@ const Profile = () => {
 
     if (deliveryType === 1) {
       if (!delivery || delivery.length < 2) {
-        profileForm.setError("delivery", {
+        profileForm.setError("destination", {
+          message: "At least two tiers are required for Tiered Distance Fees.",
+        });
+        profileForm.setError("fee", {
           message: "At least two tiers are required for Tiered Distance Fees.",
         });
       }
@@ -198,6 +201,8 @@ const Profile = () => {
     validateFormDays();
     profileForm?.handleSubmit(handleProfileFormSubmit)();
   };
+  const dataValues = profileForm.getValues();
+  console.log( dataValues, 'hey')
   return (
     <div className="bg-[#F2F2F2] w-full py-6 px-4">
       <div className="flex items-center gap-8 mb-6">
@@ -294,11 +299,11 @@ const Profile = () => {
                   ? handleProfileValidation()
                   : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
               }}
-              // variant={
-              //   profileForm.formState.isValid && disableButton
-              //     ? "primary"
-              //     : "disabled"
-              // }
+              variant={
+                profileForm.formState.isValid && disableButton
+                  ? "primary"
+                  : "disabled"
+              }
             >
               {!storeExists ? "Submit" : "Save"}
             </Button>
