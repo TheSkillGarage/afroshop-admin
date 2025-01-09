@@ -12,9 +12,6 @@ const Overview = () => {
   const ordersData = useSelector((state) => state.ordersData);
   const storeID = useSelector((state) => state.storeID);
 
-
-  console.log(stores[0]?.status, storeExists, ordersData, "stores", storeID);
-
   return (
     <>
       {storeExists && stores && stores[storeID]?.status === "Draft" ? (
