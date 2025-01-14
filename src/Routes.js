@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import {
-  AddNewRole,
+  // AddNewRole,
   Orders,
   OverviewPage,
   Products,
   ProfilePage,
-  RolesAndPermissionsDashboard,
+  // RolesAndPermissionsDashboard,
   ViewOrdersPage,
   SupportPage,
   AddProducts,
@@ -18,8 +18,9 @@ import {
   LogInPage,
   NewPasswordPage,
   EarningsPage,
+  CoverPage
 } from "./pages";
-import EditRole from "./components/roles-and-permissions/edit-role";
+// import EditRole from "./components/roles-and-permissions/edit-role";
 import RedirectHandler from "./components/redirectHandler";
 import { PageNotFoundComponent } from "./components";
 import { useSelector } from "react-redux";
@@ -52,7 +53,8 @@ const MyRoutes = () => {
 
         {/* Private Routes (Accessible Only to Authenticated Users) */}
         <Route element={<PrivateRoute />}>
-          <Route exact path="/" element={<OverviewPage />} />
+          <Route exact path="/" element={<CoverPage />} />
+          <Route exact path="/dashboard" element={<OverviewPage />} />
           <Route exact path="/store-created" element={<StoreCreated />} />
           <Route exact path="/products" element={<Products />} />
           <Route exact path="/products/new" element={<AddProducts />} />
@@ -60,7 +62,7 @@ const MyRoutes = () => {
           <Route exact path="/profile" element={<ProfilePage />} />
           <Route exact path="/orders" element={<Orders />} />
           <Route exact path="/view-order/:orderID" element={<ViewOrdersPage />} />
-          <Route
+          {/* <Route
             exact
             path="/roles-and-permissions"
             element={<RolesAndPermissionsDashboard />}
@@ -71,7 +73,7 @@ const MyRoutes = () => {
             path="/roles-and-permissions/add-new-role"
             element={<AddNewRole />}
           />
-          <Route exact path="/roles-and-permissions/edit-role/:id" element={<EditRole />} />
+          <Route exact path="/roles-and-permissions/edit-role/:id" element={<EditRole />} /> */}
           <Route exact path="/support" element={<SupportPage />} />
         </Route>
         

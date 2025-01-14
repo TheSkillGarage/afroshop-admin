@@ -58,11 +58,16 @@ const AdminNavbar = ({ name }) => {
   const handleSwitchStore = (storeID) => {
     dispatch(setStoreID(storeID));
     dispatch(setStoreExistStatus(storeID !== -1));
+    if (store === -1) {
+      navigate("/profile")
+    } else if (name === "CoverPage") {
+      navigate("/dashboard")
+    }
     setOpen(false)
   }
 
   return (
-    <nav className="flex justify-between p-6 border-b border-1 border-[#E6E6E6] min-h-[69px] max-h-[69px] bg-[#ffffff]">
+    <nav className="flex justify-between items-center p-6 border-b border-1 border-[#E6E6E6] min-h-[69px] max-h-[69px] bg-[#ffffff] ">
       {name === "layout" ? (
         <div className="flex items-center gap-6">
           <MenuIcon
@@ -77,39 +82,45 @@ const AdminNavbar = ({ name }) => {
             </p>
           </div>
         </div>
-      ) : (
-        <div className="flex items-center">
-          {name === "viewOrders" ? (
-            <div className="flex items-center gap-6">
-              <LeftArrow
-                alt="menu"
-                className="w-[20px] h-[20px] cursor-pointer"
-                onClick={() => navigate("/orders")}
-              />
-              <div className="flex">
-                <img src={store?.image ? renderValidUrl(store?.image) : StoreDefaultImage} className="h-[32px] w-[32px] rounded-full" />
-                <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
-                  All Stores
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-center gap-[24px]">
-              <LeftArrow
-                alt="menu"
-                className="w-[20px] h-[20px] cursor-pointer"
-                onClick={() => navigate("/products")}
-              />
-              <div className="flex">
-                <img src={store?.image ? renderValidUrl(store?.image) : StoreDefaultImage} className="h-[32px] w-[32px] rounded-full" />
-                <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
-                  {store?.name}
-                </p>
-              </div>
+      ) :
+        name === "CoverPage" ? (
+          <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
+            All Stores
+          </p>
+        ) :
+          (
+            <div className="flex items-center">
+              {name === "viewOrders" ? (
+                <div className="flex items-center gap-6">
+                  <LeftArrow
+                    alt="menu"
+                    className="w-[20px] h-[20px] cursor-pointer"
+                    onClick={() => navigate("/orders")}
+                  />
+                  <div className="flex">
+                    <img src={store?.image ? renderValidUrl(store?.image) : StoreDefaultImage} className="h-[32px] w-[32px] rounded-full" />
+                    <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
+                      All Stores
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-[24px]">
+                  <LeftArrow
+                    alt="menu"
+                    className="w-[20px] h-[20px] cursor-pointer"
+                    onClick={() => navigate("/products")}
+                  />
+                  <div className="flex">
+                    <img src={store?.image ? renderValidUrl(store?.image) : StoreDefaultImage} className="h-[32px] w-[32px] rounded-full" />
+                    <p className="font-bold text-[20px] leading-[32px] text-[#186F3D] ml-2">
+                      {store?.name}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           )}
-        </div>
-      )}
 
       <div className="flex gap-4 items-center">
         <NotificationIcon className="w-[20px] h-[20px]" />
@@ -123,9 +134,14 @@ const AdminNavbar = ({ name }) => {
           {open && (
             <ul className="absolute top-14 right-7 text-[13px] bg-white text-black z-[20] rounded-lg space-y-3 w-[150px] py-2  shadow-md">
               {
-                (store?.status === 404 || store?.id) &&
+                (stores && Array.isArray(stores)) &&
                 <>
-                  <li className="cursor-pointer px-4" onClick={() => navigate("/profile")}>Go to Profile</li>
+                  {
+                    ((name === "CoverPage" && stores.length > 1) || storeID === -1) ?
+                      <li className="cursor-default px-4" onClick={() => navigate("/")}>Go to Store</li>
+                      :
+                      <li className="cursor-pointer px-4" onClick={() => navigate("/profile")}>Go to Profile</li>
+                  }
                   <hr />
                 </>
               }

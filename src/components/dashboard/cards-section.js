@@ -57,7 +57,7 @@ const BusinessSummary = ({ years, ordersData }) => {
                 <div className="flex gap-4 items-center">
                     {
                         years.length !== 1 ?
-                            <SelectDropdown name="summary" options={years} placeholder={years?.[0]?.value} handleSelectedYear={handleSelectedYear} color="green" />
+                            <SelectDropdown name="summary" options={years} placeholder={selectedYear} handleSelectedYear={handleSelectedYear} color="green" />
                             :
                             <p className="p-3 border border-[#186F3D] rounded w-[78px] h-[40px] text-center flex items-center justify-center text-[13px] leading-[23px] text-[#186F3D]">{years[0].value}</p>
                     }

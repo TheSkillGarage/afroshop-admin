@@ -1,7 +1,7 @@
 const SIDEBAR_TABS = [
     {
         name: "overview",
-        path: "/",
+        path: "/dashboard",
     },
     {
         name: "orders",
@@ -19,10 +19,10 @@ const SIDEBAR_TABS = [
         name: "profile",
         path: "/profile"
     },
-    {
-        name: "roles & permissions",
-        path: "/roles-and-permissions"
-    },
+    // {
+    //     name: "roles & permissions",
+    //     path: "/roles-and-permissions"
+    // },
     {
         name: "support",
         path: "/support"
