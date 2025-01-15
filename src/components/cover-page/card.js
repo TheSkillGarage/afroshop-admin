@@ -78,7 +78,7 @@ const StoreCard = ({ store, index }) => {
             </p>
           )}
 
-          <h3 className="text-[25px] text-[#333333] font-bold leading-[40px]">
+          <h3 className="text-[20px] text-[#333333] font-bold leading-[40px]">
             {name}
           </h3>
 

@@ -89,7 +89,7 @@ const Cover = () => {
 
             <div className="w-full">
                 {storeList.length > 0 && (
-                    <div className="flex flex-wrap gap-[32px] mx-auto justify-around">
+                    <div className="flex flex-wrap gap-[32px] mx-auto">
                         {storeList.map((store, index) => (
                             <StoreCard key={store.id} store={store} index={index} />
                         ))}
