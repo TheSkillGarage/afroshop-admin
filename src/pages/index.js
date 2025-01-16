@@ -16,3 +16,4 @@ export { default as SignUpPage} from './sign-up';
 export { default as LogInPage} from './login';
 export { default as NewPasswordPage} from './new-password';
 export { default as EarningsPage} from './earnings'
+export { default as CoverPage} from './cover-page'
