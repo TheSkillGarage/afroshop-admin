@@ -172,7 +172,7 @@ const AdminNavbar = ({ name }) => {
                   + Add New Store
                 </li>
               }
-              <hr className="border-white" />
+              <hr className="border-red" onClick={handleLogout} />
               <li className="flex justify-between cursor-pointer px-4" onClick={handleLogout}>
                 <p className="text-[#FF3B30]">Logout</p>
                 <LogoutIcon className="w-4 h-4" />
