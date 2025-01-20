@@ -68,12 +68,12 @@ const Cover = () => {
     };
 
     return (
-        <div className="max-w-[1300px] w-full h-full mt-[48px] p-2 flex flex-col gap-10 mx-auto min-h-[575px]">
+        <div className="max-w-[1300px] w-full h-full mt-[48px] p-2 flex flex-col gap-10 mx-auto items-center min-h-[575px]">
             <Button variant="primary" className="ml-auto" onClick={handleNewStore}>
                 Add a New Store
             </Button>
 
-            <form className="w-[514px] relative">
+            <form className="w-[514px] relative block mr-auto">
                 <SearchIcon className="absolute top-[10px] left-[18px]" />
                 <input
                     type="text"
@@ -87,9 +87,9 @@ const Cover = () => {
 
             {renderStoreMessage()}
 
-            <div className="mx-auto">
+            <div className="w-full">
                 {storeList.length > 0 && (
-                    <div className="w-full flex flex-wrap gap-[32px]">
+                    <div className="flex flex-wrap gap-[32px] mx-auto">
                         {storeList.map((store, index) => (
                             <StoreCard key={store.id} store={store} index={index} />
                         ))}

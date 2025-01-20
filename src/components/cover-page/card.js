@@ -60,7 +60,7 @@ const StoreCard = ({ store, index }) => {
 
   return (
     <section
-      className={`w-full h-full min-h-[164px] max-w-[30%] bg-white flex flex-col rounded py-8 px-6 gap-[30px]
+      className={`w-full h-full min-h-[164px] max-w-[30%] min-w-[402px] bg-white flex flex-col rounded py-8 px-6 gap-[30px]
         ${status === "Draft" ? "border-[#FFD60A] border-[1px] bg-[#FFD60A0D]" : "shadow-[0px_4px_8px_rgba(51,51,51,0.16)]"}`}
       onClick={handleClick}
     >
@@ -78,7 +78,7 @@ const StoreCard = ({ store, index }) => {
             </p>
           )}
 
-          <h3 className="text-[25px] text-[#333333] font-bold leading-[40px]">
+          <h3 className="text-[20px] text-[#333333] font-bold leading-[40px]">
             {name}
           </h3>
 
