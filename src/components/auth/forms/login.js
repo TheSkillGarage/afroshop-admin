@@ -83,11 +83,12 @@ const LogInForm = () => {
           </p>
         </div>
 
-        <ConnectButton provider="google" />
+        {/* <ConnectButton provider="google" /> */}
 
-        <p className="text-[13px] leading-[23px] text-center my-6 text-[#CCCCCC]">
+        {/* <p className="text-[13px] leading-[23px] text-center my-6 text-[#CCCCCC]">
           or
-        </p>
+        </p> */}
+
 
         <div className="w-[400px]">
           <form
