@@ -108,20 +108,20 @@ const PageLayout = ({ children, pageName = "layout" }) => {
           navigate("/login");
         }
       };
-  
+
       // Perform the initial check
       checkLoginStatus();
-  
+
       // Set up periodic checks
       const intervalId = setInterval(checkLoginStatus, 60000);
-  
+
       return () => {
         clearInterval(intervalId); // Clean up on unmount
       };
     } else {
       navigate("/login");
     }
-  }, [isAuthenticated, dispatch, navigate]); 
+  }, [isAuthenticated, dispatch, navigate]);
 
   return (
     <section className="bg-[#F2F2F2] h-[100vh]">

@@ -50,9 +50,9 @@ const AdminNavbar = ({ name }) => {
     e.stopPropagation();
     removeTokenFromCookie();
     setOpen(false);
+    dispatch(sidebarToggle(false))
     dispatch(logOutUser());
     navigate("/");
-    dispatch(sidebarToggle(false))
   }
 
   const handleSwitchStore = (storeID) => {
