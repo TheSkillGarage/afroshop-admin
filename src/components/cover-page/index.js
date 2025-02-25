@@ -5,10 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { setStoreExistStatus, setStoreID } from "../../redux/action";
 import { SearchIcon } from "../../images";
 import StoreCard from "./card";
+import { BeatLoader } from "react-spinners";
 
 const Cover = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const stores = useSelector((state) => state.stores);
+    const loading = useSelector((state) => state.loadingStates);
 
     const handleNewStore = (e) => {
         e.stopPropagation();
@@ -16,8 +20,6 @@ const Cover = () => {
         dispatch(setStoreExistStatus(false));
         navigate("/profile");
     };
-
-    const stores = useSelector((state) => state.stores);
 
     const [storeList, setStores] = useState([]);
     const [filter, setFilter] = useState("");
@@ -39,6 +41,21 @@ const Cover = () => {
     };
 
     const renderStoreMessage = () => {
+        if (!Array.isArray(stores) && loading?.stores ) {
+            return (
+                <div className="fixed inset-0 bg-[#D3D3D3] bg-opacity-25 z-[100] flex justify-center items-center h-screen">
+                    <div className="mt-[250px] w-full flex justify-center items-center">
+                        <BeatLoader
+                            color={"#186F3D"}
+                            loading={true}
+                            size={25}
+                            speedMultiplier={1}
+                        />
+                    </div>
+                </div>
+            )
+        }
+
         if (storeList.length === 0) {
             if (filter) {
                 return (
