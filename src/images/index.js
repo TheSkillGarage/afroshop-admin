@@ -25,6 +25,7 @@ import {ReactComponent as WelcomeImage} from "./welcomeImage.svg"
 
 import ArrowRight from "./arrow-right.svg";
 import { ReactComponent as ClockIcon } from "./Clock.svg";
+import { ReactComponent as BlackClockIcon } from "./Black Clock.svg";
 import ArrowDown from "./arrow-down.svg";
 import Dot from "./dot.svg";
 import Pause from "./pause.svg";
@@ -248,4 +249,5 @@ export {
   StoreDefaultImage,
   LogoutIcon2,
   ClockIcon,
+  BlackClockIcon,
 };

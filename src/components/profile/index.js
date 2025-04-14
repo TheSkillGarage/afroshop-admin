@@ -38,12 +38,13 @@ const Profile = () => {
   
   const [currentTab, setCurrentTab] = useState("Profile");
   const [disableButton, setDisable] = useState(false)
+  
   useEffect(() => {
     if (currentTab === "Profile") {
       setDisable(
         Object.keys(profileForm?.formState?.errors).length === 0 &&
         !(
-          profileData?.store?.profile_image === null &&
+          profileData?.store?.profile_image === null ||
           profileData?.store?.profile_image_data === null
         )
       )

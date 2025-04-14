@@ -1,9 +1,10 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef } from "react";
 import { InputBox } from "./inputStyles";
 import PropTypes from "prop-types";
 import { ErrorIcon, LoadingIcon, successIcon } from "../../../images";
 import SelectDropdown from "../dropdownInput/dropdown";
 import { Controller } from "react-hook-form";
+import TimePicker from "./timepicker";
 
 /**
  * @description Input Component
@@ -70,7 +71,7 @@ const InputComponent = forwardRef(
     ref
   ) => {
     return (
-      <div className="flex flex-col gap-2 w-full">
+      <div className="relative flex flex-col gap-2 w-full">
         <label className="text-[#B3B3B3] text-[13px]">{label}</label>
         {inputType === "select" ? (
           <Controller
@@ -111,6 +112,21 @@ const InputComponent = forwardRef(
               );
             }}
           />
+        ) : type === 'time' ? (
+          <Controller
+            name={fieldName}
+            control={control}
+            rules={required && { required: requiredMessage }}
+            render={({ field }) => {
+              return (
+                <TimePicker
+                  handleChange={field.onChange}
+                  initialValue={field.value}
+                  name={fieldName}
+                />
+              )
+            }}
+          />
         ) : (
           <InputBox
             loading={loading}
@@ -132,7 +148,7 @@ const InputComponent = forwardRef(
               />
             ) : null}
             <input
-            {...rest}
+              {...rest}
               id={id}
               className={`bg-inherit w-full border-none focus:outline-none text-[16px] font-normal placeholder-[#333333] ${className}`}
               type={type}
@@ -199,6 +215,8 @@ const InputComponent = forwardRef(
             <span className="text-[#AAAAAA] text-[10px]">Success</span>
           </div>
         )}
+
+
       </div>
     );
   }

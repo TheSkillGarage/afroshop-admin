@@ -110,7 +110,7 @@ const PageLayout = ({ children, pageName = "layout" }) => {
       };
 
       // Perform the initial check
-      checkLoginStatus();
+      // checkLoginStatus();
 
       // Set up periodic checks
       const intervalId = setInterval(checkLoginStatus, 60000);
