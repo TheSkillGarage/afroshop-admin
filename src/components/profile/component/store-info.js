@@ -299,8 +299,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           required={true}
           step={60}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) => {
-            handleData("deliveryStartTime", `${e.target.value}:00`);
+          handleChange={(value) => {
+            handleData("deliveryStartTime", `${value}`);
           }}
         />
         <InputComponent
@@ -317,8 +317,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) =>
-            handleData("deliveryEndTime", `${e.target.value}:00`)
+          handleChange={(value) =>
+            handleData("deliveryEndTime", `${value}`)
           }
         />
 
@@ -336,8 +336,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) => {
-            handleData("openingTime", `${e.target.value}:00`);
+          handleChange={(value) => {
+            handleData("openingTime", `${value}`);
           }}
         />
         <InputComponent
@@ -354,8 +354,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) =>
-            handleData("closingTime", `${e.target.value}:00`)
+          handleChange={(value) =>
+            handleData("closingTime", `${value}`)
           }
         />
         <InputComponent

@@ -65,6 +65,8 @@ export const getStoreDefaultValues = (store, user) => {
   return {
     holidays: store?.holidays ?? [],
     store: {
+      businessType: store?.businessType,
+      storeType: store?.storeType,
       days: store?.openDays?.map((day) => day?.openDays) || [],
       email: user?.email || "",
       allowUserSKU: store?.allowUserSKU || false,
@@ -136,6 +138,8 @@ export const getStorePayload = async (
   store
 ) => {
   const updatedStore = {
+    businessType: profileData?.store?.businessType,
+    storeType: profileData?.store?.storeType,
     name: profileData?.store?.store_name,
     allowUserSKU: profileData?.store?.allowUserSKU,
     address: {
