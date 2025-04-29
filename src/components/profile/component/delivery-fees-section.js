@@ -111,7 +111,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
         <div className="flex gap-2">
           <RadioButton
             name="base"
-            id="base"
+            id="base0"
             checked={deliveryType === 0}
             disabled={!storeExists ? false : !editProfile}
             handleChange={() => {
@@ -133,7 +133,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
         <div className="flex gap-2">
           <RadioButton
             name="base"
-            id="base"
+            id="base1"
             checked={deliveryType === 1}
             disabled={!storeExists ? false : !editProfile}
             handleChange={() => {
@@ -165,9 +165,9 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
                 name="destination"
                 fieldName={`destination`}
                 placeholder="Select"
-                required={profileData?.delivery?.delivery.length < 2 && deliveryType === 1}
-                requiredMessage={
-                  "When using Tiered Fees you must add atleast 2 ranges."
+                required={false}
+                requiredMessage={""
+                  // "When using Tiered Fees you must add atleast 2 ranges."
                 }
                 className="bg-[#F2F2F2]"
                 control={control}
@@ -183,7 +183,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form, delivery
                 type="number"
                 label="Shipping Fee ($)"
                 name="fee"
-                required={profileData?.delivery?.delivery.length < 2 && deliveryType === 1}
+                required={false}
                 requiredMessage={
                   "When using Tiered Fees you must add atleast 2 ranges."
                 }

@@ -123,6 +123,7 @@ const InputComponent = forwardRef(
                   handleChange={(data) => { field.onChange(data); handleChange(data); }}
                   initialValue={field.value}
                   name={fieldName}
+                  disabled={isReadOnly}
                 />
               )
             }}

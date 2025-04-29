@@ -49,15 +49,21 @@ const Profile = () => {
   const [disableButton, setDisable] = useState(false);
   useEffect(() => {
     if (currentTab === "Profile") {
-      setDisable(
-        Object.keys(profileForm?.formState?.errors).length === 0 &&
-          !(
-            profileData?.store?.profile_image === null &&
-            profileData?.store?.profile_image_data === null
-          )
+      const noProfileImage = (
+        profileData?.store?.profile_image === null &&
+        profileData?.store?.profile_image_data === null
       );
+
+      const validForm = Object.keys(profileForm?.formState?.errors).length === 0
+
+      console.log(profileData)
+      console.log(profileForm)
+      console.log("isFormValid", !validForm)
+      console.log("noProfileImage", noProfileImage)
+
+      setDisable(!validForm || noProfileImage);
     } else if (currentTab === "Password") {
-      setDisable(Object.keys(passwordForm?.formState?.errors).length === 0);
+      setDisable(Object.keys(passwordForm?.formState?.errors).length !== 0);
     }
   }, [profileData, currentTab]);
 
@@ -90,6 +96,9 @@ const Profile = () => {
   };
 
   const validateForm = () => {
+    console.log(profileData)
+    console.log(profileData?.delivery?.delivery.length)
+    
     const baseDistance = profileForm.watch("base_distance");
     const baseAmount = profileForm.watch("base_amount");
     const additionalFee = profileForm.watch("additional_distance_fee");
@@ -201,8 +210,7 @@ const Profile = () => {
     validateFormDays();
     profileForm?.handleSubmit(handleProfileFormSubmit)();
   };
-  const dataValues = profileForm.getValues();
-  console.log( dataValues, 'hey')
+
   return (
     <div className="bg-[#F2F2F2] w-full py-6 px-4">
       <div className="flex items-center gap-8 mb-6">
@@ -233,11 +241,10 @@ const Profile = () => {
               <p
                 key={index}
                 onClick={() => handleTabClick(t)}
-                className={`cursor-pointer w-[380px] flex items-center justify-center ${
-                  t === currentTab
-                    ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
-                    : "text-[#4F4F4F] font-normal"
-                }`}
+                className={`cursor-pointer w-[380px] flex items-center justify-center ${t === currentTab
+                  ? "font-semibold text-[#186F3D] rounded text-center shadow-lg py-2"
+                  : "text-[#4F4F4F] font-normal"
+                  }`}
               >
                 {t}
               </p>
@@ -251,9 +258,8 @@ const Profile = () => {
           <div className="py-4 px-4 border-b-[2px] text-[#186F3D] border-[#E6E6E6] flex items-center justify-between">
             <p className="text-xl font-bold">{currentTab}</p>
             <p
-              className={`flex gap-2 items-center font-semibold cursor-pointer ${
-                editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
-              }`}
+              className={`flex gap-2 items-center font-semibold cursor-pointer ${editProfile ? "text-[#CCCCCC]" : "text-[#186F3D]"
+                }`}
               onClick={() => setEditProfile(true)}
             >
               {editProfile ? (
@@ -300,9 +306,9 @@ const Profile = () => {
                   : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
               }}
               variant={
-                profileForm.formState.isValid && disableButton
-                  ? "primary"
-                  : "disabled"
+                disableButton
+                  ? "disabled"
+                  : "primary"
               }
             >
               {!storeExists ? "Submit" : "Save"}

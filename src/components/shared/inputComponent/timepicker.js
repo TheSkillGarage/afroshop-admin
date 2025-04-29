@@ -78,7 +78,7 @@ const useTimeInputChange = (setFieldValue, isValidCallback, formatValueCallback)
     };
 };
 
-const TimePicker = ({ handleChange, initialValue }) => {
+const TimePicker = ({ handleChange, initialValue, disabled }) => {
     const pickerRef = useRef(null);
 
     const [hours, setHours] = useState("12");
@@ -159,8 +159,8 @@ const TimePicker = ({ handleChange, initialValue }) => {
                 type="text"
                 value={defaultTime}
                 readOnly
-                onClick={() => setIsOpen(!isOpen)}
-                className="bg-[#F2f2f2] h-[53px] p-2 rounded-[4px] w-full cursor-pointer focus:outline-none focus:border-1 focus:border-[#186F3D] pl-12" // Add styling as needed
+                onClick={() => setIsOpen(!disabled && !isOpen)}
+                className={`bg-[#F2f2f2] h-[53px] p-2 rounded-[4px] w-full ${disabled ? "" : "cursor-pointer"} focus:outline-none focus:border-1 focus:border-[#186F3D] pl-12`} // Add styling as needed
             />
 
             {isOpen && (
