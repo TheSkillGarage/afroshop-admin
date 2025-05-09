@@ -47,6 +47,7 @@ const Profile = () => {
 
   const [currentTab, setCurrentTab] = useState("Profile");
   const [disableButton, setDisable] = useState(false);
+
   useEffect(() => {
     if (currentTab === "Profile") {
       const noProfileImage = (
@@ -56,16 +57,11 @@ const Profile = () => {
 
       const validForm = Object.keys(profileForm?.formState?.errors).length === 0
 
-      console.log(profileData)
-      console.log(profileForm)
-      console.log("isFormValid", !validForm)
-      console.log("noProfileImage", noProfileImage)
-
       setDisable(!validForm || noProfileImage);
     } else if (currentTab === "Password") {
       setDisable(Object.keys(passwordForm?.formState?.errors).length !== 0);
     }
-  }, [profileData, currentTab]);
+  }, [profileData, currentTab, profileForm]);
 
   useEffect(() => {
     const result = getStoreDefaultValues(store, user);
@@ -95,10 +91,7 @@ const Profile = () => {
     setEditProfile(false);
   };
 
-  const validateForm = () => {
-    console.log(profileData)
-    console.log(profileData?.delivery?.delivery.length)
-    
+  const validateForm = () => {    
     const baseDistance = profileForm.watch("base_distance");
     const baseAmount = profileForm.watch("base_amount");
     const additionalFee = profileForm.watch("additional_distance_fee");
@@ -205,9 +198,9 @@ const Profile = () => {
     profileForm?.reset();
   };
 
-  const handleProfileValidation = () => {
-    validateForm();
-    validateFormDays();
+  const handleProfileValidation = async () => {
+    await validateForm();
+    await validateFormDays();
     profileForm?.handleSubmit(handleProfileFormSubmit)();
   };
 
