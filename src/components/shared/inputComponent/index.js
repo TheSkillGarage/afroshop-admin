@@ -120,9 +120,10 @@ const InputComponent = forwardRef(
             render={({ field }) => {
               return (
                 <TimePicker
-                  handleChange={field.onChange}
+                  handleChange={(data) => { field.onChange(data); handleChange(data); }}
                   initialValue={field.value}
                   name={fieldName}
+                  disabled={isReadOnly}
                 />
               )
             }}

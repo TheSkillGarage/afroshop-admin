@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeliveryCard from "./delivery-holiday-card";
 import InputComponent from "../../shared/inputComponent";
 import Button from "../../shared/button";
@@ -7,20 +7,21 @@ import { LocationIcon } from "../../../images";
 import RadioButton from "../../shared/radioBtn";
 import { useSelector } from "react-redux";
 
-const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
-  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
-  const storeExists = useSelector((state) => state.storeExists);
-  const [deliveryType, setDeliveryType] = useState(
-    profileData?.delivery?.deliveryType ?? 0
+const DeliveryFees = ({ editProfile, profileData, setProfileData, form, deliveryType, setDeliveryType, validateForm }) => {
+  const store = useSelector((state) =>
+    state.stores && state.stores.length > 0 ? state.stores[state.storeID] : {}
   );
+  const storeExists = useSelector((state) => state.storeExists);
+
   const {
     control,
-    formState: errors,
+    formState: { errors },
     register,
     resetField,
     watch,
     trigger,
     setValue,
+    clearErrors,
   } = form;
 
   const handleAddCard = () => {
@@ -49,13 +50,13 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
           ) {
             updatedArray.push(deliveryFormData);
           }
-
           return {
             ...prev,
             delivery: { ...prev["delivery"], delivery: updatedArray },
           };
         });
       }
+      validateForm();
       //resets the fields after adding the object
       resetField("destination");
       resetField("fee");
@@ -73,6 +74,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
         },
       };
     });
+    validateForm();
   };
 
   const deleteDeliveryCard = (index) => {
@@ -86,7 +88,15 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
         delivery: { ...prev["delivery"], delivery: remainingData },
       };
     });
+    validateForm();
   };
+
+  useEffect(() => {
+    setValue("delivery", profileData?.delivery?.delivery);
+    if (profileData?.delivery?.delivery?.length === 2) {
+      clearErrors("delivery");
+    }
+  }, [profileData?.delivery?.delivery]);
 
   const resetBaseDistanceForm = () => {
     resetField("unit");
@@ -94,13 +104,14 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
     resetField("base_amount");
     resetField("additional_distance_fee");
   };
+
   return (
     <div>
       <div className="flex mt-4 gap-5">
         <div className="flex gap-2">
           <RadioButton
             name="base"
-            id="base"
+            id="base0"
             checked={deliveryType === 0}
             disabled={!storeExists ? false : !editProfile}
             handleChange={() => {
@@ -114,6 +125,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 };
               });
               setDeliveryType(0);
+              validateForm();
             }}
           />
           <label>Base + Per Unit Distance</label>
@@ -121,7 +133,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
         <div className="flex gap-2">
           <RadioButton
             name="base"
-            id="base"
+            id="base1"
             checked={deliveryType === 1}
             disabled={!storeExists ? false : !editProfile}
             handleChange={() => {
@@ -134,6 +146,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                   },
                 };
               });
+              validateForm();
               resetBaseDistanceForm();
               setDeliveryType(1);
             }}
@@ -152,8 +165,10 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 name="destination"
                 fieldName={`destination`}
                 placeholder="Select"
-                required={profileData?.delivery?.delivery.length < 2}
-                requiredMessage={"When using Tiered Fees you must add atleast 2 ranges."}
+                required={false}
+                requiredMessage={""
+                  // "When using Tiered Fees you must add atleast 2 ranges."
+                }
                 className="bg-[#F2F2F2]"
                 control={control}
                 errors={errors}
@@ -168,8 +183,10 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 type="number"
                 label="Shipping Fee ($)"
                 name="fee"
-                required={profileData?.delivery?.delivery.length < 2}
-                requiredMessage={"When using Tiered Fees you must add atleast 2 ranges."}
+                required={false}
+                requiredMessage={
+                  "When using Tiered Fees you must add atleast 2 ranges."
+                }
                 fieldName="fee"
                 placeholder="Enter"
                 className="bg-[#F2F2F2]"
@@ -179,7 +196,6 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 register={register}
               />
             </div>
-
             <div className="mt-6 mb-3">
               <Button
                 className="w-[144px]"
@@ -233,8 +249,8 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               name={"unit"}
               placeholder="Enter"
               className="bg-[#F2F2F2]"
-              required={true}
-              requiredMessage={"Select"}
+              required={deliveryType === 0}
+              requiredMessage={"Select a unit of measurement"}
               value={profileData?.unit}
               control={control}
               errors={errors}
@@ -246,7 +262,6 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
                 handleData("unit", data?.value);
               }}
             />
-
             <InputComponent
               inputType="number"
               type="number"
@@ -259,7 +274,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               control={control}
               errors={errors}
               register={register}
-              required={true}
+              required={deliveryType === 0}
               requiredMessage={"Base Distance is required"}
               isReadOnly={!storeExists ? false : !editProfile}
               handleChange={(e) => handleData("base_distance", e.target.value)}
@@ -276,7 +291,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               profileData={profileData?.base_amount}
               errors={errors}
               register={register}
-              required={true}
+              required={deliveryType === 0}
               requiredMessage={"Base Amount is required"}
               isReadOnly={!storeExists ? false : !editProfile}
               handleChange={(e) => handleData("base_amount", e.target.value)}
@@ -293,7 +308,7 @@ const DeliveryFees = ({ editProfile, profileData, setProfileData, form }) => {
               errors={errors}
               register={register}
               value={profileData?.additional_distance_fee}
-              required={true}
+              required={deliveryType === 0}
               requiredMessage={"Additional Distance Fee is required"}
               isReadOnly={!storeExists ? false : !editProfile}
               handleChange={(e) =>

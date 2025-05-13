@@ -21,11 +21,20 @@ const Profile = () => {
   const storeExists = useSelector((state) => state.storeExists);
   const stores = useSelector((state) => state.stores);
   const storeID = useSelector((state) => state.storeID);
-  const store = useSelector((state) => (state.stores && state.stores.length > 0) ? state.stores[state.storeID] : {});
+  const store = useSelector((state) =>
+    state.stores && state.stores.length > 0 ? state.stores[state.storeID] : {}
+  );
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
 
-  const [profileData, setProfileData] = useState(getStoreDefaultValues(store, user));
+  const [profileData, setProfileData] = useState(
+    getStoreDefaultValues(store, user)
+  );
+
+  const [deliveryType, setDeliveryType] = useState(
+    profileData?.delivery?.deliveryType ?? 0
+  );
+
   const profileForm = useForm({
     defaultValues: {
       ...profileData?.store,
@@ -35,24 +44,24 @@ const Profile = () => {
     },
     mode: "all",
   });
-  
+
   const [currentTab, setCurrentTab] = useState("Profile");
-  const [disableButton, setDisable] = useState(false)
-  
+  const [disableButton, setDisable] = useState(false);
+
   useEffect(() => {
     if (currentTab === "Profile") {
-      setDisable(
-        Object.keys(profileForm?.formState?.errors).length === 0 &&
-        !(
-          profileData?.store?.profile_image === null ||
-          profileData?.store?.profile_image_data === null
-        )
-      )
+      const noProfileImage = (
+        profileData?.store?.profile_image === null &&
+        profileData?.store?.profile_image_data === null
+      );
+
+      const validForm = Object.keys(profileForm?.formState?.errors).length === 0
+
+      setDisable(!validForm || noProfileImage);
+    } else if (currentTab === "Password") {
+      setDisable(Object.keys(passwordForm?.formState?.errors).length !== 0);
     }
-    else if (currentTab === "Password") {
-      setDisable(Object.keys(passwordForm?.formState?.errors).length === 0)
-    }
-  }, [profileData, currentTab])
+  }, [profileData, currentTab, profileForm]);
 
   useEffect(() => {
     const result = getStoreDefaultValues(store, user);
@@ -75,13 +84,80 @@ const Profile = () => {
     mode: "all",
   });
 
-
   const [editProfile, setEditProfile] = useState(false);
 
   const handleRedirect = () => {
-    navigate("/")
-    setEditProfile(false)
-  }
+    navigate("/");
+    setEditProfile(false);
+  };
+
+  const validateForm = () => {    
+    const baseDistance = profileForm.watch("base_distance");
+    const baseAmount = profileForm.watch("base_amount");
+    const additionalFee = profileForm.watch("additional_distance_fee");
+    const unit = profileForm.watch("unit");
+    const delivery = profileForm.watch("delivery");
+
+    if (deliveryType === 0) {
+      // Checks for `0` and update to `null` for error validation
+      if (baseDistance === 0) {
+        profileForm.setValue("base_distance", null, { shouldValidate: true });
+      }
+      if (baseAmount === 0) {
+        profileForm.setValue("base_amount", null, { shouldValidate: true });
+      }
+      if (additionalFee === 0) {
+        profileForm.setValue("additional_distance_fee", null, {
+          shouldValidate: true,
+        });
+      }
+      if (!unit) {
+        profileForm.setValue("unit", null, { shouldValidate: true });
+      }
+
+      if (!baseDistance) {
+        profileForm.setError("base_distance", {
+          message: "Base Distance is required and must be greater than 0",
+        });
+      }
+      if (!baseAmount) {
+        profileForm.setError("base_amount", {
+          message: "Base Amount is required and must be greater than 0",
+        });
+      }
+      if (!additionalFee) {
+        profileForm.setError("additional_distance_fee", {
+          message:
+            "Additional Distance Fee is required and must be greater than 0",
+        });
+      }
+      if (!unit) {
+        profileForm.setError("unit", {
+          message: "Unit of Measurement is required",
+        });
+      }
+    }
+
+    if (deliveryType === 1) {
+      if (!delivery || delivery.length < 2) {
+        profileForm.setError("destination", {
+          message: "At least two tiers are required for Tiered Distance Fees.",
+        });
+        profileForm.setError("fee", {
+          message: "At least two tiers are required for Tiered Distance Fees.",
+        });
+      }
+    }
+  };
+
+  const validateFormDays = () => {
+    const days = profileForm.watch("days");
+    if (!days || days.length < 2) {
+      profileForm.setError("days", {
+        message: "At least one day must be selected",
+      });
+    }
+  };
 
   const handleProfileFormSubmit = async () => {
     await handleSubmitStore(
@@ -122,6 +198,11 @@ const Profile = () => {
     profileForm?.reset();
   };
 
+  const handleProfileValidation = async () => {
+    await validateForm();
+    await validateFormDays();
+    profileForm?.handleSubmit(handleProfileFormSubmit)();
+  };
 
   return (
     <div className="bg-[#F2F2F2] w-full py-6 px-4">
@@ -189,6 +270,9 @@ const Profile = () => {
             profileData={profileData}
             setProfileData={setProfileData}
             form={profileForm}
+            validateForm={validateForm}
+            deliveryType={deliveryType}
+            setDeliveryType={setDeliveryType}
           />
         ) : (
           <EditPassword editProfile={editProfile} form={passwordForm} />
@@ -211,10 +295,14 @@ const Profile = () => {
               onClick={(event) => {
                 event.preventDefault();
                 currentTab === "Profile"
-                  ? profileForm?.handleSubmit(handleProfileFormSubmit)()
+                  ? handleProfileValidation()
                   : passwordForm?.handleSubmit(handlePasswordFormSubmit)();
               }}
-              variant={disableButton ? "primary" : "disabled"}
+              variant={
+                disableButton
+                  ? "disabled"
+                  : "primary"
+              }
             >
               {!storeExists ? "Submit" : "Save"}
             </Button>

@@ -7,7 +7,12 @@ import {
   deliverySlots,
   restPeriods,
 } from "../../../data/profile";
-import { DeleteIcon, GreenCamera, UserAvatar } from "../../../images";
+import {
+  DeleteIcon,
+  GreenCamera,
+  UserAvatar,
+  ErrorIcon,
+} from "../../../images";
 import { useSelector } from "react-redux";
 
 const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
@@ -17,17 +22,34 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     register,
     setValue,
     trigger,
+    watch,
+    setError,
+    clearErrors,
   } = form;
   const storeExists = useSelector((state) => state.storeExists);
 
-  //gets the selected open days by adding a new day to the array of days when checked or removing a day from the array when unchecked
-  const getSelectedDays = (store, value) => {
-    return store?.days?.includes(value)
-      ? [...store?.days?.filter((p) => p !== value)] ?? []
-      : [...store?.days, value];
+  // Updates the profile data and handles validation for days
+  const handleCheckboxChange = (dayValue) => {
+    const currentDays = watch("days") || [];
+    const updatedDays = currentDays.includes(dayValue)
+      ? currentDays.filter((day) => day !== dayValue)
+      : [...currentDays, dayValue];
+    setValue("days", updatedDays);
+    trigger("days");
+
+    handleData("day", updatedDays); // Update profileData state
+
+    if (updatedDays.length === 0) {
+      setError("days", {
+        type: "manual",
+        message: "At least one day must be selected",
+      });
+    } else {
+      clearErrors("days");
+    }
   };
 
-  //sets the state of the profile data on change of the input fields
+  // Updates profile data based on input changes
   const handleData = (input, value) => {
     setProfileData((prev) => {
       switch (input) {
@@ -35,15 +57,15 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           return {
             ...prev,
             store: {
-              ...prev["store"],
-              days: getSelectedDays(prev?.store, value),
+              ...prev.store,
+              days: value,
             },
           };
         default:
           return {
             ...prev,
             store: {
-              ...prev["store"],
+              ...prev.store,
               [input]: value,
             },
           };
@@ -58,7 +80,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
       return;
     }
   };
-  
+
   return (
     <div className="flex flex-col mt-6 gap-6">
       <div className="flex items-center gap-3 mb-3">
@@ -226,10 +248,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
             {daysOfTheWeek.map((day, index) => (
               <div key={index} className="flex">
                 <Checkbox
-                  name={day.label}
-                  handleChange={() => {
-                    handleData("day", day?.value);
-                  }}
+                  name={`days[${index}]`}
+                  handleChange={() => handleCheckboxChange(day.value)}
                   isDisabled={!storeExists ? false : !editProfile}
                   value={
                     profileData?.store?.days?.includes(day?.value)
@@ -243,6 +263,14 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
               </div>
             ))}
           </div>
+          {errors.days && (
+            <div className="flex flex-row gap-2 mt-1 ">
+              <img src={ErrorIcon} alt="errorIcon" />
+              <span className="text-[#FF3B30] text-[10px]">
+                {errors.days.message}
+              </span>
+            </div>
+          )}
         </div>
         <InputComponent
           inputType="select"
@@ -299,8 +327,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           required={true}
           step={60}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) => {
-            handleData("deliveryStartTime", `${e.target.value}:00`);
+          handleChange={(value) => {
+            handleData("deliveryStartTime", `${value}`);
           }}
         />
         <InputComponent
@@ -317,8 +345,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) =>
-            handleData("deliveryEndTime", `${e.target.value}:00`)
+          handleChange={(value) =>
+            handleData("deliveryEndTime", `${value}`)
           }
         />
 
@@ -336,8 +364,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) => {
-            handleData("openingTime", `${e.target.value}:00`);
+          handleChange={(value) => {
+            handleData("openingTime", `${value}`);
           }}
         />
         <InputComponent
@@ -354,8 +382,8 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isReadOnly={!storeExists ? false : !editProfile}
-          handleChange={(e) =>
-            handleData("closingTime", `${e.target.value}:00`)
+          handleChange={(value) =>
+            handleData("closingTime", `${value}`)
           }
         />
         <InputComponent
