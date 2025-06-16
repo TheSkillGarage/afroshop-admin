@@ -85,7 +85,7 @@ const Cover = () => {
     };
 
     return (
-        <div className="max-w-[1300px] w-full h-full mt-[48px] p-2 flex flex-col gap-10 mx-auto items-center min-h-[575px]">
+        <div className="max-w-[1300px] w-full h-full my-[48px] p-2 flex flex-col gap-10 mx-auto items-center min-h-[575px]">
             <Button variant="primary" className="ml-auto" onClick={handleNewStore}>
                 Add a New Store
             </Button>
