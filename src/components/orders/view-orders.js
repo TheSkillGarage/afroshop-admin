@@ -18,6 +18,10 @@ const ViewOrders = () => {
     const orderData = useSelector((state) => state.ordersData);
 
     const order = orderData.find((order) => order.orderID === orderID);
+    const orderAddress = order?.address?.formattedAddress ??
+        [order?.address?.streetAddress, order?.address?.city, order?.address?.state, order?.address?.country]
+            .filter(Boolean)
+            .join(", ");
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filterObject, setFilterObject] = useState({});
@@ -113,7 +117,7 @@ const ViewOrders = () => {
 
                                 <div className="text-[13px] leading-[23px] text-[#7F7F7F] w-[70%]">
                                     <p>{`${order?.firstName} ${order?.lastName}`}</p>
-                                    <p>{`${order?.address.streetAddress}, ${order?.address.city}, ${order?.address.state}, ${order?.address.country} `}</p>
+                                    <p>{orderAddress || "N/A"}</p>
                                     <p>{order?.phoneNumber}</p>
                                     <p>{order?.email}</p>
                                 </div>
