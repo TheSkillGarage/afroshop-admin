@@ -49,6 +49,23 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
     }
   };
 
+  const handleDeliveryOptionChange = (data) => {
+    setValue("deliveryOption", data);
+    handleData("deliveryOption", data);
+    
+    if (!data || data.length === 0) {
+      setError("deliveryOption", {
+        type: "manual",
+        message: "At least one delivery option is required",
+      });
+    } else {
+      clearErrors("deliveryOption");
+    }
+    
+    trigger("deliveryOption");
+  };
+  
+
   // Updates profile data based on input changes
   const handleData = (input, value) => {
     setProfileData((prev) => {
@@ -288,11 +305,7 @@ const StoreInfo = ({ editProfile, profileData, setProfileData, form }) => {
           errors={errors}
           register={register}
           isDisabled={!storeExists ? false : !editProfile}
-          handleChange={(data) => {
-            setValue("deliveryOption", data);
-            trigger("deliveryOption"); // triggers the input field after a change to re-trigger validation
-            handleData("deliveryOption", data);
-          }}
+          handleChange={handleDeliveryOptionChange}
         />
 
         {/* <InputComponent
