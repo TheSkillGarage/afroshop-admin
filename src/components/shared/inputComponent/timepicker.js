@@ -88,6 +88,21 @@ const TimePicker = ({ handleChange, initialValue, disabled }) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
+    const handleOk = () => {
+        setIsOpen(false);
+
+        let h = parseInt(hours, 10);
+        const m = parseInt(minutes, 10);
+
+        if (amPm === "PM" && h !== 12) h += 12;
+        if (amPm === "AM" && h === 12) h = 0;
+
+        const formatted = `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:00`;
+        ;
+
+        handleChange(formatted);
+    };
+
     useEffect(() => {
         if (initialValue) {
             let [h, m] = initialValue.split(":").map(Number);
@@ -103,6 +118,9 @@ const TimePicker = ({ handleChange, initialValue, disabled }) => {
             setAmPm(AMPM);
             setDefault(`${toStringAndPad(hour12)}:${toStringAndPad(m)} ${AMPM}`)
         }
+        else (
+            handleOk()
+        )
     }, [initialValue]);
 
     const locationClickOutside = OutSideClick(pickerRef);
@@ -137,20 +155,6 @@ const TimePicker = ({ handleChange, initialValue, disabled }) => {
         setIsOpen(false)
     }
 
-    const handleOk = () => {
-        setIsOpen(false);
-
-        let h = parseInt(hours, 10);
-        const m = parseInt(minutes, 10);
-
-        if (amPm === "PM" && h !== 12) h += 12;
-        if (amPm === "AM" && h === 12) h = 0;
-
-        const formatted = `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:00`;
-        ;
-
-        handleChange(formatted);
-    };
 
     return (
         <div className="relative" ref={pickerRef}>

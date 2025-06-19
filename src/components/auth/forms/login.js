@@ -51,8 +51,8 @@ const LogInForm = () => {
           { autoClose: 2000 }
         );
       } else {
-        const userData = await fetchUserRole("/users/me?populate=*", responseData);
-
+        const userData = await fetchUserRole("/users/me?populate=deep", responseData);
+console.log(userData)
         if (userData?.role?.name.toLowerCase() === "admin") {
           dispatch(userLogin(responseData?.user));
           Cookies.set(AFROADMIN_TOKEN, responseData?.jwt, {
